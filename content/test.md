@@ -1,5 +1,5 @@
 ---
-snap
+ title: snap
 ---
 
 test 1
