@@ -1,12 +1,16 @@
 ---
-title: Welcome to Quartz
+title: Welcome to jasy‘s home
 ---
 
+try 1
+try 2
+
 This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+See the [documentation] for how to get started.
 
 
 try it
 
+try 3
 
 
