@@ -3,7 +3,7 @@
 <div id="bookshelf"></div>
 
 <script>
-fetch('/static/books.json')
+fetch('/static/contentIndex.json')
   .then(res = > res.json())
   .then(data => {
     const container = document.getElementById('bookshelf');
@@ -22,4 +22,6 @@ fetch('/static/books.json')
       </div>
     `).join('');
   });
+  readingBooks.sort((a,b) => b.score - a.score);
+
 </script>
