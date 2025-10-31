@@ -15,3 +15,4 @@ try it
 try 3
 
 
+<a href="javascript:history.back()">  &larr; 返回</a>
