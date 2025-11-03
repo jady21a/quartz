@@ -18,7 +18,7 @@ const config: QuartzConfig = {
     locale: "zh-CN",
     baseUrl: "quartz.jzhao.xyz",
     ignorePatterns: ["private", "templates", ".obsidian"],
-    defaultDateType: "published",
+    defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
@@ -91,7 +91,10 @@ const config: QuartzConfig = {
       // Comment out CustomOgImages to speed up build time
       Plugin.CustomOgImages(),
     ],
+   
+
   },
+  
 }
 
 export default config
