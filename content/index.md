@@ -7,9 +7,7 @@ title:
 This is a blank Quartz installation.
 See the [documentation] for how to get started.
 
-
-
-
+## 订阅
 <div id="mc_embed_shell">
       <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
   <style type="text/css">
@@ -33,7 +31,7 @@ See the [documentation] for how to get started.
         <div class="optionalParent">
             <div class="clear foot">
                 <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
-                <p style="margin: 0px auto;"><a href="http://eepurl.com/jq712g" title="Mailchimp - email marketing made easy and fun"><span style="display: inline-block; background-color: transparent; border-radius: 4px;"><img class="refferal_badge" src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg" alt="Intuit Mailchimp" style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></a></p>
+                <p style="margin: 0px auto;"><span style="display: inline-block; background-color: transparent; border-radius: 4px;"><img class="refferal_badge" src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg" alt="Intuit Mailchimp" style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></p>
             </div>
         </div>
     </div>
@@ -484,8 +482,10 @@ See the [documentation] for how to get started.
 
 
 
-style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></a></p>
 
-</div>
+
+
+## 返回
+
 
 <a href="javascript:history.back()"> &larr; 返回</a>
