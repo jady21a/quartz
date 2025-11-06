@@ -21,7 +21,7 @@ table without ID
 	"添加时间："+添加时间,
 	"结束阅读："+结束阅读,
 	"阅读用时:"+(date(结束阅读) - date(添加时间))
-from "Read/douban" 
+from "2.Read/douban" 
 
 SORT 添加时间 DESC
 where contains(阅读状态,"正在阅读")
@@ -54,7 +54,7 @@ table without ID
 	"添加时间："+添加时间,
 	"结束阅读："+结束阅读,
 	"阅读用时:"+(date(结束阅读) - date(添加时间))
-from "Read/douban" 
+from "2.Read/douban" 
 SORT 结束阅读 desc //asc
 where contains(阅读状态,"已读完")
 
@@ -76,7 +76,7 @@ table without ID
 	"currentPage:"+currentPage,
 	"添加时间："+添加时间,
 	"结束阅读："+结束阅读
-from "Read/douban" 
+from "2.Read/douban" 
 where contains(阅读状态,"未开始")
 
 ```
@@ -98,7 +98,7 @@ table without ID
 	"currentPage:"+currentPage,
 	"添加时间："+添加时间,
 	"结束阅读："+结束阅读
-from "Read/douban" 
+from "2.Read/douban" 
 where contains(阅读状态,"未读完")
 
 ```
@@ -121,7 +121,7 @@ table without ID
 	"添加时间："+添加时间,
 	"结束阅读："+结束阅读,
 	"阅读用时:"+(date(结束阅读) - date(添加时间))
-from "Read/douban" 
+from "2.Read/douban" 
 SORT 结束阅读 desc //asc
 where contains(阅读状态,"概览")
 
@@ -142,7 +142,7 @@ table without ID
 	"currentPage:"+currentPage,
 	"添加时间："+添加时间,
 	"结束阅读："+结束阅读
-from "Read/douban"  & #book
+from "2.Read/douban"  & #book
 
 
 ```

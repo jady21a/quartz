@@ -3,7 +3,16 @@ cssclasses:
 - cards
 ---
 ## 待看
-
+unforgiven 0
+the account
+Goodfellas. 2
+Casino 3
+1923 4
+A few good men。1
+babe 5
+Napoleon Dynamite6
+DaVinci Code7
+篮坛怪杰
 Bourne Identity
 分裂
 天兆
@@ -22,7 +31,7 @@ table without ID
 	"state:"+state,
 	"country:"+country
 
-from "Read/douban" and #movies
+from "7.Read/douban" and #movies
 where contains(state,"未看")
 ```
 
@@ -44,7 +53,7 @@ table without ID
 	"state:"+state,
 	"country:"+country
 
-from "Read/douban"  and #movies
+from "7.Read/douban"  and #movies
 SORT 添加时间 desc
 where contains(state,"已看")
 ```
