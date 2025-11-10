@@ -1,6 +1,22 @@
 [
   {
-    "file": "/Read/douban/book/10xIsEasierThan2x",
+    "file": "/2.Read/books/12 Months to $1 Million",
+    "title": "12 Months to $1 Million",
+    "封面": "",
+    "originalTitle": "",
+    "author": "Ryan Daniel Moran",
+    "scoreStar": "",
+    "score": "",
+    "publishDate": "2020-05-05",
+    "myRate": "",
+    "阅读状态": "",
+    "totalPage": 206,
+    "currentPage": "",
+    "添加时间": "",
+    "结束阅读": ""
+  },
+  {
+    "file": "/2.Read/douban/book/10xIsEasierThan2x",
     "title": [
       "10xIsEasierThan2x"
     ],
@@ -13,18 +29,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.1",
-    "publishDate": "2023-05-09T00:00:00.000Z",
+    "publishDate": "2023-05-09",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "257",
     "currentPage": "",
-    "添加时间": "2025-09-28T00:00:00.000Z",
-    "结束阅读": "2025-10-13T00:00:00.000Z"
+    "添加时间": "2025-09-28",
+    "结束阅读": "2025-10-13"
   },
   {
-    "file": "/Read/douban/book/12Monthsto$1Million",
+    "file": "/2.Read/douban/book/12Monthsto$1Million",
     "title": [
       "12Monthsto$1Million"
     ],
@@ -44,11 +60,11 @@
     ],
     "totalPage": "",
     "currentPage": "",
-    "添加时间": "2025-10-28T00:00:00.000Z",
+    "添加时间": "2025-10-28",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/82年生的金智英",
+    "file": "/2.Read/douban/book/82年生的金智英",
     "title": [
       "82年生的金智英"
     ],
@@ -59,40 +75,40 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.1",
-    "publishDate": "2019-08-01T00:00:00.000Z",
+    "publishDate": "2019-08-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "200",
     "currentPage": "",
-    "添加时间": "2024-12-06T00:00:00.000Z",
-    "结束阅读": "2024-12-31T00:00:00.000Z"
+    "添加时间": "2024-12-06",
+    "结束阅读": "2024-12-31"
   },
   {
-    "file": "/Read/douban/book/ExactlyWhattoSay",
+    "file": "/2.Read/douban/book/ExactlyWhattoSay",
     "title": [
       "ExactlyWhattoSay"
     ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s29618680.jpg",
+    "封面": "https://m.media-amazon.com/images/I/71LzPlsDcEL._SY522_.jpg",
     "originalTitle": "",
     "author": [
       "PhilMJones\""
     ],
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.4",
-    "publishDate": "2017-07-26T00:00:00.000Z",
+    "publishDate": "2017-07-26",
     "myRate": "",
     "阅读状态": [
       "正在阅读"
     ],
     "totalPage": "148",
     "currentPage": "",
-    "添加时间": "2025-07-17T00:00:00.000Z",
+    "添加时间": "2025-07-17",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/GiftsDiffering",
+    "file": "/2.Read/douban/book/GiftsDiffering",
     "title": [
       "GiftsDiffering"
     ],
@@ -103,18 +119,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.4",
-    "publishDate": "1995-05-03T00:00:00.000Z",
+    "publishDate": "1995-05-03",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "248",
     "currentPage": "",
-    "添加时间": "2025-07-21T11:08",
-    "结束阅读": "2025-07-28T00:00:00.000Z"
+    "添加时间": "2025-07-21",
+    "结束阅读": "2025-07-28"
   },
   {
-    "file": "/Read/douban/book/MakeMoneyEasy",
+    "file": "/2.Read/douban/book/MakeMoneyEasy",
     "title": [
       "MakeMoneyEasy"
     ],
@@ -125,7 +141,7 @@
     ],
     "scoreStar": "",
     "score": "",
-    "publishDate": "2025-03-18T00:00:00.000Z",
+    "publishDate": "2025-03-18",
     "myRate": "",
     "阅读状态": [
       "已读完",
@@ -133,11 +149,11 @@
     ],
     "totalPage": "",
     "currentPage": "",
-    "添加时间": "2025-09-28T00:00:00.000Z",
-    "结束阅读": "2025-10-11T00:00:00.000Z"
+    "添加时间": "2025-09-28",
+    "结束阅读": "2025-10-11"
   },
   {
-    "file": "/Read/douban/book/MillionDollarWeekend",
+    "file": "/2.Read/douban/book/MillionDollarWeekend",
     "title": [
       "MillionDollarWeekend"
     ],
@@ -150,18 +166,18 @@
     ],
     "scoreStar": "",
     "score": "",
-    "publishDate": "2024-01-30T00:00:00.000Z",
+    "publishDate": "2024-01-30",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "240",
     "currentPage": "",
-    "添加时间": "2025-09-28T00:00:00.000Z",
-    "结束阅读": "2025-10-16T00:00:00.000Z"
+    "添加时间": "2025-09-28",
+    "结束阅读": "2025-10-16"
   },
   {
-    "file": "/Read/douban/book/NonviolentCommunication",
+    "file": "/2.Read/douban/book/NonviolentCommunication",
     "title": [
       "NonviolentCommunication"
     ],
@@ -173,22 +189,22 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "9.3",
-    "publishDate": "2003-09-01T00:00:00.000Z",
+    "publishDate": "2003-09-01",
     "myRate": "",
     "阅读状态": [
       "概览"
     ],
     "totalPage": "222",
     "currentPage": "",
-    "添加时间": "2025-08-22T00:00:00.000Z",
-    "结束阅读": "2025-08-27T00:00:00.000Z"
+    "添加时间": "2025-08-22",
+    "结束阅读": "2025-08-27"
   },
   {
-    "file": "/Read/douban/book/Platform平台",
+    "file": "/2.Read/douban/book/Platform平台",
     "title": [
       "platform"
     ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s21176523.jpg",
+    "封面": "https://m.media-amazon.com/images/I/716ulwY6ycL._SY522_.jpg",
     "originalTitle": "",
     "author": [
       "Hyatt,Michael;Hyatt,Michael;"
@@ -202,11 +218,11 @@
     ],
     "totalPage": "",
     "currentPage": "",
-    "添加时间": "2025-09-16T00:00:00.000Z",
-    "结束阅读": "2025-09-17T00:00:00.000Z"
+    "添加时间": "2025-09-16",
+    "结束阅读": "2025-09-17"
   },
   {
-    "file": "/Read/douban/book/UnderstandingNutrition",
+    "file": "/2.Read/douban/book/UnderstandingNutrition",
     "title": [
       "UnderstandingNutrition"
     ],
@@ -215,18 +231,18 @@
     "author": " - EleanorNossWhitney - SharonRadyRolfes",
     "scoreStar": "",
     "score": "",
-    "publishDate": "2012-07-27T00:00:00.000Z",
+    "publishDate": "2012-07-27",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "928",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/一个悲观主义者的积极思考",
+    "file": "/2.Read/douban/book/一个悲观主义者的积极思考",
     "title": [
       "一个悲观主义者的积极思考"
     ],
@@ -235,18 +251,18 @@
     "author": " - 叔本华",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.5",
-    "publishDate": "2013-05-01T00:00:00.000Z",
+    "publishDate": "2013-05-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "184",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/人类简史",
+    "file": "/2.Read/douban/book/人类简史",
     "title": [
       "人类简史"
     ],
@@ -258,7 +274,7 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "9.1",
-    "publishDate": "2014-11-01T00:00:00.000Z",
+    "publishDate": "2014-11-01",
     "myRate": "",
     "阅读状态": [
       "正在阅读",
@@ -269,11 +285,11 @@
     ],
     "totalPage": "440",
     "currentPage": "",
-    "添加时间": "2025-10-23T00:00:00.000Z",
+    "添加时间": "2025-10-23",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/从0到1",
+    "file": "/2.Read/douban/book/从0到1",
     "title": [
       "从0到1"
     ],
@@ -286,18 +302,18 @@
     ],
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.6",
-    "publishDate": "2015-01-01T00:00:00.000Z",
+    "publishDate": "2015-01-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "260",
     "currentPage": "",
-    "添加时间": "2025-09-09T00:00:00.000Z",
-    "结束阅读": "2025-09-15T00:00:00.000Z"
+    "添加时间": "2025-09-09",
+    "结束阅读": "2025-09-15"
   },
   {
-    "file": "/Read/douban/book/你想活出怎样的人生",
+    "file": "/2.Read/douban/book/你想活出怎样的人生",
     "title": [
       "你想活出怎样的人生"
     ],
@@ -308,18 +324,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.6",
-    "publishDate": "2019-08-01T00:00:00.000Z",
+    "publishDate": "2019-08-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "272",
     "currentPage": "",
-    "添加时间": "2025-01-22T00:00:00.000Z",
-    "结束阅读": "2025-01-31T00:00:00.000Z"
+    "添加时间": "2025-01-22",
+    "结束阅读": "2025-01-31"
   },
   {
-    "file": "/Read/douban/book/决断力",
+    "file": "/2.Read/douban/book/决断力",
     "title": [
       "决断力"
     ],
@@ -328,29 +344,29 @@
     "author": " - 美/奇普·希思 - 美/丹·希思",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.1",
-    "publishDate": "2014-01-01T00:00:00.000Z",
+    "publishDate": "2014-01-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "296",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/卡耐基口才的艺术与人际关系",
+    "file": "/2.Read/douban/book/卡耐基口才的艺术与人际关系",
     "title": [
       "卡耐基口才的艺术与人际关系"
     ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s6152755.jpg",
+    "封面": "\thttps://m.media-amazon.com/images/I/61g1WQHK8QL._SY522_.jpg",
     "originalTitle": "",
     "author": [
       "(美)戴尔·卡耐基|译者:马剑涛//肖文键"
     ],
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.3",
-    "publishDate": "2010-05-01T00:00:00.000Z",
+    "publishDate": "2010-05-01",
     "myRate": "",
     "阅读状态": [
       "已读完",
@@ -358,11 +374,11 @@
     ],
     "totalPage": "308",
     "currentPage": "",
-    "添加时间": "2025-10-30T00:00:00.000Z",
-    "结束阅读": "2025-04-01T00:00:00.000Z"
+    "添加时间": "2025-10-30",
+    "结束阅读": "2025-04-01"
   },
   {
-    "file": "/Read/douban/book/原则",
+    "file": "/2.Read/douban/book/原则",
     "title": [
       "原则"
     ],
@@ -371,18 +387,18 @@
     "author": " - 美/瑞·达利欧",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.3",
-    "publishDate": "2018-01-01T00:00:00.000Z",
+    "publishDate": "2018-01-01",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "576",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/原子習慣",
+    "file": "/2.Read/douban/book/原子習慣",
     "title": [
       "原子習慣"
     ],
@@ -395,22 +411,22 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "9",
-    "publishDate": "2019-06-01T00:00:00.000Z",
+    "publishDate": "2019-06-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "304",
     "currentPage": "",
-    "添加时间": "2025-10-17T00:00:00.000Z",
-    "结束阅读": "2025-10-22T00:00:00.000Z"
+    "添加时间": "2025-10-17",
+    "结束阅读": "2025-10-22"
   },
   {
-    "file": "/Read/douban/book/只工作、不上班的自主人生",
+    "file": "/2.Read/douban/book/只工作、不上班的自主人生",
     "title": [
       "只工作、不上班的自主人生"
     ],
-    "封面": "https://img3.doubanio.com/view/subject/s/public/s34598387.jpg",
+    "封面": "https://imgs.cwgv.com.tw/books/BWL/BWL094/cover/thumb/BWL094.png",
     "originalTitle": "",
     "author": [
       null,
@@ -418,18 +434,18 @@
     ],
     "scoreStar": "",
     "score": "",
-    "publishDate": "2022-11-30T00:00:00.000Z",
+    "publishDate": "2022-11-30",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "",
     "currentPage": "",
-    "添加时间": "2025-09-01T00:00:00.000Z",
-    "结束阅读": "2025-09-04T00:00:00.000Z"
+    "添加时间": "2025-09-01",
+    "结束阅读": "2025-09-04"
   },
   {
-    "file": "/Read/douban/book/吃掉那只青蛙",
+    "file": "/2.Read/douban/book/吃掉那只青蛙",
     "title": [
       "吃掉那只青蛙"
     ],
@@ -438,18 +454,18 @@
     "author": " - 美/博恩·崔西（BrianTracy）",
     "scoreStar": "⭐⭐⭐",
     "score": "7.6",
-    "publishDate": "2017-08-14T00:00:00.000Z",
+    "publishDate": "2017-08-14",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "208",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
-    "结束阅读": "2025-06-03T00:00:00.000Z"
+    "添加时间": "2025-05-08",
+    "结束阅读": "2025-06-03"
   },
   {
-    "file": "/Read/douban/book/哈佛非虚构写作课",
+    "file": "/2.Read/douban/book/哈佛非虚构写作课",
     "title": [
       "哈佛非虚构写作课"
     ],
@@ -461,18 +477,18 @@
     ],
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.9",
-    "publishDate": "2015-12-01T00:00:00.000Z",
+    "publishDate": "2015-12-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "360",
     "currentPage": "",
-    "添加时间": "2025-08-07T00:00:00.000Z",
-    "结束阅读": "2025-08-12T00:00:00.000Z"
+    "添加时间": "2025-08-07",
+    "结束阅读": "2025-08-12"
   },
   {
-    "file": "/Read/douban/book/基层女性",
+    "file": "/2.Read/douban/book/基层女性",
     "title": [
       "基层女性"
     ],
@@ -484,18 +500,18 @@
     ],
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.5",
-    "publishDate": "2021-08-01T00:00:00.000Z",
+    "publishDate": "2021-08-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "208",
     "currentPage": "",
-    "添加时间": "2025-10-30T00:00:00.000Z",
-    "结束阅读": "2024-02-01T00:00:00.000Z"
+    "添加时间": "2025-10-30",
+    "结束阅读": "2024-02-01"
   },
   {
-    "file": "/Read/douban/book/天生不同",
+    "file": "/2.Read/douban/book/天生不同",
     "title": [
       "天生不同"
     ],
@@ -507,18 +523,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.1",
-    "publishDate": "2016-11-01T00:00:00.000Z",
+    "publishDate": "2016-11-01",
     "myRate": "",
     "阅读状态": [
       "概览"
     ],
     "totalPage": "252",
     "currentPage": "",
-    "添加时间": "2025-07-21T00:00:00.000Z",
-    "结束阅读": "2025-07-28T00:00:00.000Z"
+    "添加时间": "2025-07-21",
+    "结束阅读": "2025-07-28"
   },
   {
-    "file": "/Read/douban/book/失去的三十年",
+    "file": "/2.Read/douban/book/失去的三十年",
     "title": [
       "失去的三十年"
     ],
@@ -529,18 +545,18 @@
     ],
     "scoreStar": "⭐⭐⭐",
     "score": "6.4",
-    "publishDate": "2022-04-01T00:00:00.000Z",
+    "publishDate": "2022-04-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "264",
     "currentPage": "",
-    "添加时间": "2024-10-17T00:00:00.000Z",
-    "结束阅读": "2024-10-30T00:00:00.000Z"
+    "添加时间": "2024-10-17",
+    "结束阅读": "2024-10-30"
   },
   {
-    "file": "/Read/douban/book/如何说孩子才会听怎么听孩子才肯说（全新修订版）",
+    "file": "/2.Read/douban/book/如何说孩子才会听怎么听孩子才肯说（全新修订版）",
     "title": [
       "如何说孩子才会听怎么听孩子才肯说（全新修订版）"
     ],
@@ -549,18 +565,18 @@
     "author": " - 阿黛尔•法伯 - 伊莱恩•玛兹丽施 - 美国/伊莱恩·玛兹丽施",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9",
-    "publishDate": "2012-07-01T00:00:00.000Z",
+    "publishDate": "2012-07-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "338",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/如何迅速建立强大的心理素质",
+    "file": "/2.Read/douban/book/如何迅速建立强大的心理素质",
     "title": [
       "如何迅速建立强大的心理素质"
     ],
@@ -571,18 +587,18 @@
     ],
     "scoreStar": "⭐⭐⭐",
     "score": "7.3",
-    "publishDate": "2016-01-01T00:00:00.000Z",
+    "publishDate": "2016-01-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "211",
     "currentPage": "",
-    "添加时间": "2025-01-16T00:00:00.000Z",
-    "结束阅读": "2024-08-31T00:00:00.000Z"
+    "添加时间": "2025-01-16",
+    "结束阅读": "2024-08-31"
   },
   {
-    "file": "/Read/douban/book/孩子：挑战",
+    "file": "/2.Read/douban/book/孩子：挑战",
     "title": [
       "孩子：挑战"
     ],
@@ -593,18 +609,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.1",
-    "publishDate": "2015-01-01T00:00:00.000Z",
+    "publishDate": "2015-01-01",
     "myRate": "",
     "阅读状态": [
       "正在阅读"
     ],
     "totalPage": "450",
     "currentPage": "76",
-    "添加时间": "2025-04-11T00:00:00.000Z",
+    "添加时间": "2025-04-11",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/定位",
+    "file": "/2.Read/douban/book/定位",
     "title": [
       "定位"
     ],
@@ -613,18 +629,18 @@
     "author": " - 美/艾·里斯 - 杰克·特劳特",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.2",
-    "publishDate": "2002-02-01T00:00:00.000Z",
+    "publishDate": "2002-02-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "268",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/富爸爸，穷爸爸",
+    "file": "/2.Read/douban/book/富爸爸，穷爸爸",
     "title": [
       "富爸爸，穷爸爸"
     ],
@@ -635,18 +651,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.3",
-    "publishDate": "2000-09-01T00:00:00.000Z",
+    "publishDate": "2000-09-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "205",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
-    "结束阅读": "2025-02-28T00:00:00.000Z"
+    "添加时间": "2025-05-08",
+    "结束阅读": "2025-02-28"
   },
   {
-    "file": "/Read/douban/book/小狗钱钱",
+    "file": "/2.Read/douban/book/小狗钱钱",
     "title": [
       "小狗钱钱"
     ],
@@ -657,18 +673,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.2",
-    "publishDate": "2021-02-01T00:00:00.000Z",
+    "publishDate": "2021-02-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "240",
     "currentPage": "",
-    "添加时间": "2025-02-12T00:00:00.000Z",
-    "结束阅读": "2025-02-27T00:00:00.000Z"
+    "添加时间": "2025-02-12",
+    "结束阅读": "2025-02-27"
   },
   {
-    "file": "/Read/douban/book/底层逻辑",
+    "file": "/2.Read/douban/book/底层逻辑",
     "title": [
       "底层逻辑"
     ],
@@ -677,18 +693,18 @@
     "author": " - 刘润",
     "scoreStar": "⭐⭐⭐",
     "score": "6.7",
-    "publishDate": "2021-10-09T00:00:00.000Z",
+    "publishDate": "2021-10-09",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "352",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/影响力",
+    "file": "/2.Read/douban/book/影响力",
     "title": [
       "影响力"
     ],
@@ -699,18 +715,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.6",
-    "publishDate": "2006-05-01T00:00:00.000Z",
+    "publishDate": "2006-05-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "353",
     "currentPage": "",
-    "添加时间": "2025-08-12T00:00:00.000Z",
-    "结束阅读": "2025-08-21T00:00:00.000Z"
+    "添加时间": "2025-08-12",
+    "结束阅读": "2025-08-21"
   },
   {
-    "file": "/Read/douban/book/德米安",
+    "file": "/2.Read/douban/book/德米安",
     "title": [
       "德米安"
     ],
@@ -719,18 +735,18 @@
     "author": " - 德/赫尔曼·黑塞",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.9",
-    "publishDate": "2009-03-01T00:00:00.000Z",
+    "publishDate": "2009-03-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "193",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/思考致富",
+    "file": "/2.Read/douban/book/思考致富",
     "title": [
       "思考致富"
     ],
@@ -744,18 +760,18 @@
     ],
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.5",
-    "publishDate": "2015-09-01T00:00:00.000Z",
+    "publishDate": "2015-09-01",
     "myRate": "",
     "阅读状态": [
       "概览"
     ],
     "totalPage": "272",
     "currentPage": "",
-    "添加时间": "2025-09-04T00:00:00.000Z",
+    "添加时间": "2025-09-04",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/思考，快与慢",
+    "file": "/2.Read/douban/book/思考，快与慢",
     "title": [
       "思考，快与慢"
     ],
@@ -764,18 +780,18 @@
     "author": " - 美/丹尼尔·卡尼曼",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.5",
-    "publishDate": "2025-04-01T00:00:00.000Z",
+    "publishDate": "2025-04-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/搞定",
+    "file": "/2.Read/douban/book/搞定",
     "title": [
       "搞定"
     ],
@@ -786,18 +802,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.3",
-    "publishDate": "2020-01-01T00:00:00.000Z",
+    "publishDate": "2020-01-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "288",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
-    "结束阅读": "2025-06-19T00:00:00.000Z"
+    "添加时间": "2025-05-08",
+    "结束阅读": "2025-06-19"
   },
   {
-    "file": "/Read/douban/book/改变人生的谈话",
+    "file": "/2.Read/douban/book/改变人生的谈话",
     "title": [
       "改变人生的谈话"
     ],
@@ -808,18 +824,18 @@
     ],
     "scoreStar": "⭐⭐⭐",
     "score": "7.4",
-    "publishDate": "2021-03-01T00:00:00.000Z",
+    "publishDate": "2021-03-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "368",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
-    "结束阅读": "2024-09-30T00:00:00.000Z"
+    "添加时间": "2025-05-08",
+    "结束阅读": "2024-09-30"
   },
   {
-    "file": "/Read/douban/book/故事课1：说故事的人最有影响力",
+    "file": "/2.Read/douban/book/故事课1：说故事的人最有影响力",
     "title": [
       "故事课1：说故事的人最有影响力"
     ],
@@ -830,40 +846,40 @@
     ],
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "6.8",
-    "publishDate": "2018-06-01T00:00:00.000Z",
+    "publishDate": "2018-06-01",
     "myRate": "",
     "阅读状态": [
       "概览"
     ],
     "totalPage": "272",
     "currentPage": "",
-    "添加时间": "2025-07-15T00:00:00.000Z",
+    "添加时间": "2025-07-15",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/普通人的財富自由之道",
+    "file": "/2.Read/douban/book/普通人的財富自由之道",
     "title": [
       "普通人的財富自由之道"
     ],
-    "封面": "https://img2.doubanio.com/view/subject/l/public/s34464971.jpg",
+    "封面": "https://m.media-amazon.com/images/I/714FD0hNmfL._SY522_.jpg",
     "originalTitle": "",
     "author": [
       "JohnLeeDumas\""
     ],
     "scoreStar": "",
     "score": "",
-    "publishDate": "2022-01-26T00:00:00.000Z",
+    "publishDate": "2022-01-26",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "328",
     "currentPage": "",
-    "添加时间": "2025-07-18T00:00:00.000Z",
-    "结束阅读": "2025-08-06T00:00:00.000Z"
+    "添加时间": "2025-07-18",
+    "结束阅读": "2025-08-06"
   },
   {
-    "file": "/Read/douban/book/枪炮、病菌与钢铁",
+    "file": "/2.Read/douban/book/枪炮、病菌与钢铁",
     "title": [
       "枪炮、病菌与钢铁"
     ],
@@ -875,7 +891,7 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.7",
-    "publishDate": "2006-04-01T00:00:00.000Z",
+    "publishDate": "2006-04-01",
     "myRate": "",
     "阅读状态": [
       "正在阅读",
@@ -886,11 +902,11 @@
     ],
     "totalPage": "460",
     "currentPage": "",
-    "添加时间": "2025-10-23T00:00:00.000Z",
+    "添加时间": "2025-10-23",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/棉花帝国",
+    "file": "/2.Read/douban/book/棉花帝国",
     "title": [
       "棉花帝国"
     ],
@@ -899,22 +915,22 @@
     "author": " - 美/斯文·贝克特",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.3",
-    "publishDate": "2019-03-01T00:00:00.000Z",
+    "publishDate": "2019-03-01",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "512",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/榮格論心理類型",
+    "file": "/2.Read/douban/book/榮格論心理類型",
     "title": [
       "榮格論心理類型"
     ],
-    "封面": "https://images.weserv.nl/?url=img9.doubanio.com/view/subject/l/public/s29703716.jpg",
+    "封面": "https://img9.doubanio.com/view/subject/l/public/s29703716.jpg",
     "originalTitle": "Psychologische Typen",
     "author": [
       null,
@@ -922,7 +938,7 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "9.9",
-    "publishDate": "2017-11-11T00:00:00.000Z",
+    "publishDate": "2017-11-11",
     "myRate": "",
     "阅读状态": [
       "正在阅读",
@@ -933,11 +949,11 @@
     ],
     "totalPage": "640",
     "currentPage": "",
-    "添加时间": "2025-10-24T00:00:00.000Z",
+    "添加时间": "2025-10-24",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/漫步华尔街(原书第12版)",
+    "file": "/2.Read/douban/book/漫步华尔街(原书第12版)",
     "title": [
       "漫步华尔街(原书第12版)"
     ],
@@ -946,18 +962,18 @@
     "author": " - 美/伯顿·G·马尔基尔",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.6",
-    "publishDate": "2022-08-01T00:00:00.000Z",
+    "publishDate": "2022-08-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "468",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/生命是什么",
+    "file": "/2.Read/douban/book/生命是什么",
     "title": [
       "生命是什么"
     ],
@@ -966,18 +982,18 @@
     "author": " - 奥/埃尔温·薛定谔",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9",
-    "publishDate": "2018-10-01T00:00:00.000Z",
+    "publishDate": "2018-10-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "97",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/百万富翁快车道",
+    "file": "/2.Read/douban/book/百万富翁快车道",
     "title": [
       "百万富翁快车道"
     ],
@@ -989,18 +1005,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.1",
-    "publishDate": "2017-05-01T00:00:00.000Z",
+    "publishDate": "2017-05-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "432",
     "currentPage": "",
-    "添加时间": "2025-08-28T00:00:00.000Z",
-    "结束阅读": "2025-09-01T00:00:00.000Z"
+    "添加时间": "2025-08-28",
+    "结束阅读": "2025-09-01"
   },
   {
-    "file": "/Read/douban/book/穷查理宝典",
+    "file": "/2.Read/douban/book/穷查理宝典",
     "title": [
       "穷查理宝典"
     ],
@@ -1011,18 +1027,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.6",
-    "publishDate": "2016-08-01T00:00:00.000Z",
+    "publishDate": "2016-08-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "552",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
-    "结束阅读": "2025-06-23T00:00:00.000Z"
+    "添加时间": "2025-05-08",
+    "结束阅读": "2025-06-23"
   },
   {
-    "file": "/Read/douban/book/策略思维",
+    "file": "/2.Read/douban/book/策略思维",
     "title": [
       "策略思维"
     ],
@@ -1031,7 +1047,7 @@
     "author": " - 阿维纳什・K・迪克西特 - 巴里・J・奈尔伯夫",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.4",
-    "publishDate": "2003-07-01T00:00:00.000Z",
+    "publishDate": "2003-07-01",
     "myRate": "",
     "阅读状态": [
       "未开始",
@@ -1039,11 +1055,11 @@
     ],
     "totalPage": "333",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/简爱",
+    "file": "/2.Read/douban/book/简爱",
     "title": [
       "简爱"
     ],
@@ -1055,7 +1071,7 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.5",
-    "publishDate": "2007-08-01T00:00:00.000Z",
+    "publishDate": "2007-08-01",
     "myRate": "",
     "阅读状态": [
       "已读完",
@@ -1065,11 +1081,11 @@
     ],
     "totalPage": "495",
     "currentPage": "",
-    "添加时间": "2025-10-23T00:00:00.000Z",
+    "添加时间": "2025-10-23",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/精益创业实战（第2版）",
+    "file": "/2.Read/douban/book/精益创业实战（第2版）",
     "title": [
       "精益创业实战（第2版）"
     ],
@@ -1080,18 +1096,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.8",
-    "publishDate": "2013-01-01T00:00:00.000Z",
+    "publishDate": "2013-01-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "240",
     "currentPage": "",
-    "添加时间": "2025-07-01T00:00:00.000Z",
-    "结束阅读": "2025-07-03T00:00:00.000Z"
+    "添加时间": "2025-07-01",
+    "结束阅读": "2025-07-03"
   },
   {
-    "file": "/Read/douban/book/纳瓦尔宝典",
+    "file": "/2.Read/douban/book/纳瓦尔宝典",
     "title": [
       "纳瓦尔宝典"
     ],
@@ -1104,18 +1120,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.4",
-    "publishDate": "2022-04-01T00:00:00.000Z",
+    "publishDate": "2022-04-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "256",
     "currentPage": "",
-    "添加时间": "2025-09-04T00:00:00.000Z",
-    "结束阅读": "2025-09-08T00:00:00.000Z"
+    "添加时间": "2025-09-04",
+    "结束阅读": "2025-09-08"
   },
   {
-    "file": "/Read/douban/book/聪明的投资者（第4版注疏点评版）",
+    "file": "/2.Read/douban/book/聪明的投资者（第4版注疏点评版）",
     "title": [
       "聪明的投资者（第4版注疏点评版）"
     ],
@@ -1124,18 +1140,18 @@
     "author": " - 【美】本杰明•格雷厄姆",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.1",
-    "publishDate": "2016-03-01T00:00:00.000Z",
+    "publishDate": "2016-03-01",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "504",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）",
+    "file": "/2.Read/douban/book/自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）",
     "title": [
       "自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）"
     ],
@@ -1147,18 +1163,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.4",
-    "publishDate": "2021-04-08T00:00:00.000Z",
+    "publishDate": "2021-04-08",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "256",
     "currentPage": "",
-    "添加时间": "2025-10-30T00:00:00.000Z",
+    "添加时间": "2025-10-30",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/自私的基因",
+    "file": "/2.Read/douban/book/自私的基因",
     "title": [
       "自私的基因"
     ],
@@ -1167,18 +1183,18 @@
     "author": " - 英/理查德·道金斯",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.4",
-    "publishDate": "2012-09-01T00:00:00.000Z",
+    "publishDate": "2012-09-01",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "371",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/荷马史诗·伊利亚特",
+    "file": "/2.Read/douban/book/荷马史诗·伊利亚特",
     "title": [
       "荷马史诗·伊利亚特"
     ],
@@ -1187,18 +1203,18 @@
     "author": " - 古希腊/荷马",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.4",
-    "publishDate": "2015-03-01T00:00:00.000Z",
+    "publishDate": "2015-03-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "644",
     "currentPage": "",
-    "添加时间": "2025-06-01T00:00:00.000Z",
+    "添加时间": "2025-06-01",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/荷马史诗·奥德赛",
+    "file": "/2.Read/douban/book/荷马史诗·奥德赛",
     "title": [
       "荷马史诗·奥德赛"
     ],
@@ -1207,18 +1223,18 @@
     "author": " - 古希腊/荷马",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.2",
-    "publishDate": "2015-06-01T00:00:00.000Z",
+    "publishDate": "2015-06-01",
     "myRate": "",
     "阅读状态": [
       "未开始"
     ],
     "totalPage": "493",
     "currentPage": "",
-    "添加时间": "2025-06-01T00:00:00.000Z",
+    "添加时间": "2025-06-01",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/营销管理(第16版)",
+    "file": "/2.Read/douban/book/营销管理(第16版)",
     "title": [
       "营销管理(第16版)"
     ],
@@ -1229,18 +1245,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.9",
-    "publishDate": "2022-09-05T00:00:00.000Z",
+    "publishDate": "2022-09-05",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "743",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/薛兆丰经济学讲义",
+    "file": "/2.Read/douban/book/薛兆丰经济学讲义",
     "title": [
       "薛兆丰经济学讲义"
     ],
@@ -1251,18 +1267,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.1",
-    "publishDate": "2018-07-01T00:00:00.000Z",
+    "publishDate": "2018-07-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "532",
     "currentPage": "",
-    "添加时间": "2023-06-02T00:00:00.000Z",
-    "结束阅读": "2023-06-20T00:00:00.000Z"
+    "添加时间": "2023-06-02",
+    "结束阅读": "2023-06-20"
   },
   {
-    "file": "/Read/douban/book/表面活性剂、胶体与界面化学基础（崔正刚）（第二版）",
+    "file": "/2.Read/douban/book/表面活性剂、胶体与界面化学基础（崔正刚）（第二版）",
     "title": [
       "表面活性剂、胶体与界面化学基础（崔正刚）（第二版）"
     ],
@@ -1280,15 +1296,15 @@
     ],
     "totalPage": "",
     "currentPage": "",
-    "添加时间": "2025-03-22T00:00:00.000Z",
-    "结束阅读": "2024-12-30T00:00:00.000Z"
+    "添加时间": "2025-03-22",
+    "结束阅读": "2024-12-30"
   },
   {
-    "file": "/Read/douban/book/认知边界：认知决定你的财富",
+    "file": "/2.Read/douban/book/认知边界：认知决定你的财富",
     "title": [
       "认知边界：认知决定你的财富"
     ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s34101764.jpg",
+    "封面": "https://m.media-amazon.com/images/I/51ilGM8ZvdL._SY522_.jpg",
     "originalTitle": "",
     "author": " - 凌发明",
     "scoreStar": "",
@@ -1300,11 +1316,11 @@
     ],
     "totalPage": "224",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/财务自由之路",
+    "file": "/2.Read/douban/book/财务自由之路",
     "title": [
       "财务自由之路"
     ],
@@ -1315,18 +1331,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.2",
-    "publishDate": "2025-01-01T00:00:00.000Z",
+    "publishDate": "2025-01-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "296",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
-    "结束阅读": "2025-03-28T00:00:00.000Z"
+    "添加时间": "2025-05-08",
+    "结束阅读": "2025-03-28"
   },
   {
-    "file": "/Read/douban/book/贫穷的本质（修订版）",
+    "file": "/2.Read/douban/book/贫穷的本质（修订版）",
     "title": [
       "贫穷的本质（修订版）"
     ],
@@ -1335,18 +1351,18 @@
     "author": " - 印度/阿比吉特·班纳吉 - 法/埃斯特·迪弗洛",
     "scoreStar": "⭐⭐⭐",
     "score": "7.3",
-    "publishDate": "2018-09-01T00:00:00.000Z",
+    "publishDate": "2018-09-01",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
     "totalPage": "317",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
+    "添加时间": "2025-05-08",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/book/费曼学习法（用输出倒逼输入）",
+    "file": "/2.Read/douban/book/费曼学习法（用输出倒逼输入）",
     "title": [
       "费曼学习法（用输出倒逼输入）"
     ],
@@ -1357,18 +1373,18 @@
     ],
     "scoreStar": "⭐⭐⭐",
     "score": "6.4",
-    "publishDate": "2021-03-13T00:00:00.000Z",
+    "publishDate": "2021-03-13",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "224",
     "currentPage": "",
-    "添加时间": "2025-05-08T00:00:00.000Z",
-    "结束阅读": "2025-02-01T00:00:00.000Z"
+    "添加时间": "2025-05-08",
+    "结束阅读": "2025-02-01"
   },
   {
-    "file": "/Read/douban/book/金钱心理学",
+    "file": "/2.Read/douban/book/金钱心理学",
     "title": [
       "金钱心理学"
     ],
@@ -1380,18 +1396,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.3",
-    "publishDate": "2023-06-01T00:00:00.000Z",
+    "publishDate": "2023-06-01",
     "myRate": "",
     "阅读状态": [
       "概览"
     ],
     "totalPage": "328",
     "currentPage": "",
-    "添加时间": "2025-09-04T00:00:00.000Z",
-    "结束阅读": "2025-09-09T00:00:00.000Z"
+    "添加时间": "2025-09-04",
+    "结束阅读": "2025-09-09"
   },
   {
-    "file": "/Read/douban/book/非暴力沟通",
+    "file": "/2.Read/douban/book/非暴力沟通",
     "title": [
       "非暴力沟通"
     ],
@@ -1402,18 +1418,18 @@
     ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.4",
-    "publishDate": "2009-01-01T00:00:00.000Z",
+    "publishDate": "2009-01-01",
     "myRate": "",
     "阅读状态": [
       "已读完"
     ],
     "totalPage": "190",
     "currentPage": "",
-    "添加时间": "2025-08-22T00:00:00.000Z",
-    "结束阅读": "2025-08-27T00:00:00.000Z"
+    "添加时间": "2025-08-22",
+    "结束阅读": "2025-08-27"
   },
   {
-    "file": "/Read/douban/movie/不可饶恕",
+    "file": "/2.Read/douban/movie/不可饶恕",
     "title": [
       "不可饶恕"
     ],
@@ -1429,11 +1445,11 @@
     "阅读状态": "",
     "totalPage": "",
     "currentPage": "",
-    "添加时间": "2025-04-27T00:00:00.000Z",
+    "添加时间": "2025-04-27",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/会计刺客",
+    "file": "/2.Read/douban/movie/会计刺客",
     "title": [
       "会计刺客"
     ],
@@ -1454,7 +1470,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/你好，李焕英",
+    "file": "/2.Read/douban/movie/你好，李焕英",
     "title": [
       "你好，李焕英"
     ],
@@ -1472,7 +1488,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/出走的决心",
+    "file": "/2.Read/douban/movie/出走的决心",
     "title": [
       "出走的决心"
     ],
@@ -1493,7 +1509,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/周处除三害",
+    "file": "/2.Read/douban/movie/周处除三害",
     "title": [
       "周处除三害"
     ],
@@ -1511,7 +1527,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/哪吒之魔童闹海",
+    "file": "/2.Read/douban/movie/哪吒之魔童闹海",
     "title": [
       "哪吒之魔童闹海"
     ],
@@ -1529,7 +1545,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/大人物拿破仑",
+    "file": "/2.Read/douban/movie/大人物拿破仑",
     "title": [
       "大人物拿破仑"
     ],
@@ -1551,7 +1567,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/大话西游之大圣娶亲",
+    "file": "/2.Read/douban/movie/大话西游之大圣娶亲",
     "title": [
       "大话西游之大圣娶亲"
     ],
@@ -1569,7 +1585,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/好人寥寥",
+    "file": "/2.Read/douban/movie/好人寥寥",
     "title": [
       "好人寥寥"
     ],
@@ -1590,7 +1606,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/好家伙",
+    "file": "/2.Read/douban/movie/好家伙",
     "title": [
       "好家伙"
     ],
@@ -1612,7 +1628,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/小偷家族",
+    "file": "/2.Read/douban/movie/小偷家族",
     "title": [
       "小偷家族"
     ],
@@ -1628,11 +1644,11 @@
     "阅读状态": "",
     "totalPage": "",
     "currentPage": "",
-    "添加时间": "2024-07-07T00:00:00.000Z",
+    "添加时间": "2024-07-07",
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/小妇人",
+    "file": "/2.Read/douban/movie/小妇人",
     "title": [
       "小妇人"
     ],
@@ -1653,7 +1669,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/小猪宝贝",
+    "file": "/2.Read/douban/movie/小猪宝贝",
     "title": [
       "小猪宝贝"
     ],
@@ -1676,7 +1692,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/怪物",
+    "file": "/2.Read/douban/movie/怪物",
     "title": [
       "怪物"
     ],
@@ -1694,7 +1710,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/怪物史瑞克",
+    "file": "/2.Read/douban/movie/怪物史瑞克",
     "title": [
       "怪物史瑞克"
     ],
@@ -1714,7 +1730,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/我的表兄维尼",
+    "file": "/2.Read/douban/movie/我的表兄维尼",
     "title": [
       "我的表兄维尼"
     ],
@@ -1735,7 +1751,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/抓娃娃",
+    "file": "/2.Read/douban/movie/抓娃娃",
     "title": [
       "抓娃娃"
     ],
@@ -1753,7 +1769,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/指环王1：护戒使者",
+    "file": "/2.Read/douban/movie/指环王1：护戒使者",
     "title": [
       "指环王1：护戒使者"
     ],
@@ -1776,7 +1792,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/指环王2：双塔奇兵",
+    "file": "/2.Read/douban/movie/指环王2：双塔奇兵",
     "title": [
       "指环王2：双塔奇兵"
     ],
@@ -1800,7 +1816,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/机器人之梦",
+    "file": "/2.Read/douban/movie/机器人之梦",
     "title": [
       "机器人之梦"
     ],
@@ -1820,7 +1836,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/神秘村",
+    "file": "/2.Read/douban/movie/神秘村",
     "title": [
       "神秘村"
     ],
@@ -1841,7 +1857,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/第六感",
+    "file": "/2.Read/douban/movie/第六感",
     "title": [
       "第六感"
     ],
@@ -1862,7 +1878,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/篮坛怪杰",
+    "file": "/2.Read/douban/movie/篮坛怪杰",
     "title": [
       "篮坛怪杰"
     ],
@@ -1884,7 +1900,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/老狐狸",
+    "file": "/2.Read/douban/movie/老狐狸",
     "title": [
       "老狐狸"
     ],
@@ -1902,7 +1918,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/花样年华",
+    "file": "/2.Read/douban/movie/花样年华",
     "title": [
       "花样年华"
     ],
@@ -1920,7 +1936,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/调音师",
+    "file": "/2.Read/douban/movie/调音师",
     "title": [
       "调音师"
     ],
@@ -1938,7 +1954,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/谍影重重",
+    "file": "/2.Read/douban/movie/谍影重重",
     "title": [
       "谍影重重"
     ],
@@ -1961,7 +1977,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/movie/赌城风云",
+    "file": "/2.Read/douban/movie/赌城风云",
     "title": [
       "赌城风云"
     ],
@@ -1983,7 +1999,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/teleplay/1923第一季",
+    "file": "/2.Read/douban/teleplay/1923第一季",
     "title": [
       "1923第一季"
     ],
@@ -2004,7 +2020,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/teleplay/1923第二季",
+    "file": "/2.Read/douban/teleplay/1923第二季",
     "title": [
       "1923第二季"
     ],
@@ -2025,7 +2041,7 @@
     "结束阅读": ""
   },
   {
-    "file": "/Read/douban/teleplay/阿浅来了",
+    "file": "/2.Read/douban/teleplay/阿浅来了",
     "title": [
       "阿浅来了"
     ],

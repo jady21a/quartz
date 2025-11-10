@@ -34,41 +34,57 @@ function getAllMarkdownFiles(dir, fileList = []) {
 
 // 提取书籍数据
 function extractBookData(filePath) {
-  try {
-    const content = fs.readFileSync(filePath, 'utf-8');
-    const { data: frontmatter } = matter(content);
-    
-    // 只处理有书籍相关字段的文件
-    if (!frontmatter.封面 && !frontmatter.author && !frontmatter.阅读状态) {
+    try {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      const { data: frontmatter } = matter(content);
+  
+      // 只处理有书籍相关字段的文件
+      if (!frontmatter.封面 && !frontmatter.author && !frontmatter.阅读状态) {
+        return null;
+      }
+  
+      // 计算相对路径用于链接
+      const relativePath = filePath
+        .replace(/^.*?content\//, '/')
+        .replace(/\.md$/, '');
+  
+      // ✅ 改进版：支持字符串和 Date 对象
+      function cleanDate(value) {
+        if (!value) return '';
+        if (value instanceof Date) {
+          // 转成 ISO 字符串再截断
+          return value.toISOString().split('T')[0];
+        }
+        if (typeof value === 'string') {
+          // 去掉 T 及其后面的内容
+          return value.split('T')[0];
+        }
+        return value;
+      }
+  
+      return {
+        file: relativePath,
+        title: frontmatter.title || path.basename(filePath, '.md'),
+        封面: frontmatter.封面 || '',
+        originalTitle: frontmatter.originalTitle || '',
+        author: frontmatter.author || '',
+        scoreStar: frontmatter.scoreStar || '',
+        score: frontmatter.score || '',
+        publishDate: cleanDate(frontmatter.publishDate || ''), // ✅
+        myRate: frontmatter.myRate || '',
+        阅读状态: frontmatter.阅读状态 || '',
+        totalPage: frontmatter.totalPage || '',
+        currentPage: frontmatter.currentPage || '',
+        添加时间: cleanDate(frontmatter.添加时间 || ''),       // ✅
+        结束阅读: cleanDate(frontmatter.结束阅读 || ''),       // ✅
+      };
+    } catch (error) {
+      console.error(`Error processing ${filePath}:`, error.message);
       return null;
     }
-    
-    // 计算相对路径用于链接
-    const relativePath = filePath
-      .replace(/^.*?content\//, '/')
-      .replace(/\.md$/, '');
-    
-    return {
-      file: relativePath,
-      title: frontmatter.title || path.basename(filePath, '.md'),
-      封面: frontmatter.封面 || '',
-      originalTitle: frontmatter.originalTitle || '',
-      author: frontmatter.author || '',
-      scoreStar: frontmatter.scoreStar || '',
-      score: frontmatter.score || '',
-      publishDate: frontmatter.publishDate || '',
-      myRate: frontmatter.myRate || '',
-      阅读状态: frontmatter.阅读状态 || '',
-      totalPage: frontmatter.totalPage || '',
-      currentPage: frontmatter.currentPage || '',
-      添加时间: frontmatter.添加时间 || '',
-      结束阅读: frontmatter.结束阅读 || '',
-    };
-  } catch (error) {
-    console.error(`Error processing ${filePath}:`, error.message);
-    return null;
   }
-}
+  
+  
 
 // 主函数
 function generateBookIndex() {

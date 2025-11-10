@@ -9,7 +9,7 @@ publishDate: 2017-07-26
 阅读状态:
   - 正在阅读
 score: "7.4"
-封面: https://img1.doubanio.com/view/subject/l/public/s29618680.jpg
+封面: https://m.media-amazon.com/images/I/71LzPlsDcEL._SY522_.jpg
 tags:
   - book
 我的评分:
@@ -24,5 +24,4 @@ myRate:
 ---
 
 
-Comment: 
-
+Comment:

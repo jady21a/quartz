@@ -7,7 +7,7 @@ publishDate: ""
 阅读状态:
   - 已读完
 score: ""
-封面: https://img3.doubanio.com/view/subject/l/public/s21176523.jpg
+封面: https://m.media-amazon.com/images/I/716ulwY6ycL._SY522_.jpg
 tags:
   - book
 我的评分: "4"

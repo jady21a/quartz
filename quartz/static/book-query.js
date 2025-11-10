@@ -223,6 +223,19 @@
           let books = await response.json();
           console.log('✅ Loaded ' + books.length + ' books from index');
           
+        // 🚫 过滤掉内容包含 #电影 的书籍（根据 title、author、status、file 路径等判断）
+        books = books.filter(book => {
+            return !(
+            (book.title && book.title.includes('电影')) ||
+            (book.author && book.author.includes('电影')) ||
+            (book.file && book.file.includes('电影')) ||
+            (book.阅读状态 && book.阅读状态.includes('电影'))
+            );
+        });
+        console.log('🧹 Filtered out #电影 books, remaining:', books.length);
+        
+
+
           // 过滤状态
           if (status) {
             books = books.filter(book => {
