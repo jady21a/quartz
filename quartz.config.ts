@@ -8,7 +8,7 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Why Z",
+    pageTitle: "🪴Why Z",
     pageTitleSuffix: "test",
     enableSPA: true,
     enablePopovers: true,
@@ -53,6 +53,11 @@ const config: QuartzConfig = {
       },
     },
   },
+  markdown: {
+    options: {
+      preserveIndentation: true,  // 保留句首空格
+    },
+  },
   plugins: {
     transformers: [
       Plugin.FrontMatter(),
@@ -66,12 +71,26 @@ const config: QuartzConfig = {
         },
         keepBackground: false,
       }),
-      Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false }),
-      Plugin.GitHubFlavoredMarkdown(),
+      Plugin.ObsidianFlavoredMarkdown({ 
+        enableInHtmlEmbed: false ,
+
+        //尝试去掉空格
+        mermaid: true,
+        callouts: true,
+        comments: true,
+      }),
+      Plugin.GitHubFlavoredMarkdown(
+        {
+          //空格尝试
+         // breaks:true,
+    
+        }
+      ),
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
+
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [

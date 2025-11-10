@@ -39,11 +39,20 @@ export const defaultContentPageLayout: PageLayout = {
       ],
     }),
     Component.Explorer(),
+    Component.Graph(),
   ],
   right: [
-    Component.Graph(),
+
+
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
+
+    Component.RandomNotes({
+      title: "漫步笔记",  // 可自定义标题
+      limit: 3,           // 显示数量
+      showTags: false,     // 是否显示标签
+    }),
+
   ],
 }
 

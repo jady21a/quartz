@@ -97,6 +97,11 @@ export default (() => {
             return resource
           }
         })}
+
+        {/* 自己添加图书卡片 */}
+        <link rel="stylesheet" href="/static/book-styles.css" />
+        <script src="/static/book-query.js" defer></script>
+        
       </head>
     )
   }
