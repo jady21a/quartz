@@ -3,10 +3,10 @@
 // put your custom CSS here!
 /* 保留 Markdown 中的换行 */
 .center article p {
-    white-space: pre-line;
+    // white-space: pre-line;
     margin-bottom: 1em;
       /* 保留空格与换行，允许自动换行以避免横向滚动 */
-  white-space: pre-wrap;
+//   white-space: pre-wrap;
   word-break: normal;
   /* 控制 Tab 的显示宽度（按需要改为 2/4/8） */
   tab-size: 4;
@@ -14,23 +14,27 @@
   -o-tab-size: 4;
   }
   
-  /* 如果内容在其他容器 */
-  .center article .content,
-  .center article > div {
-    white-space: pre-line;
-  }
+  
+//   /* 如果内容在其他容器 */
+//   .center article .content,
+//   .center article > div {
+//     // white-space: pre-line;
+//     white-space: pre-wrap;
+
+//   }
 
   // 保留段落中的空格和缩进
 .content article p,
 .content article li {
-  white-space: pre-wrap;
+//   white-space: pre-wrap;
   tab-size: 4;
 }
 
 // 如果你使用代码块外的缩进内容
 .content article {
-  white-space: pre-wrap;
+//   white-space: pre-wrap;
 }
-p {
-   // text-indent: 2em; /* 段首缩进两个字 */
-  }
+
+//p {
+  //  text-indent: 2em; /* 段首缩进两个字 */
+  //}

@@ -27,7 +27,8 @@ export default ((userOpts?: Partial<Options>) => {
       file => 
         file.slug !== currentSlug && 
         !file.slug?.endsWith("index") &&
-        file.frontmatter?.title
+        file.frontmatter?.title&&
+        !(file.frontmatter?.tags || []).includes("movies") // ⬅ 新增这一行
     )
 
     // 随机选择指定数量的笔记

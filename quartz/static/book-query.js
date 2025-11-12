@@ -24,26 +24,40 @@
     // 计算阅读进度百分比
     function calculateProgress(current, total) {
       const curr = parseInt(current) || 0;
-      const tot = parseInt(total) || 1;
-      return Math.round((curr / tot) * 100);
+      const tot = parseInt(total) || 0;
+      
+      if (tot === 0) return 0;
+      
+      const progress = Math.round((curr / tot) * 100);
+      return Math.min(100, Math.max(0, progress)); // 限制在 0-100 之间
     }
   
     // 计算阅读天数
-    function calculateDays(start, end) {
-      if (!start) return 0;
-      const startDate = new Date(start);
+    function calculateDays(start, end, addTime) {
+      // 优先使用开始时间
+      let startDate;
+      if (start) {
+        startDate = new Date(start);
+      } else if (addTime) {
+        // 如果没有开始时间，使用添加时间
+        startDate = new Date(addTime);
+      } else {
+        return 0;
+      }
+      
+      // 如果有结束时间用结束时间，否则用当前时间
       const endDate = end ? new Date(end) : new Date();
+      
       const diff = endDate.getTime() - startDate.getTime();
-      return Math.ceil(diff / (1000 * 60 * 60 * 24));
+      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+      
+      return days > 0 ? days : 0;
     }
   
     // ==================== 渲染函数 ====================
     
-    // 渲染单个书籍卡片 - 图一风格：封面+标题在顶部同一列
+    // 渲染单个书籍卡片
     function renderBookCard(book) {
-      const progress = calculateProgress(book.currentPage, book.totalPage);
-      const days = calculateDays(book.添加时间, book.结束阅读);
-      
       const card = document.createElement('div');
       card.className = 'book-card';
       
@@ -128,14 +142,18 @@
       const info = document.createElement('div');
       info.className = 'book-info';
       
+      // 计算用时
+      const days = calculateDays(book.开始时间, book.结束阅读, book.添加时间);
+      
       const infoItems = [
         { label: '原名', value: book.originalTitle },
         { label: '作者', value: book.author },
         { label: '出版', value: book.publishDate },
-        { label: '开始', value: book.添加时间 },
+        { label: '添加', value: book.添加时间 },
+        { label: '开始', value: book.开始时间 },
         { label: '完成', value: book.结束阅读 },
         { label: '用时', value: days > 0 ? days + ' 天' : null },
-        { label: '进度', value: book.totalPage ? (book.currentPage || 0) + '/' + book.totalPage + ' 页' : null }
+        { label: '进度', value: book.totalPage ? (book.currentPage || 0) + '/' + book.totalPage + ' 页' : null },
       ];
       
       infoItems.forEach(item => {
@@ -160,32 +178,49 @@
         card.appendChild(info);
       }
       
-      // 6. 进度条
-      if (book.totalPage && book.阅读状态 && !book.阅读状态.includes('已读完')) {
-        const progressContainer = document.createElement('div');
-        progressContainer.className = 'book-progress';
+      // 6-7. 底部容器（进度条 + 状态）
+      const footer = document.createElement('div');
+      footer.className = 'book-footer';
+      
+      // 判断是否已读完
+      const statusText = String(book.阅读状态 || '').trim();
+      const isFinished = /已读完|读完|完成|finished/i.test(statusText);
+      
+      // 进度条（只在未读完且有页数时显示）
+      if (!isFinished && book.totalPage) {
+        const total = parseInt(book.totalPage) || 0;
+        const current = parseInt(book.currentPage) || 0;
         
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
-        progressBar.style.width = progress + '%';
-        progressContainer.appendChild(progressBar);
-        
-        card.appendChild(progressContainer);
-        
-        const progressText = document.createElement('div');
-        progressText.className = 'progress-text';
-        progressText.textContent = progress + '%';
-        card.appendChild(progressText);
+        if (total > 0 && current > 0 && current < total) {
+          const progress = calculateProgress(current, total);
+          
+          const progressContainer = document.createElement('div');
+          progressContainer.className = 'book-progress';
+          
+          const progressBar = document.createElement('div');
+          progressBar.className = 'progress-bar';
+          progressBar.style.width = progress + '%';
+          progressContainer.appendChild(progressBar);
+          
+          footer.appendChild(progressContainer);
+          
+          const progressText = document.createElement('div');
+          progressText.className = 'progress-text';
+          progressText.textContent = progress + '%';
+          footer.appendChild(progressText);
+        }
       }
       
-      // 7. 状态标签
+      // 状态标签（始终显示）
       const status = document.createElement('span');
-      const statusClass = String(book.阅读状态 || 'Unknown')
+      const statusClass = statusText
         .split(',')[0]
-        .replace(/\s/g, '-');
+        .replace(/\s/g, '-') || 'Unknown';
       status.className = 'book-status status-' + statusClass;
-      status.textContent = book.阅读状态 || 'Unknown';
-      card.appendChild(status);
+      status.textContent = statusText || 'Unknown';
+      footer.appendChild(status);
+      
+      card.appendChild(footer);
       
       return card;
     }
@@ -207,6 +242,7 @@
         const sortBy = container.getAttribute('data-sort') || '添加时间';
         const order = container.getAttribute('data-order') || 'DESC';
         const limit = parseInt(container.getAttribute('data-limit')) || null;
+        const excludeMovies = container.getAttribute('data-exclude-movies') !== 'false'; // 默认排除电影
         
         console.log('Loading books with status: ' + (status || 'all'));
         container.innerHTML = '<div class="book-query-loading">📚 加载书籍中...</div>';
@@ -223,19 +259,23 @@
           let books = await response.json();
           console.log('✅ Loaded ' + books.length + ' books from index');
           
-        // 🚫 过滤掉内容包含 #电影 的书籍（根据 title、author、status、file 路径等判断）
-        books = books.filter(book => {
-            return !(
-            (book.title && book.title.includes('电影')) ||
-            (book.author && book.author.includes('电影')) ||
-            (book.file && book.file.includes('电影')) ||
-            (book.阅读状态 && book.阅读状态.includes('电影'))
-            );
-        });
-        console.log('🧹 Filtered out #电影 books, remaining:', books.length);
-        
-
-
+          // 过滤电影和电视剧（默认行为）
+          if (excludeMovies) {
+            books = books.filter(book => {
+              const tags = book.tags || [];
+              // 检查 tags 中是否包含 movies 或 teleplay
+              const hasMovieTag = tags.some(tag => 
+                tag && (tag.toLowerCase() === 'movies' || 
+                        tag.toLowerCase() === 'teleplay' ||
+                        tag.toLowerCase() === 'movie' ||
+                        tag.toLowerCase() === '电影' ||
+                        tag.toLowerCase() === '电视剧')
+              );
+              return !hasMovieTag;
+            });
+            console.log('After excluding movies/teleplay: ' + books.length + ' books');
+          }
+          
           // 过滤状态
           if (status) {
             books = books.filter(book => {

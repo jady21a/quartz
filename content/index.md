@@ -17,8 +17,7 @@ See the [documentation] for how to get started.
 </style>
 <div id="mc_embed_signup">
     <form action="https://gmail.us14.list-manage.com/subscribe/post?u=5d932dbece429d6399b0508ee&amp;id=931ca35638&amp;f_id=001db7e5f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
-        <div id="mc_embed_signup_scroll"><h2>Subscribe</h2>
-            <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+        <div id="mc_embed_signup_scroll"><h2>订阅</h2>
             <div class="mc-field-group"><label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label><input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required="" value=""></div>
         <div id="mce-responses" class="clear foot">
             <div class="response" id="mce-error-response" style="display: none;"></div>
@@ -489,3 +488,7 @@ See the [documentation] for how to get started.
 
 
 <a href="javascript:history.back()"> &larr; 返回</a>
+<button onclick="history.back()" style="background:none;border:none;color:#0066cc;text-decoration:underline;cursor:pointer;padding:0;font:inherit;">← 返回</button>
+
+
+

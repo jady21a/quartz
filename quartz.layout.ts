@@ -39,7 +39,8 @@ export const defaultContentPageLayout: PageLayout = {
       ],
     }),
     Component.Explorer(),
-    Component.Graph(),
+
+    //Component.Graph(),
   ],
   right: [
 
@@ -52,6 +53,8 @@ export const defaultContentPageLayout: PageLayout = {
       limit: 3,           // 显示数量
       showTags: false,     // 是否显示标签
     }),
+
+    Component.Graph(),
 
   ],
 }

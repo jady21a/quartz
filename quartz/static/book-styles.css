@@ -2,15 +2,16 @@
 
 .book-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.1rem;
   margin: 2rem 0;
 }
 
 .book-card {
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 1.2rem;
+  padding: 0.6rem 0.8rem; 
+  margin: 0.5rem; /* ↓ 原来 gap 已经够了，这里缩小 */
   background: white;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: all 0.3s ease;
@@ -18,6 +19,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  height: auto; /* 自动适应内容 */
+  min-height: 280px; /* 防止太扁 */
 }
 
 .book-card:hover {
@@ -30,19 +33,19 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.1rem;
 }
 
 .book-cover-wrapper {
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.3rem;
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
 .book-cover {
-  width: 120px;
-  height: 160px;
+  width: 100px;
+  height: 140px;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -64,9 +67,9 @@
 }
 
 .book-title {
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin: 0 0 0.5rem 0;
+  margin: 0.2rem 0;
   color: #1f2937;
   line-height: 1.3;
   word-wrap: break-word;
@@ -90,8 +93,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  margin-bottom: 0.3rem;
+  gap: 0.2rem;
+  margin-bottom: 0.1rem;
 }
 
 .stars {
@@ -112,11 +115,12 @@
 }
 
 .book-info {
-  margin-top: 0.8rem;
+  margin-top: 0.3rem;
   font-size: 0.8rem;
   color: #6b7280;
   width: 100%;
   text-align: left;
+  flex: 1; /* 占据剩余空间，把底部元素推下去 */
 }
 
 .info-row {
@@ -145,6 +149,8 @@
   background: #e5e7eb;
   border-radius: 3px;
   overflow: hidden;
+
+  margin-top: auto; /* 自动推到底部 */
 }
 
 .progress-bar {
@@ -169,6 +175,9 @@
   font-weight: 600;
   margin-top: 0.8rem;
   letter-spacing: 0.3px;
+
+  align-self: flex-start;
+  /* 不需要 margin-top: auto，因为进度条已经推到底部了 */
 }
 
 .status-正在阅读 {
