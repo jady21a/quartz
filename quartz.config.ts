@@ -8,7 +8,7 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "🪴Why Z",
+    pageTitle: "  🪶Why Z",
     pageTitleSuffix: "test",
     enableSPA: true,
     enablePopovers: true,
@@ -53,11 +53,8 @@ const config: QuartzConfig = {
       },
     },
   },
-  markdown: {
-    options: {
-      preserveIndentation: true,  // 保留句首空格
-    },
-  },
+  
+
   plugins: {
     transformers: [
       Plugin.FrontMatter(),
