@@ -31,75 +31,92 @@ function getAllMarkdownFiles(dir, fileList = []) {
   
   return fileList;
 }
-    
-      // ✅ 改进版：支持字符串和 Date 对象
-      function cleanDate(value) {
-        if (!value) return '';
-        if (value instanceof Date) {
-          // 转成 ISO 字符串再截断
-          return value.toISOString().split('T')[0];
-        }
-        if (typeof value === 'string') {
-          // 去掉 T 及其后面的内容
-          return value.split('T')[0];
-        }
-        return value;
-      }
-      // 提取书籍数据
-function extractBookData(filePath) {
-    try {
-      const content = fs.readFileSync(filePath, 'utf-8');
-      const { data: frontmatter } = matter(content);
-  
-      // 只处理有书籍相关字段的文件
-      if (!frontmatter.封面 && !frontmatter.author && !frontmatter.阅读状态) {
-        return null;
-      }
 
+// ✅ 改进版：支持字符串和 Date 对象
+function cleanDate(value) {
+  if (!value) return '';
+  if (value instanceof Date) {
+    // 转成 ISO 字符串再截断
+    return value.toISOString().split('T')[0];
+  }
+  if (typeof value === 'string') {
+    // 去掉 T 及其后面的内容
+    return value.split('T')[0];
+  }
+  return value;
+}
+
+// 检查是否是影视内容
+function isMovieOrTV(tags) {
+  if (!tags || !Array.isArray(tags)) return false;
+  
+  return tags.some(tag => {
+    if (!tag) return false;
+    const tagLower = String(tag).toLowerCase();
+    return tagLower === 'movies' || 
+           tagLower === 'movie' ||
+           tagLower === 'teleplay' ||
+           tagLower === 'tv' ||
+           tagLower === '电影' ||
+           tagLower === '电视剧';
+  });
+}
+
+// 提取书籍数据
+function extractBookData(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const { data: frontmatter } = matter(content);
 
     // 处理 tags
     const tags = frontmatter.tags || [];
     const tagsArray = Array.isArray(tags) ? tags : [tags];
 
-
-  
-      // 计算相对路径用于链接
-      const relativePath = filePath
-        .replace(/^.*?content\//, '/')
-        .replace(/\.md$/, '');
-          
-      return {
-        file: relativePath,
-        title: frontmatter.title || path.basename(filePath, '.md'),
-        封面: frontmatter.封面 || '',
-        originalTitle: frontmatter.originalTitle || '',
-        author: frontmatter.author || '',
-        scoreStar: frontmatter.scoreStar || '',
-        score: frontmatter.score || '',
-        publishDate: cleanDate(frontmatter.publishDate || ''), // ✅
-        myRate: frontmatter.myRate || '',
-        阅读状态: frontmatter.阅读状态 || '',
-        totalPage: frontmatter.totalPage || '',
-        currentPage: frontmatter.currentPage || '',
-        添加时间: cleanDate(frontmatter.添加时间 || ''),       // ✅
-        开始时间: cleanDate(frontmatter.开始时间 || ''),
-        结束阅读: cleanDate(frontmatter.结束阅读 || ''),       // ✅
-        tags: tagsArray.filter(tag => tag), // 过滤空值
-      };
-    } catch (error) {
-      console.error(`Error processing ${filePath}:`, error.message);
+    // ⭐ 排除影视内容
+    if (isMovieOrTV(tagsArray)) {
       return null;
     }
+
+    // 只处理有书籍相关字段的文件
+    if (!frontmatter.封面 && !frontmatter.author && !frontmatter.阅读状态) {
+      return null;
+    }
+
+    // 计算相对路径用于链接
+    const relativePath = filePath
+      .replace(/^.*?content\//, '/')
+      .replace(/\.md$/, '');
+      
+    return {
+      file: relativePath,
+      title: frontmatter.title || path.basename(filePath, '.md'),
+      封面: frontmatter.封面 || '',
+      originalTitle: frontmatter.originalTitle || '',
+      author: frontmatter.author || '',
+      scoreStar: frontmatter.scoreStar || '',
+      score: frontmatter.score || '',
+      publishDate: cleanDate(frontmatter.publishDate || ''),
+      myRate: frontmatter.myRate || '',
+      阅读状态: frontmatter.阅读状态 || '',
+      totalPage: frontmatter.totalPage || '',
+      currentPage: frontmatter.currentPage || '',
+      添加时间: cleanDate(frontmatter.添加时间 || ''),
+      开始时间: cleanDate(frontmatter.开始时间 || ''),
+      结束阅读: cleanDate(frontmatter.结束阅读 || ''),
+      tags: tagsArray.filter(tag => tag), // 过滤空值
+    };
+  } catch (error) {
+    console.error(`Error processing ${filePath}:`, error.message);
+    return null;
   }
-  
-  
+}
 
 // 主函数
 function generateBookIndex() {
-  console.log('🔍 Scanning for book files...');
+  console.log('📚 Scanning for book files...');
   
   // 扫描书籍目录
-  const bookDir = path.join(__dirname, '../content/2.Read/douban');
+  const bookDir = path.join(__dirname, '../content/2.Read');
   
   if (!fs.existsSync(bookDir)) {
     console.error(`❌ Directory not found: ${bookDir}`);
@@ -123,14 +140,15 @@ function generateBookIndex() {
 
 function scanAndGenerate(directory) {
   const markdownFiles = getAllMarkdownFiles(directory);
-  console.log(`📚 Found ${markdownFiles.length} markdown files`);
+  console.log(`📝 Found ${markdownFiles.length} markdown files`);
   
   // 提取所有书籍数据
-  const books = markdownFiles
-    .map(extractBookData)
-    .filter(book => book !== null);
+  const allItems = markdownFiles.map(extractBookData);
+  const books = allItems.filter(book => book !== null);
+  const excludedCount = allItems.length - books.length;
   
   console.log(`✅ Extracted ${books.length} books with metadata`);
+  console.log(`🎬 Excluded ${excludedCount} files (movies/TV or missing metadata)`);
   
   if (books.length === 0) {
     console.warn('⚠️  No books found with required metadata (封面, author, or 阅读状态)');

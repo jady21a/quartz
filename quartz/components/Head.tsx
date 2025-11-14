@@ -100,8 +100,12 @@ export default (() => {
 
         {/* 自己添加图书卡片 */}
         <link rel="stylesheet" href="/static/book-styles.css" />
+        <link rel="stylesheet" href="/static/movie-styles.css" />
+
         <script src="/static/book-query.js" defer></script>
-        
+        <script src="/static/movie-query.js" defer></script>
+
+      
       </head>
     )
   }
