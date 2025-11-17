@@ -24,6 +24,9 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ArticleTitle(),
     Component.ContentMeta(),
     Component.TagList(),
+    // Component.ContentMeta(), // 显示元数据
+    Component.BookInfo(),  // 添加这一行,显示书籍元数据
+
   ],
   left: [
     Component.PageTitle(),
@@ -35,7 +38,7 @@ export const defaultContentPageLayout: PageLayout = {
           grow: true,
         },
         { Component: Component.Darkmode() },
-        { Component: Component.ReaderMode() },
+        // { Component: Component.ReaderMode() },
       ],
     }),
     Component.Explorer(),
