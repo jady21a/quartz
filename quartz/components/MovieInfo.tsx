@@ -62,6 +62,9 @@ const MovieInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
             {fm.director && (
               <p><strong>导演：</strong>{String(fm.director)}</p>
             )}
+             {fm.aliases && (
+              <p><strong>别名：</strong>{String(fm.aliases)}</p>
+            )}
             {/* {fm.actor && (
               <p><strong>主演：</strong>{String(fm.actor)}</p>
             )} */}
@@ -87,14 +90,14 @@ const MovieInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
           
           {/* 观看进度 */}
           <div class="movie-section">
-            {fm.观看状态 && Array.isArray(fm.观看状态) && fm.观看状态.length > 0 && (
-              <p><strong>观看状态：</strong>{fm.观看状态.join(", ")}</p>
+            {fm.state && Array.isArray(fm.state) && fm.state.length > 0 && (
+              <p><strong>观看状态：</strong>{fm.state.join(", ")}</p>
             )}
             {fm.添加时间 && (
               <p><strong>添加时间：</strong>{String(fm.添加时间)}</p>
             )}
-            {fm.观看日期 && (
-              <p><strong>观看日期：</strong>{String(fm.观看日期)}</p>
+            {fm.结束时间 && (
+              <p><strong>结束时间：</strong>{String(fm.结束时间)}</p>
             )}
           </div>
         </div>

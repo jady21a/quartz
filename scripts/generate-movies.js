@@ -93,9 +93,9 @@ function parseMovieData(filePath) {
     datePublished: cleanDate(frontmatter.datePublished),
     添加时间: cleanDate(frontmatter.添加时间 || ''),       // ✅
     开始时间: cleanDate(frontmatter.开始时间 || ''),
-    结束阅读: cleanDate(frontmatter.结束阅读 || ''),  
+    结束时间: cleanDate(frontmatter.结束时间 || ''),  
     createTime: cleanDate(frontmatter.createTime),
-    阅读状态: frontmatter.state || '',
+    state: frontmatter.state || '',
     desc: normalizeField(frontmatter.desc),
 
   }
