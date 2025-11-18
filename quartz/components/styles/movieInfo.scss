@@ -1,0 +1,86 @@
+.movie-meta {
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    padding: 0.2rem;
+    margin: 0.5rem 0;
+    background: var(--light);
+  }
+  
+  .movie-main {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+  }
+  
+  .movie-picture {
+    flex-shrink: 0;
+    // width: 200px;
+    padding: 0 15px;
+    padding-left: 21px;
+
+    img {
+        width: 120px;
+        height: 170px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: block;
+        margin: 0;
+        margin-top: 4px;
+    }
+  }
+  
+  .movie-content {
+    flex: 1;
+  }
+  
+  .movie-section {
+    // margin-bottom: 0.3rem;
+    
+    p {
+      margin: 0;
+    }
+  }
+  
+  .rating-line {
+    .stars {
+      color: #f4c430;
+      font-size: 1em;
+    }
+    
+    .score {
+      color: var(--secondary);
+      font-weight: bold;
+    }
+  }
+  
+  .movie-description {
+    margin-top: 1rem;
+    
+    summary {
+      // cursor: pointer;
+      // user-select: none;
+      
+      &:hover {
+        color: var(--secondary);
+      }
+    }
+    
+    .desc-content {
+      margin-top: 0.5rem;
+      margin-bottom: 0.2rem;
+
+      padding: 0.5rem;
+      background: var(--lightgray);
+      border-radius: 4px;
+    }
+  }
+
+  /* 强制 details 默认展开 */
+.movie-description details {
+  display: block;
+}
+
+.movie-description details[open] .desc-content {
+  display: block;
+}

@@ -1,29 +1,24 @@
 ---
 title:
-  - 欢迎来到Why Z的小站!
+  - Welcome to jasy's home
 ---
 
-本站包含以下内容
-- 读书分享
-- 折腾记录分享
 
-本站对桌面端支持较好，建议使用PC浏览
+This is a blank Quartz installation.
+See the [documentation] for how to get started.
 
-关于我
-
-
-欢迎订阅,获取最新推送
-
+## 订阅
 <div id="mc_embed_shell">
       <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
   <style type="text/css">
-        #mc_embed_signup{background:#fff; false;clear:left; font:14px Helvetica,Arial,sans-serif; width: 600px; height:190px;}
+        #mc_embed_signup{background:#fff; false;clear:left; font:14px Helvetica,Arial,sans-serif; width: 600px;}
         /* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
            We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
 </style>
 <div id="mc_embed_signup">
     <form action="https://gmail.us14.list-manage.com/subscribe/post?u=5d932dbece429d6399b0508ee&amp;id=931ca35638&amp;f_id=001db7e5f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
-        <div id="mc_embed_signup_scroll"><h2>订阅</h2>
+        <div id="mc_embed_signup_scroll"><h2>Subscribe</h2>
+            <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
             <div class="mc-field-group"><label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label><input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required="" value=""></div>
         <div id="mce-responses" class="clear foot">
             <div class="response" id="mce-error-response" style="display: none;"></div>
@@ -490,5 +485,41 @@ title:
 
 
 
+## 返回
 
 
+<a href="javascript:history.back()"> &larr; 返回</a>   //404
+<a href="javascript:history.back()">返回上一页</a>//404
+
+
+<a href="#" onclick="history.back(); return false;">返回上一页</a>  //只是返回到了首页,而不是上一页
+
+
+
+<button onclick="history.back()">返回上一页</button> 可以返回上一页,但是我想要链接的样式
+
+<button onclick="history.length > 1 ? history.back() : window.location.href='/'">
+  返回
+</button>
+
+
+<a href="#" onclick="
+  if (document.referrer && document.referrer !== window.location.href) {
+    window.location.href = document.referrer;
+  } else {
+    window.location.href = '/';
+  }
+  return false;
+">返回上一页</a>
+
+
+<p>404 私有笔记或笔记不存在。</p>
+<a id="back-link" href="/">返回首页</a>
+
+<script>
+  const backLink = document.getElementById("back-link");
+  if (document.referrer && document.referrer !== window.location.href) {
+    backLink.href = document.referrer;
+    backLink.textContent = "返回上一页";
+  }
+</script>

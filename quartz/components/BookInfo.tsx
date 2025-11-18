@@ -5,13 +5,10 @@ const BookInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
   
   if (!fm) return null
   
-  // 严格判断：必须有 tags 包含 "book" 或者有书籍特定字段
-  const isBook = (
-    (fm.tags && Array.isArray(fm.tags) && fm.tags.includes('book')) ||
-    (fm.author && (fm.score || fm.封面 || fm.publishDate))
-  )
+  // 严格判断：只显示 tags 包含 "book" 的页面
+  const isBook = fm.tags && Array.isArray(fm.tags) && fm.tags.includes('book')
   
-  // 如果不是书籍页面，不显示任何内容
+  // 如果不是书籍页面,不显示任何内容
   if (!isBook) return null
   
   const getImageUrl = (url: string): string => {
@@ -47,21 +44,21 @@ const BookInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
             {fm.originalTitle && (
               <p><strong>原标题：</strong>{String(fm.originalTitle)}</p>
             )}
-                      {/* 评分信息 */}
-          <div class="book-section">
-          {(fm.scoreStar || fm.score) && (
-            <p className="rating-line">
+            
+            {/* 评分信息 */}
+            {(fm.scoreStar || fm.score) && (
+              <p className="rating-line">
                 <strong>豆瓣评分：</strong>
                 {fm.scoreStar && <span className="stars">{fm.scoreStar}</span>}
                 &nbsp;&nbsp;
                 {fm.score && <span className="score">{fm.score}</span>}
-            </p>
+              </p>
             )}
 
             {fm.myRate && (
               <p><strong>我的评分：</strong>{String(fm.myRate)}</p>
             )}
-          </div>
+            
             {fm.author && (
               <p><strong>作者：</strong>{String(fm.author)}</p>
             )}
@@ -75,8 +72,6 @@ const BookInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
               <p><strong>总页数：</strong>{String(fm.totalPage)}</p>
             )}
           </div>
-          
-
           
           {/* 阅读进度 */}
           <div class="book-section">
@@ -102,7 +97,7 @@ const BookInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
         </div>
       </div>
       
-      {/* 简介 - 单独一行，可展开 */}
+      {/* 简介 - 单独一行,可展开 */}
       {fm.desc && (
         <details class="book-description">
           <summary><strong>简介：</strong></summary>

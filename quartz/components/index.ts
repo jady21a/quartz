@@ -25,7 +25,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 
 import BookInfo from "./BookInfo"  // 添加这一行,书籍元数据显示
-
+import MovieInfo from "./MovieInfo"  // 添加这一行,书籍元数据显示
 
 export { default as RandomNotes } from "./RandomNotes"
 
@@ -59,5 +59,5 @@ export {
   ConditionalRender,
 
   BookInfo,  // 添加这一行,书籍元数据显示
-
+  MovieInfo,
 }

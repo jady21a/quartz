@@ -18,6 +18,31 @@
     
     return imageUrl;
   }
+  
+  // 修正文件路径为有效的 URL
+  function fixFilePath(filePath) {
+    if (!filePath) return '#';
+    
+    // 如果已经是完整 URL,直接返回
+    if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
+      return filePath;
+    }
+    
+    // 移除开头的 './' 或 '/'
+    let path = filePath.replace(/^\.?\//, '');
+    
+    // 确保以 '/' 开头
+    if (!path.startsWith('/')) {
+      path = '/' + path;
+    }
+    
+    // 如果路径没有扩展名或以 .md 结尾,添加或替换为 .html
+    if (!path.match(/\.\w+$/) || path.endsWith('.md')) {
+      path = path.replace(/\.md$/, '') + '.html';
+    }
+    
+    return path;
+  }
 
   // 计算观看天数
   function calculateDays(start, end, addTime) {
@@ -48,13 +73,13 @@
     const header = document.createElement('div');
     header.className = 'movie-header';
     
-    // 1. 海报图片（顶部）- 添加链接包裹
+    // 1. 海报图片(顶部) - 添加链接包裹
     const posterWrapper = document.createElement('div');
     posterWrapper.className = 'movie-poster-wrapper';
     
     // 创建链接元素包裹海报
     const posterLink = document.createElement('a');
-    posterLink.href = movie.file;
+    posterLink.href = fixFilePath(movie.file);
     posterLink.className = 'movie-poster-link';
     posterLink.title = movie.title || '查看详情';
     
@@ -85,14 +110,14 @@
     posterWrapper.appendChild(posterLink);
     header.appendChild(posterWrapper);
     
-    // 2. 标题（在海报下方）
+    // 2. 标题(在海报下方)
     const titleSection = document.createElement('div');
     titleSection.className = 'movie-title-section';
     
     const title = document.createElement('h3');
     title.className = 'movie-title';
     const titleLink = document.createElement('a');
-    titleLink.href = movie.file;
+    titleLink.href = fixFilePath(movie.file);
     titleLink.textContent = movie.title || '未命名';
     titleLink.title = movie.title || '未命名';
     title.appendChild(titleLink);
@@ -101,7 +126,7 @@
     header.appendChild(titleSection);
     card.appendChild(header);
     
-    // 3. 评分（在标题下方，header外）
+    // 3. 评分(在标题下方,header外)
     if (movie.score) {
       const rating = document.createElement('div');
       rating.className = 'movie-rating';
@@ -166,7 +191,7 @@
       card.appendChild(info);
     }
     
-    // 6. 底部容器（状态）
+    // 6. 底部容器(状态)
     const footer = document.createElement('div');
     footer.className = 'movie-footer';
     
@@ -226,7 +251,7 @@
         let allItems = await response.json();
         console.log('✅ Loaded ' + allItems.length + ' items from index');
         
-        // 第一步：过滤出影视内容（有 movies 或 teleplay 标签的）
+        // 第一步:过滤出影视内容(有 movies 或 teleplay 标签的)
         let movies = allItems.filter(item => {
           const tags = item.tags || [];
           const hasMovieTag = tags.some(tag => 
@@ -244,7 +269,7 @@
         
         console.log('After filtering movies/teleplay: ' + movies.length + ' items');
         
-        // 第二步：根据 data-type 进一步过滤
+        // 第二步:根据 data-type 进一步过滤
         if (type) {
           movies = movies.filter(movie => {
             const tags = movie.tags || [];
@@ -266,7 +291,7 @@
           console.log('Filtered to ' + movies.length + ' items by type: ' + type);
         }
         
-        // 第三步：过滤状态
+        // 第三步:过滤状态
         if (status) {
           movies = movies.filter(movie => {
             // 兼容多种状态字段名

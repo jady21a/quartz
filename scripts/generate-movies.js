@@ -76,7 +76,7 @@ function parseMovieData(filePath) {
 
   return {
     title,
-    file: "/" + relativePath,
+    file: "/2.Read/" + relativePath,
     tags,
     type: normalizeField(frontmatter.type),
     score: normalizeField(frontmatter.score),

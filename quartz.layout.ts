@@ -26,6 +26,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.TagList(),
     // Component.ContentMeta(), // 显示元数据
     Component.BookInfo(),  // 添加这一行,显示书籍元数据
+    Component.MovieInfo(),  // 添加这一行,显示电影元数据
 
   ],
   left: [
