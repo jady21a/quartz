@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jz-quartz.pages.dev/sitemap.xml
