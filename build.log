@@ -1,0 +1,13 @@
+
+ Quartz v4.5.2  
+
+Cleaned output directory `public` in 37ms
+Found 119 input files from `content` in 12ms
+Parsing input files using 1 threads
+
+Warning: found invalid date "{{datePublished}}" in `3.Template/books.md`. Supported formats: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format
+Parsed 119 Markdown files in 2s
+Filtered out 0 files in 123μs
+Emitting files
+Emitted 567 files to `public` in 21s
+Done processing 119 files in 23s

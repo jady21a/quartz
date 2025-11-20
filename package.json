@@ -25,10 +25,10 @@
     "generate-books": "node scripts/generate-book-index.js",
     "generate-movies": "node scripts/generate-movies.js",
     "generate-all": "npm run generate-books && npm run generate-movies",
-    "build": "npx quartz build",
+    "build": "npx quartz build && cp quartz/static/googlebb4488cf87b645f4.html public/",
     "serve": "npx quartz build --serve",
 
-    
+
     "local-sync": "quartz sync-only"
 
 
