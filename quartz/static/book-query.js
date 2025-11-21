@@ -255,8 +255,8 @@
       container.innerHTML = '<div class="book-query-loading">📚 加载书籍中...</div>';
       
       try {
-        console.log('📡 Fetching /static/book-index.json...');
-        const response = await fetch('/static/book-index.json');
+        console.log('📡 Fetching /book-index.json...');
+        const response = await fetch('/book-index.json');
         console.log('Response status: ' + response.status);
         
         if (!response.ok) {

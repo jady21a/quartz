@@ -240,8 +240,8 @@
       container.innerHTML = '<div class="movie-query-loading">🎬 加载影片中...</div>';
       
       try {
-        console.log('📡 Fetching /static/movie-index.json...');
-        const response = await fetch('/static/movie-index.json');
+        console.log('📡 Fetching /movie-index.json...');
+        const response = await fetch('/movie-index.json');
         console.log('Response status: ' + response.status);
         
         if (!response.ok) {

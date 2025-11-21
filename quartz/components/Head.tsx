@@ -25,7 +25,7 @@ export default (() => {
     const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
-    const iconPath = joinSegments(baseDir, "static/icon2.PNG")
+    const iconPath = joinSegments(baseDir, "icon2.PNG")
 
     // Url of current page
     const socialUrl =
@@ -34,7 +34,7 @@ export default (() => {
     const usesCustomOgImage = ctx.cfg.plugins.emitters.some(
       (e) => e.name === CustomOgImagesEmitterName,
     )
-    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
+    const ogImageDefaultPath = `https://${cfg.baseUrl}/og-image.png`
 
     return (
       <head>
@@ -100,11 +100,11 @@ export default (() => {
         })}
 
         {/* 自己添加图书卡片 */}
-        <link rel="stylesheet" href="/static/book-styles.css" />
-        <link rel="stylesheet" href="/static/movie-styles.css" />
+        <link rel="stylesheet" href="/book-styles.css" />
+        <link rel="stylesheet" href="/movie-styles.css" />
 
-        <script src="/static/book-query.js" defer></script>
-        <script src="/static/movie-query.js" defer></script>
+        <script src="/book-query.js" defer></script>
+        <script src="/movie-query.js" defer></script>
 
       
       </head>
