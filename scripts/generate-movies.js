@@ -95,7 +95,7 @@ function parseMovieData(filePath) {
     开始时间: cleanDate(frontmatter.开始时间 || ''),
     结束时间: cleanDate(frontmatter.结束时间 || ''),  
     createTime: cleanDate(frontmatter.createTime),
-    state: frontmatter.state || '',
+    status: frontmatter.state || frontmatter.status || '',
     desc: normalizeField(frontmatter.desc),
 
   }
