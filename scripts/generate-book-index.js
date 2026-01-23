@@ -1,14 +1,49 @@
 // scripts/generate-book-index.js
-// ES Modules 版本
+// ES Modules 版本 - 支持图片映射
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import matter from 'gray-matter';
 
-// 获取当前文件的目录路径（ES modules 中没有 __dirname）
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// ===== 加载图片映射 =====
+let imageMapping = { books: {}, movies: {} };
+try {
+  const mappingPath = path.join(__dirname, './image-mapping.json');
+  if (fs.existsSync(mappingPath)) {
+    imageMapping = JSON.parse(fs.readFileSync(mappingPath, 'utf-8'));
+    console.log('✅ 已加载图片映射文件');
+  }
+} catch (error) {
+  console.warn('⚠️  未找到图片映射文件,将使用原始封面链接');
+}
+
+// ===== 处理图片路径 =====
+function processImagePath(originalPath, title) {
+  // 优先使用映射文件中的路径
+  if (imageMapping.books[title]) {
+    return imageMapping.books[title];
+  }
+  
+  // 如果已经是本地路径,直接返回
+  if (originalPath && (originalPath.startsWith('/imgs/') || originalPath.startsWith('./imgs/'))) {
+    return originalPath;
+  }
+  
+  // 尝试从豆瓣URL提取图片ID
+  if (originalPath && typeof originalPath === 'string') {
+    const match = originalPath.match(/\/(s\d+|p\d+)\.(jpg|webp|png)$/);
+    if (match) {
+      return `/imgs/${match[1]}.${match[2]}`;
+    }
+  }
+  
+  // 返回原始路径作为后备
+  return originalPath || '';
+}
 
 // 递归读取目录下的所有 .md 文件
 function getAllMarkdownFiles(dir, fileList = []) {
@@ -32,15 +67,13 @@ function getAllMarkdownFiles(dir, fileList = []) {
   return fileList;
 }
 
-// ✅ 改进版：支持字符串和 Date 对象
+// 改进版：支持字符串和 Date 对象
 function cleanDate(value) {
   if (!value) return '';
   if (value instanceof Date) {
-    // 转成 ISO 字符串再截断
     return value.toISOString().split('T')[0];
   }
   if (typeof value === 'string') {
-    // 去掉 T 及其后面的内容
     return value.split('T')[0];
   }
   return value;
@@ -72,7 +105,7 @@ function extractBookData(filePath) {
     const tags = frontmatter.tags || [];
     const tagsArray = Array.isArray(tags) ? tags : [tags];
 
-    // ⭐ 排除影视内容
+    // 排除影视内容
     if (isMovieOrTV(tagsArray)) {
       return null;
     }
@@ -86,11 +119,20 @@ function extractBookData(filePath) {
     const relativePath = filePath
       .replace(/^.*?content\//, '/')
       .replace(/\.md$/, '');
+    
+    // 提取标题
+    let title = frontmatter.title;
+    if (Array.isArray(title)) {
+      title = title[0];
+    }
+    if (!title) {
+      title = path.basename(filePath, '.md');
+    }
       
     return {
       file: relativePath,
-      title: frontmatter.title || path.basename(filePath, '.md'),
-      封面: frontmatter.封面 || '',
+      title: title,
+      封面: processImagePath(frontmatter.封面, title),  // ⭐ 使用图片映射
       originalTitle: frontmatter.originalTitle || '',
       author: frontmatter.author || '',
       scoreStar: frontmatter.scoreStar || '',
@@ -103,7 +145,7 @@ function extractBookData(filePath) {
       添加时间: cleanDate(frontmatter.添加时间 || ''),
       开始时间: cleanDate(frontmatter.开始时间 || ''),
       结束阅读: cleanDate(frontmatter.结束阅读 || ''),
-      tags: tagsArray.filter(tag => tag), // 过滤空值
+      tags: tagsArray.filter(tag => tag),
     };
   } catch (error) {
     console.error(`Error processing ${filePath}:`, error.message);
@@ -115,7 +157,6 @@ function extractBookData(filePath) {
 function generateBookIndex() {
   console.log('📚 Scanning for book files...');
   
-  // 扫描书籍目录
   const bookDir = path.join(__dirname, '../content/2.Read');
   
   if (!fs.existsSync(bookDir)) {
@@ -123,7 +164,6 @@ function generateBookIndex() {
     console.log('💡 Tip: Update the bookDir path in the script to match your folder structure.');
     console.log('   Current path:', bookDir);
     
-    // 尝试扫描整个 content 目录作为后备
     console.log('\n🔄 Trying to scan entire content directory...');
     const contentDir = path.join(__dirname, '../content');
     if (fs.existsSync(contentDir)) {
@@ -142,7 +182,6 @@ function scanAndGenerate(directory) {
   const markdownFiles = getAllMarkdownFiles(directory);
   console.log(`📝 Found ${markdownFiles.length} markdown files`);
   
-  // 提取所有书籍数据
   const allItems = markdownFiles.map(extractBookData);
   const books = allItems.filter(book => book !== null);
   const excludedCount = allItems.length - books.length;
@@ -156,13 +195,11 @@ function scanAndGenerate(directory) {
     return;
   }
   
-  // 确保 static 目录存在
   const staticDir = path.join(__dirname, '../quartz/static');
   if (!fs.existsSync(staticDir)) {
     fs.mkdirSync(staticDir, { recursive: true });
   }
   
-  // 写入 JSON 文件
   const outputPath = path.join(staticDir, 'book-index.json');
   fs.writeFileSync(outputPath, JSON.stringify(books, null, 2));
   
@@ -180,15 +217,14 @@ function scanAndGenerate(directory) {
     console.log(`   ${status}: ${count}`);
   });
   
-  // 显示示例书籍
   if (books.length > 0) {
     console.log(`\n📖 Sample book:`);
     const sample = books[0];
     console.log(`   Title: ${sample.title}`);
+    console.log(`   Cover: ${sample.封面}`);
     console.log(`   Author: ${sample.author}`);
     console.log(`   Status: ${sample.阅读状态}`);
   }
 }
 
-// 执行
 generateBookIndex();

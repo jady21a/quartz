@@ -1,16 +1,53 @@
-// scripts/generate-movies.js  (ESM版本)
+// scripts/generate-movies.js (ESM版本)
+// 支持图片映射
+
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
 import { fileURLToPath } from "url"
 
-// ===== 模拟 CommonJS 的 __dirname、__filename =====
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // ===== 配置 =====
-const CONTENT_DIR = path.join(__dirname, "../content/2.Read") // Obsidian 笔记目录
-const OUTPUT_FILE = path.join(__dirname, "../quartz/static/movie-index.json") // 输出到 movie-index.json
+const CONTENT_DIR = path.join(__dirname, "../content/2.Read")
+const OUTPUT_FILE = path.join(__dirname, "../quartz/static/movie-index.json")
+
+// ===== 加载图片映射 =====
+let imageMapping = { books: {}, movies: {} };
+try {
+  const mappingPath = path.join(__dirname, './image-mapping.json');
+  if (fs.existsSync(mappingPath)) {
+    imageMapping = JSON.parse(fs.readFileSync(mappingPath, 'utf-8'));
+    console.log('✅ 已加载图片映射文件');
+  }
+} catch (error) {
+  console.warn('⚠️  未找到图片映射文件,将使用原始封面链接');
+}
+
+// ===== 处理图片路径 =====
+function processImagePath(originalPath, title) {
+  // 优先使用映射文件中的路径
+  if (imageMapping.movies[title]) {
+    return imageMapping.movies[title];
+  }
+  
+  // 如果已经是本地路径,直接返回
+  if (originalPath && (originalPath.startsWith('/imgs/') || originalPath.startsWith('./imgs/'))) {
+    return originalPath;
+  }
+  
+  // 尝试从豆瓣URL提取图片ID
+  if (originalPath && typeof originalPath === 'string') {
+    const match = originalPath.match(/\/(s\d+|p\d+)\.(jpg|webp|png)$/);
+    if (match) {
+      return `/imgs/${match[1]}.${match[2]}`;
+    }
+  }
+  
+  // 返回原始路径作为后备
+  return originalPath || '';
+}
 
 // ===== 递归读取所有 Markdown 文件 =====
 function getAllMarkdownFiles(dir, fileList = []) {
@@ -38,19 +75,18 @@ function normalizeField(field) {
   return field
 }
 
-      // ✅ 改进版：支持字符串和 Date 对象
-      function cleanDate(value) {
-        if (!value) return '';
-        if (value instanceof Date) {
-          // 转成 ISO 字符串再截断
-          return value.toISOString().split('T')[0];
-        }
-        if (typeof value === 'string') {
-          // 去掉 T 及其后面的内容
-          return value.split('T')[0];
-        }
-        return value;
-      }
+// 改进版：支持字符串和 Date 对象
+function cleanDate(value) {
+  if (!value) return '';
+  if (value instanceof Date) {
+    return value.toISOString().split('T')[0];
+  }
+  if (typeof value === 'string') {
+    return value.split('T')[0];
+  }
+  return value;
+}
+
 // ===== 解析影片数据 =====
 function parseMovieData(filePath) {
   const content = fs.readFileSync(filePath, "utf-8")
@@ -82,7 +118,7 @@ function parseMovieData(filePath) {
     score: normalizeField(frontmatter.score),
     scoreStar: normalizeField(frontmatter.scoreStar),
     myRate: normalizeField(frontmatter.myRating),
-    封面: normalizeField(frontmatter.封面),
+    封面: processImagePath(normalizeField(frontmatter.封面), title),  // ⭐ 使用图片映射
     originalTitle: normalizeField(frontmatter.originalTitle),
     aliases: normalizeField(frontmatter.aliases),
     genre: normalizeField(frontmatter.genre),
@@ -91,13 +127,12 @@ function parseMovieData(filePath) {
     actor: normalizeField(frontmatter.actor),
     author: normalizeField(frontmatter.author),
     datePublished: cleanDate(frontmatter.datePublished),
-    添加时间: cleanDate(frontmatter.添加时间 || ''),       // ✅
+    添加时间: cleanDate(frontmatter.添加时间 || ''),
     开始时间: cleanDate(frontmatter.开始时间 || ''),
-    结束时间: cleanDate(frontmatter.结束时间 || ''),  
+    结束时间: cleanDate(frontmatter.结束时间 || ''),
     createTime: cleanDate(frontmatter.createTime),
     status: frontmatter.state || frontmatter.status || '',
     desc: normalizeField(frontmatter.desc),
-
   }
 }
 
@@ -152,13 +187,21 @@ function generateMovieIndex() {
 
   const statusCount = {}
   for (const movie of movies) {
-    const status = movie.观看状态 || movie.状态 || "Unknown"
+    const status = movie.status || "Unknown"
     statusCount[status] = (statusCount[status] || 0) + 1
   }
 
   console.log("\n📊 影视状态统计:")
   for (const [status, count] of Object.entries(statusCount)) {
     console.log("   " + status + ": " + count)
+  }
+
+  // 显示示例影片
+  if (movies.length > 0) {
+    console.log("\n🎬 示例影片:");
+    const sample = movies[0];
+    console.log(`   标题: ${sample.title}`);
+    console.log(`   封面: ${sample.封面}`);
   }
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(allData, null, 2), "utf-8")
