@@ -52,7 +52,11 @@
     "贫穷的本质（修订版）": "/imgs/s29856376.jpg",
     "费曼学习法（用输出倒逼输入）": "/imgs/s33891850.jpg",
     "金钱心理学": "/imgs/s34540496.jpg",
-    "非暴力沟通": "/imgs/s29710777.jpg"
+    "非暴力沟通": "/imgs/s29710777.jpg",
+    "飘": "/imgs/飘.jpg",
+    "无穷的开始": "/imgs/无穷的开始.jpg",
+    "理性乐观派": "/imgs/理性乐观派.jpg",
+    "表面活性剂、胶体与界面化学基础（崔正刚）（第二版）": "/imgs/表面活性剂第二版.png"
   },
   "movies": {
     "会计刺客": "/imgs/p2355993802.webp",
@@ -64,7 +68,33 @@
     "赌城风云": "/imgs/p1236519296.webp",
     "1923第一季": "/imgs/p2884549449.webp",
     "摩登家庭第一季": "/imgs/摩登家庭第一季.webp",
-    "进击的巨人": "/imgs/进击的巨人.webp"
+    "进击的巨人": "/imgs/进击的巨人.webp",
+    "不可饶恕": "/imgs/p1083392613.jpg",
+    "你好，李焕英": "/imgs/p2530599636.jpg",
+    "出走的决心": "/imgs/p2629056068.jpg",
+    "周处除三害": "/imgs/p2918020941.jpg",
+    "哪吒之魔童闹海": "/imgs/p2915454411.jpg",
+    "大人物拿破仑": "/imgs/p2920972910.jpg",
+    "大话西游之大圣娶亲": "/imgs/p2161514326.jpg",
+    "好家伙": "/imgs/p2455050536.jpg",
+    "小偷家族": "/imgs/p2551995207.jpg",
+    "小妇人": "/imgs/p2589107401.jpg",
+    "小猪宝贝": "/imgs/p453851762.jpg",
+    "怪物": "/imgs/p2916323291.jpg",
+    "分裂": "/imgs/分裂.webp",
+    "猫狗大战": "/imgs/猫狗大战.webp",
+    "抓娃娃": "/imgs/p2914761624.jpg",
+    "指环王1：护戒使者": "/imgs/p2161515392.jpg",
+    "指环王2：双塔奇兵": "/imgs/p2197698335.jpg",
+    "机器人之梦": "/imgs/p2912830708.jpg",
+    "神秘村": "/imgs/p2918312477.jpg",
+    "第六感": "/imgs/p2220184425.jpg",
+    "篮坛怪杰": "/imgs/p2540518828.jpg",
+    "老狐狸": "/imgs/p2910105262.jpg",
+    "花样年华": "/imgs/p2268743922.jpg",
+    "调音师": "/imgs/p2572928166.jpg",
+    "1923第二季": "/imgs/p2575818042.webp",
+    "阿浅来了": "/imgs/p2640236255.jpg"
   },
   "unmapped": {
     "books": [
@@ -118,137 +148,11 @@
         "suggestedFilename": "unknown"
       },
       {
-        "title": "表面活性剂、胶体与界面化学基础（崔正刚）（第二版）",
-        "originalCover": "https://m.media-amazon.com/images/I/71fmmT6AC0L._SY522_.jpg",
-        "suggestedFilename": "unknown"
-      },
-      {
         "title": "认知边界：认知决定你的财富",
         "originalCover": "https://m.media-amazon.com/images/I/51ilGM8ZvdL._SY522_.jpg",
         "suggestedFilename": "unknown"
       }
     ],
-    "movies": [
-      {
-        "title": "不可饶恕",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p1083392613.webp",
-        "suggestedFilename": "p1083392613.webp"
-      },
-      {
-        "title": "你好，李焕英",
-        "originalCover": "https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2629056068.webp",
-        "suggestedFilename": "p2629056068.webp"
-      },
-      {
-        "title": "出走的决心",
-        "originalCover": "https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2912830708.webp",
-        "suggestedFilename": "p2912830708.webp"
-      },
-      {
-        "title": "周处除三害",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2905021483.webp",
-        "suggestedFilename": "p2905021483.webp"
-      },
-      {
-        "title": "哪吒之魔童闹海",
-        "originalCover": "https://img2.doubanio.com/view/photo/s_ratio_poster/public/p2916323291.webp",
-        "suggestedFilename": "p2916323291.webp"
-      },
-      {
-        "title": "大人物拿破仑",
-        "originalCover": "https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2540518828.webp",
-        "suggestedFilename": "p2540518828.webp"
-      },
-      {
-        "title": "大话西游之大圣娶亲",
-        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2455050536.webp",
-        "suggestedFilename": "p2455050536.webp"
-      },
-      {
-        "title": "好家伙",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p1403069323.webp",
-        "suggestedFilename": "p1403069323.webp"
-      },
-      {
-        "title": "小偷家族",
-        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2530599636.webp",
-        "suggestedFilename": "p2530599636.webp"
-      },
-      {
-        "title": "小妇人",
-        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2572928166.webp",
-        "suggestedFilename": "p2572928166.webp"
-      },
-      {
-        "title": "小猪宝贝",
-        "originalCover": "https://img2.doubanio.com/view/photo/s_ratio_poster/public/p2503827571.webp",
-        "suggestedFilename": "p2503827571.webp"
-      },
-      {
-        "title": "怪物",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2903852637.webp",
-        "suggestedFilename": "p2903852637.webp"
-      },
-      {
-        "title": "抓娃娃",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2910105262.webp",
-        "suggestedFilename": "p2910105262.webp"
-      },
-      {
-        "title": "指环王1：护戒使者",
-        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2197698335.webp",
-        "suggestedFilename": "p2197698335.webp"
-      },
-      {
-        "title": "指环王2：双塔奇兵",
-        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2640236255.webp",
-        "suggestedFilename": "p2640236255.webp"
-      },
-      {
-        "title": "机器人之梦",
-        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2904305126.webp",
-        "suggestedFilename": "p2904305126.webp"
-      },
-      {
-        "title": "神秘村",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2161515392.webp",
-        "suggestedFilename": "p2161515392.webp"
-      },
-      {
-        "title": "第六感",
-        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2220184425.webp",
-        "suggestedFilename": "p2220184425.webp"
-      },
-      {
-        "title": "篮坛怪杰",
-        "originalCover": "https://img2.doubanio.com/view/photo/s_ratio_poster/public/p2174345651.webp",
-        "suggestedFilename": "p2174345651.webp"
-      },
-      {
-        "title": "老狐狸",
-        "originalCover": "https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2900908599.webp",
-        "suggestedFilename": "p2900908599.webp"
-      },
-      {
-        "title": "花样年华",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2918312477.webp",
-        "suggestedFilename": "p2918312477.webp"
-      },
-      {
-        "title": "调音师",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2551995207.webp",
-        "suggestedFilename": "p2551995207.webp"
-      },
-      {
-        "title": "1923第二季",
-        "originalCover": "https://img2.doubanio.com/view/photo/s_ratio_poster/public/p2918020941.webp",
-        "suggestedFilename": "p2918020941.webp"
-      },
-      {
-        "title": "阿浅来了",
-        "originalCover": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2268743922.webp",
-        "suggestedFilename": "p2268743922.webp"
-      }
-    ]
+    "movies": []
   }
 }

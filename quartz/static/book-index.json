@@ -19,10 +19,8 @@
   },
   {
     "file": "/2.Read/douban/book/10xIsEasierThan2x",
-    "title": [
-      "10xIsEasierThan2x"
-    ],
-    "封面": "https://img2.doubanio.com/view/subject/l/public/s34536381.jpg",
+    "title": "10xIsEasierThan2x",
+    "封面": "/imgs/s34536381.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -47,9 +45,7 @@
   },
   {
     "file": "/2.Read/douban/book/12Monthsto$1Million",
-    "title": [
-      "12Monthsto$1Million"
-    ],
+    "title": "12Monthsto$1Million",
     "封面": "\thttps://play.google.com/books/publisher/content/images/frontcover/uwO5DwAAQBAJ?fife=w480-h690",
     "originalTitle": "",
     "author": [
@@ -75,10 +71,8 @@
   },
   {
     "file": "/2.Read/douban/book/82年生的金智英",
-    "title": [
-      "82年生的金智英"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s33463759.jpg",
+    "title": "82年生的金智英",
+    "封面": "/imgs/s33463759.jpg",
     "originalTitle": "",
     "author": [
       " - 韩/赵南柱"
@@ -101,9 +95,7 @@
   },
   {
     "file": "/2.Read/douban/book/ExactlyWhattoSay",
-    "title": [
-      "ExactlyWhattoSay"
-    ],
+    "title": "ExactlyWhattoSay",
     "封面": "https://m.media-amazon.com/images/I/71LzPlsDcEL._SY522_.jpg",
     "originalTitle": "",
     "author": [
@@ -127,10 +119,8 @@
   },
   {
     "file": "/2.Read/douban/book/GiftsDiffering",
-    "title": [
-      "GiftsDiffering"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s3247795.jpg",
+    "title": "GiftsDiffering",
+    "封面": "/imgs/s3247795.jpg",
     "originalTitle": "",
     "author": [
       "IsabelBriggsMyers\""
@@ -153,10 +143,8 @@
   },
   {
     "file": "/2.Read/douban/book/MakeMoneyEasy",
-    "title": [
-      "MakeMoneyEasy"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s35158296.jpg",
+    "title": "MakeMoneyEasy",
+    "封面": "/imgs/s35158296.jpg",
     "originalTitle": "",
     "author": [
       ""
@@ -180,10 +168,8 @@
   },
   {
     "file": "/2.Read/douban/book/MillionDollarWeekend",
-    "title": [
-      "MillionDollarWeekend"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s34776686.jpg",
+    "title": "MillionDollarWeekend",
+    "封面": "/imgs/s34776686.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -208,10 +194,8 @@
   },
   {
     "file": "/2.Read/douban/book/NonviolentCommunication",
-    "title": [
-      "NonviolentCommunication"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s4584066.jpg",
+    "title": "NonviolentCommunication",
+    "封面": "/imgs/s4584066.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -235,9 +219,7 @@
   },
   {
     "file": "/2.Read/douban/book/Platform平台",
-    "title": [
-      "platform"
-    ],
+    "title": "platform",
     "封面": "https://m.media-amazon.com/images/I/716ulwY6ycL._SY522_.jpg",
     "originalTitle": "",
     "author": [
@@ -261,10 +243,8 @@
   },
   {
     "file": "/2.Read/douban/book/UnderstandingNutrition",
-    "title": [
-      "UnderstandingNutrition"
-    ],
-    "封面": "https://img2.doubanio.com/view/subject/l/public/s27117541.jpg",
+    "title": "UnderstandingNutrition",
+    "封面": "/imgs/s27117541.jpg",
     "originalTitle": "",
     "author": " - EleanorNossWhitney - SharonRadyRolfes",
     "scoreStar": "",
@@ -285,10 +265,8 @@
   },
   {
     "file": "/2.Read/douban/book/一个悲观主义者的积极思考",
-    "title": [
-      "一个悲观主义者的积极思考"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s26822759.jpg",
+    "title": "一个悲观主义者的积极思考",
+    "封面": "/imgs/s26822759.jpg",
     "originalTitle": "",
     "author": " - 叔本华",
     "scoreStar": "⭐⭐⭐⭐",
@@ -309,10 +287,8 @@
   },
   {
     "file": "/2.Read/douban/book/人类简史",
-    "title": [
-      "人类简史"
-    ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s27814883.jpg",
+    "title": "人类简史",
+    "封面": "/imgs/s27814883.jpg",
     "originalTitle": "Sapiens: A brief history of humankind",
     "author": [
       null,
@@ -340,10 +316,8 @@
   },
   {
     "file": "/2.Read/douban/book/从0到1",
-    "title": [
-      "从0到1"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s28299265.jpg",
+    "title": "从0到1",
+    "封面": "/imgs/s28299265.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -368,10 +342,8 @@
   },
   {
     "file": "/2.Read/douban/book/你想活出怎样的人生",
-    "title": [
-      "你想活出怎样的人生"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s33439128.jpg",
+    "title": "你想活出怎样的人生",
+    "封面": "/imgs/s33439128.jpg",
     "originalTitle": "",
     "author": [
       " - 日/吉野源三郎 - 日/胁田和(绘)"
@@ -394,10 +366,8 @@
   },
   {
     "file": "/2.Read/douban/book/决断力",
-    "title": [
-      "决断力"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s27210878.jpg",
+    "title": "决断力",
+    "封面": "/imgs/s27210878.jpg",
     "originalTitle": "",
     "author": " - 美/奇普·希思 - 美/丹·希思",
     "scoreStar": "⭐⭐⭐⭐",
@@ -418,9 +388,7 @@
   },
   {
     "file": "/2.Read/douban/book/卡耐基口才的艺术与人际关系",
-    "title": [
-      "卡耐基口才的艺术与人际关系"
-    ],
+    "title": "卡耐基口才的艺术与人际关系",
     "封面": "\thttps://m.media-amazon.com/images/I/61g1WQHK8QL._SY522_.jpg",
     "originalTitle": "",
     "author": [
@@ -445,10 +413,8 @@
   },
   {
     "file": "/2.Read/douban/book/原则",
-    "title": [
-      "原则"
-    ],
-    "封面": "https://img2.doubanio.com/view/subject/l/public/s29643861.jpg",
+    "title": "原则",
+    "封面": "/imgs/s29643861.jpg",
     "originalTitle": "",
     "author": " - 美/瑞·达利欧",
     "scoreStar": "⭐⭐⭐⭐",
@@ -469,10 +435,8 @@
   },
   {
     "file": "/2.Read/douban/book/原子習慣",
-    "title": [
-      "原子習慣"
-    ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s34937323.jpg",
+    "title": "原子習慣",
+    "封面": "/imgs/s34937323.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -497,9 +461,7 @@
   },
   {
     "file": "/2.Read/douban/book/只工作、不上班的自主人生",
-    "title": [
-      "只工作、不上班的自主人生"
-    ],
+    "title": "只工作、不上班的自主人生",
     "封面": "https://imgs.cwgv.com.tw/books/BWL/BWL094/cover/thumb/BWL094.png",
     "originalTitle": "",
     "author": [
@@ -524,10 +486,8 @@
   },
   {
     "file": "/2.Read/douban/book/吃掉那只青蛙",
-    "title": [
-      "吃掉那只青蛙"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s29841816.jpg",
+    "title": "吃掉那只青蛙",
+    "封面": "/imgs/s29841816.jpg",
     "originalTitle": "",
     "author": " - 美/博恩·崔西（BrianTracy）",
     "scoreStar": "⭐⭐⭐",
@@ -548,10 +508,8 @@
   },
   {
     "file": "/2.Read/douban/book/哈佛非虚构写作课",
-    "title": [
-      "哈佛非虚构写作课"
-    ],
-    "封面": "https://img2.doubanio.com/view/subject/l/public/s28364301.jpg",
+    "title": "哈佛非虚构写作课",
+    "封面": "/imgs/s28364301.jpg",
     "originalTitle": "",
     "author": [
       "美/马克·克雷默",
@@ -575,10 +533,8 @@
   },
   {
     "file": "/2.Read/douban/book/基层女性",
-    "title": [
-      "基层女性"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s34001866.jpg",
+    "title": "基层女性",
+    "封面": "/imgs/s34001866.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -602,10 +558,8 @@
   },
   {
     "file": "/2.Read/douban/book/天生不同",
-    "title": [
-      "天生不同"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s29085860.jpg",
+    "title": "天生不同",
+    "封面": "/imgs/s29085860.jpg",
     "originalTitle": "",
     "author": [
       "【美】伊莎贝尔•迈尔斯（IsabelBriggsMyers）",
@@ -629,10 +583,8 @@
   },
   {
     "file": "/2.Read/douban/book/失去的三十年",
-    "title": [
-      "失去的三十年"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s34185604.jpg",
+    "title": "失去的三十年",
+    "封面": "/imgs/s34185604.jpg",
     "originalTitle": "",
     "author": [
       " - 日/野口悠纪雄"
@@ -655,10 +607,8 @@
   },
   {
     "file": "/2.Read/douban/book/如何说孩子才会听怎么听孩子才肯说（全新修订版）",
-    "title": [
-      "如何说孩子才会听怎么听孩子才肯说（全新修订版）"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s10478956.jpg",
+    "title": "如何说孩子才会听怎么听孩子才肯说（全新修订版）",
+    "封面": "/imgs/s10478956.jpg",
     "originalTitle": "",
     "author": " - 阿黛尔•法伯 - 伊莱恩•玛兹丽施 - 美国/伊莱恩·玛兹丽施",
     "scoreStar": "⭐⭐⭐⭐",
@@ -679,10 +629,8 @@
   },
   {
     "file": "/2.Read/douban/book/如何迅速建立强大的心理素质",
-    "title": [
-      "如何迅速建立强大的心理素质"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s28425245.jpg",
+    "title": "如何迅速建立强大的心理素质",
+    "封面": "/imgs/s28425245.jpg",
     "originalTitle": "",
     "author": [
       " - 何明昊"
@@ -705,10 +653,8 @@
   },
   {
     "file": "/2.Read/douban/book/孩子：挑战",
-    "title": [
-      "孩子：挑战"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s29049074.jpg",
+    "title": "孩子：挑战",
+    "封面": "/imgs/s29049074.jpg",
     "originalTitle": "",
     "author": [
       " - 【美】鲁道夫·德雷克斯 - 【美】薇姬·索尔兹"
@@ -731,10 +677,8 @@
   },
   {
     "file": "/2.Read/douban/book/定位",
-    "title": [
-      "定位"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s1081174.jpg",
+    "title": "定位",
+    "封面": "/imgs/s1081174.jpg",
     "originalTitle": "",
     "author": " - 美/艾·里斯 - 杰克·特劳特",
     "scoreStar": "⭐⭐⭐⭐",
@@ -755,10 +699,8 @@
   },
   {
     "file": "/2.Read/douban/book/富爸爸，穷爸爸",
-    "title": [
-      "富爸爸，穷爸爸"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s11229869.jpg",
+    "title": "富爸爸，穷爸爸",
+    "封面": "/imgs/s11229869.jpg",
     "originalTitle": "",
     "author": [
       " - （美）罗伯特・T・清崎 - 莎伦・L・莱希特"
@@ -781,10 +723,8 @@
   },
   {
     "file": "/2.Read/douban/book/小狗钱钱",
-    "title": [
-      "小狗钱钱"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s33789389.jpg",
+    "title": "小狗钱钱",
+    "封面": "/imgs/s33789389.jpg",
     "originalTitle": "",
     "author": [
       " - 德/博多·舍费尔"
@@ -807,10 +747,8 @@
   },
   {
     "file": "/2.Read/douban/book/底层逻辑",
-    "title": [
-      "底层逻辑"
-    ],
-    "封面": "https://img2.doubanio.com/view/subject/l/public/s34076681.jpg",
+    "title": "底层逻辑",
+    "封面": "/imgs/s34076681.jpg",
     "originalTitle": "",
     "author": " - 刘润",
     "scoreStar": "⭐⭐⭐",
@@ -831,10 +769,8 @@
   },
   {
     "file": "/2.Read/douban/book/影响力",
-    "title": [
-      "影响力"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s1657785.jpg",
+    "title": "影响力",
+    "封面": "/imgs/s1657785.jpg",
     "originalTitle": "",
     "author": [
       "美/罗伯特·西奥迪尼\""
@@ -857,10 +793,8 @@
   },
   {
     "file": "/2.Read/douban/book/德米安",
-    "title": [
-      "德米安"
-    ],
-    "封面": "https://img2.doubanio.com/view/subject/l/public/s5988251.jpg",
+    "title": "德米安",
+    "封面": "/imgs/s5988251.jpg",
     "originalTitle": "",
     "author": " - 德/赫尔曼·黑塞",
     "scoreStar": "⭐⭐⭐⭐",
@@ -881,10 +815,8 @@
   },
   {
     "file": "/2.Read/douban/book/思考致富",
-    "title": [
-      "思考致富"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s28289884.jpg",
+    "title": "思考致富",
+    "封面": "/imgs/s28289884.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -910,10 +842,8 @@
   },
   {
     "file": "/2.Read/douban/book/思考，快与慢",
-    "title": [
-      "思考，快与慢"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s35129640.jpg",
+    "title": "思考，快与慢",
+    "封面": "/imgs/s35129640.jpg",
     "originalTitle": "",
     "author": " - 美/丹尼尔·卡尼曼",
     "scoreStar": "⭐⭐⭐⭐",
@@ -934,10 +864,8 @@
   },
   {
     "file": "/2.Read/douban/book/搞定",
-    "title": [
-      "搞定"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s33860665.jpg",
+    "title": "搞定",
+    "封面": "/imgs/s33860665.jpg",
     "originalTitle": "",
     "author": [
       " - 戴维•艾伦（DavidAllen）；迈克•威廉斯（MikeWilliams）；马克•华莱士(MarkWallace)"
@@ -960,10 +888,8 @@
   },
   {
     "file": "/2.Read/douban/book/改变人生的谈话",
-    "title": [
-      "改变人生的谈话"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s33838655.jpg",
+    "title": "改变人生的谈话",
+    "封面": "/imgs/s33838655.jpg",
     "originalTitle": "",
     "author": [
       " - 黄启团"
@@ -986,10 +912,8 @@
   },
   {
     "file": "/2.Read/douban/book/故事课1：说故事的人最有影响力",
-    "title": [
-      "故事课1：说故事的人最有影响力"
-    ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s29824182.jpg",
+    "title": "故事课1：说故事的人最有影响力",
+    "封面": "/imgs/s29824182.jpg",
     "originalTitle": "",
     "author": [
       "许荣哲\""
@@ -1012,9 +936,7 @@
   },
   {
     "file": "/2.Read/douban/book/普通人的財富自由之道",
-    "title": [
-      "普通人的財富自由之道"
-    ],
+    "title": "普通人的財富自由之道",
     "封面": "https://m.media-amazon.com/images/I/714FD0hNmfL._SY522_.jpg",
     "originalTitle": "",
     "author": [
@@ -1038,10 +960,8 @@
   },
   {
     "file": "/2.Read/douban/book/枪炮、病菌与钢铁",
-    "title": [
-      "枪炮、病菌与钢铁"
-    ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s1738643.jpg",
+    "title": "枪炮、病菌与钢铁",
+    "封面": "/imgs/s1738643.jpg",
     "originalTitle": "Guns, Germs and Steel: The Fates of Human Societies",
     "author": [
       null,
@@ -1069,10 +989,8 @@
   },
   {
     "file": "/2.Read/douban/book/棉花帝国",
-    "title": [
-      "棉花帝国"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s32271479.jpg",
+    "title": "棉花帝国",
+    "封面": "/imgs/s32271479.jpg",
     "originalTitle": "",
     "author": " - 美/斯文·贝克特",
     "scoreStar": "⭐⭐⭐⭐",
@@ -1093,10 +1011,8 @@
   },
   {
     "file": "/2.Read/douban/book/榮格論心理類型",
-    "title": [
-      "榮格論心理類型"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s29703716.jpg",
+    "title": "榮格論心理類型",
+    "封面": "/imgs/s29703716.jpg",
     "originalTitle": "Psychologische Typen",
     "author": [
       null,
@@ -1124,10 +1040,8 @@
   },
   {
     "file": "/2.Read/douban/book/漫步华尔街(原书第12版)",
-    "title": [
-      "漫步华尔街(原书第12版)"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s34706866.jpg",
+    "title": "漫步华尔街(原书第12版)",
+    "封面": "/imgs/s34706866.jpg",
     "originalTitle": "",
     "author": " - 美/伯顿·G·马尔基尔",
     "scoreStar": "⭐⭐⭐⭐",
@@ -1148,10 +1062,8 @@
   },
   {
     "file": "/2.Read/douban/book/生命是什么",
-    "title": [
-      "生命是什么"
-    ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s29967303.jpg",
+    "title": "生命是什么",
+    "封面": "/imgs/s29967303.jpg",
     "originalTitle": "",
     "author": " - 奥/埃尔温·薛定谔",
     "scoreStar": "⭐⭐⭐⭐",
@@ -1172,10 +1084,8 @@
   },
   {
     "file": "/2.Read/douban/book/百万富翁快车道",
-    "title": [
-      "百万富翁快车道"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s29582069.jpg",
+    "title": "百万富翁快车道",
+    "封面": "/imgs/s29582069.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -1199,10 +1109,8 @@
   },
   {
     "file": "/2.Read/douban/book/穷查理宝典",
-    "title": [
-      "穷查理宝典"
-    ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s28875892.jpg",
+    "title": "穷查理宝典",
+    "封面": "/imgs/s28875892.jpg",
     "originalTitle": "",
     "author": [
       " - CharlieT.Munger - PeterD.Kaufman"
@@ -1225,10 +1133,8 @@
   },
   {
     "file": "/2.Read/douban/book/策略思维",
-    "title": [
-      "策略思维"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s1304989.jpg",
+    "title": "策略思维",
+    "封面": "/imgs/s1304989.jpg",
     "originalTitle": "",
     "author": " - 阿维纳什・K・迪克西特 - 巴里・J・奈尔伯夫",
     "scoreStar": "⭐⭐⭐⭐",
@@ -1250,10 +1156,8 @@
   },
   {
     "file": "/2.Read/douban/book/简爱",
-    "title": [
-      "简爱"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s33473798.jpg",
+    "title": "简爱",
+    "封面": "/imgs/s33473798.jpg",
     "originalTitle": "Jane Eyre",
     "author": [
       null,
@@ -1280,10 +1184,8 @@
   },
   {
     "file": "/2.Read/douban/book/精益创业实战（第2版）",
-    "title": [
-      "精益创业实战（第2版）"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s24610736.jpg",
+    "title": "精益创业实战（第2版）",
+    "封面": "/imgs/s24610736.jpg",
     "originalTitle": "",
     "author": [
       " - AshMaurya"
@@ -1306,10 +1208,8 @@
   },
   {
     "file": "/2.Read/douban/book/纳瓦尔宝典",
-    "title": [
-      "纳瓦尔宝典"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s34241855.jpg",
+    "title": "纳瓦尔宝典",
+    "封面": "/imgs/s34241855.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -1334,10 +1234,8 @@
   },
   {
     "file": "/2.Read/douban/book/聪明的投资者（第4版注疏点评版）",
-    "title": [
-      "聪明的投资者（第4版注疏点评版）"
-    ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s34918327.jpg",
+    "title": "聪明的投资者（第4版注疏点评版）",
+    "封面": "/imgs/s34918327.jpg",
     "originalTitle": "",
     "author": " - 【美】本杰明•格雷厄姆",
     "scoreStar": "⭐⭐⭐⭐",
@@ -1358,10 +1256,8 @@
   },
   {
     "file": "/2.Read/douban/book/自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）",
-    "title": [
-      "自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s34809926.jpg",
+    "title": "自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）",
+    "封面": "/imgs/s34809926.jpg",
     "originalTitle": "THE WILLPOWER INSTINCT",
     "author": [
       null,
@@ -1385,10 +1281,8 @@
   },
   {
     "file": "/2.Read/douban/book/自私的基因",
-    "title": [
-      "自私的基因"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s11214645.jpg",
+    "title": "自私的基因",
+    "封面": "/imgs/s11214645.jpg",
     "originalTitle": "",
     "author": " - 英/理查德·道金斯",
     "scoreStar": "⭐⭐⭐⭐",
@@ -1409,10 +1303,8 @@
   },
   {
     "file": "/2.Read/douban/book/荷马史诗·伊利亚特",
-    "title": [
-      "荷马史诗·伊利亚特"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s29827449.jpg",
+    "title": "荷马史诗·伊利亚特",
+    "封面": "/imgs/s29827449.jpg",
     "originalTitle": "",
     "author": " - 古希腊/荷马",
     "scoreStar": "⭐⭐⭐⭐",
@@ -1433,10 +1325,8 @@
   },
   {
     "file": "/2.Read/douban/book/荷马史诗·奥德赛",
-    "title": [
-      "荷马史诗·奥德赛"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s29827450.jpg",
+    "title": "荷马史诗·奥德赛",
+    "封面": "/imgs/s29827450.jpg",
     "originalTitle": "",
     "author": " - 古希腊/荷马",
     "scoreStar": "⭐⭐⭐⭐",
@@ -1457,10 +1347,8 @@
   },
   {
     "file": "/2.Read/douban/book/营销管理(第16版)",
-    "title": [
-      "营销管理(第16版)"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s34804580.jpg",
+    "title": "营销管理(第16版)",
+    "封面": "/imgs/s34804580.jpg",
     "originalTitle": "",
     "author": [
       " - 美/菲利普·科特勒 - 美/凯文·莱恩·凯勒 - 美/亚历山大·切尔内夫"
@@ -1483,10 +1371,8 @@
   },
   {
     "file": "/2.Read/douban/book/薛兆丰经济学讲义",
-    "title": [
-      "薛兆丰经济学讲义"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s29841565.jpg",
+    "title": "薛兆丰经济学讲义",
+    "封面": "/imgs/s29841565.jpg",
     "originalTitle": "",
     "author": [
       " - 薛兆丰"
@@ -1509,10 +1395,8 @@
   },
   {
     "file": "/2.Read/douban/book/表面活性剂、胶体与界面化学基础（崔正刚）（第二版）",
-    "title": [
-      "表面活性剂、胶体与界面化学基础（崔正刚）（第二版）"
-    ],
-    "封面": "https://m.media-amazon.com/images/I/71fmmT6AC0L._SY522_.jpg",
+    "title": "表面活性剂、胶体与界面化学基础（崔正刚）（第二版）",
+    "封面": "/imgs/表面活性剂第二版.png",
     "originalTitle": "",
     "author": [
       ""
@@ -1535,9 +1419,7 @@
   },
   {
     "file": "/2.Read/douban/book/认知边界：认知决定你的财富",
-    "title": [
-      "认知边界：认知决定你的财富"
-    ],
+    "title": "认知边界：认知决定你的财富",
     "封面": "https://m.media-amazon.com/images/I/51ilGM8ZvdL._SY522_.jpg",
     "originalTitle": "",
     "author": " - 凌发明",
@@ -1559,10 +1441,8 @@
   },
   {
     "file": "/2.Read/douban/book/财务自由之路",
-    "title": [
-      "财务自由之路"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s35028819.jpg",
+    "title": "财务自由之路",
+    "封面": "/imgs/s35028819.jpg",
     "originalTitle": "",
     "author": [
       " - 德国/博多·舍费尔"
@@ -1585,10 +1465,8 @@
   },
   {
     "file": "/2.Read/douban/book/贫穷的本质（修订版）",
-    "title": [
-      "贫穷的本质（修订版）"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s29856376.jpg",
+    "title": "贫穷的本质（修订版）",
+    "封面": "/imgs/s29856376.jpg",
     "originalTitle": "",
     "author": " - 印度/阿比吉特·班纳吉 - 法/埃斯特·迪弗洛",
     "scoreStar": "⭐⭐⭐",
@@ -1609,10 +1487,8 @@
   },
   {
     "file": "/2.Read/douban/book/费曼学习法（用输出倒逼输入）",
-    "title": [
-      "费曼学习法（用输出倒逼输入）"
-    ],
-    "封面": "https://img1.doubanio.com/view/subject/l/public/s33891850.jpg",
+    "title": "费曼学习法（用输出倒逼输入）",
+    "封面": "/imgs/s33891850.jpg",
     "originalTitle": "",
     "author": [
       " - 尹红心李伟"
@@ -1635,10 +1511,8 @@
   },
   {
     "file": "/2.Read/douban/book/金钱心理学",
-    "title": [
-      "金钱心理学"
-    ],
-    "封面": "https://img9.doubanio.com/view/subject/l/public/s34540496.jpg",
+    "title": "金钱心理学",
+    "封面": "/imgs/s34540496.jpg",
     "originalTitle": "",
     "author": [
       null,
@@ -1662,10 +1536,8 @@
   },
   {
     "file": "/2.Read/douban/book/非暴力沟通",
-    "title": [
-      "非暴力沟通"
-    ],
-    "封面": "https://img3.doubanio.com/view/subject/l/public/s29710777.jpg",
+    "title": "非暴力沟通",
+    "封面": "/imgs/s29710777.jpg",
     "originalTitle": "",
     "author": [
       "美/马歇尔·卢森堡\""
