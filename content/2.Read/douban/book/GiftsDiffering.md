@@ -62,12 +62,12 @@ P——judge
 为什么I不能用主功能的T作为主功能
  A：最后一个测的是对外部世界的感知或判断，内倾型的人格主要功能用于内部世界，辅助功能才用于外部世界
 
-|      | ST             | SF       | NF       | NT       |
-| ---- | -------------- | -------- | -------- | -------- |
-| I--J | I*==**S**==*TJ | I==S==FJ | I==N==FJ | I==N==TJ |
-| I--P | IS==T==P       | IS==F==P | NI==T==P | IN==T==P |
-| E--J | ES==T==J       | ES==F==J | EN==F==J | EN==T==J |
-| E--P | E==S==TP       | E==S==FP | E==N==FP | E==N==TP |
+|      | ST   | SF   | NF   | NT   |
+| ---- | ---- | ---- | ---- | ---- |
+| I--J | ISTJ | ISFJ | INFJ | INTJ |
+| I--P | ISTP | ISFP | NITP | INTP |
+| E--J | ESTJ | ESFJ | ENFJ | ENTJ |
+| E--P | ESTP | ESFP | ENFP | ENTP |
 
 ## part 2 人格详解
 ### 四种对立
@@ -291,12 +291,13 @@ EP
 感知和判断如果都不同会有很多问题，至少需要一个相同
 
 
-|      | ST       | SF       | NF       | NT       |
-| ---- | -------- | -------- | -------- | -------- |
-| I--J | I==S==TJ | I==S==FJ | I==N==FJ | I==N==TJ |
-| I--P | IS==T==P | IS==F==P | IN==F==P | IN==T==P |
-| E--P | E==S==TP | E==S==FP | E==N==FP | E==N==TP |
-| E--J | ES==T==J | ES==F==J | EN==F==J | EN==T==J |
+|      | ST   | SF   | NF   | NT   |     |
+| ---- | ---- | ---- | ---- | ---- | --- |
+| I--J | ISTJ | ISFJ | INFJ | INTJ |     |
+| I--P | ISTP | ISFP | INFP | INTP |     |
+| E--P | ESTP | ESFP | ENFP | ENTP |     |
+| E--J | ESTJ | ESFJ | ENFJ | ENTJ |     |
+|      |      |      |      |      |     |
 
 
 

@@ -24,4 +24,3 @@ from "7.Read/douban"
 where contains(阅读状态,"已读完")
 and contains(阅读状态,"正在阅读")
 ```
-

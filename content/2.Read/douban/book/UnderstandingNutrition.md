@@ -21,3 +21,10 @@ currentPage:
 myRate:
 添加时间: 2025-05-08
 ---
+
+
+## 我的阅读笔记
+
+```dataview 
+LIST FROM [[path/to/book.pdf]] WHERE contains(file.outlinks, this.file.link) 
+```

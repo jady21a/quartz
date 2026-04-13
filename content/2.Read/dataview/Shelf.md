@@ -2,31 +2,32 @@
 cssclasses:
 - cards
 ---
-
 ## 正在阅读
-
 ```dataview
 table without ID
 	file.link as "list",
 	("![|100]("+封面+")") as 封面,
-	"originalTitle:"+originalTitle,
-	"author:"+author,
-	"star:"+scoreStar,
-	"score:"+score,
-	"publishDate:"+publishDate,
-	"myRate:"+myRate,
-	"阅读状态："+阅读状态,
-	"totalPage:"+totalPage,
-	"currentPage:"+currentPage,
-	"添加时间："+添加时间,
-	"结束阅读："+结束阅读,
-	"阅读用时:"+(date(结束阅读) - date(添加时间))
-from "2.Read/douban" 
-
-SORT 添加时间 DESC
+	"originalTitle:" + choice(originalTitle, originalTitle, choice(title[0], title[0], "—")) as "原标题",
+	"CNTitle:" + CNTitle as "中文标题",
+	"author:" + author as "作者",
+	"star:" + choice(scoreStar, scoreStar, "—") as "评分星",
+	"score:" + choice(score, score, "—") as "分数",
+	"publishDate:" + publishDate as "出版日期",
+	"myRate:" + choice(myRate, myRate, choice(我的评分, 我的评分, "—")) as "我的评分",
+	"阅读状态：" + choice(阅读状态[0], 阅读状态[0], "—") as "状态",
+	"totalPage:" + totalPage as "总页数",
+	"currentPage:" + choice(currentPage, currentPage, "—") as "当前页",
+	"添加时间：" + 添加时间 as "添加时间",
+	"开始阅读：" + choice(开始阅读, 开始阅读, "—") as "开始",
+	"结束阅读：" + choice(结束阅读, 结束阅读, "—") as "结束",
+	"阅读用时:" + choice(结束阅读 AND 开始阅读, date(结束阅读) - date(开始阅读), "—") as "用时"
+from "2.Read"
 where contains(阅读状态,"正在阅读")
-
+sort 添加时间 desc
 ```
+
+
+
 
 
 

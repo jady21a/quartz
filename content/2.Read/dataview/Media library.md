@@ -3,8 +3,14 @@ cssclasses:
 - cards
 ---
 
-
+Cats and Dogs
+The Quick and The Dead
+Roseanne  tv
+    Roseanne is good show to watch if you want see how the average American lives
+    It is a pretty good depiction of a lower middle class family
+    Living in the midwest
 ## 正在观看
+
 ```dataview
 table without ID
 	file.link as "list",
@@ -21,6 +27,7 @@ table without ID
 	"country:"+country
 
 from "2.Read/douban"  and #movies
+
 SORT 添加时间 desc
 where contains(state,"正在观看")
 ```
@@ -29,7 +36,7 @@ where contains(state,"正在观看")
 
 ## 待看
 
-Bourne Identity
+
 分裂
 天兆
 ```dataview
