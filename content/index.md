@@ -13,7 +13,9 @@ title:
 快速导览
 >[[藏书馆]]
 >[[观影库]]
->视频教程:
+
+
+视频教程
 >[[obsidian]]
 
 
@@ -22,7 +24,7 @@ title:
 
 
 
-免费订阅,获取最新推送
+免费订阅获取最新推送
 <div id="mc_embed_shell">
       <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
   <style type="text/css">
