@@ -1,9 +1,11 @@
 2025
-timeline
+
+下载插件及模板的GitHub仓库地址: https://github.com/jady21a/.obsidian
+
 2026-04-12
 Obsidian 自动继承昨日任务
 [[001-自动继承昨日任务模版|任务继承模板代码]]
-[[视频链接]]
+
 
 2026-04-12
 obsidian模版自动归档/命名/编号
