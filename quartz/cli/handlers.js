@@ -554,6 +554,14 @@ export async function handleRestore(argv) {
 export async function handleSync(argv) {
   const contentFolder = resolveContentPath(argv.directory)
   console.log(`\n${styleText(["bgGreen", "black"], ` Quartz v${version} `)}\n`)
+
+  console.log("Running npm run generate-all before sync (mappings, books, movies)")
+  const genAll = spawnSync("npm", ["run", "generate-all"], { stdio: "inherit", cwd })
+  if (genAll.status !== 0) {
+    console.log(styleText("red", "`generate-all` failed; sync aborted."))
+    return
+  }
+
   console.log("Backing up your content")
 
   if (argv.commit) {
