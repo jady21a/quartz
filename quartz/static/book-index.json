@@ -18,6 +18,98 @@
     "tags": []
   },
   {
+    "file": "/2.Read/books/How to Read a Book",
+    "title": "如何阅读一本书",
+    "封面": "http://books.google.com/books/content?id=Z5PpkQadm5EC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "originalTitle": "How to Read a Book",
+    "author": "Mortimer J. Adler, Charles Van Doren",
+    "scoreStar": "",
+    "score": "",
+    "publishDate": "2011-05-10",
+    "myRate": "",
+    "阅读状态": [
+      "正在阅读",
+      "已读完"
+    ],
+    "totalPage": "452",
+    "currentPage": "",
+    "添加时间": "2026-01-30",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
+    "file": "/2.Read/books/Logic A Very Short Introduction",
+    "title": "逻辑学尖端入门",
+    "封面": "http://books.google.com/books/content?id=1-4BLLgo0A8C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "originalTitle": "Logic: A Very Short Introduction",
+    "author": "Graham Priest",
+    "scoreStar": "",
+    "score": "",
+    "publishDate": "2000-10-12",
+    "myRate": "",
+    "阅读状态": [
+      "正在阅读",
+      "已读完"
+    ],
+    "totalPage": "152",
+    "currentPage": "",
+    "添加时间": "2026-01-23",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
+    "file": "/2.Read/books/Thinking Fast and Slow",
+    "title": "Thinking Fast and Slow",
+    "封面": "http://books.google.com/books/content?id=TA7Q27RWlj0C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "originalTitle": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "scoreStar": "",
+    "score": "",
+    "publishDate": "2011-11-01",
+    "myRate": "",
+    "阅读状态": [
+      "正在阅读",
+      "已读完"
+    ],
+    "totalPage": "619",
+    "currentPage": "第三章",
+    "添加时间": "2026-03-17",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
+    "file": "/2.Read/books/Unwinding Anxiety",
+    "title": "Unwinding Anxiety",
+    "封面": "http://books.google.com/books/content?id=GxACEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "originalTitle": "Unwinding Anxiety",
+    "author": "Judson Brewer, MD, PhD",
+    "scoreStar": "",
+    "score": "",
+    "publishDate": "2021-03-09",
+    "myRate": "",
+    "阅读状态": [
+      "正在阅读",
+      "已读完"
+    ],
+    "totalPage": "305",
+    "currentPage": "",
+    "添加时间": "2026-04-14",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
     "file": "/2.Read/douban/book/10xIsEasierThan2x",
     "title": "10xIsEasierThan2x",
     "封面": "/imgs/s34536381.jpg",
@@ -147,7 +239,7 @@
     "封面": "/imgs/s35158296.jpg",
     "originalTitle": "",
     "author": [
-      ""
+      "Lewis HowesLewis Howes"
     ],
     "scoreStar": "",
     "score": "",
@@ -274,7 +366,7 @@
     "publishDate": "2013-05-01",
     "myRate": "",
     "阅读状态": [
-      "未开始"
+      "正在阅读"
     ],
     "totalPage": "184",
     "currentPage": "",
@@ -299,17 +391,13 @@
     "publishDate": "2014-11-01",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
-      "已读完",
-      "未开始",
-      "未读完",
-      "概览"
+      "已读完"
     ],
     "totalPage": "440",
     "currentPage": "",
     "添加时间": "2025-10-23",
     "开始时间": "",
-    "结束阅读": "",
+    "结束阅读": "2025-12-22",
     "tags": [
       "book"
     ]
@@ -935,6 +1023,29 @@
     ]
   },
   {
+    "file": "/2.Read/douban/book/无穷的开始",
+    "title": "无穷的开始",
+    "封面": "/imgs/无穷的开始.jpg",
+    "originalTitle": "The Beginning of Infinity: Explanations That Transform the World",
+    "author": " - 英/戴维·多伊奇（DavidDeutsch）",
+    "scoreStar": "⭐⭐⭐⭐☆",
+    "score": "8.3",
+    "publishDate": "2014-11-01",
+    "myRate": "",
+    "阅读状态": [
+      "正在阅读",
+      "已读完"
+    ],
+    "totalPage": "530",
+    "currentPage": "",
+    "添加时间": "2025-12-20",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
     "file": "/2.Read/douban/book/普通人的財富自由之道",
     "title": "普通人的財富自由之道",
     "封面": "https://m.media-amazon.com/images/I/714FD0hNmfL._SY522_.jpg",
@@ -982,7 +1093,7 @@
     "currentPage": "",
     "添加时间": "2025-10-23",
     "开始时间": "",
-    "结束阅读": "",
+    "结束阅读": "2025-11-17",
     "tags": [
       "book"
     ]
@@ -1054,6 +1165,29 @@
     "totalPage": "468",
     "currentPage": "",
     "添加时间": "2025-05-08",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
+    "file": "/2.Read/douban/book/理性乐观派",
+    "title": "理性乐观派",
+    "封面": "/imgs/理性乐观派.jpg",
+    "originalTitle": "The Rational Optimist:How Prosperity Evolves",
+    "author": " - （美）马特·里德利（MattRidley）",
+    "scoreStar": "⭐⭐⭐⭐☆",
+    "score": "8.2",
+    "publishDate": "2011-11-01",
+    "myRate": "",
+    "阅读状态": [
+      "正在阅读",
+      "已读完"
+    ],
+    "totalPage": "316",
+    "currentPage": "",
+    "添加时间": "2025-12-20",
     "开始时间": "",
     "结束阅读": "",
     "tags": [

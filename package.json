@@ -30,7 +30,7 @@
     "build": "npx quartz build && cp quartz/static/googlebb4488cf87b645f4.html public/",
     "serve": "npx quartz build --serve",
 
-
+    "sync:no-pull": "npm run generate-books && npx quartz sync --no-pull",
     "local-sync": "quartz sync-only"
 
 
