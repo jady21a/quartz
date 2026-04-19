@@ -46,7 +46,8 @@ desc: New York Times and Wall Street Journal bestseller A step-by-step plan clin
 - 怎么改变一个习惯,需要多久
 
 **读时疑问**
-
+- 压力,担忧,恐慌,焦虑区别
+- 人为什么会焦虑,焦虑对人的生存进化有帮助吗?担忧是一种奖赏?
 
 三、新知识
 

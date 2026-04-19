@@ -1,6 +1,6 @@
 ---
 originalTitle: Thinking, Fast and Slow
-title: ""
+CNTitle: 思考,快与慢
 author: Daniel Kahneman
 genre: Psychology
 publisher: Doubleday Canada

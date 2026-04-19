@@ -5,10 +5,7 @@ cssclasses:
 
 Cats and Dogs
 The Quick and The Dead
-Roseanne  tv
-    Roseanne is good show to watch if you want see how the average American lives
-    It is a pretty good depiction of a lower middle class family
-    Living in the midwest
+
 ## 正在观看
 
 ```dataview

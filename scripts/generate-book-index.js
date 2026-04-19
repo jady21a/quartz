@@ -9,6 +9,39 @@ import matter from 'gray-matter';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const contentRoot = path.join(__dirname, '../content');
+
+/** 与 quartz/util/path.ts 中 slugifyFilePath 一致，保证卡片链接与站点 HTML 路径相同 */
+function getFileExtension(s) {
+  return s.match(/\.[A-Za-z0-9]+$/)?.[0];
+}
+
+function sluggify(s) {
+  return s
+    .split('/')
+    .map((segment) =>
+      segment
+        .replace(/\s/g, '-')
+        .replace(/&/g, '-and-')
+        .replace(/%/g, '-percent')
+        .replace(/\?/g, '')
+        .replace(/#/g, ''),
+    )
+    .join('/')
+    .replace(/\/$/, '');
+}
+
+function slugifyFilePathLikeQuartz(relativePathWithExt) {
+  let fp = relativePathWithExt.replace(/^\/+|\/+$/g, '');
+  const ext = getFileExtension(fp);
+  const withoutFileExt = ext ? fp.replace(new RegExp(`${ext.replace('.', '\\.')}$`), '') : fp;
+  let slug = sluggify(withoutFileExt);
+  if (slug.endsWith('_index')) {
+    slug = slug.replace(/_index$/, 'index');
+  }
+  return slug;
+}
+
 // ===== 加载图片映射 =====
 let imageMapping = { books: {}, movies: {} };
 try {
@@ -115,10 +148,14 @@ function extractBookData(filePath) {
       return null;
     }
 
-    // 计算相对路径用于链接
-    const relativePath = filePath
-      .replace(/^.*?content\//, '/')
-      .replace(/\.md$/, '');
+    // 与 Quartz parse 一致：posix 相对路径 + slugify，否则文件名含空格时链接会 404
+    let relFromContent = path.relative(contentRoot, filePath);
+    if (relFromContent.startsWith('..')) {
+      relFromContent = filePath.replace(/^.*?content[/\\]/, '').replace(/\\/g, '/');
+    } else {
+      relFromContent = relFromContent.split(path.sep).join('/');
+    }
+    const relativePath = `/${slugifyFilePathLikeQuartz(relFromContent)}`;
     
     // 提取标题
     let title = frontmatter.title;

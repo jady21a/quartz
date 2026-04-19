@@ -1,6 +1,6 @@
 ---
 originalTitle: How to Read a Book
-title:
+CNTitle:
   - 如何阅读一本书
 author: Mortimer J. Adler, Charles Van Doren
 genre: Language Arts & Disciplines

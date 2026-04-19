@@ -1,7 +1,7 @@
 ---
 originalTitle: "Logic: A Very Short Introduction"
-title:
-  - 逻辑学尖端入门
+CNTitle:
+  - 逻辑学简短入门
 author: Graham Priest
 genre: Mathematics
 publisher: Oxford Paperbacks

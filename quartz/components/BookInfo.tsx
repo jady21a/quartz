@@ -1,4 +1,5 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { resolveCoverUrl } from "../util/coverImage"
 
 const BookInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
   const fm = fileData.frontmatter
@@ -10,13 +11,8 @@ const BookInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
   
   // 如果不是书籍页面,不显示任何内容
   if (!isBook) return null
-  
-  const getImageUrl = (url: string): string => {
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return `https://images.weserv.nl/?url=${encodeURIComponent(url)}`
-    }
-    return url
-  }
+
+  const coverSrc = resolveCoverUrl(fm.封面, fm as Record<string, unknown>, fileData.relativePath, "book")
   
   return (
     <div class="book-meta">
@@ -24,10 +20,10 @@ const BookInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
       
       <div class="book-main">
         {/* 左侧：封面图片 */}
-        {fm.封面 && typeof fm.封面 === 'string' && (
+        {coverSrc && (
           <div class="book-picture">
             <img 
-              src={getImageUrl(fm.封面)} 
+              src={coverSrc} 
               alt={(fm.title as string) || "书籍封面"}
               loading="lazy"
             />
@@ -42,7 +38,10 @@ const BookInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
               <p><strong>书名：</strong>{String(fm.title)}</p>
             )}
             {fm.originalTitle && (
-              <p><strong>原标题：</strong>{String(fm.originalTitle)}</p>
+              <p><strong>原书名：</strong>{String(fm.originalTitle)}</p>
+            )}
+            {fm.CNTitle && String(fm.CNTitle).trim() && (
+              <p><strong>中文书名：</strong>{String(fm.CNTitle)}</p>
             )}
             
             {/* 评分信息 */}

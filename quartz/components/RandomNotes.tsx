@@ -28,7 +28,8 @@ export default ((userOpts?: Partial<Options>) => {
         file.slug !== currentSlug && 
         !file.slug?.endsWith("index") &&
         file.frontmatter?.title&&
-        !(file.frontmatter?.tags || []).includes("movies") // ⬅ 新增这一行
+        !(file.frontmatter?.tags || []).includes("movies") &&
+        file.text && file.text.trim().length > 71  
     )
 
     // 随机选择指定数量的笔记

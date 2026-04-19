@@ -1,22 +1,21 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { resolveCoverUrl } from "../util/coverImage"
+
+const movieTags = new Set(["movies", "movie", "teleplay", "tv", "电影", "电视剧"])
 
 const MovieInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
   const fm = fileData.frontmatter
   
   if (!fm) return null
   
-  // 严格判断：只显示 tags 包含 "movie" 的页面
-  const isMovie = fm.tags && Array.isArray(fm.tags) && fm.tags.includes('movies')
+  const isMovie =
+    fm.tags &&
+    Array.isArray(fm.tags) &&
+    fm.tags.some((t) => movieTags.has(String(t).toLowerCase()))
   
-  // 如果不是电影页面,不显示任何内容
   if (!isMovie) return null
-  
-  const getImageUrl = (url: string): string => {
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return `https://images.weserv.nl/?url=${encodeURIComponent(url)}`
-    }
-    return url
-  }
+
+  const coverSrc = resolveCoverUrl(fm.封面, fm as Record<string, unknown>, fileData.relativePath, "movie")
   
   return (
     <div class="movie-meta">
@@ -24,10 +23,10 @@ const MovieInfo: QuartzComponent = ({ fileData }: QuartzComponentProps) => {
       
       <div class="movie-main">
         {/* 左侧：海报图片 */}
-        {fm.封面 && typeof fm.封面 === 'string' && (
+        {coverSrc && (
           <div class="movie-picture">
             <img 
-              src={getImageUrl(fm.封面)} 
+              src={coverSrc} 
               alt={(fm.title as string) || "电影海报"}
               loading="lazy"
             />
