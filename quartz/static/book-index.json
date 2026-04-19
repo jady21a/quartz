@@ -19,7 +19,7 @@
   },
   {
     "file": "/2.Read/books/How-to-Read-a-Book",
-    "title": "如何阅读一本书",
+    "title": "How to Read a Book",
     "封面": "http://books.google.com/books/content?id=Z5PpkQadm5EC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
     "originalTitle": "How to Read a Book",
     "author": "Mortimer J. Adler, Charles Van Doren",
@@ -42,7 +42,7 @@
   },
   {
     "file": "/2.Read/books/Logic-A-Very-Short-Introduction",
-    "title": "逻辑学尖端入门",
+    "title": "Logic A Very Short Introduction",
     "封面": "http://books.google.com/books/content?id=1-4BLLgo0A8C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
     "originalTitle": "Logic: A Very Short Introduction",
     "author": "Graham Priest",

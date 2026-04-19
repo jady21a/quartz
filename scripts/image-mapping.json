@@ -30,12 +30,10 @@
     "搞定": "/imgs/s33860665.jpg",
     "改变人生的谈话": "/imgs/s33838655.jpg",
     "故事课1：说故事的人最有影响力": "/imgs/s29824182.jpg",
-    "无穷的开始": "/imgs/无穷的开始.jpg",
     "枪炮、病菌与钢铁": "/imgs/s1738643.jpg",
     "棉花帝国": "/imgs/s32271479.jpg",
     "榮格論心理類型": "/imgs/s29703716.jpg",
     "漫步华尔街(原书第12版)": "/imgs/s34706866.jpg",
-    "理性乐观派": "/imgs/理性乐观派.jpg",
     "生命是什么": "/imgs/s29967303.jpg",
     "百万富翁快车道": "/imgs/s29582069.jpg",
     "穷查理宝典": "/imgs/s28875892.jpg",
@@ -56,6 +54,8 @@
     "金钱心理学": "/imgs/s34540496.jpg",
     "非暴力沟通": "/imgs/s29710777.jpg",
     "飘": "/imgs/飘.jpg",
+    "无穷的开始": "/imgs/无穷的开始.jpg",
+    "理性乐观派": "/imgs/理性乐观派.jpg",
     "表面活性剂、胶体与界面化学基础（崔正刚）（第二版）": "/imgs/表面活性剂第二版.png"
   },
   "movies": {
@@ -103,12 +103,12 @@
         "suggestedFilename": "unknown"
       },
       {
-        "title": "如何阅读一本书",
+        "title": "How to Read a Book",
         "originalCover": "http://books.google.com/books/content?id=Z5PpkQadm5EC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         "suggestedFilename": "unknown"
       },
       {
-        "title": "逻辑学尖端入门",
+        "title": "Logic: A Very Short Introduction",
         "originalCover": "http://books.google.com/books/content?id=1-4BLLgo0A8C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
         "suggestedFilename": "unknown"
       },
@@ -163,9 +163,19 @@
         "suggestedFilename": "s34001866.jpg"
       },
       {
+        "title": "The Beginning of Infinity: Explanations That Transform the World",
+        "originalCover": "https://img3.doubanio.com/view/subject/l/public/s28775083.jpg",
+        "suggestedFilename": "s28775083.jpg"
+      },
+      {
         "title": "普通人的財富自由之道",
         "originalCover": "https://m.media-amazon.com/images/I/714FD0hNmfL._SY522_.jpg",
         "suggestedFilename": "unknown"
+      },
+      {
+        "title": "The Rational Optimist:How Prosperity Evolves",
+        "originalCover": "https://img3.doubanio.com/view/subject/l/public/s6983402.jpg",
+        "suggestedFilename": "s6983402.jpg"
       },
       {
         "title": "认知边界：认知决定你的财富",
