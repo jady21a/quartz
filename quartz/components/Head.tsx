@@ -106,7 +106,14 @@ export default (() => {
         <script src="/book-query.js" defer></script>
         <script src="/movie-query.js" defer></script>
 
-      
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.css"
+        />
+        <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.js"
+        />
       </head>
     )
   }
