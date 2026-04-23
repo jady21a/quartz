@@ -39,4 +39,14 @@ cssclasses:
 > **2026-04-18** 
 </div>
 
+<div class="video-hub-card">
+
+## 写笔记=更新博客
+
+<lite-youtube videoid="Xg7mhaWDIcc" playlabel="写笔记=更新博客"></lite-youtube>
+> **2026-04-22 **   [[1.个人博客-obsidian+quartz]]  
+</div>
+
+
+
 </div>
