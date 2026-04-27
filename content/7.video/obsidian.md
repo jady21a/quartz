@@ -19,7 +19,7 @@ cssclasses:
 ## 模版自动归档、命名与编号
 
 <lite-youtube videoid="ALDAEYwmzU4" playlabel="模版自动归档、命名与编号"></lite-youtube>
-> **2026-04-12** · 笔记：[[002-模版自动分类+标题填充|模板归档代码]]
+> **2026-04-12** · 笔记：[[002-模版自动分类+title填充|模板归档代码]]
 </div>
 
 <div class="video-hub-card">
@@ -46,6 +46,15 @@ cssclasses:
 <lite-youtube videoid="Xg7mhaWDIcc" playlabel="写笔记=更新博客"></lite-youtube>
 > **2026-04-22 **   [[1.个人博客-obsidian+quartz|相关笔记]]  
 </div>
+
+<div class="video-hub-card">
+
+## 自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号
+
+<lite-youtube videoid="wxFmL2uSXx0" playlabel="自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号"></lite-youtube>
+> **2026-04-24**   [[003-自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号|代码链接]]
+</div>
+
 
 
 

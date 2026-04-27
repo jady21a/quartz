@@ -29,7 +29,7 @@ export default ((userOpts?: Partial<Options>) => {
         !file.slug?.endsWith("index") &&
         file.frontmatter?.title&&
         !(file.frontmatter?.tags || []).includes("movies") &&
-        file.text && file.text.trim().length > 71  
+        file.text && file.text.trim().length > 121  
     )
 
     // 随机选择指定数量的笔记
