@@ -99,12 +99,14 @@ export default (() => {
           }
         })}
 
-        {/* 自己添加图书卡片 */}
+        {/* 自己添加图书/影视/视频卡片 */}
         <link rel="stylesheet" href="/book-styles.css" />
         <link rel="stylesheet" href="/movie-styles.css" />
+        <link rel="stylesheet" href="/video-styles.css" />
 
         <script src="/book-query.js" defer></script>
         <script src="/movie-query.js" defer></script>
+        <script src="/video-query.js" defer></script>
 
         <link
           rel="stylesheet"

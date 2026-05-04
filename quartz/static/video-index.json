@@ -1,0 +1,113 @@
+[
+  {
+    "title": "自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号",
+    "videoid": "wxFmL2uSXx0",
+    "file": "/7.video/Metadata/006-自制去版权信息插件",
+    "tags": [
+      "video",
+      "obsidian",
+      "插件"
+    ],
+    "date": "2026-04-24",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/wxFmL2uSXx0/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "003-自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号",
+        "label": "代码链接"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "写笔记=更新博客",
+    "videoid": "Xg7mhaWDIcc",
+    "file": "/7.video/Metadata/005-写笔记=更新博客",
+    "tags": [
+      "video",
+      "quartz"
+    ],
+    "date": "2026-04-22",
+    "description": "",
+    "category": "project",
+    "thumbnail": "https://i.ytimg.com/vi/Xg7mhaWDIcc/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "1.个人博客-obsidian+quartz",
+        "label": "相关笔记"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "运动网站分享",
+    "videoid": "F-m_rst8Rps",
+    "file": "/7.video/Metadata/004-运动网站分享",
+    "tags": [
+      "video",
+      "工具"
+    ],
+    "date": "2026-04-18",
+    "description": "",
+    "category": "project",
+    "thumbnail": "https://i.ytimg.com/vi/F-m_rst8Rps/hqdefault.jpg",
+    "related_notes": [],
+    "createTime": ""
+  },
+  {
+    "title": "代码复制无效的排查",
+    "videoid": "didne9K-CeQ",
+    "file": "/7.video/Metadata/003-代码复制无效的排查",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-04-16",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/didne9K-CeQ/hqdefault.jpg",
+    "related_notes": [],
+    "createTime": ""
+  },
+  {
+    "title": "自动继承昨日任务",
+    "videoid": "m2BxaTHl4Jo",
+    "file": "/7.video/Metadata/001-自动继承昨日任务",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-04-12",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/m2BxaTHl4Jo/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "001-自动继承昨日任务模版",
+        "label": "任务继承模板代码"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "模版自动归档、命名与编号",
+    "videoid": "ALDAEYwmzU4",
+    "file": "/7.video/Metadata/002-模版自动归档、命名与编号",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-04-12",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/ALDAEYwmzU4/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "002-模版自动分类+title填充",
+        "label": "模板归档代码"
+      }
+    ],
+    "createTime": ""
+  }
+]

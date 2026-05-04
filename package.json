@@ -24,9 +24,10 @@
     "preserve": "npm run generate-all",
     "generate-books": "node scripts/generate-book-index.js",
     "generate-movies": "node scripts/generate-movies.js",
+    "generate-videos": "node scripts/generate-videos.js",
     "gen:mapping": "node scripts/generate-image-mapping.js",
     "merge:mappings": "node scripts/merge-manual-mappings.js",
-    "generate-all": "npm run gen:mapping && npm run merge:mappings && npm run generate-books && npm run generate-movies",
+    "generate-all": "npm run gen:mapping && npm run merge:mappings && npm run generate-books && npm run generate-movies && npm run generate-videos",
     "build": "npx quartz build && cp quartz/static/googlebb4488cf87b645f4.html public/",
     "serve": "npx quartz build --serve",
 

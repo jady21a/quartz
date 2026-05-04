@@ -183,6 +183,12 @@
         "suggestedFilename": "unknown"
       }
     ],
-    "movies": []
+    "movies": [
+      {
+        "title": "The Cat in the Hat",
+        "originalCover": "https://m.media-amazon.com/images/M/MV5BMTI5MDU3MTYyMF5BMl5BanBnXkFtZTYwODgyODc3._V1_SX300.jpg",
+        "suggestedFilename": "unknown"
+      }
+    ]
   }
 }

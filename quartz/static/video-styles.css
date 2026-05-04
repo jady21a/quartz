@@ -1,0 +1,183 @@
+/* ========== 视频卡片网格 ========== */
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 默认 2 列 */
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 360px) {
+  .video-grid {
+    grid-template-columns: 1fr; /* 极窄屏 1 列 */
+  }
+}
+
+@media (min-width: 900px) {
+  .video-grid {
+    grid-template-columns: repeat(3, 1fr); /* 宽屏 3 列 */
+  }
+}
+
+/* ========== 单个视频卡片 ========== */
+
+.video-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--lightgray);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--light);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.video-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ========== 封面缩略图 ========== */
+
+.video-cover-link {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+}
+
+.video-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.video-cover-link:hover .video-cover-img {
+  transform: scale(1.05);
+  opacity: 0.8;
+}
+
+/* ========== 卡片内容区 ========== */
+
+.video-card-title {
+  margin: 0.5rem 0.6rem 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.video-card-title a {
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.video-card-title a:hover {
+  color: var(--secondary);
+}
+
+.video-card-date {
+  margin: 0 0.6rem;
+  font-size: 0.72rem;
+  color: var(--gray);
+}
+
+.video-card-desc {
+  margin: 0.3rem 0.6rem 0;
+  font-size: 0.78rem;
+  color: var(--darkgray);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.video-card-notes {
+  margin: 0.4rem 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.video-note-link {
+  display: inline-block;
+  padding: 0.12rem 0.45rem;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--secondary) 12%, transparent);
+  color: var(--secondary);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.video-note-link:hover {
+  background: color-mix(in srgb, var(--secondary) 22%, transparent);
+}
+
+.video-card-category {
+  margin: auto 0.6rem 0.55rem;
+  align-self: flex-start;
+  font-size: 0.68rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  background: var(--highlight);
+  color: var(--darkgray);
+}
+
+@media (min-width: 900px) {
+  .video-card-title {
+    margin: 0.6rem 0.75rem 0.25rem;
+    font-size: 1rem;
+  }
+  .video-card-date {
+    margin: 0 0.75rem;
+    font-size: 0.8rem;
+  }
+  .video-card-desc {
+    margin: 0.4rem 0.75rem 0;
+    font-size: 0.85rem;
+  }
+  .video-card-notes {
+    margin: 0.5rem 0.75rem;
+    gap: 0.35rem;
+  }
+  .video-note-link {
+    padding: 0.15rem 0.55rem;
+    font-size: 0.75rem;
+  }
+  .video-card-category {
+    margin: auto 0.75rem 0.65rem;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+  }
+}
+
+/* ========== 视频详情页播放器 ========== */
+
+.video-detail-page lite-youtube {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 1rem 0 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== 状态提示 ========== */
+
+.video-query-loading,
+.video-query-empty,
+.video-query-error {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--darkgray);
+  font-size: 0.95rem;
+}
+
+.video-query-error {
+  color: #c44;
+}

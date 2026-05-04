@@ -1,6 +1,6 @@
-/* 视频教程聚合页：缩略图网格 + lite-youtube（见 frontmatter cssclasses: video-tutorial-hub） */
-.video-tutorial-hub {
-  max-width: min(75rem, 100%);
+/* 视频教程聚合页：配合 data-video-query 动态渲染 */
+.video-hub {
+  max-width: min(80rem, 100%);
   margin-inline: auto;
 
   > p:first-of-type {
@@ -10,25 +10,10 @@
   }
 
   h2 {
-    margin: 0 0 0.5rem;
-    font-size: 1.2rem;
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.3rem;
     font-weight: 600;
     letter-spacing: -0.02em;
-    line-height: 1.35;
-  }
-
-  blockquote {
-    margin: 0 0 1rem;
-    padding: 0.55rem 1rem;
-    border-left: 3px solid var(--secondary);
-    background: color-mix(in srgb, var(--highlight) 85%, transparent);
-    border-radius: 0 8px 8px 0;
-    font-size: 0.9rem;
-    color: var(--darkgray);
-  }
-
-  blockquote p {
-    margin: 0;
   }
 
   hr {
@@ -44,118 +29,5 @@
     );
   }
 
-  .external-embed.youtube,
-  iframe.youtube {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    aspect-ratio: 16 / 9;
-    height: auto;
-    min-height: 0;
-    border: none;
-    border-radius: 10px;
-    box-shadow:
-      0 4px 6px -1px color-mix(in srgb, var(--dark) 12%, transparent),
-      0 12px 24px -4px color-mix(in srgb, var(--dark) 18%, transparent);
-  }
-
-  p:has(iframe.youtube, iframe.external-embed) {
-    margin: 0 0 0.25rem;
-  }
-
-  /* 缩略图网格：大屏约 260px/列 3–4 列；平板 2–3 列；窄机双列；极窄单列 */
-  .video-hub-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 0.85rem 1rem;
-    margin-top: 1rem;
-  }
-
-  @media (min-width: 400px) {
-    .video-hub-grid {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    }
-  }
-
-  @media (min-width: 640px) {
-    .video-hub-grid {
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
-  }
-
-  @media (min-width: 900px) {
-    .video-hub-grid {
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    }
-  }
-
-  .video-hub-card {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 0.65rem 0.6rem 0.85rem;
-    border: 1px solid var(--lightgray);
-    border-radius: 10px;
-    background: color-mix(in srgb, var(--light) 94%, var(--lightgray));
-
-    h2 {
-      font-size: 1.02rem;
-      margin: 0 0 0.35rem;
-    }
-
-    blockquote {
-      margin: 0 0 0.5rem;
-      padding: 0.45rem 0.65rem;
-      font-size: 0.78rem;
-      line-height: 1.45;
-    }
-
-    p:has(lite-youtube) {
-      margin: 0;
-      line-height: 0;
-    }
-  }
-
-
-  // lite-youtube：卡片内铺满格宽，视觉为小块缩略图
-  lite-youtube {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px color-mix(in srgb, var(--dark) 14%, transparent);
-    margin: 0;
-    width: 100%;
-    max-width: 100%;
-
-    &::before {
-      background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-    }
-
-    /* 播放图标缩小（默认库为 68×48） */
-    > .lty-playbtn {
-      background-size: 44px 31px;
-      transition:
-        opacity 0.2s ease,
-        filter 0.15s ease;
-      filter: grayscale(100%) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
-    }
-
-    &:hover > .lty-playbtn,
-    > .lty-playbtn:focus {
-      filter: none drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
-    }
-
-    /* 仅精细指针设备：默认隐藏播放键，悬停 / 键盘聚焦再显示；触摸设备保持可见 */
-    @media (hover: hover) and (pointer: fine) {
-      &:not(.lyt-activated) > .lty-playbtn {
-        opacity: 0;
-      }
-
-      &:not(.lyt-activated):hover > .lty-playbtn,
-      &:not(.lyt-activated):focus-within > .lty-playbtn,
-      &:not(.lyt-activated) > .lty-playbtn:focus-visible {
-        opacity: 1;
-      }
-    }
-  }
-
+  /* 视频网格由 video-styles.css 中的 .video-grid 控制 */
 }
