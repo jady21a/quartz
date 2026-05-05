@@ -19,7 +19,7 @@ TABLE WITHOUT ID
 	director AS Director,
 	state AS State,
 	country AS Country
-FROM "2.Read/douban"
+FROM "2.Read/douban" OR "2.Read/media-DB"
 WHERE (
 	contains(file.etags, "#movies") OR
 	contains(file.etags, "#mediaDB/tv/movie")
@@ -46,7 +46,7 @@ TABLE WITHOUT ID
 	director AS Director,
 	choice(state, state, choice(watched = false, "待看", "")) AS State,
 	country AS Country
-FROM "2.Read/douban"
+FROM "2.Read/douban" OR "2.Read/media-DB"
 WHERE (
 	contains(file.etags, "#movies") OR
 	contains(file.etags, "#mediaDB/tv/movie")
@@ -73,7 +73,7 @@ TABLE WITHOUT ID
 	director AS Director,
 	choice(state, state, choice(watched = true, "已看", "")) AS State,
 	country AS Country
-FROM "2.Read/douban"
+FROM "2.Read/douban" OR "2.Read/media-DB"
 WHERE (
 	contains(file.etags, "#movies") OR
 	contains(file.etags, "#mediaDB/tv/movie")
