@@ -39,6 +39,7 @@ let books = dv.pages("#book")
 dv.paragraph("📚 已读完数量：" + books.length);
 
 ```
+
 ```dataview
 table without ID
 	file.link as "list",
@@ -144,6 +145,5 @@ table without ID
 	"添加时间："+添加时间,
 	"结束阅读："+结束阅读
 from "2.Read/douban"  & #book
-
 
 ```

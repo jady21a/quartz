@@ -26,7 +26,7 @@ const fileName = `${nextNum}-${title}`;
 await tp.file.move(`${FOLDER}/${fileName}`);
 _%>
 ---
-title: <% title %>
+title: <% nextNum %>-<% title %>
 tags:
   - video
 videoid: VIDEO_ID
