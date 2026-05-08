@@ -178,6 +178,11 @@
         "suggestedFilename": "s6983402.jpg"
       },
       {
+        "title": "红楼梦",
+        "originalCover": "https://img9.doubanio.com/view/subject/l/public/s29683585.jpg",
+        "suggestedFilename": "s29683585.jpg"
+      },
+      {
         "title": "认知边界：认知决定你的财富",
         "originalCover": "https://m.media-amazon.com/images/I/51ilGM8ZvdL._SY522_.jpg",
         "suggestedFilename": "unknown"
@@ -185,8 +190,33 @@
     ],
     "movies": [
       {
+        "title": "The Big Bang Theory: It All Started with a Big Bang",
+        "originalCover": "N/A",
+        "suggestedFilename": "unknown"
+      },
+      {
         "title": "The Cat in the Hat",
         "originalCover": "https://m.media-amazon.com/images/M/MV5BMTI5MDU3MTYyMF5BMl5BanBnXkFtZTYwODgyODc3._V1_SX300.jpg",
+        "suggestedFilename": "unknown"
+      },
+      {
+        "title": "红楼梦",
+        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2554030915.webp",
+        "suggestedFilename": "p2554030915.webp"
+      },
+      {
+        "title": "Harry Potter and the Sorcerer's Stone",
+        "originalCover": "https://m.media-amazon.com/images/M/MV5BNTU1MzgyMDMtMzBlZS00YzczLThmYWEtMjU3YmFlOWEyMjE1XkEyXkFqcGc@._V1_SX300.jpg",
+        "suggestedFilename": "unknown"
+      },
+      {
+        "title": "September 1923",
+        "originalCover": "https://m.media-amazon.com/images/M/MV5BYmNkMzYxYjUtOTQ2NC00ZDdiLWFiMWUtODMwZDg1N2JjM2MzXkEyXkFqcGc@._V1_SX300.jpg",
+        "suggestedFilename": "unknown"
+      },
+      {
+        "title": "The Big Bang Theory",
+        "originalCover": "https://m.media-amazon.com/images/M/MV5BZjgzY2QyNzItNDhhYi00ZWIwLWFjN2UtZDJkN2MxYWNjMmJjXkEyXkFqcGc@._V1_SX300.jpg",
         "suggestedFilename": "unknown"
       }
     ]

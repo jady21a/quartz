@@ -56,10 +56,35 @@ function cleanDate(value) {
   return String(value)
 }
 
+function normalizeVideoSourceId(value) {
+  const normalized = normalizeField(value)
+  return normalized ? String(normalized).trim() : ""
+}
+
 // ===== YouTube 缩略图 URL =====
 function getThumbnailUrl(videoid) {
   if (!videoid) return ""
   return `https://i.ytimg.com/vi/${videoid}/hqdefault.jpg`
+}
+
+function extractPlayerSource(bodyContent, sourceName) {
+  if (!bodyContent) return ""
+  const pattern = new RegExp(`data-${sourceName}="([^"]*)"`, "i")
+  const match = bodyContent.match(pattern)
+  return match?.[1]?.trim() || ""
+}
+
+function buildVideoSources(youtubeId, bilibiliId) {
+  const sources = {}
+  if (youtubeId) sources.youtube = youtubeId
+  if (bilibiliId) sources.bilibili = bilibiliId
+  return sources
+}
+
+function normalizeDefaultSource(value, sources) {
+  const source = normalizeVideoSourceId(value).toLowerCase()
+  if (source && sources[source]) return source
+  return sources.youtube ? "youtube" : Object.keys(sources)[0] || ""
 }
 
 // ===== 从内容提取 wikilinks =====
@@ -99,7 +124,16 @@ function parseVideoData(filePath) {
   let title = normalizeField(frontmatter.title)
   if (!title) title = path.basename(filePath, ".md")
 
-  const videoid = normalizeField(frontmatter.videoid) || ""
+  const videoid =
+    normalizeVideoSourceId(frontmatter.videoid) ||
+    extractPlayerSource(bodyContent, "youtube") ||
+    ""
+  const bilibiliid =
+    normalizeVideoSourceId(frontmatter.bilibiliid) ||
+    extractPlayerSource(bodyContent, "bilibili") ||
+    ""
+  const sources = buildVideoSources(videoid, bilibiliid)
+  const defaultSource = normalizeDefaultSource(frontmatter.defaultSource, sources)
 
   // description: frontmatter 优先,否则用正文第一段
   let description = normalizeField(frontmatter.description) || ""
@@ -117,6 +151,9 @@ function parseVideoData(filePath) {
   return {
     title,
     videoid,
+    bilibiliid,
+    sources,
+    defaultSource,
     file: "/7.video/" + relativePath,
     tags,
     date: cleanDate(frontmatter.date),
@@ -176,7 +213,9 @@ function generateVideoIndex() {
     console.log("\n🎬 示例视频:")
     for (const v of videos.slice(0, 3)) {
       console.log(`   标题: ${v.title}`)
-      console.log(`   ID: ${v.videoid} | 日期: ${v.date} | 分类: ${v.category}`)
+      console.log(
+        `   来源: ${Object.keys(v.sources || {}).join(", ") || "无"} | 日期: ${v.date} | 分类: ${v.category}`,
+      )
       console.log("")
     }
   }

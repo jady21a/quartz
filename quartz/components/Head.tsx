@@ -107,6 +107,7 @@ export default (() => {
         <script src="/book-query.js" defer></script>
         <script src="/movie-query.js" defer></script>
         <script src="/video-query.js" defer></script>
+        <script src="/video-player.js" defer></script>
 
         <link
           rel="stylesheet"

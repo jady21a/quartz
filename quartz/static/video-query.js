@@ -21,6 +21,27 @@
     return path;
   }
 
+  function getPreferredThumbnail(video) {
+    if (video.thumbnail) return video.thumbnail;
+    if (video.videoid) return `https://i.ytimg.com/vi/${video.videoid}/hqdefault.jpg`;
+    return '';
+  }
+
+  function getSourceList(video) {
+    var sources = [];
+    if (video.sources && typeof video.sources === 'object') {
+      Object.keys(video.sources).forEach(function(name) {
+        if (video.sources[name]) {
+          sources.push(name);
+        }
+      });
+    } else {
+      if (video.videoid) sources.push('youtube');
+      if (video.bilibiliid) sources.push('bilibili');
+    }
+    return sources;
+  }
+
   // ==================== 渲染函数 ====================
 
   function renderVideoCard(video) {
@@ -28,20 +49,21 @@
     card.className = 'video-card';
 
     // 1. 封面缩略图（可点击跳转到视频详情页播放）
-    if (video.videoid) {
+    var coverSrc = getPreferredThumbnail(video);
+    if (coverSrc) {
       const coverLink = document.createElement('a');
       coverLink.href = fixFilePath(video.file);
       coverLink.className = 'video-cover-link';
       coverLink.title = video.title || '播放视频';
 
       const img = document.createElement('img');
-      img.src = video.thumbnail || `https://i.ytimg.com/vi/${video.videoid}/hqdefault.jpg`;
+      img.src = coverSrc;
       img.alt = video.title || '视频封面';
       img.className = 'video-cover-img';
       img.loading = 'lazy';
       // maxresdefault.jpg 并非所有视频都有，加载失败时回退到 hqdefault.jpg
       img.onerror = function() {
-        if (img.src.indexOf('maxresdefault.jpg') !== -1) {
+        if (video.videoid && img.src.indexOf('maxresdefault.jpg') !== -1) {
           img.src = `https://i.ytimg.com/vi/${video.videoid}/hqdefault.jpg`;
           img.onerror = null; // 防止无限回退
         }
@@ -99,6 +121,21 @@
       cat.className = 'video-card-category';
       cat.textContent = video.category;
       card.appendChild(cat);
+    }
+
+    var sources = getSourceList(video);
+    if (sources.length > 0) {
+      const sourceWrap = document.createElement('div');
+      sourceWrap.className = 'video-card-sources';
+
+      sources.forEach(function(source) {
+        const badge = document.createElement('span');
+        badge.className = 'video-card-source';
+        badge.textContent = source === 'youtube' ? 'YouTube' : 'Bilibili';
+        sourceWrap.appendChild(badge);
+      });
+
+      card.appendChild(sourceWrap);
     }
 
     return card;

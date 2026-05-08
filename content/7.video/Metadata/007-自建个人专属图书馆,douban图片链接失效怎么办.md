@@ -3,65 +3,90 @@ title: 007-自建个人专属图书馆,douban图片链接失效怎么办
 tags:
   - video
 videoid: VIDEO_ID
+bilibiliid: BV1UjR4BZEHT
+defaultSource: youtube
 date: 2026-05-06
 category: obsidian
 ---
 
-<lite-youtube videoid="VIDEO_ID" playlabel="视频标题"></lite-youtube>
-自建Obsidian个人图书馆&影视库,douban图片失效怎么办?
+<div class="video-player-container" data-youtube="VIDEO_ID" data-bilibili="BV1UjR4BZEHT">
+  <lite-youtube videoid="VIDEO_ID" playlabel="视频标题"></lite-youtube>
+</div>
+
+自建 Obsidian 个人图书馆和影视库，Douban 图片失效怎么办？
+
 本期内容：
- - Obsidian 图书馆 / 影视库搭建思路
- - Dataview & Bases 两种展示方案对比
- - 豆瓣图片失效原因 + 替代方案
- - 本地图片与远程 URL 兼容的 Dataview 查询写法
+
+- Obsidian 图书馆 / 影视库搭建思路
+- Dataview 和 Bases 两种展示方案对比
+- 豆瓣图片失效原因 + 替代方案
+- 本地图片与远程 URL 兼容的 Dataview 查询写法
+
 所用插件：Douban · Templater · Dataview · BookSearch · Media DB
+
 有更好的方案欢迎评论区留言，一起完善！
-章节
+
+章节：
+
 - 用douban搭建的图书馆/影视库
 - Dataview & Bases 两种展示方案对比
 - douban图片失效原因+替代方案
+
 ![[Pasted image 20260506190809.png|300]]
 
 相关代码:
+
 相关视频:
 
 
-##  title
+## title
+
 - obsidian个人图书馆/影视库
-	douban图片失效?
+- douban图片失效?
+
 自建个人专属图书馆,douban图片链接失效怎么办
 个人图书馆,影视库的搭建方案
 
 ## content
-我以前在obsidian做了一个图书馆和影视库
-主要操作:插件下载——设置模板——展示页面
+
+我以前在 Obsidian 做了一个图书馆和影视库。
+
+主要操作：插件下载 -> 设置模板 -> 展示页面。
 
 展示方案
+
 - dataview
 - bases
-bases问题
+
+Bases 问题：
+
 - 显示的信息一多就会不好看
 - 不能一个页面显示所有需要的信息
-我博客中的藏书馆和影视库就是受这个启发搭建起来的
-以前douban就可以完整地搭建和展示一个图书影视库,但是后来豆瓣可能是加强了防盗链,导入元信息时会导致图片失效无法显示
-下面是我找到的替代方法
-- booksearch  ——可导入英文书籍
-- Media-DB     ——可导入电影/电视剧/音乐/书籍等
-	注意:设置模板时如果没有.md不会生效
-	- movieTemplate: "10.Template/影视.md"
-	- seriesTemplate: "10.Template/影视.md"
-- 如果以上插件都找不到需要导入的元信息,可以先用douban导入元信息,然后在网页上自己找到相应的图片替换
-- 如果图片下载在本地, 需要修改 dataview查询代码，让它同时支持远程 URL 和本地路径
+
+我博客中的藏书馆和影视库就是受这个启发搭建起来的。
+
+以前 Douban 就可以完整地搭建和展示一个图书影视库，但是后来豆瓣可能加强了防盗链，导入元信息时会导致图片失效无法显示。
+
+下面是我找到的替代方法：
+
+- BookSearch：可导入英文书籍
+- Media DB：可导入电影 / 电视剧 / 音乐 / 书籍等
+- 如果以上插件都找不到需要导入的元信息，可以先用 Douban 导入元信息，然后在网页上自己找到相应的图片替换
+- 如果图片下载在本地，需要修改 Dataview 查询代码，让它同时支持远程 URL 和本地路径
+
+注意：设置模板时如果没有 `.md` 不会生效。
+
+- `movieTemplate: "10.Template/影视.md"`
+- `seriesTemplate: "10.Template/影视.md"`
 
 
 所需插件
-- douban
-- templater
-- dataview
 
-- booksearch 
-- Media DB   
+- Douban
+- Templater
+- Dataview
+- BookSearch
+- Media DB
 
 
-
-如果大家有好的想法也可以告诉我,集思广益
+如果大家有好的想法也可以告诉我，集思广益。

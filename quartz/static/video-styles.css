@@ -127,6 +127,21 @@
   color: var(--darkgray);
 }
 
+.video-card-sources {
+  margin: 0 0.6rem 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.video-card-source {
+  font-size: 0.68rem;
+  padding: 0.14rem 0.45rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--gray) 12%, transparent);
+  color: var(--darkgray);
+}
+
 @media (min-width: 900px) {
   .video-card-title {
     margin: 0.6rem 0.75rem 0.25rem;
@@ -153,18 +168,80 @@
     font-size: 0.72rem;
     padding: 0.15rem 0.5rem;
   }
+  .video-card-sources {
+    margin: 0 0.75rem 0.75rem;
+  }
 }
 
 /* ========== 视频详情页播放器 ========== */
 
-.video-detail-page lite-youtube {
+.video-player-container {
+  margin: 1rem 0 1.5rem;
+}
+
+.video-source-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.video-source-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--darkgray);
+}
+
+.video-source-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.video-source-button {
+  appearance: none;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 999px;
+  padding: 0.42rem 0.9rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.video-source-button:hover {
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.video-source-button.is-active {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: var(--light);
+}
+
+.video-source-stage {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  background: #000;
+}
+
+.video-detail-page lite-youtube,
+.video-source-iframe {
   display: block;
   width: 100%;
-  max-width: 100%;
-  margin: 1rem 0 1.5rem;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  height: 100%;
+  border: 0;
+}
+
+.video-source-stage > lite-youtube {
+  max-width: none;
+  margin: 0;
 }
 
 /* ========== 状态提示 ========== */

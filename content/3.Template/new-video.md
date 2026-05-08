@@ -30,11 +30,15 @@ title: <% nextNum %>-<% title %>
 tags:
   - video
 videoid: VIDEO_ID
+bilibiliid: BILIBILI_ID
+defaultSource: youtube
 date: <% tp.date.now("YYYY-MM-DD") %>
 category: obsidian
 ---
 
-<lite-youtube videoid="VIDEO_ID" playlabel="视频标题"></lite-youtube>
+<div class="video-player-container" data-youtube="VIDEO_ID" data-bilibili="BILIBILI_ID" data-default-source="youtube" data-title="<% title %>">
+  <lite-youtube videoid="VIDEO_ID" playlabel="<% title %>"></lite-youtube>
+</div>
 <% title %>
 
 相关代码:

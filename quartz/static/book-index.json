@@ -1341,6 +1341,29 @@
     ]
   },
   {
+    "file": "/2.Read/douban/book/红楼梦",
+    "title": "红楼梦",
+    "封面": "/imgs/s29683585.jpg",
+    "originalTitle": "",
+    "author": " - 曹雪芹 - 无名氏续",
+    "scoreStar": "⭐⭐⭐⭐☆",
+    "score": "9.8",
+    "publishDate": "2018-01-01",
+    "myRate": "",
+    "阅读状态": [
+      "正在阅读",
+      "已读完"
+    ],
+    "totalPage": "1436",
+    "currentPage": "",
+    "添加时间": "{{DA",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
     "file": "/2.Read/douban/book/纳瓦尔宝典",
     "title": "纳瓦尔宝典",
     "封面": "/imgs/s34241855.jpg",

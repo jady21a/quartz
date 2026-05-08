@@ -1,7 +1,36 @@
 [
   {
-    "title": "自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号",
+    "title": "007-自建个人专属图书馆,douban图片链接失效怎么办",
+    "videoid": "VIDEO_ID",
+    "bilibiliid": "",
+    "sources": {
+      "youtube": "VIDEO_ID"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.video/Metadata/007-自建个人专属图书馆,douban图片链接失效怎么办",
+    "tags": [
+      "video"
+    ],
+    "date": "2026-05-06",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "Pasted image 20260506190809.png",
+        "label": "300"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "006-一键去掉复制文字里的版权信息和引号",
     "videoid": "wxFmL2uSXx0",
+    "bilibiliid": "",
+    "sources": {
+      "youtube": "wxFmL2uSXx0"
+    },
+    "defaultSource": "youtube",
     "file": "/7.video/Metadata/006-自制去版权信息插件",
     "tags": [
       "video",
@@ -21,8 +50,13 @@
     "createTime": ""
   },
   {
-    "title": "写笔记=更新博客",
+    "title": "005-写笔记=更新博客",
     "videoid": "Xg7mhaWDIcc",
+    "bilibiliid": "",
+    "sources": {
+      "youtube": "Xg7mhaWDIcc"
+    },
+    "defaultSource": "youtube",
     "file": "/7.video/Metadata/005-写笔记=更新博客",
     "tags": [
       "video",
@@ -41,8 +75,13 @@
     "createTime": ""
   },
   {
-    "title": "运动网站分享",
+    "title": "004-运动网站分享",
     "videoid": "F-m_rst8Rps",
+    "bilibiliid": "",
+    "sources": {
+      "youtube": "F-m_rst8Rps"
+    },
+    "defaultSource": "youtube",
     "file": "/7.video/Metadata/004-运动网站分享",
     "tags": [
       "video",
@@ -56,8 +95,13 @@
     "createTime": ""
   },
   {
-    "title": "代码复制无效的排查",
+    "title": "003-代码复制无效的排查",
     "videoid": "didne9K-CeQ",
+    "bilibiliid": "",
+    "sources": {
+      "youtube": "didne9K-CeQ"
+    },
+    "defaultSource": "youtube",
     "file": "/7.video/Metadata/003-代码复制无效的排查",
     "tags": [
       "video",
@@ -71,8 +115,14 @@
     "createTime": ""
   },
   {
-    "title": "自动继承昨日任务",
+    "title": "001-自动继承昨日任务",
     "videoid": "m2BxaTHl4Jo",
+    "bilibiliid": "BV1UjR4BZEHT",
+    "sources": {
+      "youtube": "m2BxaTHl4Jo",
+      "bilibili": "BV1UjR4BZEHT"
+    },
+    "defaultSource": "youtube",
     "file": "/7.video/Metadata/001-自动继承昨日任务",
     "tags": [
       "video",
@@ -91,8 +141,13 @@
     "createTime": ""
   },
   {
-    "title": "模版自动归档、命名与编号",
+    "title": "002-模版自动归档、命名与编号",
     "videoid": "ALDAEYwmzU4",
+    "bilibiliid": "",
+    "sources": {
+      "youtube": "ALDAEYwmzU4"
+    },
+    "defaultSource": "youtube",
     "file": "/7.video/Metadata/002-模版自动归档、命名与编号",
     "tags": [
       "video",
