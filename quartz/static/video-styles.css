@@ -95,28 +95,6 @@
   overflow: hidden;
 }
 
-.video-card-notes {
-  margin: 0.4rem 0.6rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-}
-
-.video-note-link {
-  display: inline-block;
-  padding: 0.12rem 0.45rem;
-  font-size: 0.7rem;
-  border-radius: 4px;
-  background: color-mix(in srgb, var(--secondary) 12%, transparent);
-  color: var(--secondary);
-  text-decoration: none;
-  transition: background 0.15s;
-}
-
-.video-note-link:hover {
-  background: color-mix(in srgb, var(--secondary) 22%, transparent);
-}
-
 .video-card-category {
   margin: auto 0.6rem 0.55rem;
   align-self: flex-start;
@@ -124,21 +102,6 @@
   padding: 0.12rem 0.45rem;
   border-radius: 4px;
   background: var(--highlight);
-  color: var(--darkgray);
-}
-
-.video-card-sources {
-  margin: 0 0.6rem 0.65rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.video-card-source {
-  font-size: 0.68rem;
-  padding: 0.14rem 0.45rem;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--gray) 12%, transparent);
   color: var(--darkgray);
 }
 
@@ -155,21 +118,10 @@
     margin: 0.4rem 0.75rem 0;
     font-size: 0.85rem;
   }
-  .video-card-notes {
-    margin: 0.5rem 0.75rem;
-    gap: 0.35rem;
-  }
-  .video-note-link {
-    padding: 0.15rem 0.55rem;
-    font-size: 0.75rem;
-  }
   .video-card-category {
     margin: auto 0.75rem 0.65rem;
     font-size: 0.72rem;
     padding: 0.15rem 0.5rem;
-  }
-  .video-card-sources {
-    margin: 0 0.75rem 0.75rem;
   }
 }
 

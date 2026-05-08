@@ -27,21 +27,6 @@
     return '';
   }
 
-  function getSourceList(video) {
-    var sources = [];
-    if (video.sources && typeof video.sources === 'object') {
-      Object.keys(video.sources).forEach(function(name) {
-        if (video.sources[name]) {
-          sources.push(name);
-        }
-      });
-    } else {
-      if (video.videoid) sources.push('youtube');
-      if (video.bilibiliid) sources.push('bilibili');
-    }
-    return sources;
-  }
-
   // ==================== 渲染函数 ====================
 
   function renderVideoCard(video) {
@@ -99,43 +84,12 @@
       card.appendChild(desc);
     }
 
-    // 5. 相关笔记链接
-    if (video.related_notes && video.related_notes.length > 0) {
-      const notes = document.createElement('div');
-      notes.className = 'video-card-notes';
-
-      video.related_notes.forEach(function(note) {
-        const tag = document.createElement('a');
-        tag.className = 'video-note-link';
-        tag.href = fixFilePath(note.target);
-        tag.textContent = note.label;
-        notes.appendChild(tag);
-      });
-
-      card.appendChild(notes);
-    }
-
-    // 6. 分类标签
+    // 5. 分类标签
     if (video.category) {
       const cat = document.createElement('span');
       cat.className = 'video-card-category';
       cat.textContent = video.category;
       card.appendChild(cat);
-    }
-
-    var sources = getSourceList(video);
-    if (sources.length > 0) {
-      const sourceWrap = document.createElement('div');
-      sourceWrap.className = 'video-card-sources';
-
-      sources.forEach(function(source) {
-        const badge = document.createElement('span');
-        badge.className = 'video-card-source';
-        badge.textContent = source === 'youtube' ? 'YouTube' : 'Bilibili';
-        sourceWrap.appendChild(badge);
-      });
-
-      card.appendChild(sourceWrap);
     }
 
     return card;

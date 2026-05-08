@@ -1,10 +1,11 @@
 [
   {
     "title": "007-自建个人专属图书馆,douban图片链接失效怎么办",
-    "videoid": "VIDEO_ID",
-    "bilibiliid": "",
+    "videoid": "OrVOLyWmqz4",
+    "bilibiliid": "BV1UjR4BZEHT",
     "sources": {
-      "youtube": "VIDEO_ID"
+      "youtube": "OrVOLyWmqz4",
+      "bilibili": "BV1UjR4BZEHT"
     },
     "defaultSource": "youtube",
     "file": "/7.video/Metadata/007-自建个人专属图书馆,douban图片链接失效怎么办",
@@ -14,11 +15,27 @@
     "date": "2026-05-06",
     "description": "",
     "category": "obsidian",
-    "thumbnail": "https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg",
+    "thumbnail": "https://i.ytimg.com/vi/OrVOLyWmqz4/hqdefault.jpg",
     "related_notes": [
       {
-        "target": "Pasted image 20260506190809.png",
-        "label": "300"
+        "target": "book-ch",
+        "label": "douban书籍模板"
+      },
+      {
+        "target": "book-en",
+        "label": "book search书籍模板"
+      },
+      {
+        "target": "movie-ch",
+        "label": "douban电影模板"
+      },
+      {
+        "target": "movie-en",
+        "label": "media DB模板"
+      },
+      {
+        "target": "005-写笔记=更新博客",
+        "label": "005-写笔记=更新博客"
       }
     ],
     "createTime": ""
@@ -26,9 +43,10 @@
   {
     "title": "006-一键去掉复制文字里的版权信息和引号",
     "videoid": "wxFmL2uSXx0",
-    "bilibiliid": "",
+    "bilibiliid": "BV1LyoEBsEBX",
     "sources": {
-      "youtube": "wxFmL2uSXx0"
+      "youtube": "wxFmL2uSXx0",
+      "bilibili": "BV1LyoEBsEBX"
     },
     "defaultSource": "youtube",
     "file": "/7.video/Metadata/006-自制去版权信息插件",
@@ -43,7 +61,7 @@
     "thumbnail": "https://i.ytimg.com/vi/wxFmL2uSXx0/hqdefault.jpg",
     "related_notes": [
       {
-        "target": "003-自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号",
+        "target": "001-自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号",
         "label": "代码链接"
       }
     ],
@@ -52,9 +70,10 @@
   {
     "title": "005-写笔记=更新博客",
     "videoid": "Xg7mhaWDIcc",
-    "bilibiliid": "",
+    "bilibiliid": "BV1gho4BKEM7",
     "sources": {
-      "youtube": "Xg7mhaWDIcc"
+      "youtube": "Xg7mhaWDIcc",
+      "bilibili": "BV1gho4BKEM7"
     },
     "defaultSource": "youtube",
     "file": "/7.video/Metadata/005-写笔记=更新博客",
@@ -77,9 +96,10 @@
   {
     "title": "004-运动网站分享",
     "videoid": "F-m_rst8Rps",
-    "bilibiliid": "",
+    "bilibiliid": "BV1xodJB3Ea4",
     "sources": {
-      "youtube": "F-m_rst8Rps"
+      "youtube": "F-m_rst8Rps",
+      "bilibili": "BV1xodJB3Ea4"
     },
     "defaultSource": "youtube",
     "file": "/7.video/Metadata/004-运动网站分享",
@@ -97,9 +117,10 @@
   {
     "title": "003-代码复制无效的排查",
     "videoid": "didne9K-CeQ",
-    "bilibiliid": "",
+    "bilibiliid": "BV1WsdYB6ESD",
     "sources": {
-      "youtube": "didne9K-CeQ"
+      "youtube": "didne9K-CeQ",
+      "bilibili": "BV1WsdYB6ESD"
     },
     "defaultSource": "youtube",
     "file": "/7.video/Metadata/003-代码复制无效的排查",
@@ -111,16 +132,25 @@
     "description": "",
     "category": "obsidian",
     "thumbnail": "https://i.ytimg.com/vi/didne9K-CeQ/hqdefault.jpg",
-    "related_notes": [],
+    "related_notes": [
+      {
+        "target": "daily",
+        "label": "daily"
+      },
+      {
+        "target": "task - template",
+        "label": "task - template"
+      }
+    ],
     "createTime": ""
   },
   {
     "title": "001-自动继承昨日任务",
     "videoid": "m2BxaTHl4Jo",
-    "bilibiliid": "BV1UjR4BZEHT",
+    "bilibiliid": "BV1G8DWBmEhf",
     "sources": {
       "youtube": "m2BxaTHl4Jo",
-      "bilibili": "BV1UjR4BZEHT"
+      "bilibili": "BV1G8DWBmEhf"
     },
     "defaultSource": "youtube",
     "file": "/7.video/Metadata/001-自动继承昨日任务",
@@ -134,8 +164,16 @@
     "thumbnail": "https://i.ytimg.com/vi/m2BxaTHl4Jo/hqdefault.jpg",
     "related_notes": [
       {
-        "target": "001-自动继承昨日任务模版",
-        "label": "任务继承模板代码"
+        "target": "daily",
+        "label": "daily"
+      },
+      {
+        "target": "Pasted image 20260508234013.png",
+        "label": "Pasted image 20260508234013.png"
+      },
+      {
+        "target": "Pasted image 20260508234459.png",
+        "label": "Pasted image 20260508234459.png"
       }
     ],
     "createTime": ""
@@ -143,9 +181,10 @@
   {
     "title": "002-模版自动归档、命名与编号",
     "videoid": "ALDAEYwmzU4",
-    "bilibiliid": "",
+    "bilibiliid": "BV1sADyBoE3d",
     "sources": {
-      "youtube": "ALDAEYwmzU4"
+      "youtube": "ALDAEYwmzU4",
+      "bilibili": "BV1sADyBoE3d"
     },
     "defaultSource": "youtube",
     "file": "/7.video/Metadata/002-模版自动归档、命名与编号",
@@ -159,8 +198,8 @@
     "thumbnail": "https://i.ytimg.com/vi/ALDAEYwmzU4/hqdefault.jpg",
     "related_notes": [
       {
-        "target": "002-模版自动分类+title填充",
-        "label": "模板归档代码"
+        "target": "task - template",
+        "label": "task - template"
       }
     ],
     "createTime": ""
