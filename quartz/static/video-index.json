@@ -1,5 +1,70 @@
 [
   {
+    "title": "008-项目管理",
+    "videoid": "Izcl79wQYUg",
+    "bilibiliid": "BV1EQ5e6iEyE",
+    "sources": {
+      "youtube": "Izcl79wQYUg",
+      "bilibili": "BV1EQ5e6iEyE"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.video/Metadata/008-项目管理",
+    "tags": [
+      "video"
+    ],
+    "date": "2026-05-15",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/Izcl79wQYUg/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "项目- template",
+        "label": "project-template"
+      },
+      {
+        "target": "task - template",
+        "label": "task-template"
+      },
+      {
+        "target": "try",
+        "label": "try"
+      },
+      {
+        "target": "daily",
+        "label": "daily"
+      },
+      {
+        "target": "001-自动继承昨日任务",
+        "label": "001-自动继承昨日任务"
+      },
+      {
+        "target": "002-模版自动归档、命名与编号",
+        "label": "002-模版自动归档、命名与编号"
+      },
+      {
+        "target": "003-代码复制无效的排查",
+        "label": "003-代码复制无效的排查"
+      },
+      {
+        "target": "Pasted image 20260515220310.png",
+        "label": "700"
+      },
+      {
+        "target": "Pasted image 20260515220415.png",
+        "label": "700"
+      },
+      {
+        "target": "Pasted image 20260515224009.png",
+        "label": "700"
+      },
+      {
+        "target": "Pasted image 20260515224546.png",
+        "label": "700"
+      }
+    ],
+    "createTime": ""
+  },
+  {
     "title": "007-自建个人专属图书馆,douban图片链接失效怎么办",
     "videoid": "OrVOLyWmqz4",
     "bilibiliid": "BV1UjR4BZEHT",
@@ -145,36 +210,6 @@
     "createTime": ""
   },
   {
-    "title": "001-自动继承昨日任务",
-    "videoid": "m2BxaTHl4Jo",
-    "bilibiliid": "BV1G8DWBmEhf",
-    "sources": {
-      "youtube": "m2BxaTHl4Jo",
-      "bilibili": "BV1G8DWBmEhf"
-    },
-    "defaultSource": "youtube",
-    "file": "/7.video/Metadata/001-自动继承昨日任务",
-    "tags": [
-      "video",
-      "obsidian"
-    ],
-    "date": "2026-04-12",
-    "description": "",
-    "category": "obsidian",
-    "thumbnail": "https://i.ytimg.com/vi/m2BxaTHl4Jo/hqdefault.jpg",
-    "related_notes": [
-      {
-        "target": "daily",
-        "label": "daily"
-      },
-      {
-        "target": "Pasted image 20260508234013.png",
-        "label": "Pasted image 20260508234013.png"
-      }
-    ],
-    "createTime": ""
-  },
-  {
     "title": "002-模版自动归档、命名与编号",
     "videoid": "ALDAEYwmzU4",
     "bilibiliid": "BV1sADyBoE3d",
@@ -196,6 +231,36 @@
       {
         "target": "task - template",
         "label": "task - template"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "001-自动继承昨日任务",
+    "videoid": "m2BxaTHl4Jo",
+    "bilibiliid": "BV1G8DWBmEhf",
+    "sources": {
+      "youtube": "m2BxaTHl4Jo",
+      "bilibili": "BV1G8DWBmEhf"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.video/Metadata/001-自动继承昨日任务",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-04-09",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/m2BxaTHl4Jo/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "daily",
+        "label": "daily"
+      },
+      {
+        "target": "Pasted image 20260508234013.png",
+        "label": "Pasted image 20260508234013.png"
       }
     ],
     "createTime": ""

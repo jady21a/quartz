@@ -13,7 +13,7 @@ category: obsidian
   <lite-youtube videoid="VIDEO_ID" playlabel="视频标题"></lite-youtube>
 </div>
 
-自建 Obsidian 个人图书馆和影视库，Douban 图片失效怎么办？
+## 自建 Obsidian 个人图书馆和影视库，Douban 图片失效怎么办？
 本期内容：
 - Obsidian 图书馆 / 影视库搭建思路
 - Dataview 和 Bases 两种展示方案对比
