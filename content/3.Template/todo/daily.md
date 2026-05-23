@@ -1,5 +1,11 @@
-
-````
+---
+目标完成度:
+锻炼:
+阅读:
+语言:
+睡觉习惯:
+date: <% tp.file.title %>
+---
 <%*
 const MAX_DAYS = 30;
 const baseDate = moment(tp.file.title, "YYYY-MM-DD", true).isValid()
@@ -28,6 +34,7 @@ function getTomorrowGoals(block) {
     return block
         .split('\n')
         .filter(line => !/^-\s*\[\s*\]\s*$/.test(line.trim()) && line.trim() !== '-' && line.trim() !== '- ')
+        .filter(line => !/^-\s*\[[xX]\]/.test(line.trim()))
         .join('\n')
         .trim();
 }
@@ -87,16 +94,6 @@ const sourcePrefix = foundDate && daysAgo > 1
     ? `> [!note] 来自 ${foundDate}(${daysAgo} 天前)\n\n`
     : "";
 -%>
----
-目标完成度:
-锻炼:
-阅读:
-语言:
-睡觉习惯:
-date: <% tp.file.title %>
----
-
-<% tp.file.title %>
 ## 今日目标
 <% todayGoals %>
 
@@ -133,7 +130,7 @@ if (date) {
 <% sourcePrefix + carriedBlock %>
 
 ## 今日复盘
-	- 做了什么:
+- 做了什么:
 - 没做的话为什么:
 - 今日亮点:
 - 想法/反思/心情:
@@ -142,5 +139,3 @@ if (date) {
 - [ ] 
  
 ## 今日记录
-
-````

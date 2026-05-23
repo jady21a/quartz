@@ -1,4 +1,3 @@
-````
 <%*
 // 1. 输入类型
 const type = await tp.system.prompt("分类", "");
@@ -70,5 +69,3 @@ if (rows.length > 0) {
 
 ## 记录
 
-
-````
