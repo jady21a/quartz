@@ -1,0 +1,24 @@
+{
+  "id": "conv-1779610915968-q3qmb8xxm",
+  "providerId": "claude",
+  "title": "Hey! 👋 Welcome. Here to help with your project...",
+  "titleGenerationStatus": "success",
+  "createdAt": 1779610915968,
+  "updatedAt": 1779611298666,
+  "lastResponseAt": 1779611298666,
+  "sessionId": "f7c2eed2-3557-4c57-9baf-4f787375930c",
+  "providerState": {
+    "providerSessionId": "f7c2eed2-3557-4c57-9baf-4f787375930c"
+  },
+  "currentNote": "7.video/Metadata/009-别再自己列清单了：一个指令，让AI 自动生成你的周复盘.md",
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 1,
+    "cacheCreationInputTokens": 20602,
+    "cacheReadInputTokens": 28027,
+    "contextWindow": 200000,
+    "contextTokens": 48630,
+    "percentage": 24,
+    "contextWindowIsAuthoritative": true
+  }
+}
