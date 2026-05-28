@@ -1,0 +1,29 @@
+{
+	"nodes":[
+		{"id":"a1b2c3d4e5f60001","type":"group","x":0,"y":430,"width":460,"height":380,"label":"长周期项目系统","color":"4"},
+		{"id":"a1b2c3d4e5f60002","type":"group","x":0,"y":850,"width":460,"height":380,"label":"每日规划系统","color":"5"},
+		{"id":"a1b2c3d4e5f60003","type":"group","x":1060,"y":430,"width":480,"height":380,"label":"资料：让 AI 自己去读","color":"2"},
+		{"id":"a1b2c3d4e5f60004","type":"group","x":1060,"y":850,"width":480,"height":380,"label":"提示词：让复盘只对你成立","color":"6"},
+		{"id":"b1c2d3e4f5a60001","type":"file","x":40,"y":80,"width":380,"height":240,"file":"7.video/Metadata/008-项目管理.md"},
+		{"id":"b1c2d3e4f5a60002","type":"file","x":1100,"y":80,"width":380,"height":240,"file":"7.video/Metadata/009-一个指令，让AI 自动生成周复盘.md"},
+		{"id":"c1d2e3f4a5b60001","type":"text","x":580,"y":280,"width":360,"height":160,"text":"## 核心公式\n\n**复盘质量 = 资料 × 提示词**\n- **资料**决定 AI 知道你做了什么\n- **提示词**决定 AI 能不能说到你心里去"},
+		{"id":"d1e2f3a4b5c60001","type":"text","x":20,"y":480,"width":420,"height":100,"text":"**主项目 + 子任务**\n每个子任务记录多次尝试过程——做了什么、卡在哪、如何完成"},
+		{"id":"d1e2f3a4b5c60002","type":"text","x":20,"y":600,"width":420,"height":90,"text":"**try 记录执行过程**\n多次尝试直到任务完成，完整生命周期一目了然"},
+		{"id":"d1e2f3a4b5c60003","type":"text","x":20,"y":710,"width":420,"height":80,"text":"**项目总览 / 任务总览**\n所有主项目带状态进度，子任务汇总带完成率统计"},
+		{"id":"e1f2a3b4c5d60001","type":"text","x":20,"y":900,"width":420,"height":110,"text":"**习惯打卡 · 今日目标（最多3条）**\n昨日未完成自动滚入 · Scheduled 只显示今天及之前到期的任务"},
+		{"id":"e1f2a3b4c5d60002","type":"text","x":20,"y":1030,"width":420,"height":160,"text":"**今日复盘 / 明日目标**\n明日目标自动出现在明天的今日目标里\n\n> 「关于任务管理还有一块没讲完——用 AI 做周总结，这个下期讲」"},
+		{"id":"f1a2b3c4d5e60001","type":"text","x":1080,"y":480,"width":440,"height":90,"text":"**todo 文件**\n你每天**计划**做什么、**完成**了什么（来自 008 每日笔记）"},
+		{"id":"f1a2b3c4d5e60002","type":"text","x":1080,"y":590,"width":440,"height":90,"text":"**git log**\n精确到天，你**实际**动过哪些文件（每小时自动 commit）"},
+		{"id":"f1a2b3c4d5e60003","type":"text","x":1080,"y":700,"width":440,"height":90,"text":"**git diff --stat**\n哪个方向投入了多少改动，有数据为证"},
+		{"id":"a2b3c4d5e6f70001","type":"text","x":1080,"y":900,"width":440,"height":90,"text":"**个人长期目标**\n给 AI 一条主轴，判断你这周是在靠近目标还是原地打转"},
+		{"id":"a2b3c4d5e6f70002","type":"text","x":1080,"y":1010,"width":440,"height":90,"text":"**性格特征（MBTI）**\n按你的性格写 prompt，精准指出你真正卡在哪里"},
+		{"id":"a2b3c4d5e6f70003","type":"text","x":1080,"y":1120,"width":440,"height":90,"text":"**活文档（随时间生长）**\n每次复盘后追加新发现的模式，用得越久越懂你"},
+		{"id":"b2c3d4e5f6a70001","type":"text","x":560,"y":1280,"width":400,"height":100,"color":"3","text":"## `/周复盘`\n\n一句话，AI 自动翻完这一周所有记录，生成并保存完整复盘"}
+	],
+	"edges":[
+		{"id":"c2d3e4f5a6b70001","fromNode":"b1c2d3e4f5a60001","fromSide":"right","toNode":"b1c2d3e4f5a60002","toSide":"left","label":"数据基础"},
+		{"id":"c2d3e4f5a6b70002","fromNode":"a1b2c3d4e5f60003","fromSide":"left","toNode":"c1d2e3f4a5b60001","toSide":"right","label":"资料"},
+		{"id":"c2d3e4f5a6b70003","fromNode":"a1b2c3d4e5f60004","fromSide":"left","toNode":"c1d2e3f4a5b60001","toSide":"right","label":"提示词"},
+		{"id":"c2d3e4f5a6b70004","fromNode":"c1d2e3f4a5b60001","fromSide":"bottom","toNode":"b2c3d4e5f6a70001","toSide":"top","label":"自动生成"}
+	]
+}
