@@ -16,7 +16,11 @@ const defaultOptions: Options = {
 export default ((userOpts?: Partial<Options>) => {
   const opts = { ...defaultOptions, ...userOpts } as Required<Options>
 
-  const RandomNotes: QuartzComponent = ({ allFiles, fileData, displayClass }: QuartzComponentProps) => {
+  const RandomNotes: QuartzComponent = ({
+    allFiles,
+    fileData,
+    displayClass,
+  }: QuartzComponentProps) => {
     // 过滤掉当前页面、索引页、电影笔记以及内容过短的笔记
     const currentSlug = fileData.slug
     const eligibleFiles = allFiles.filter(

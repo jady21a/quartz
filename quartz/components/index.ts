@@ -20,16 +20,16 @@ import DesktopOnly from "./DesktopOnly"
 import MobileOnly from "./MobileOnly"
 import RecentNotes from "./RecentNotes"
 import Breadcrumbs from "./Breadcrumbs"
-import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 
-import BookInfo from "./BookInfo"  // 添加这一行,书籍元数据显示
-import MovieInfo from "./MovieInfo"  // 添加这一行,书籍元数据显示
+import mediaInfo from "./MediaInfo"
+
+// 书籍 / 影视详情页的信息卡片（由同一个 MediaInfo 实现）
+const BookInfo = mediaInfo("book")
+const MovieInfo = mediaInfo("movie")
 
 export { default as RandomNotes } from "./RandomNotes"
-
-
 
 export {
   ArticleTitle,
@@ -54,10 +54,8 @@ export {
   RecentNotes,
   NotFound,
   Breadcrumbs,
-  Comments,
   Flex,
   ConditionalRender,
-
-  BookInfo,  // 添加这一行,书籍元数据显示
+  BookInfo, // 添加这一行,书籍元数据显示
   MovieInfo,
 }

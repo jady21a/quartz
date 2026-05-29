@@ -17,7 +17,7 @@ const config: QuartzConfig = {
     },
     locale: "zh-CN",
     baseUrl: "jz-quartz.pages.dev",
-    ignorePatterns: ["private", "templates", "3.Template", ".obsidian"],
+    ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
@@ -53,7 +53,6 @@ const config: QuartzConfig = {
       },
     },
   },
-  
 
   plugins: {
     transformers: [
@@ -69,26 +68,22 @@ const config: QuartzConfig = {
         },
         keepBackground: false,
       }),
-      Plugin.ObsidianFlavoredMarkdown({ 
-        enableInHtmlEmbed: false ,
+      Plugin.ObsidianFlavoredMarkdown({
+        enableInHtmlEmbed: false,
 
         //尝试去掉空格
         mermaid: true,
         callouts: true,
         comments: true,
       }),
-      Plugin.GitHubFlavoredMarkdown(
-        {
-          //空格尝试
-         // breaks:true,
-    
-        }
-      ),
+      Plugin.GitHubFlavoredMarkdown({
+        //空格尝试
+        // breaks:true,
+      }),
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
-
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [
@@ -110,10 +105,7 @@ const config: QuartzConfig = {
 
       // Plugin.Sitemap(), // 确保启用 Sitemap
     ],
-   
-
   },
-  
 }
 
 export default config

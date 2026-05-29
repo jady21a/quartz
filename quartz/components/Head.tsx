@@ -108,20 +108,12 @@ export default (() => {
         })}
 
         {/* 图书/影视/视频卡片：仅在用到的页面加载对应脚本与样式 */}
-        {usesBookGallery && (
-          <>
-            <link rel="stylesheet" href="/book-styles.css" />
-            <script src="/book-query.js" defer></script>
-          </>
-        )}
-        {usesMovieGallery && (
-          <>
-            <link rel="stylesheet" href="/movie-styles.css" />
-            <script src="/movie-query.js" defer></script>
-          </>
-        )}
+        {usesBookGallery && <link rel="stylesheet" href="/book-styles.css" />}
+        {usesMovieGallery && <link rel="stylesheet" href="/movie-styles.css" />}
         {usesVideoStyles && <link rel="stylesheet" href="/video-styles.css" />}
-        {usesVideoQuery && <script src="/video-query.js" defer></script>}
+        {(usesBookGallery || usesMovieGallery || usesVideoQuery) && (
+          <script src="/gallery.js" defer></script>
+        )}
         {usesVideoPlayer && (
           <>
             <script src="/video-player.js" defer></script>
