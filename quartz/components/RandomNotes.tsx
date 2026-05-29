@@ -16,55 +16,40 @@ const defaultOptions: Options = {
 export default ((userOpts?: Partial<Options>) => {
   const opts = { ...defaultOptions, ...userOpts } as Required<Options>
 
-  const RandomNotes: QuartzComponent = ({ 
-    allFiles, 
-    fileData, 
-    displayClass 
-  }: QuartzComponentProps) => {
-    // 过滤掉当前页面和索引页面
+  const RandomNotes: QuartzComponent = ({ allFiles, fileData, displayClass }: QuartzComponentProps) => {
+    // 过滤掉当前页面、索引页、电影笔记以及内容过短的笔记
     const currentSlug = fileData.slug
     const eligibleFiles = allFiles.filter(
-      file => 
-        file.slug !== currentSlug && 
+      (file) =>
+        file.slug !== currentSlug &&
         !file.slug?.endsWith("index") &&
-        file.frontmatter?.title&&
+        file.frontmatter?.title &&
         !(file.frontmatter?.tags || []).includes("movies") &&
-        file.text && file.text.trim().length > 121  
+        file.text &&
+        file.text.trim().length > 121,
     )
-
-    // 随机选择指定数量的笔记
-    const getRandomFiles = (files: typeof eligibleFiles, count: number) => {
-      const shuffled = [...files].sort(() => Math.random() - 0.5)
-      return shuffled.slice(0, count)
-    }
-
-    const randomFiles = getRandomFiles(eligibleFiles, opts.limit)
 
     if (eligibleFiles.length === 0) {
       return null
     }
 
-    // 将所有符合条件的文件数据序列化
-    const filesData = eligibleFiles.map(file => ({
-      slug: file.slug,
-      title: file.frontmatter?.title || file.slug || "Untitled",
-      tags: file.frontmatter?.tags || []
-    }))
-    
-    const configData = {
-      files: filesData,
-      limit: opts.limit,
-      showTags: opts.showTags
-    }
+    // 服务端渲染一组初始随机笔记（无需 JS 也可显示）；
+    // 「换一批」时客户端复用已经预取的 fetchData（contentIndex），不再为每个页面内嵌全量数据。
+    const initial = [...eligibleFiles].sort(() => Math.random() - 0.5).slice(0, opts.limit)
 
     return (
-      <div class={`random-notes ${displayClass ?? ""}`}>
+      <div
+        class={`random-notes ${displayClass ?? ""}`}
+        data-random-notes
+        data-slug={currentSlug}
+        data-limit={String(opts.limit)}
+        data-show-tags={String(opts.showTags)}
+      >
         <h3>{opts.title}</h3>
         <ul class="random-notes-list" data-random-notes-list>
-          {randomFiles.map((file) => {
+          {initial.map((file) => {
             const title = file.frontmatter?.title || file.slug || "Untitled"
             const tags = file.frontmatter?.tags || []
-            
             return (
               <li key={file.slug}>
                 <a href={`/${file.slug}`} class="internal">
@@ -83,82 +68,95 @@ export default ((userOpts?: Partial<Options>) => {
             )
           })}
         </ul>
-        <button 
-          class="refresh-button"
-          data-refresh-random-notes
-          data-config={JSON.stringify(configData)}
-          aria-label="刷新随机笔记"
-        >
-           换一批
+        <button class="refresh-button" data-refresh-random-notes aria-label="刷新随机笔记">
+          换一批
         </button>
       </div>
     )
   }
 
   RandomNotes.afterDOMLoaded = `
-    function initRandomNotes() {
-      const button = document.querySelector('[data-refresh-random-notes]');
-      const list = document.querySelector('[data-random-notes-list]');
-      
-      if (!button || !list) {
-        console.log('RandomNotes: Elements not found');
-        return;
+    function escapeHTML(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+      })
+    }
+
+    async function setupRandomNotes() {
+      const container = document.querySelector("[data-random-notes]")
+      if (!container) return
+      const list = container.querySelector("[data-random-notes-list]")
+      const button = container.querySelector("[data-refresh-random-notes]")
+      if (!list || !button) return
+
+      const limit = parseInt(container.getAttribute("data-limit") || "3", 10)
+      const showTags = container.getAttribute("data-show-tags") === "true"
+      const currentSlug = container.getAttribute("data-slug") || ""
+
+      async function eligible() {
+        // fetchData 已在每个页面预取（供搜索使用），这里直接复用，无额外网络开销
+        const data = await fetchData
+        return Object.values(data).filter(function (d) {
+          return (
+            d.slug !== currentSlug &&
+            !String(d.slug).endsWith("index") &&
+            d.title &&
+            !(d.tags || []).includes("movies") &&
+            String(d.content || "").trim().length > 121
+          )
+        })
       }
-      
-      try {
-        const configAttr = button.getAttribute('data-config');
-        if (!configAttr) {
-          console.error('RandomNotes: No config data found');
-          return;
-        }
-        
-        const data = JSON.parse(configAttr);
-        const files = data.files;
-        const limit = data.limit;
-        const showTags = data.showTags;
-        
-        console.log('RandomNotes: Initialized with', files.length, 'files');
-        
-        button.addEventListener('click', function(e) {
-          e.preventDefault();
-          console.log('RandomNotes: Refresh clicked');
-          
-          // 随机打乱并选择
-          const shuffled = [...files].sort(() => Math.random() - 0.5);
-          const selected = shuffled.slice(0, limit);
-          
-          // 重新渲染列表
-          list.innerHTML = selected.map(file => {
-            let tagsHtml = '';
-            if (showTags && file.tags && file.tags.length > 0) {
-              const displayTags = file.tags.slice(0, 2);
-              tagsHtml = '<div class="random-note-tags">' + 
-                displayTags.map(tag => '<span class="tag">#' + tag + '</span>').join('') +
-                '</div>';
+
+      function renderItems(items) {
+        list.innerHTML = items
+          .map(function (d) {
+            let tagsHtml = ""
+            if (showTags && d.tags && d.tags.length > 0) {
+              tagsHtml =
+                '<div class="random-note-tags">' +
+                d.tags
+                  .slice(0, 2)
+                  .map(function (t) {
+                    return '<span class="tag">#' + escapeHTML(t) + "</span>"
+                  })
+                  .join("") +
+                "</div>"
             }
-            
-            return '<li>' +
-              '<a href="/' + file.slug + '" class="internal">' + file.title + '</a>' +
+            return (
+              "<li><a href=\\"/" +
+              d.slug +
+              '" class="internal">' +
+              escapeHTML(d.title) +
+              "</a>" +
               tagsHtml +
-              '</li>';
-          }).join('');
-          
-          // 添加按钮点击动画
-          button.style.transform = 'rotate(360deg)';
-          setTimeout(() => {
-            button.style.transform = 'rotate(0deg)';
-          }, 300);
-        });
-      } catch (error) {
-        console.error('RandomNotes: Error initializing', error);
+              "</li>"
+            )
+          })
+          .join("")
+      }
+
+      const onClick = async function (e) {
+        e.preventDefault()
+        const items = await eligible()
+        const shuffled = items.sort(function () {
+          return Math.random() - 0.5
+        })
+        renderItems(shuffled.slice(0, limit))
+        button.style.transform = "rotate(360deg)"
+        setTimeout(function () {
+          button.style.transform = "rotate(0deg)"
+        }, 300)
+      }
+
+      button.addEventListener("click", onClick)
+      if (window.addCleanup) {
+        window.addCleanup(function () {
+          button.removeEventListener("click", onClick)
+        })
       }
     }
-    
-    // 页面加载时初始化
-    initRandomNotes();
-    
-    // 支持 SPA 导航后重新初始化
-    document.addEventListener('nav', initRandomNotes);
+
+    document.addEventListener("nav", setupRandomNotes)
   `
 
   RandomNotes.css = style

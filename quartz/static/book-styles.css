@@ -8,12 +8,12 @@
 }
 
 .book-card {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--lightgray);
   border-radius: 12px;
-  padding: 0.6rem 0.8rem; 
+  padding: 0.6rem 0.8rem;
   margin: 0.5rem; /* ↓ 原来 gap 已经够了，这里缩小 */
-  background: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: var(--light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@
 
 .book-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .book-header {
@@ -48,7 +48,7 @@
   height: 140px;
   object-fit: cover;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .book-cover-placeholder {
@@ -70,7 +70,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   margin: 0.2rem 0;
-  color: #1f2937;
+  color: var(--dark);
   line-height: 1.3;
   word-wrap: break-word;
   overflow: hidden;
@@ -86,7 +86,7 @@
 }
 
 .book-title a:hover {
-  color: #2563eb;
+  color: var(--secondary);
 }
 
 .book-rating {
@@ -110,14 +110,14 @@
 
 .my-rating {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--gray);
   margin-bottom: 0.5rem;
 }
 
 .book-info {
   margin-top: 0.3rem;
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--darkgray);
   width: 100%;
   text-align: left;
   flex: 1; /* 占据剩余空间，把底部元素推下去 */
@@ -133,7 +133,7 @@
 .info-row .label {
   font-weight: 500;
   min-width: 50px;
-  color: #4b5563;
+  color: var(--gray);
   flex-shrink: 0;
 }
 
@@ -146,7 +146,7 @@
   margin-top: 0.8rem;
   width: 100%;
   height: 5px;
-  background: #e5e7eb;
+  background: var(--lightgray);
   border-radius: 3px;
   overflow: hidden;
 
@@ -155,14 +155,14 @@
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  background: var(--secondary);
   transition: width 0.3s ease;
 }
 
 .progress-text {
   text-align: center;
   font-size: 0.7rem;
-  color: #6b7280;
+  color: var(--gray);
   margin-top: 0.3rem;
   font-weight: 500;
 }
@@ -213,7 +213,7 @@
 .book-query-loading {
   text-align: center;
   padding: 2rem;
-  color: #6b7280;
+  color: var(--gray);
   font-size: 1.2rem;
 }
 
@@ -243,7 +243,7 @@
   .book-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
-  
+
   .book-cover,
   .book-cover-placeholder {
     width: 100px;
@@ -256,42 +256,18 @@
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1rem;
   }
-  
+
   .book-card {
     padding: 1rem;
   }
-  
+
   .book-cover,
   .book-cover-placeholder {
     width: 90px;
     height: 130px;
   }
-  
+
   .book-title {
     font-size: 0.9rem;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .book-card {
-    background: #1f2937;
-    border-color: #374151;
-  }
-  
-  .book-title {
-    color: #f9fafb;
-  }
-  
-  .book-info {
-    color: #d1d5db;
-  }
-  
-  .info-row .label {
-    color: #9ca3af;
-  }
-  
-  .book-query-loading {
-    color: #d1d5db;
   }
 }

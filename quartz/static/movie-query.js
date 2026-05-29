@@ -2,7 +2,6 @@
 (function() {
   'use strict';
   
-  console.log('🎬 Movie query script loaded');
 
   // ==================== 工具函数 ====================
   
@@ -91,7 +90,6 @@
       img.loading = 'lazy';
       
       img.onerror = function() {
-        console.warn('Failed to load image:', movie.封面);
         this.style.display = 'none';
         const placeholder = document.createElement('div');
         placeholder.className = 'movie-poster-placeholder';
@@ -220,12 +218,9 @@
   // ==================== 主加载函数 ====================
   
   async function loadAndRenderMovies() {
-    console.log('🔍 Looking for movie query containers...');
     const containers = document.querySelectorAll('[data-movie-query]');
-    console.log('Found ' + containers.length + ' containers');
     
     if (containers.length === 0) {
-      console.warn('⚠️ No [data-movie-query] elements found');
       return;
     }
     
@@ -236,20 +231,16 @@
       const limit = parseInt(container.getAttribute('data-limit')) || null;
       const type = container.getAttribute('data-type'); // movies 或 teleplay
       
-      console.log('Loading movies with status: ' + (status || 'all'));
       container.innerHTML = '<div class="movie-query-loading">🎬 加载影片中...</div>';
       
       try {
-        console.log('📡 Fetching /movie-index.json...');
         const response = await fetch('/movie-index.json');
-        console.log('Response status: ' + response.status);
         
         if (!response.ok) {
           throw new Error('HTTP ' + response.status + ': ' + response.statusText);
         }
         
         let allItems = await response.json();
-        console.log('✅ Loaded ' + allItems.length + ' items from index');
         
         // 第一步:过滤出影视内容(有 movies 或 teleplay 标签的)
         let movies = allItems.filter(item => {
@@ -267,7 +258,6 @@
           return hasMovieTag;
         });
         
-        console.log('After filtering movies/teleplay: ' + movies.length + ' items');
         
         // 第二步:根据 data-type 进一步过滤
         if (type) {
@@ -288,7 +278,6 @@
             }
             return true;
           });
-          console.log('Filtered to ' + movies.length + ' items by type: ' + type);
         }
         
         // 第三步:过滤状态
@@ -307,7 +296,6 @@
               .map(s => s.trim());
             return movieStatuses.includes(status);
           });
-          console.log('Filtered to ' + movies.length + ' movies with status "' + status + '"');
         }
         
         // 排序
@@ -321,7 +309,6 @@
         // 限制数量
         if (limit && limit > 0) {
           movies = movies.slice(0, limit);
-          console.log('Limited to ' + movies.length + ' movies');
         }
         
         // 渲染
@@ -340,7 +327,6 @@
           
           container.innerHTML = '';
           container.appendChild(grid);
-          console.log('✅ Rendered ' + movies.length + ' movie cards');
         }
       } catch (error) {
         console.error('❌ Error loading movies:', error);
@@ -352,21 +338,17 @@
   // ==================== 初始化 ====================
   
   function init() {
-    console.log('Document ready state:', document.readyState);
     
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOMContentLoaded fired');
         loadAndRenderMovies();
       });
     } else {
-      console.log('DOM already loaded, running immediately');
       loadAndRenderMovies();
     }
     
     // 监听 Quartz 页面导航事件
     document.addEventListener('nav', function() {
-      console.log('Navigation event detected');
       setTimeout(loadAndRenderMovies, 100);
     });
   }

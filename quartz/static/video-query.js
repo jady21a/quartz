@@ -2,7 +2,6 @@
 (function() {
   'use strict';
 
-  console.log('🎬 Video query script loaded');
 
   // ==================== 工具函数 ====================
 
@@ -155,7 +154,6 @@
         }
 
         var allVideos = await response.json();
-        console.log('✅ Loaded ' + allVideos.length + ' videos from index');
 
         var videos = filterAndSort(allVideos, {
           category: category,
@@ -180,7 +178,6 @@
         container.innerHTML = '';
         container.appendChild(grid);
 
-        console.log('✅ Rendered ' + videos.length + ' video cards');
       } catch (error) {
         console.error('❌ Error loading videos:', error);
         container.innerHTML = '<div class="video-query-error">❌ 加载失败: ' + error.message + '<br><small>请确保已运行: npm run generate-videos</small></div>';

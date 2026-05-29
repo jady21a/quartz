@@ -2,7 +2,6 @@
 (function() {
   'use strict';
   
-  console.log('📚 Book query script loaded');
 
   // ==================== 工具函数 ====================
   
@@ -84,7 +83,6 @@
       
       // 错误处理
       img.onerror = function() {
-        console.warn('Failed to load image:', book.封面);
         this.style.display = 'none';
         const placeholder = document.createElement('div');
         placeholder.className = 'book-cover-placeholder';
@@ -235,12 +233,9 @@
   // ==================== 主加载函数 ====================
   
   async function loadAndRenderBooks() {
-    console.log('🔍 Looking for book query containers...');
     const containers = document.querySelectorAll('[data-book-query]');
-    console.log('Found ' + containers.length + ' containers');
     
     if (containers.length === 0) {
-      console.warn('⚠️ No [data-book-query] elements found');
       return;
     }
     
@@ -251,20 +246,16 @@
       const limit = parseInt(container.getAttribute('data-limit')) || null;
       const excludeMovies = container.getAttribute('data-exclude-movies') !== 'false'; // 默认排除电影
       
-      console.log('Loading books with status: ' + (status || 'all'));
       container.innerHTML = '<div class="book-query-loading">📚 加载书籍中...</div>';
       
       try {
-        console.log('📡 Fetching /book-index.json...');
         const response = await fetch('/book-index.json');
-        console.log('Response status: ' + response.status);
         
         if (!response.ok) {
           throw new Error('HTTP ' + response.status + ': ' + response.statusText);
         }
         
         let books = await response.json();
-        console.log('✅ Loaded ' + books.length + ' books from index');
         
         // 过滤电影和电视剧（默认行为）
         if (excludeMovies) {
@@ -280,7 +271,6 @@
             );
             return !hasMovieTag;
           });
-          console.log('After excluding movies/teleplay: ' + books.length + ' books');
         }
         
         // 过滤状态
@@ -291,7 +281,6 @@
               .map(s => s.trim());
             return bookStatuses.includes(status);
           });
-          console.log('Filtered to ' + books.length + ' books with status "' + status + '"');
         }
         
         // 排序
@@ -305,7 +294,6 @@
         // 限制数量
         if (limit && limit > 0) {
           books = books.slice(0, limit);
-          console.log('Limited to ' + books.length + ' books');
         }
         
         // 渲染
@@ -321,7 +309,6 @@
           
           container.innerHTML = '';
           container.appendChild(grid);
-          console.log('✅ Rendered ' + books.length + ' book cards');
         }
       } catch (error) {
         console.error('❌ Error loading books:', error);
@@ -333,22 +320,18 @@
   // ==================== 初始化 ====================
   
   function init() {
-    console.log('Document ready state:', document.readyState);
     
     // DOM 加载完成后执行
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOMContentLoaded fired');
         loadAndRenderBooks();
       });
     } else {
-      console.log('DOM already loaded, running immediately');
       loadAndRenderBooks();
     }
     
     // 监听 Quartz 页面导航事件
     document.addEventListener('nav', function() {
-      console.log('Navigation event detected');
       setTimeout(loadAndRenderBooks, 100);
     });
   }

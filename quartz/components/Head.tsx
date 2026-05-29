@@ -36,6 +36,14 @@ export default (() => {
     )
     const ogImageDefaultPath = `https://${cfg.baseUrl}/og-image.png`
 
+    // Only load the book/movie/video gallery assets on pages that actually use
+    // them (detected by the GalleryAssets transformer), instead of on every page.
+    const usesBookGallery = fileData.usesBookGallery ?? false
+    const usesMovieGallery = fileData.usesMovieGallery ?? false
+    const usesVideoQuery = fileData.usesVideoQuery ?? false
+    const usesVideoPlayer = fileData.usesVideoPlayer ?? false
+    const usesVideoStyles = usesVideoQuery || usesVideoPlayer
+
     return (
       <head>
         <title>{title}</title>
@@ -99,24 +107,34 @@ export default (() => {
           }
         })}
 
-        {/* 自己添加图书/影视/视频卡片 */}
-        <link rel="stylesheet" href="/book-styles.css" />
-        <link rel="stylesheet" href="/movie-styles.css" />
-        <link rel="stylesheet" href="/video-styles.css" />
-
-        <script src="/book-query.js" defer></script>
-        <script src="/movie-query.js" defer></script>
-        <script src="/video-query.js" defer></script>
-        <script src="/video-player.js" defer></script>
-
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.css"
-        />
-        <script
-          defer
-          src="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.js"
-        />
+        {/* 图书/影视/视频卡片：仅在用到的页面加载对应脚本与样式 */}
+        {usesBookGallery && (
+          <>
+            <link rel="stylesheet" href="/book-styles.css" />
+            <script src="/book-query.js" defer></script>
+          </>
+        )}
+        {usesMovieGallery && (
+          <>
+            <link rel="stylesheet" href="/movie-styles.css" />
+            <script src="/movie-query.js" defer></script>
+          </>
+        )}
+        {usesVideoStyles && <link rel="stylesheet" href="/video-styles.css" />}
+        {usesVideoQuery && <script src="/video-query.js" defer></script>}
+        {usesVideoPlayer && (
+          <>
+            <script src="/video-player.js" defer></script>
+            <link
+              rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.css"
+            />
+            <script
+              defer
+              src="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.js"
+            />
+          </>
+        )}
       </head>
     )
   }
