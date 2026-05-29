@@ -107,10 +107,16 @@ export default (() => {
           }
         })}
 
-        {/* 图书/影视/视频卡片样式：仅在用到的页面加载（<link> 在 SPA 导航时也会随 head 生效） */}
-        {usesBookGallery && <link rel="stylesheet" href="/book-styles.css" />}
-        {usesMovieGallery && <link rel="stylesheet" href="/movie-styles.css" />}
+        {/* 图书/影视/视频卡片样式：仅在用到的页面加载（<link> 在 SPA 导航时也会随 head 生效）。
+            另外为封面/缩略图所在的外部源加 preconnect，提前热连接、加快首图加载。 */}
+        {(usesBookGallery || usesMovieGallery) && (
+          <>
+            <link rel="stylesheet" href="/gallery-card.css" />
+            <link rel="preconnect" href="https://images.weserv.nl" />
+          </>
+        )}
         {usesVideoStyles && <link rel="stylesheet" href="/video-styles.css" />}
+        {usesVideoQuery && <link rel="preconnect" href="https://i.ytimg.com" />}
         {/*
           渲染脚本必须全局常驻：SPA 导航时新注入到 <head> 的 <script> 不会执行，
           需要它们在首次整页加载时绑定 nav 事件来驱动后续渲染。两个脚本在页面没有

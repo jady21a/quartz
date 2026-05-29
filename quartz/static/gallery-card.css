@@ -1,17 +1,26 @@
-/* quartz/static/book-styles.css */
+/* quartz/static/gallery-card.css
+   书籍 / 影视卡片网格的共用样式（由 book-styles.css + movie-styles.css 合并而来，
+   二者此前约 95% 重复）。视频卡片结构不同，仍由 video-styles.css 负责。 */
 
-.book-grid {
+.book-grid,
+.movie-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 0.1rem;
   margin: 2rem 0;
 }
+.book-grid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+.movie-grid {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
 
-.book-card {
+.book-card,
+.movie-card {
   border: 1px solid var(--lightgray);
   border-radius: 12px;
   padding: 0.6rem 0.8rem;
-  margin: 0.5rem; /* ↓ 原来 gap 已经够了，这里缩小 */
+  margin: 0.5rem;
   background: var(--light);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
@@ -19,16 +28,18 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: auto; /* 自动适应内容 */
-  min-height: 280px; /* 防止太扁 */
+  height: auto;
+  min-height: 280px;
 }
 
-.book-card:hover {
+.book-card:hover,
+.movie-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.book-header {
+.book-header,
+.movie-header {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,14 +47,16 @@
   margin-bottom: 0.1rem;
 }
 
-.book-cover-wrapper {
+.book-cover-wrapper,
+.movie-cover-wrapper {
   margin-bottom: 0.3rem;
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.book-cover {
+.book-cover,
+.movie-cover {
   width: 100px;
   height: 140px;
   object-fit: cover;
@@ -51,7 +64,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.book-cover-placeholder {
+.book-cover-placeholder,
+.movie-cover-placeholder {
   width: 120px;
   height: 160px;
   display: flex;
@@ -62,11 +76,13 @@
   font-size: 3rem;
 }
 
-.book-title-section {
+.book-title-section,
+.movie-title-section {
   width: 100%;
 }
 
-.book-title {
+.book-title,
+.movie-title {
   font-size: 0.8rem;
   font-weight: 600;
   margin: 0.2rem 0;
@@ -76,20 +92,24 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
-.book-title a {
+.book-title a,
+.movie-title a {
   text-decoration: none;
   color: inherit;
 }
 
-.book-title a:hover {
+.book-title a:hover,
+.movie-title a:hover {
   color: var(--secondary);
 }
 
-.book-rating {
+.book-rating,
+.movie-rating {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,13 +134,14 @@
   margin-bottom: 0.5rem;
 }
 
-.book-info {
+.book-info,
+.movie-info {
   margin-top: 0.3rem;
   font-size: 0.8rem;
   color: var(--darkgray);
   width: 100%;
   text-align: left;
-  flex: 1; /* 占据剩余空间，把底部元素推下去 */
+  flex: 1;
 }
 
 .info-row {
@@ -142,15 +163,15 @@
   word-break: break-word;
 }
 
-.book-progress {
+.book-progress,
+.movie-progress {
   margin-top: 0.8rem;
   width: 100%;
   height: 5px;
   background: var(--lightgray);
   border-radius: 3px;
   overflow: hidden;
-
-  margin-top: auto; /* 自动推到底部 */
+  margin-top: auto;
 }
 
 .progress-bar {
@@ -167,7 +188,8 @@
   font-weight: 500;
 }
 
-.book-status {
+.book-status,
+.movie-status {
   display: inline-block;
   padding: 0.3rem 0.7rem;
   border-radius: 6px;
@@ -175,49 +197,48 @@
   font-weight: 600;
   margin-top: 0.8rem;
   letter-spacing: 0.3px;
-
   align-self: flex-start;
-  /* 不需要 margin-top: auto，因为进度条已经推到底部了 */
 }
 
-.status-正在阅读 {
+/* 状态色板：书与影各自的状态名共用同一组配色 */
+.status-正在阅读,
+.status-正在观看 {
   background: #dbeafe;
   color: #1e40af;
 }
-
-.status-已读完 {
+.status-已读完,
+.status-已看 {
   background: #d1fae5;
   color: #065f46;
 }
-
-.status-未读完 {
+.status-未读完,
+.status-待看 {
   background: #fef3c7;
   color: #92400e;
 }
-
 .status-未开始 {
   background: #f3f4f6;
   color: #4b5563;
 }
-
 .status-概览 {
   background: #e0e7ff;
   color: #4338ca;
 }
-
 .status-Unknown {
   background: #f3f4f6;
   color: #6b7280;
 }
 
-.book-query-loading {
+.book-query-loading,
+.movie-query-loading {
   text-align: center;
   padding: 2rem;
   color: var(--gray);
   font-size: 1.2rem;
 }
 
-.book-query-error {
+.book-query-error,
+.movie-query-error {
   text-align: center;
   padding: 2rem;
   color: #dc2626;
@@ -226,48 +247,47 @@
   margin: 1rem 0;
 }
 
-/* 响应式设计 */
-@media (min-width: 1600px) {
-  .book-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-}
-
-@media (min-width: 1200px) and (max-width: 1599px) {
-  .book-grid {
+/* 响应式 */
+@media (min-width: 1200px) {
+  .book-grid,
+  .movie-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
-  .book-grid {
+  .book-grid,
+  .movie-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
-
   .book-cover,
-  .book-cover-placeholder {
+  .movie-cover,
+  .book-cover-placeholder,
+  .movie-cover-placeholder {
     width: 100px;
     height: 140px;
   }
 }
 
 @media (max-width: 767px) {
-  .book-grid {
+  .book-grid,
+  .movie-grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1rem;
   }
-
-  .book-card {
+  .book-card,
+  .movie-card {
     padding: 1rem;
   }
-
   .book-cover,
-  .book-cover-placeholder {
+  .movie-cover,
+  .book-cover-placeholder,
+  .movie-cover-placeholder {
     width: 90px;
     height: 130px;
   }
-
-  .book-title {
+  .book-title,
+  .movie-title {
     font-size: 0.9rem;
   }
 }
