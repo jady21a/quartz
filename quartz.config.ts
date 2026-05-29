@@ -100,8 +100,8 @@ const config: QuartzConfig = {
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
-      // Comment out CustomOgImages to speed up build time
-      Plugin.CustomOgImages(),
+      // CustomOgImages 已关闭以加快构建：社交分享图回退到默认 /og-image.png
+      // Plugin.CustomOgImages(),
 
       // Plugin.Sitemap(), // 确保启用 Sitemap
     ],
