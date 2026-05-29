@@ -107,26 +107,18 @@ export default (() => {
           }
         })}
 
-        {/* 图书/影视/视频卡片：仅在用到的页面加载对应脚本与样式 */}
+        {/* 图书/影视/视频卡片样式：仅在用到的页面加载（<link> 在 SPA 导航时也会随 head 生效） */}
         {usesBookGallery && <link rel="stylesheet" href="/book-styles.css" />}
         {usesMovieGallery && <link rel="stylesheet" href="/movie-styles.css" />}
         {usesVideoStyles && <link rel="stylesheet" href="/video-styles.css" />}
-        {(usesBookGallery || usesMovieGallery || usesVideoQuery) && (
-          <script src="/gallery.js" defer></script>
-        )}
-        {usesVideoPlayer && (
-          <>
-            <script src="/video-player.js" defer></script>
-            <link
-              rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.css"
-            />
-            <script
-              defer
-              src="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.js"
-            />
-          </>
-        )}
+        {/*
+          渲染脚本必须全局常驻：SPA 导航时新注入到 <head> 的 <script> 不会执行，
+          需要它们在首次整页加载时绑定 nav 事件来驱动后续渲染。两个脚本在页面没有
+          对应容器时会直接返回、按需抓取 index.json；lite-youtube CDN 也由
+          video-player.js 在检测到播放器时动态注入，因此普通页面不会加载它。
+        */}
+        <script src="/gallery.js" defer></script>
+        <script src="/video-player.js" defer></script>
       </head>
     )
   }

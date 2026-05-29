@@ -7,14 +7,18 @@
 
   // ==================== shared helpers ====================
 
-  // 处理豆瓣防盗链：走 weserv 代理并压缩尺寸
+  // 封面统一处理：本地图直接用；外链一律走 weserv 代理
+  // —— 既能把 http:// 升级为 https（修复 https 站点上的 mixed-content 拦截，
+  //    例如 Google Books 的 http 封面），又顺带压缩为 200×280 webp。
   function proxyImage(imageUrl) {
     if (!imageUrl) return ""
-    if (imageUrl.includes("douban.com") || imageUrl.includes("doubanio.com")) {
-      const urlWithoutProtocol = imageUrl.replace(/^https?:\/\//, "")
-      return `https://images.weserv.nl/?url=${urlWithoutProtocol}&w=200&h=280&fit=cover&output=webp&q=85`
+    const url = String(imageUrl).trim()
+    if (!url || url === "N/A") return ""
+    if (url.startsWith("/") || url.startsWith("./")) return url
+    if (/^https?:\/\//.test(url)) {
+      return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=200&h=280&fit=cover&output=webp&q=85`
     }
-    return imageUrl
+    return url
   }
 
   // 把笔记路径修正为可访问的 URL
@@ -98,9 +102,10 @@
       return ph
     }
 
-    if (item.封面) {
+    const coverSrc = proxyImage(item.封面)
+    if (coverSrc) {
       const img = document.createElement("img")
-      img.src = proxyImage(item.封面)
+      img.src = coverSrc
       img.alt = item.title || cfg.coverAlt
       img.className = p + "-cover"
       img.loading = "lazy"

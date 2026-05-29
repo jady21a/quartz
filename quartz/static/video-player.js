@@ -164,8 +164,25 @@
     container.setAttribute('data-player-ready', 'true');
   }
 
+  // 按需注入 lite-youtube CDN（用 createElement 才会执行，SPA 导航下也有效），
+  // 这样普通页面不会加载它，只有出现播放器时才拉取。
+  function ensureLiteYoutube() {
+    if (window.__liteYoutubeLoaded) return;
+    window.__liteYoutubeLoaded = true;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.css';
+    document.head.appendChild(link);
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+
   async function initVideoPlayers() {
     var containers = document.querySelectorAll('.video-player-container');
+    if (containers.length === 0) return;
+    ensureLiteYoutube();
     for (var i = 0; i < containers.length; i++) {
       await enhancePlayer(containers[i]);
     }
