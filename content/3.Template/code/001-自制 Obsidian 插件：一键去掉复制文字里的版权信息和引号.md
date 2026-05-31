@@ -1,4 +1,3 @@
-````
 
 main.js
 ```js
@@ -416,5 +415,3 @@ manifest.json
   "isDesktopOnly": false
 }
 ```
-
-````
