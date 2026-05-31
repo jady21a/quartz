@@ -1,4 +1,3 @@
-````
 <%*
 const projectName = await tp.system.prompt("请输入项目名称");
 if (!projectName) {
@@ -73,4 +72,3 @@ CALENDAR date
 FROM "4.Projects/II.tasks"
 WHERE project = "<% projectName %>"
 ```
-````

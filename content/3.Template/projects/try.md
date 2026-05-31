@@ -1,4 +1,3 @@
-````
 <%*
 const tfile = app.workspace.getActiveFile();
 const content = await app.vault.read(tfile);
@@ -24,5 +23,3 @@ const updated = content.replace(tryRegex, (match, key, existing) => {
 await app.vault.modify(tfile, updated);
 new Notice("✅ 已追加新的 try 记录");
 %>
-
-````
