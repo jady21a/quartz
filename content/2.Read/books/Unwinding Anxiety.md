@@ -11,7 +11,7 @@ currentPage:
 tags:
   - book
 isbn: "9780593330456"
-封面: http://books.google.com/books/content?id=GxACEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api
+封面: 2.Read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg
 阅读状态:
   - 正在阅读
   - 已读完

@@ -9,7 +9,7 @@ publishDate: 1995-05-03
 阅读状态:
   - 已读完
 score: "8.4"
-封面: https://img9.doubanio.com/view/subject/l/public/s3247795.jpg
+封面: 2.Read/douban/0_dimage/s3247795.jpg
 tags:
   - book
 我的评分:

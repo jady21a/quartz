@@ -11,7 +11,7 @@ currentPage:
 tags:
   - book
 isbn: "9780698148314"
-封面: http://books.google.com/books/content?id=1AAsyQ1wgaEC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api
+封面: 2.Read/douban/0_dimage/gbooks_1AAsyQ1wgaEC.jpg
 阅读状态:
   - 正在阅读
   - 已读完

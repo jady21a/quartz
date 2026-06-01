@@ -8,7 +8,7 @@ publishDate: 2003-09-01
 阅读状态:
   - 概览
 score: "9.3"
-封面: https://img9.doubanio.com/view/subject/l/public/s4584066.jpg
+封面: 2.Read/douban/0_dimage/s4584066.jpg
 tags:
   - book
 我的评分:

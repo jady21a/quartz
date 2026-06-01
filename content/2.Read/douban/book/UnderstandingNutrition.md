@@ -8,7 +8,7 @@ publishDate: 2012-07-27
 阅读状态:
   - 未读完
 score: ""
-封面: https://img2.doubanio.com/view/subject/l/public/s27117541.jpg
+封面: 2.Read/douban/0_dimage/s27117541.jpg
 tags:
   - book
 我的评分:

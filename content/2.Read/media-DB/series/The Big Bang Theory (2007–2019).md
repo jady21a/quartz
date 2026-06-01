@@ -16,7 +16,7 @@ aliases:
 country:
 tags:
   - movies
-封面: https://m.media-amazon.com/images/M/MV5BZjgzY2QyNzItNDhhYi00ZWIwLWFjN2UtZDJkN2MxYWNjMmJjXkEyXkFqcGc@._V1_SX300.jpg
+封面: 2.Read/douban/0_dimage/MV5BZjgzY2QyNzItNDhhYi00ZWIwLWFjN2UtZDJkN2MxYWNjMmJjXkEyXkFqcGc@._V1_SX300.jpg
 添加时间: 2026-05-06
 开始时间:
 结束时间:

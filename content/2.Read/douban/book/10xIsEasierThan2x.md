@@ -9,7 +9,7 @@ publishDate: 2023-05-09
 阅读状态:
   - 已读完
 score: "8.1"
-封面: https://img2.doubanio.com/view/subject/l/public/s34536381.jpg
+封面: 2.Read/douban/0_dimage/s34536381.jpg
 tags:
   - book
 我的评分: "7"

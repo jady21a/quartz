@@ -1,12 +1,13 @@
 ---
 cssclasses:
-- cards
+  - cards
+  - homepage-dashboard
 ---
 ## 正在阅读
 ```dataview
 table without ID
 	file.link as "list",
-	("![|100]("+封面+")") as 封面,
+	embed(link(封面)) as 封面,
 	"originalTitle:" + choice(originalTitle, originalTitle, choice(title[0], title[0], "—")) as "原标题",
 	"CNTitle:" + CNTitle as "中文标题",
 	"author:" + author as "作者",
@@ -43,7 +44,7 @@ dv.paragraph("📚 已读完数量：" + books.length);
 ```dataview
 table without ID
 	file.link as "list",
-	("![|100]("+封面+")") as 封面,
+	embed(link(封面)) as 封面,
 	"originalTitle:"+originalTitle,
 	"author:"+author,
 	"star:"+scoreStar,
@@ -62,88 +63,85 @@ where contains(阅读状态,"已读完")
 
 ```
 
-## 未开始
-```dataview
-table without ID
-	file.link as "list",
-	("![|100]("+封面+")") as 封面,
-	"originalTitle:"+originalTitle,
-	"author:"+author,
-	"star:"+scoreStar,
-	"score:"+score,
-	"publishDate:"+publishDate,
-	"myRate:"+myRate,
-	"阅读状态："+阅读状态,
-	"totalPage:"+totalPage,
-	"currentPage:"+currentPage,
-	"添加时间："+添加时间,
-	"结束阅读："+结束阅读
-from "2.Read/douban" 
-where contains(阅读状态,"未开始")
-
-```
-
-
-## 未读完
-```dataview
-table without ID
-	file.link as "list",
-	("![|100]("+封面+")") as 封面,
-	"originalTitle:"+originalTitle,
-	"author:"+author,
-	"star:"+scoreStar,
-	"score:"+score,
-	"publishDate:"+publishDate,
-	"myRate:"+myRate,
-	"阅读状态："+阅读状态,
-	"totalPage:"+totalPage,
-	"currentPage:"+currentPage,
-	"添加时间："+添加时间,
-	"结束阅读："+结束阅读
-from "2.Read/douban" 
-where contains(阅读状态,"未读完")
-
-```
+> [!note]- 未开始
+> ```dataview
+> table without ID
+> 	file.link as "list",
+> 	embed(link(封面)) as 封面,
+> 	"originalTitle:"+originalTitle,
+> 	"author:"+author,
+> 	"star:"+scoreStar,
+> 	"score:"+score,
+> 	"publishDate:"+publishDate,
+> 	"myRate:"+myRate,
+> 	"阅读状态："+阅读状态,
+> 	"totalPage:"+totalPage,
+> 	"currentPage:"+currentPage,
+> 	"添加时间："+添加时间,
+> 	"结束阅读："+结束阅读
+> from "2.Read/douban" 
+> where contains(阅读状态,"未开始")
+> ```
 
 
-## 概览
-```dataview
-table without ID
-	file.link as "list",
-	("![|100]("+封面+")") as 封面,
-	"originalTitle:"+originalTitle,
-	"author:"+author,
-	"star:"+scoreStar,
-	"score:"+score,
-	"publishDate:"+publishDate,
-	"myRate:"+myRate,
-	"阅读状态："+阅读状态,
-	"totalPage:"+totalPage,
-	"currentPage:"+currentPage,
-	"添加时间："+添加时间,
-	"结束阅读："+结束阅读,
-	"阅读用时:"+(date(结束阅读) - date(添加时间))
-from "2.Read/douban" 
-SORT 结束阅读 desc //asc
-where contains(阅读状态,"概览")
+> [!note]- 未读完
+> ```dataview
+> table without ID
+> 	file.link as "list",
+> 	embed(link(封面)) as 封面,
+> 	"originalTitle:"+originalTitle,
+> 	"author:"+author,
+> 	"star:"+scoreStar,
+> 	"score:"+score,
+> 	"publishDate:"+publishDate,
+> 	"myRate:"+myRate,
+> 	"阅读状态："+阅读状态,
+> 	"totalPage:"+totalPage,
+> 	"currentPage:"+currentPage,
+> 	"添加时间："+添加时间,
+> 	"结束阅读："+结束阅读
+> from "2.Read/douban" 
+> where contains(阅读状态,"未读完")
+> ```
 
-```
-## 书库
-```dataview
-table without ID
-	file.link as "list",
-	("![|100]("+封面+")") as 封面,
-	"originalTitle:"+originalTitle,
-	"author:"+author,
-	"star:"+scoreStar,
-	"score:"+score,
-	"publishDate:"+publishDate,
-	"myRate:"+myRate,
-	"阅读状态："+阅读状态,
-	"totalPage:"+totalPage,
-	"currentPage:"+currentPage,
-	"添加时间："+添加时间,
-	"结束阅读："+结束阅读
-from "2.Read/douban"  & #book
 
-```
+> [!note]- 概览
+> ```dataview
+> table without ID
+> 	file.link as "list",
+> 	embed(link(封面)) as 封面,
+> 	"originalTitle:"+originalTitle,
+> 	"author:"+author,
+> 	"star:"+scoreStar,
+> 	"score:"+score,
+> 	"publishDate:"+publishDate,
+> 	"myRate:"+myRate,
+> 	"阅读状态："+阅读状态,
+> 	"totalPage:"+totalPage,
+> 	"currentPage:"+currentPage,
+> 	"添加时间："+添加时间,
+> 	"结束阅读："+结束阅读,
+> 	"阅读用时:"+(date(结束阅读) - date(添加时间))
+> from "2.Read/douban" 
+> SORT 结束阅读 desc //asc
+> where contains(阅读状态,"概览")
+> ```
+
+> [!note]- 书库
+> ```dataview
+> table without ID
+> 	file.link as "list",
+> 	embed(link(封面)) as 封面,
+> 	"originalTitle:"+originalTitle,
+> 	"author:"+author,
+> 	"star:"+scoreStar,
+> 	"score:"+score,
+> 	"publishDate:"+publishDate,
+> 	"myRate:"+myRate,
+> 	"阅读状态："+阅读状态,
+> 	"totalPage:"+totalPage,
+> 	"currentPage:"+currentPage,
+> 	"添加时间："+添加时间,
+> 	"结束阅读："+结束阅读
+> from "2.Read/douban"  & #book
+> ```
