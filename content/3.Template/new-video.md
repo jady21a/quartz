@@ -26,7 +26,8 @@ const fileName = `${nextNum}-${title}`;
 await tp.file.move(`${FOLDER}/${fileName}`);
 _%>
 ---
-## title: <% nextNum %>-<% title %>
+title:
+  - <% nextNum %>-<% title %>
 tags:
   - video
 videoid: VIDEO_ID
@@ -36,10 +37,8 @@ date: <% tp.date.now("YYYY-MM-DD") %>
 category: obsidian
 ---
 
-<div class="video-player-container" data-youtube="VIDEO_ID" data-bilibili="BILIBILI_ID" data-default-source="youtube" data-title="<% title %>">
-  <lite-youtube videoid="VIDEO_ID" playlabel="<% title %>"></lite-youtube>
-</div>
-<% title %>
+<div class="video-player-container" data-title="<% title %>"></div>
+## <% title %>
 
 相关代码:
 相关视频:

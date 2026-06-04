@@ -1,5 +1,46 @@
 [
   {
+    "title": "009-一个指令，让AI 自动生成周复盘",
+    "videoid": "VIDEO_ID",
+    "bilibiliid": "BILIBILI_ID",
+    "sources": {
+      "youtube": "VIDEO_ID",
+      "bilibili": "BILIBILI_ID"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.video/Metadata/009-一个指令，让AI 自动生成周复盘",
+    "tags": [
+      "video"
+    ],
+    "date": "2026-05-22",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "008-项目管理",
+        "label": "008-项目管理"
+      },
+      {
+        "target": "008-项目管理",
+        "label": "008-项目管理"
+      },
+      {
+        "target": "周复盘prompt-成长",
+        "label": "周复盘prompt-成长"
+      },
+      {
+        "target": "周复盘prompt-稳定",
+        "label": "周复盘prompt-稳定"
+      },
+      {
+        "target": "Pasted image 20260529184117.png",
+        "label": "Pasted image 20260529184117.png"
+      }
+    ],
+    "createTime": ""
+  },
+  {
     "title": "008-项目管理",
     "videoid": "Izcl79wQYUg",
     "bilibiliid": "BV1EQ5e6iEyE",
@@ -47,10 +88,6 @@
       },
       {
         "target": "Pasted image 20260515220310.png",
-        "label": "700"
-      },
-      {
-        "target": "Pasted image 20260515220415.png",
         "label": "700"
       },
       {
