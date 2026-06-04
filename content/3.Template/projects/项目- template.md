@@ -67,11 +67,4 @@ dv.paragraph(`
 `);
 ```
 
-### 日历图
-```dataview
-CALENDAR date
-FROM "4.Projects/II.tasks"
-WHERE project = "<% projectName %>"
-```
-
 ````
