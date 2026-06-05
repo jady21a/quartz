@@ -61,6 +61,22 @@ function normalizeVideoSourceId(value) {
   return normalized ? String(normalized).trim() : ""
 }
 
+// 与 Quartz 的 sluggify 保持一致：空格→-、&→-and-、%→-percent、去掉 ? #
+// 否则文件名带空格的页面(如 009)生成的链接会和真实 slug 不一致 → 404
+function sluggifyPath(p) {
+  return p
+    .split("/")
+    .map((segment) =>
+      segment
+        .replace(/\s/g, "-")
+        .replace(/&/g, "-and-")
+        .replace(/%/g, "-percent")
+        .replace(/\?/g, "")
+        .replace(/#/g, ""),
+    )
+    .join("/")
+}
+
 // ===== YouTube 缩略图 URL =====
 function getThumbnailUrl(videoid) {
   if (!videoid) return ""
@@ -154,7 +170,7 @@ function parseVideoData(filePath) {
     bilibiliid,
     sources,
     defaultSource,
-    file: "/7.video/" + relativePath,
+    file: "/7.video/" + sluggifyPath(relativePath),
     tags,
     date: cleanDate(frontmatter.date),
     description,
