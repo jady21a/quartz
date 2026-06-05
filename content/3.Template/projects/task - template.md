@@ -2,6 +2,11 @@
 <%*
 // 1. 输入类型
 const type = await tp.system.prompt("分类", "");
+// 取消则删除刚创建的文档
+if (type === null) {
+  await app.vault.trash(tp.config.target_file, true);
+  return;
+}
 
 // 自动匹配同名 project
 let matchedProject = "";
@@ -29,6 +34,11 @@ const seq = String(maxNum + 1).padStart(3, "0");
 
 // 3. 输入短标题
 const shortTitle = await tp.system.prompt("标题 (short-title)");
+// 取消则删除刚创建的文档
+if (shortTitle === null) {
+  await app.vault.trash(tp.config.target_file, true);
+  return;
+}
 
 // 4. 组合文件名并移动
 const filename = `${type}-${seq}-${shortTitle}`;
