@@ -56,22 +56,9 @@ function cleanDate(value) {
   return String(value)
 }
 
-// 占位符：模板里没填真实 ID 时残留的值，应当忽略而不是当成有效源
-const PLACEHOLDER_SOURCE_IDS = new Set([
-  "video_id",
-  "youtube_id",
-  "youtubeid",
-  "bilibili_id",
-  "bilibiliid",
-  "bvid",
-  "bv_id",
-])
-
 function normalizeVideoSourceId(value) {
   const normalized = normalizeField(value)
-  const id = normalized ? String(normalized).trim() : ""
-  if (PLACEHOLDER_SOURCE_IDS.has(id.toLowerCase())) return ""
-  return id
+  return normalized ? String(normalized).trim() : ""
 }
 
 // ===== YouTube 缩略图 URL =====

@@ -53,12 +53,21 @@
     applyMetadataToContainer(container, currentVideo);
   }
 
-  function createSourceButton(label, isActive, onClick) {
+  function createSourceButton(label, isActive, available, onClick) {
     var button = document.createElement('button');
     button.type = 'button';
-    button.className = 'video-source-button' + (isActive ? ' is-active' : '');
+    button.className =
+      'video-source-button' +
+      (isActive ? ' is-active' : '') +
+      (available ? '' : ' is-disabled');
     button.textContent = label;
-    button.addEventListener('click', onClick);
+    if (available) {
+      button.addEventListener('click', onClick);
+    } else {
+      button.disabled = true;
+      button.title = '暂无视频源';
+      button.setAttribute('aria-disabled', 'true');
+    }
     return button;
   }
 
@@ -81,19 +90,31 @@
     return iframe;
   }
 
+  // 模板没填真实 ID 时残留的占位符，视为「没有视频」
+  var PLACEHOLDER_SOURCE_IDS = [
+    'video_id',
+    'youtube_id',
+    'youtubeid',
+    'bilibili_id',
+    'bilibiliid',
+    'bvid',
+    'bv_id',
+  ];
+
+  function isValidSourceId(id) {
+    if (!id) return false;
+    return PLACEHOLDER_SOURCE_IDS.indexOf(id.toLowerCase()) === -1;
+  }
+
+  // 始终返回 YouTube 和 Bilibili 两个源；没有有效 ID 的标记为不可用
   function getSources(container) {
     var youtubeId = (container.getAttribute('data-youtube') || '').trim();
     var bilibiliId = (container.getAttribute('data-bilibili') || '').trim();
-    var sources = [];
 
-    if (youtubeId) {
-      sources.push({ key: 'youtube', label: 'YouTube', id: youtubeId });
-    }
-    if (bilibiliId) {
-      sources.push({ key: 'bilibili', label: 'Bilibili', id: bilibiliId });
-    }
-
-    return sources;
+    return [
+      { key: 'youtube', label: 'YouTube', id: youtubeId, available: isValidSourceId(youtubeId) },
+      { key: 'bilibili', label: 'Bilibili', id: bilibiliId, available: isValidSourceId(bilibiliId) },
+    ];
   }
 
   async function enhancePlayer(container) {
@@ -102,33 +123,37 @@
     await enrichContainerFromIndex(container);
 
     var sources = getSources(container);
-    if (sources.length === 0) return;
+    var availableSources = sources.filter(function(source) {
+      return source.available;
+    });
+    if (availableSources.length === 0) return;
 
     var existingLite = container.querySelector('lite-youtube');
     var playLabel = existingLite ? existingLite.getAttribute('playlabel') : '';
     var title = playLabel || container.getAttribute('data-title') || '';
     var defaultSource = (container.getAttribute('data-default-source') || '').trim();
-    var activeKey = defaultSource || sources[0].key;
+    var defaultAvailable = availableSources.find(function(source) {
+      return source.key === defaultSource;
+    });
+    var activeKey = defaultAvailable ? defaultAvailable.key : availableSources[0].key;
 
     container.innerHTML = '';
     container.classList.add('video-player-enhanced');
 
-    var tabs = null;
-    if (sources.length > 1) {
-      var sourceBar = document.createElement('div');
-      sourceBar.className = 'video-source-bar';
+    // 播放源切换条始终显示（两个按钮都在；无视频的源不可点）
+    var sourceBar = document.createElement('div');
+    sourceBar.className = 'video-source-bar';
 
-      var sourceLabel = document.createElement('span');
-      sourceLabel.className = 'video-source-label';
-      sourceLabel.textContent = '播放源:';
-      sourceBar.appendChild(sourceLabel);
+    var sourceLabel = document.createElement('span');
+    sourceLabel.className = 'video-source-label';
+    sourceLabel.textContent = '播放源:';
+    sourceBar.appendChild(sourceLabel);
 
-      tabs = document.createElement('div');
-      tabs.className = 'video-source-tabs';
-      sourceBar.appendChild(tabs);
+    var tabs = document.createElement('div');
+    tabs.className = 'video-source-tabs';
+    sourceBar.appendChild(tabs);
 
-      container.appendChild(sourceBar);
-    }
+    container.appendChild(sourceBar);
 
     var stage = document.createElement('div');
     stage.className = 'video-source-stage';
@@ -139,8 +164,8 @@
       stage.innerHTML = '';
 
       var activeSource = sources.find(function(source) {
-        return source.key === sourceKey;
-      }) || sources[0];
+        return source.key === sourceKey && source.available;
+      }) || availableSources[0];
 
       if (activeSource.key === 'youtube') {
         stage.appendChild(createYoutubePlayer(activeSource.id, title));
@@ -148,16 +173,16 @@
         stage.appendChild(createBilibiliPlayer(activeSource.id, title));
       }
 
-      if (tabs) {
-        tabs.innerHTML = '';
-        sources.forEach(function(source) {
-          tabs.appendChild(createSourceButton(source.label, source.key === activeKey, function() {
+      tabs.innerHTML = '';
+      sources.forEach(function(source) {
+        tabs.appendChild(
+          createSourceButton(source.label, source.key === activeKey, source.available, function() {
             if (source.key !== activeKey) {
               renderActiveSource(source.key);
             }
-          }));
-        });
-      }
+          }),
+        );
+      });
     }
 
     renderActiveSource(activeKey);
