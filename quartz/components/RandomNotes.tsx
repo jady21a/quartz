@@ -1,16 +1,50 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { getDate } from "./Date"
+import { execSync } from "child_process"
 import style from "./styles/randomNotes.scss"
+
+function buildGitDateMap(): Map<string, number> {
+  const map = new Map<string, number>()
+  try {
+    const raw = execSync(
+      'git -c core.quotePath=false log --pretty="format:%at" --name-only -- content/',
+      { encoding: "utf-8", maxBuffer: 10 * 1024 * 1024 },
+    )
+    let currentTs = 0
+    for (const line of raw.split("\n")) {
+      const trimmed = line.trim()
+      if (!trimmed) continue
+      if (/^\d+$/.test(trimmed)) {
+        currentTs = parseInt(trimmed, 10) * 1000
+      } else if (currentTs && trimmed.startsWith("content/")) {
+        const rel = trimmed.slice("content/".length)
+        if (!map.has(rel)) {
+          map.set(rel, currentTs)
+        }
+      }
+    }
+  } catch {}
+  return map
+}
+
+const gitDateMap = buildGitDateMap()
 
 interface Options {
   title?: string
   limit?: number
   showTags?: boolean
+  recentLimit?: number
+  excludeFolders?: string[]
+  excludeSlugs?: string[]
 }
 
 const defaultOptions: Options = {
   title: "漫步笔记",
   limit: 3,
   showTags: true,
+  recentLimit: 4,
+  excludeFolders: ["1.", "2.", "3.", "7."],
+  excludeSlugs: ["藏书馆", "观影库"],
 }
 
 export default ((userOpts?: Partial<Options>) => {
@@ -20,8 +54,8 @@ export default ((userOpts?: Partial<Options>) => {
     allFiles,
     fileData,
     displayClass,
+    cfg,
   }: QuartzComponentProps) => {
-    // 过滤掉当前页面、索引页、电影笔记以及内容过短的笔记
     const currentSlug = fileData.slug
     const eligibleFiles = allFiles.filter(
       (file) =>
@@ -37,9 +71,21 @@ export default ((userOpts?: Partial<Options>) => {
       return null
     }
 
-    // 服务端渲染一组初始随机笔记（无需 JS 也可显示）；
-    // 「换一批」时客户端复用已经预取的 fetchData（contentIndex），不再为每个页面内嵌全量数据。
     const initial = [...eligibleFiles].sort(() => Math.random() - 0.5).slice(0, opts.limit)
+
+    const recentFiles = allFiles
+      .filter((file) => {
+        if (!file.slug || file.slug.endsWith("index") || !file.frontmatter?.title) return false
+        const slug = file.slug
+        if (opts.excludeSlugs.includes(slug)) return false
+        return !opts.excludeFolders.some((prefix) => slug.startsWith(prefix))
+      })
+      .map((file) => ({
+        file,
+        gitDate: gitDateMap.get(file.relativePath!) ?? 0,
+      }))
+      .sort((a, b) => b.gitDate - a.gitDate)
+      .slice(0, opts.recentLimit)
 
     return (
       <div
@@ -49,32 +95,57 @@ export default ((userOpts?: Partial<Options>) => {
         data-limit={String(opts.limit)}
         data-show-tags={String(opts.showTags)}
       >
-        <h3>{opts.title}</h3>
-        <ul class="random-notes-list" data-random-notes-list>
-          {initial.map((file) => {
-            const title = file.frontmatter?.title || file.slug || "Untitled"
-            const tags = file.frontmatter?.tags || []
-            return (
-              <li key={file.slug}>
-                <a href={`/${file.slug}`} class="internal">
-                  {title}
-                </a>
-                {opts.showTags && tags.length > 0 && (
-                  <div class="random-note-tags">
-                    {tags.slice(0, 2).map((tag: string) => (
-                      <span class="tag" key={tag}>
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-        <button class="refresh-button" data-refresh-random-notes aria-label="刷新随机笔记">
-          换一批
-        </button>
+        <div class="random-notes-tabs">
+          <button class="tab-btn active" data-tab="recent">最新</button>
+          <button class="tab-btn" data-tab="random">{opts.title}</button>
+        </div>
+        <div class="tab-panel hidden" data-panel="random">
+          <ul class="random-notes-list" data-random-notes-list>
+            {initial.map((file) => {
+              const title = file.frontmatter?.title || file.slug || "Untitled"
+              const tags = file.frontmatter?.tags || []
+              return (
+                <li key={file.slug}>
+                  <a href={`/${file.slug}`} class="internal">
+                    {title}
+                  </a>
+                  {opts.showTags && tags.length > 0 && (
+                    <div class="random-note-tags">
+                      {tags.slice(0, 2).map((tag: string) => (
+                        <span class="tag" key={tag}>
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+          <button class="refresh-button" data-refresh-random-notes aria-label="刷新随机笔记">
+            换一批
+          </button>
+        </div>
+        <div class="tab-panel" data-panel="recent">
+          <ul class="random-notes-list">
+            {recentFiles.map(({ file, gitDate }) => {
+              const title = file.frontmatter?.title || file.slug || "Untitled"
+              const date = gitDate ? new Date(gitDate) : null
+              return (
+                <li key={file.slug}>
+                  <a href={`/${file.slug}`} class="internal">
+                    {title}
+                  </a>
+                  {date && (
+                    <span class="recent-date">
+                      {date.toLocaleDateString("zh-CN", { month: "numeric", day: "numeric" })}
+                    </span>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </div>
     )
   }
@@ -97,8 +168,20 @@ export default ((userOpts?: Partial<Options>) => {
       const showTags = container.getAttribute("data-show-tags") === "true"
       const currentSlug = container.getAttribute("data-slug") || ""
 
+      // Tab switching
+      const tabBtns = container.querySelectorAll(".tab-btn")
+      const panels = container.querySelectorAll(".tab-panel")
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const target = btn.getAttribute("data-tab")
+          tabBtns.forEach(function (b) { b.classList.remove("active") })
+          panels.forEach(function (p) { p.classList.add("hidden") })
+          btn.classList.add("active")
+          container.querySelector('[data-panel="' + target + '"]').classList.remove("hidden")
+        })
+      })
+
       async function eligible() {
-        // fetchData 已在每个页面预取（供搜索使用），这里直接复用，无额外网络开销
         const data = await fetchData
         return Object.values(data).filter(function (d) {
           return (
@@ -156,6 +239,9 @@ export default ((userOpts?: Partial<Options>) => {
       if (window.addCleanup) {
         window.addCleanup(function () {
           button.removeEventListener("click", onClick)
+          tabBtns.forEach(function (btn) {
+            btn.replaceWith(btn.cloneNode(true))
+          })
         })
       }
     }

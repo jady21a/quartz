@@ -3,7 +3,46 @@
     border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1.5rem;
-  
+
+    .random-notes-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--lightgray);
+      margin-bottom: 1rem;
+
+      .tab-btn {
+        background: none;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: var(--gray);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: color 0.2s, border-color 0.2s;
+
+        &:hover {
+          color: var(--dark);
+        }
+
+        &.active {
+          color: var(--dark);
+          border-bottom-color: var(--secondary);
+        }
+      }
+    }
+
+    .tab-panel.hidden {
+      display: none;
+    }
+
+    .recent-date {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-left: 0.4rem;
+    }
+
     h3 {
       margin: 0 0 1rem 0;
       font-size: 1.1rem;

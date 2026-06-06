@@ -1,10 +1,10 @@
 [
   {
     "title": "009-一个指令，让AI 自动生成周复盘",
-    "videoid": "VIDEO_ID",
+    "videoid": "WvVzqwzfL",
     "bilibiliid": "BV1id7X64E1D",
     "sources": {
-      "youtube": "VIDEO_ID",
+      "youtube": "WvVzqwzfL",
       "bilibili": "BV1id7X64E1D"
     },
     "defaultSource": "youtube",
@@ -15,7 +15,7 @@
     "date": "2026-05-22",
     "description": "",
     "category": "obsidian",
-    "thumbnail": "https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg",
+    "thumbnail": "https://i.ytimg.com/vi/WvVzqwzfL/hqdefault.jpg",
     "related_notes": [
       {
         "target": "008-项目管理",
