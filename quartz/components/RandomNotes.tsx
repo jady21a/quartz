@@ -3,11 +3,11 @@ import { getDate } from "./Date"
 import { execSync } from "child_process"
 import style from "./styles/randomNotes.scss"
 
-function buildGitDateMap(): Map<string, number> {
+function buildGitCreatedMap(): Map<string, number> {
   const map = new Map<string, number>()
   try {
     const raw = execSync(
-      'git -c core.quotePath=false log --pretty="format:%at" --name-only -- content/',
+      'git -c core.quotePath=false log --diff-filter=A --pretty="format:%at" --name-only -- content/',
       { encoding: "utf-8", maxBuffer: 10 * 1024 * 1024 },
     )
     let currentTs = 0
@@ -27,7 +27,7 @@ function buildGitDateMap(): Map<string, number> {
   return map
 }
 
-const gitDateMap = buildGitDateMap()
+const gitDateMap = buildGitCreatedMap()
 
 interface Options {
   title?: string
@@ -43,7 +43,7 @@ const defaultOptions: Options = {
   limit: 3,
   showTags: true,
   recentLimit: 4,
-  excludeFolders: ["1.", "2.", "3.", "7."],
+  excludeFolders: ["1.", "2.Read/dataview", "2.Read/douban", "2.Read/media-DB", "3."],
   excludeSlugs: ["藏书馆", "观影库"],
 }
 
@@ -76,6 +76,7 @@ export default ((userOpts?: Partial<Options>) => {
     const recentFiles = allFiles
       .filter((file) => {
         if (!file.slug || file.slug.endsWith("index") || !file.frontmatter?.title) return false
+        if ((file.frontmatter?.tags || []).includes("movies")) return false
         const slug = file.slug
         if (opts.excludeSlugs.includes(slug)) return false
         return !opts.excludeFolders.some((prefix) => slug.startsWith(prefix))
@@ -136,11 +137,6 @@ export default ((userOpts?: Partial<Options>) => {
                   <a href={`/${file.slug}`} class="internal">
                     {title}
                   </a>
-                  {date && (
-                    <span class="recent-date">
-                      {date.toLocaleDateString("zh-CN", { month: "numeric", day: "numeric" })}
-                    </span>
-                  )}
                 </li>
               )
             })}
