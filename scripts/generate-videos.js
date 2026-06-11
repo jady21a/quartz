@@ -61,6 +61,36 @@ function normalizeVideoSourceId(value) {
   return normalized ? String(normalized).trim() : ""
 }
 
+// 从 YouTube 链接里提取 11 位视频 ID;已经是裸 ID 则原样返回
+// 支持:watch?v=、youtu.be/、embed/、shorts/、live/
+function extractYouTubeId(value) {
+  const raw = normalizeVideoSourceId(value)
+  if (!raw) return ""
+  // 不含 / 或 . 视为裸 ID(也兼容占位符 VIDEO_ID)
+  if (!/[/.]/.test(raw)) return raw
+  const patterns = [
+    /[?&]v=([\w-]{11})/,
+    /youtu\.be\/([\w-]{11})/,
+    /\/(?:embed|shorts|live|v)\/([\w-]{11})/,
+  ]
+  for (const re of patterns) {
+    const m = raw.match(re)
+    if (m) return m[1]
+  }
+  // 兜底:取第一个 11 位 token
+  const generic = raw.match(/([\w-]{11})(?:[?&/]|$)/)
+  return generic ? generic[1] : raw
+}
+
+// 从 Bilibili 链接里提取 BV 号;已经是裸 BV 号则原样返回
+// 注意:b23.tv 短链 / av 号无法在本地解析出 BV,会原样保留
+function extractBilibiliId(value) {
+  const raw = normalizeVideoSourceId(value)
+  if (!raw) return ""
+  const bv = raw.match(/BV[0-9A-Za-z]+/)
+  return bv ? bv[0] : raw
+}
+
 // 与 Quartz 的 sluggify 保持一致：空格→-、&→-and-、%→-percent、去掉 ? #
 // 否则文件名带空格的页面(如 009)生成的链接会和真实 slug 不一致 → 404
 function sluggifyPath(p) {
@@ -141,12 +171,12 @@ function parseVideoData(filePath) {
   if (!title) title = path.basename(filePath, ".md")
 
   const videoid =
-    normalizeVideoSourceId(frontmatter.videoid) ||
-    extractPlayerSource(bodyContent, "youtube") ||
+    extractYouTubeId(frontmatter.videoid) ||
+    extractYouTubeId(extractPlayerSource(bodyContent, "youtube")) ||
     ""
   const bilibiliid =
-    normalizeVideoSourceId(frontmatter.bilibiliid) ||
-    extractPlayerSource(bodyContent, "bilibili") ||
+    extractBilibiliId(frontmatter.bilibiliid) ||
+    extractBilibiliId(extractPlayerSource(bodyContent, "bilibili")) ||
     ""
   const sources = buildVideoSources(videoid, bilibiliid)
   const defaultSource = normalizeDefaultSource(frontmatter.defaultSource, sources)

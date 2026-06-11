@@ -1,7 +1,26 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { getDate } from "./Date"
 import { execSync } from "child_process"
+import fs from "fs"
+import path from "path"
 import style from "./styles/randomNotes.scss"
+
+// Map of note relativePath -> creation timestamp (ms), used by the "最新" tab.
+//
+// Prefer the precomputed manifest (scripts/generate-created-dates.js). Building
+// it from git at runtime breaks on Cloudflare Pages because Pages shallow-clones
+// the repo, so `git log --diff-filter=A` can't see when notes were first added
+// and the "最新" order collapses. The committed manifest carries the full-history
+// dates, so the deployed site stays correct. Fall back to git for local dev when
+// the manifest is missing.
+function loadCreatedMap(): Map<string, number> {
+  const manifestPath = path.join(process.cwd(), "quartz", "static", "created-dates.json")
+  try {
+    const obj = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as Record<string, number>
+    return new Map(Object.entries(obj).map(([k, v]) => [k, Number(v)]))
+  } catch {}
+  return buildGitCreatedMap()
+}
 
 function buildGitCreatedMap(): Map<string, number> {
   const map = new Map<string, number>()
@@ -27,7 +46,7 @@ function buildGitCreatedMap(): Map<string, number> {
   return map
 }
 
-const gitDateMap = buildGitCreatedMap()
+const gitDateMap = loadCreatedMap()
 
 interface Options {
   title?: string
@@ -43,7 +62,7 @@ const defaultOptions: Options = {
   limit: 3,
   showTags: true,
   recentLimit: 4,
-  excludeFolders: ["1.", "2.Read/dataview", "2.Read/douban", "2.Read/media-DB", "3."],
+  excludeFolders: [".trash", "1.", "2.Read/dataview", "2.Read/douban", "2.Read/media-DB", "3."],
   excludeSlugs: ["藏书馆", "观影库"],
 }
 

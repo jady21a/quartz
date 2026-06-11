@@ -1,10 +1,48 @@
 [
   {
+    "title": "010-obsidian homepage",
+    "videoid": "VIDEO_ID",
+    "bilibiliid": "BV1btEi6vEtz",
+    "sources": {
+      "youtube": "VIDEO_ID",
+      "bilibili": "BV1btEi6vEtz"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.video/Metadata/010-obsidian-homepage",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-06-11",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg",
+    "related_notes": [
+      {
+        "target": "002-1homepage template",
+        "label": "002-1homepage template"
+      },
+      {
+        "target": "002-2homepage-dashboard",
+        "label": "homepage-columns.css"
+      },
+      {
+        "target": "002-2homepage-dashboard",
+        "label": "002-2homepage-dashboard"
+      },
+      {
+        "target": "002-1homepage template",
+        "label": "002-1homepage template"
+      }
+    ],
+    "createTime": ""
+  },
+  {
     "title": "009-一个指令，让AI 自动生成周复盘",
-    "videoid": "WvVzqwzfL",
+    "videoid": "WvVzqwzfL_I",
     "bilibiliid": "BV1id7X64E1D",
     "sources": {
-      "youtube": "WvVzqwzfL",
+      "youtube": "WvVzqwzfL_I",
       "bilibili": "BV1id7X64E1D"
     },
     "defaultSource": "youtube",
@@ -15,7 +53,7 @@
     "date": "2026-05-22",
     "description": "",
     "category": "obsidian",
-    "thumbnail": "https://i.ytimg.com/vi/WvVzqwzfL/hqdefault.jpg",
+    "thumbnail": "https://i.ytimg.com/vi/WvVzqwzfL_I/hqdefault.jpg",
     "related_notes": [
       {
         "target": "008-项目管理",
