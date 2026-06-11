@@ -20,7 +20,9 @@ const OUT = path.join(__dirname, "..", "quartz", "static", "created-dates.json")
 
 function isShallow() {
   try {
-    return execSync("git rev-parse --is-shallow-repository", { encoding: "utf-8" }).trim() === "true"
+    return (
+      execSync("git rev-parse --is-shallow-repository", { encoding: "utf-8" }).trim() === "true"
+    )
   } catch {
     return false
   }
@@ -33,27 +35,52 @@ if (isShallow() && fs.existsSync(OUT)) {
   process.exit(0)
 }
 
+// Walk history oldest-first with rename detection. We track each file's
+// original creation timestamp and carry it across renames, so a note keeps its
+// real creation date even after its filename (slug) changes. Without this, a
+// renamed note's `--diff-filter=A` entry only exists under the old path and the
+// current path resolves to no date — which is exactly what sank note 009.
 const raw = execSync(
-  'git -c core.quotePath=false log --diff-filter=A --pretty="format:%at" --name-only -- content/',
-  { encoding: "utf-8", maxBuffer: 50 * 1024 * 1024 },
+  "git -c core.quotePath=false log --reverse --name-status -M --pretty=format:@%at -- content/",
+  { encoding: "utf-8", maxBuffer: 80 * 1024 * 1024 },
 )
 
-const map = {}
+const PREFIX = "content/"
+const created = {} // path (relative to content/) -> creation ts (ms)
 let currentTs = 0
+
+const strip = (p) => (p.startsWith(PREFIX) ? p.slice(PREFIX.length) : null)
+
 for (const line of raw.split("\n")) {
-  const trimmed = line.trim()
-  if (!trimmed) continue
-  if (/^\d+$/.test(trimmed)) {
-    currentTs = parseInt(trimmed, 10) * 1000
-  } else if (currentTs && trimmed.startsWith("content/")) {
-    const rel = trimmed.slice("content/".length)
-    // git log is newest-first; first occurrence = most recent Add of this path.
-    if (!(rel in map)) {
-      map[rel] = currentTs
+  if (!line) continue
+  if (line[0] === "@") {
+    currentTs = parseInt(line.slice(1), 10) * 1000
+    continue
+  }
+  const parts = line.split("\t")
+  const status = parts[0]
+  if (status[0] === "A" || status[0] === "C") {
+    // Added (or copied) — first appearance of this path.
+    const rel = strip(parts[1])
+    if (rel && !(rel in created)) created[rel] = currentTs
+  } else if (status[0] === "R") {
+    // Renamed old -> new: carry the original creation date to the new path.
+    const oldRel = strip(parts[1])
+    const newRel = strip(parts[2])
+    if (newRel) {
+      created[newRel] = (oldRel && created[oldRel]) || currentTs
+      if (oldRel) delete created[oldRel]
     }
+  } else if (status[0] === "D") {
+    const rel = strip(parts[1])
+    if (rel) delete created[rel]
   }
 }
 
+const map = created
+
 fs.mkdirSync(path.dirname(OUT), { recursive: true })
 fs.writeFileSync(OUT, JSON.stringify(map))
-console.log(`[created-dates] wrote ${Object.keys(map).length} entries -> ${path.relative(process.cwd(), OUT)}`)
+console.log(
+  `[created-dates] wrote ${Object.keys(map).length} entries -> ${path.relative(process.cwd(), OUT)}`,
+)

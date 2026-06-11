@@ -20,7 +20,7 @@
   {
     "file": "/2.Read/books/How-to-Read-a-Book",
     "title": "如何阅读一本书",
-    "封面": "http://books.google.com/books/content?id=Z5PpkQadm5EC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "封面": "2.Read/douban/0_dimage/gbooks_Z5PpkQadm5EC.jpg",
     "originalTitle": "How to Read a Book",
     "author": "Mortimer J. Adler, Charles Van Doren",
     "scoreStar": "",
@@ -43,7 +43,7 @@
   {
     "file": "/2.Read/books/Logic-A-Very-Short-Introduction",
     "title": "Logic A Very Short Introduction",
-    "封面": "http://books.google.com/books/content?id=1-4BLLgo0A8C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "封面": "2.Read/douban/0_dimage/gbooks_1-4BLLgo0A8C.jpg",
     "originalTitle": "Logic: A Very Short Introduction",
     "author": "Graham Priest",
     "scoreStar": "",
@@ -66,7 +66,7 @@
   {
     "file": "/2.Read/books/Solving-the-Procrastination-Puzzle",
     "title": "Solving the Procrastination Puzzle",
-    "封面": "http://books.google.com/books/content?id=1AAsyQ1wgaEC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "封面": "2.Read/douban/0_dimage/gbooks_1AAsyQ1wgaEC.jpg",
     "originalTitle": "Solving the Procrastination Puzzle",
     "author": "Timothy A. Pychyl",
     "scoreStar": "",
@@ -87,32 +87,9 @@
     ]
   },
   {
-    "file": "/2.Read/books/Thinking-Fast-and-Slow",
-    "title": "Thinking Fast and Slow",
-    "封面": "http://books.google.com/books/content?id=TA7Q27RWlj0C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-    "originalTitle": "Thinking, Fast and Slow",
-    "author": "Daniel Kahneman",
-    "scoreStar": "",
-    "score": "",
-    "publishDate": "2011-11-01",
-    "myRate": "",
-    "阅读状态": [
-      "正在阅读",
-      "已读完"
-    ],
-    "totalPage": "619",
-    "currentPage": "第三章",
-    "添加时间": "2026-03-17",
-    "开始时间": "",
-    "结束阅读": "",
-    "tags": [
-      "book"
-    ]
-  },
-  {
     "file": "/2.Read/books/Unwinding-Anxiety",
     "title": "Unwinding Anxiety",
-    "封面": "http://books.google.com/books/content?id=GxACEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "封面": "2.Read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg",
     "originalTitle": "Unwinding Anxiety",
     "author": "Judson Brewer, MD, PhD",
     "scoreStar": "",
@@ -211,7 +188,7 @@
   {
     "file": "/2.Read/douban/book/ExactlyWhattoSay",
     "title": "ExactlyWhattoSay",
-    "封面": "https://m.media-amazon.com/images/I/71LzPlsDcEL._SY522_.jpg",
+    "封面": "2.Read/douban/0_dimage/71LzPlsDcEL._SY522_.jpg",
     "originalTitle": "",
     "author": [
       "PhilMJones\""
@@ -335,7 +312,7 @@
   {
     "file": "/2.Read/douban/book/Platform平台",
     "title": "platform",
-    "封面": "https://m.media-amazon.com/images/I/716ulwY6ycL._SY522_.jpg",
+    "封面": "2.Read/douban/0_dimage/716ulwY6ycL._SY522_.jpg",
     "originalTitle": "",
     "author": [
       "Hyatt,Michael;Hyatt,Michael;"
@@ -573,7 +550,7 @@
   {
     "file": "/2.Read/douban/book/只工作、不上班的自主人生",
     "title": "只工作、不上班的自主人生",
-    "封面": "https://imgs.cwgv.com.tw/books/BWL/BWL094/cover/thumb/BWL094.png",
+    "封面": "2.Read/douban/0_dimage/BWL094.png",
     "originalTitle": "",
     "author": [
       null,
@@ -1071,7 +1048,7 @@
   {
     "file": "/2.Read/douban/book/普通人的財富自由之道",
     "title": "普通人的財富自由之道",
-    "封面": "https://m.media-amazon.com/images/I/714FD0hNmfL._SY522_.jpg",
+    "封面": "2.Read/douban/0_dimage/714FD0hNmfL._SY522_.jpg",
     "originalTitle": "",
     "author": [
       "JohnLeeDumas\""
@@ -1577,7 +1554,7 @@
   {
     "file": "/2.Read/douban/book/认知边界：认知决定你的财富",
     "title": "认知边界：认知决定你的财富",
-    "封面": "https://m.media-amazon.com/images/I/51ilGM8ZvdL._SY522_.jpg",
+    "封面": "2.Read/douban/0_dimage/51ilGM8ZvdL._SY522_.jpg",
     "originalTitle": "",
     "author": " - 凌发明",
     "scoreStar": "",

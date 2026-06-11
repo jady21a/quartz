@@ -24,6 +24,10 @@
       },
       {
         "target": "002-2homepage-dashboard",
+        "label": "002-2homepage-dashboard"
+      },
+      {
+        "target": "002-2homepage-dashboard",
         "label": "homepage-columns.css"
       },
       {

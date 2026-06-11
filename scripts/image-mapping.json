@@ -104,32 +104,27 @@
       },
       {
         "title": "如何阅读一本书",
-        "originalCover": "http://books.google.com/books/content?id=Z5PpkQadm5EC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+        "originalCover": "2.Read/douban/0_dimage/gbooks_Z5PpkQadm5EC.jpg",
         "suggestedFilename": "unknown"
       },
       {
         "title": "Logic: A Very Short Introduction",
-        "originalCover": "http://books.google.com/books/content?id=1-4BLLgo0A8C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+        "originalCover": "2.Read/douban/0_dimage/gbooks_1-4BLLgo0A8C.jpg",
         "suggestedFilename": "unknown"
       },
       {
         "title": "Solving the Procrastination Puzzle",
-        "originalCover": "http://books.google.com/books/content?id=1AAsyQ1wgaEC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-        "suggestedFilename": "unknown"
-      },
-      {
-        "title": "Thinking, Fast and Slow",
-        "originalCover": "http://books.google.com/books/content?id=TA7Q27RWlj0C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+        "originalCover": "2.Read/douban/0_dimage/gbooks_1AAsyQ1wgaEC.jpg",
         "suggestedFilename": "unknown"
       },
       {
         "title": "Unwinding Anxiety",
-        "originalCover": "http://books.google.com/books/content?id=GxACEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+        "originalCover": "2.Read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg",
         "suggestedFilename": "unknown"
       },
       {
         "title": "10xIsEasierThan2x",
-        "originalCover": "https://img2.doubanio.com/view/subject/l/public/s34536381.jpg",
+        "originalCover": "2.Read/douban/0_dimage/s34536381.jpg",
         "suggestedFilename": "s34536381.jpg"
       },
       {
@@ -139,12 +134,12 @@
       },
       {
         "title": "ExactlyWhattoSay",
-        "originalCover": "https://m.media-amazon.com/images/I/71LzPlsDcEL._SY522_.jpg",
+        "originalCover": "2.Read/douban/0_dimage/71LzPlsDcEL._SY522_.jpg",
         "suggestedFilename": "unknown"
       },
       {
         "title": "platform",
-        "originalCover": "https://m.media-amazon.com/images/I/716ulwY6ycL._SY522_.jpg",
+        "originalCover": "2.Read/douban/0_dimage/716ulwY6ycL._SY522_.jpg",
         "suggestedFilename": "unknown"
       },
       {
@@ -154,69 +149,54 @@
       },
       {
         "title": "只工作、不上班的自主人生",
-        "originalCover": "https://imgs.cwgv.com.tw/books/BWL/BWL094/cover/thumb/BWL094.png",
+        "originalCover": "2.Read/douban/0_dimage/BWL094.png",
         "suggestedFilename": "unknown"
       },
       {
         "title": "哈佛非虚构写作课",
-        "originalCover": "https://img2.doubanio.com/view/subject/l/public/s28364301.jpg",
+        "originalCover": "2.Read/douban/0_dimage/s28364301.jpg",
         "suggestedFilename": "s28364301.jpg"
       },
       {
         "title": "基层女性",
-        "originalCover": "https://img9.doubanio.com/view/subject/l/public/s34001866.jpg",
+        "originalCover": "2.Read/douban/0_dimage/s34001866.jpg",
         "suggestedFilename": "s34001866.jpg"
       },
       {
         "title": "The Beginning of Infinity: Explanations That Transform the World",
-        "originalCover": "https://img3.doubanio.com/view/subject/l/public/s28775083.jpg",
+        "originalCover": "2.Read/douban/0_dimage/s28775083.jpg",
         "suggestedFilename": "s28775083.jpg"
       },
       {
         "title": "普通人的財富自由之道",
-        "originalCover": "https://m.media-amazon.com/images/I/714FD0hNmfL._SY522_.jpg",
+        "originalCover": "2.Read/douban/0_dimage/714FD0hNmfL._SY522_.jpg",
         "suggestedFilename": "unknown"
       },
       {
         "title": "The Rational Optimist:How Prosperity Evolves",
-        "originalCover": "https://img3.doubanio.com/view/subject/l/public/s6983402.jpg",
+        "originalCover": "2.Read/douban/0_dimage/s6983402.jpg",
         "suggestedFilename": "s6983402.jpg"
       },
       {
         "title": "认知边界：认知决定你的财富",
-        "originalCover": "https://m.media-amazon.com/images/I/51ilGM8ZvdL._SY522_.jpg",
+        "originalCover": "2.Read/douban/0_dimage/51ilGM8ZvdL._SY522_.jpg",
         "suggestedFilename": "unknown"
       }
     ],
     "movies": [
       {
-        "title": "The Big Bang Theory: It All Started with a Big Bang",
-        "originalCover": "N/A",
-        "suggestedFilename": "unknown"
-      },
-      {
-        "title": "The Cat in the Hat",
-        "originalCover": "https://m.media-amazon.com/images/M/MV5BMTI5MDU3MTYyMF5BMl5BanBnXkFtZTYwODgyODc3._V1_SX300.jpg",
-        "suggestedFilename": "unknown"
-      },
-      {
-        "title": "红楼梦",
-        "originalCover": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2554030915.webp",
-        "suggestedFilename": "p2554030915.webp"
-      },
-      {
-        "title": "Harry Potter and the Sorcerer's Stone",
-        "originalCover": "https://m.media-amazon.com/images/M/MV5BNTU1MzgyMDMtMzBlZS00YzczLThmYWEtMjU3YmFlOWEyMjE1XkEyXkFqcGc@._V1_SX300.jpg",
+        "title": "Thinking, Fast and Slow",
+        "originalCover": "2.Read/douban/0_dimage/gbooks_TA7Q27RWlj0C.jpg",
         "suggestedFilename": "unknown"
       },
       {
         "title": "September 1923",
-        "originalCover": "https://m.media-amazon.com/images/M/MV5BYmNkMzYxYjUtOTQ2NC00ZDdiLWFiMWUtODMwZDg1N2JjM2MzXkEyXkFqcGc@._V1_SX300.jpg",
+        "originalCover": "2.Read/douban/0_dimage/MV5BYmNkMzYxYjUtOTQ2NC00ZDdiLWFiMWUtODMwZDg1N2JjM2MzXkEyXkFqcGc@._V1_SX300.jpg",
         "suggestedFilename": "unknown"
       },
       {
         "title": "The Big Bang Theory",
-        "originalCover": "https://m.media-amazon.com/images/M/MV5BZjgzY2QyNzItNDhhYi00ZWIwLWFjN2UtZDJkN2MxYWNjMmJjXkEyXkFqcGc@._V1_SX300.jpg",
+        "originalCover": "2.Read/douban/0_dimage/MV5BZjgzY2QyNzItNDhhYi00ZWIwLWFjN2UtZDJkN2MxYWNjMmJjXkEyXkFqcGc@._V1_SX300.jpg",
         "suggestedFilename": "unknown"
       }
     ]

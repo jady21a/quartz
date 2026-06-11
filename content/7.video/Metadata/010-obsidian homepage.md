@@ -15,7 +15,7 @@ category: obsidian
 
 ## 我的 Obsidian 首页搭建：5 个模块 + 动态显示
 
-相关代码:[[002-1homepage template]]
+相关代码:[[002-1homepage template]]  [[002-2homepage-dashboard]]
 
 ```text
 00:00 引言

@@ -116,8 +116,12 @@ export default ((userOpts?: Partial<Options>) => {
         data-show-tags={String(opts.showTags)}
       >
         <div class="random-notes-tabs">
-          <button class="tab-btn active" data-tab="recent">最新</button>
-          <button class="tab-btn" data-tab="random">{opts.title}</button>
+          <button class="tab-btn active" data-tab="recent">
+            最新
+          </button>
+          <button class="tab-btn" data-tab="random">
+            {opts.title}
+          </button>
         </div>
         <div class="tab-panel hidden" data-panel="random">
           <ul class="random-notes-list" data-random-notes-list>
