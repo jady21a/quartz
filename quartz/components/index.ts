@@ -22,6 +22,7 @@ import RecentNotes from "./RecentNotes"
 import Breadcrumbs from "./Breadcrumbs"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
+import LanguageSwitch from "./LanguageSwitch"
 
 import mediaInfo from "./MediaInfo"
 
@@ -56,6 +57,7 @@ export {
   Breadcrumbs,
   Flex,
   ConditionalRender,
+  LanguageSwitch, // 中英语言切换
   BookInfo, // 添加这一行,书籍元数据显示
   MovieInfo,
 }

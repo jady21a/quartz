@@ -1,0 +1,33 @@
+.language-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.9rem;
+  user-select: none;
+
+  & .lang {
+    color: var(--gray);
+    text-decoration: none;
+    padding: 0 0.15rem;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+
+    &.active {
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    &.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &:not(.active):not(.disabled):hover {
+      color: var(--secondary);
+    }
+  }
+
+  & .lang-sep {
+    color: var(--lightgray);
+  }
+}

@@ -240,6 +240,27 @@ a {
       grid-area: grid-sidebar-right;
       margin-right: 0;
       flex-direction: column;
+
+      // 目录较长时,让整条右侧栏作为一个整体上下滚动,这样下方的
+      // 反向链接 / 漫步笔记 / 最新 都能划到。同时取消各子模块自己的内部滚动,
+      // 避免出现多条滚动条——整列只有一条。
+      @media all and ($desktop) {
+        overflow-y: auto;
+
+        & > * {
+          flex-shrink: 0;
+        }
+
+        & .toc {
+          overflow-y: visible;
+        }
+        & .toc-content.overflow,
+        & .backlinks > ul.overflow {
+          max-height: none;
+          overflow-y: visible;
+        }
+      }
+
       @media all and ($mobile) {
         margin-left: inherit;
         margin-right: inherit;
