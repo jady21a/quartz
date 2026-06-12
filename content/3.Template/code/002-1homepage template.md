@@ -295,7 +295,39 @@ function render() {
 render();
 
 ```
+```dataviewjs
+// === Contribution Graph 版字数热力图（试看；不好看删掉本块即可回退）===
+const jsonString = await app.vault.adapter.read(".obsidian/vault-stats.json");
+const history = JSON.parse(jsonString).history;
+const data = Object.entries(history).map(([date, v]) => ({
+    date,
+    value: (v && v.words) || 0,
+}));
 
+const year = new Date().getFullYear();
+const box = this.container.createEl("div");
+
+window.renderContributionGraph(box, {
+    title: "字数热力图",
+    data,
+    graphType: "default",
+    fromDate: `${year}-01-01`,
+    toDate: `${year}-12-31`,
+    startOfWeek: "0",
+    showCellRuleIndicators: true,
+    enableMainContainerShadow: true,
+    titleStyle: { textAlign: "left", fontSize: "17px", fontWeight: "normal" },
+    cellStyle: { minWidth: "12px", minHeight: "12px" },
+    cellStyleRules: [
+        { color: "#deebf7", min: 1, max: 61 },      // 1–60 字
+        { color: "#c6dbef", min: 61, max: 151 },    // 61–150
+        { color: "#9ecae1", min: 151, max: 351 },   // 151–350
+        { color: "#6baed6", min: 351, max: 651 },   // 351–650
+        { color: "#3182bd", min: 651, max: 1501 },  // 651–1500
+        { color: "#08519c", min: 1501, max: 9999999 }, // 1500+
+    ],
+});
+```
 
 
 ````

@@ -28,7 +28,7 @@ category: obsidian
 05:05 结尾
 ```
 
-
+# homepage content
 ## 引言
 我们用 Obsidian 做笔记，经常要快速记录灵感，但页面散在各处。即使文件已经按分类整理好了，找到对应的文件还是要花时间——等找到了，可能已经忘了想记什么。
 
@@ -39,17 +39,17 @@ category: obsidian
 
 ## 如何搭建homepage
 
-**插件**
+### 插件
 
-| 插件 | 作用 |
-| --- | --- |
-| **Homepage** | 让 Obsidian 每次打开自动跳到指定页面 |
-| **Dataview** | 动态查询笔记、生成列表（需打开 JavaScript Queries） |
-| **Templater** | 配合快捷操作按钮，一键新建笔记 |
-| **Contribution Graph** | 活跃度热力图 |
-| **Obsidian ECharts** | 字数热力图 |
+| 插件                     | 作用                                  |
+| ---------------------- | ----------------------------------- |
+| **Homepage**           | 让 Obsidian 每次打开自动跳到指定页面             |
+| **Dataview**           | 动态查询笔记、生成列表（需打开 JavaScript Queries） |
+| **Templater**          | 配合快捷操作按钮，一键新建笔记                     |
+| **Contribution Graph** | 活跃度热力图                              |
+| **Obsidian ECharts**   | 字数热力图                               |
 
-**CSS snippet**
+### CSS snippet
 
 - **[MCL Multi Column](https://github.com/efemkay/obsidian-modular-css-layout)**：实现多栏卡片布局。它不是插件，从 GitHub 下载 `MCL Multi Column.css`，放到 `.obsidian/snippets` 文件夹，再到 `设置 → 外观 → CSS 代码片段` 里打开。
 - 另外还有一份我自己写的 [[002-2homepage-dashboard|homepage-columns.css]]，负责给按钮和卡片加圆角、阴影、配色，并做深浅主题自适应。
@@ -99,6 +99,40 @@ category: obsidian
 - **一段作用域 CSS** 统一外观，并自动适配深浅主题。
 
 没有用任何主题私有接口，换主题也不会坏。把上面的代码按你自己的目录、模板和常用页面改一改，就能搭出一份属于你自己的首页。
+
+
+# 补充
+## 视频补充 
+### css
+视频中漏说了一个[[002-2homepage-dashboard|css代码]]，在本文中已经补充，见 [[#CSS snippet]]
+
+### 插件:
+- Better Word Count——记录每天字数
+字数热力图需要用到这个插件来统计字数
+
+## obsidian-echarts插件下架问题
+
+视频里字数热力图用的是 **Obsidian ECharts** 插件，但它已经从社区商店下架了——现在搜不到、没法一键安装。可能是仓库长期无更新/维护, 官方把仓库从目录里清掉了。
+
+有两个解法：
+### 方案一：去 GitHub 手动安装原插件
+
+原仓库还在：[cumany/obsidian-echarts](https://github.com/cumany/obsidian-echarts)。
+
+1. 从仓库的 Releases（或源码）下载 `main.js` 和 `manifest.json`；
+2. 在你的库里新建文件夹 `.obsidian/plugins/obsidian-echarts/`，把这两个文件放进去；
+3. 重启 Obsidian，到 `设置 → 第三方插件` 里启用它。
+
+优点：直接显示视频中的字数热力图效果。缺点：插件已不维护，未来 Obsidian 升级有可能不兼容。
+
+### 方案二：改用 Contribution Graph
+
+其实**字数热力图和活跃度热力图可以共用同一个插件**——**Contribution Graph**
+
+新的homepage[[002-1homepage template]]保留了3个热力图,对比效果图放这里，大家按需选择：
+
+
+![[Pasted image 20260612182850.png]]
 
 
 ## 目录结构

@@ -39,7 +39,7 @@ I tried piling all my frequent links onto one page, but the list got too long an
 
 ## How to build the homepage
 
-**Plugins**
+### Plugins
 
 | Plugin | What it does |
 | --- | --- |
@@ -49,7 +49,7 @@ I tried piling all my frequent links onto one page, but the list got too long an
 | **Contribution Graph** | The activity heatmap |
 | **Obsidian ECharts** | The word-count heatmap |
 
-**CSS snippet**
+### CSS snippet
 
 - **[MCL Multi Column](https://github.com/efemkay/obsidian-modular-css-layout)**: provides the multi-column card layout. It's not a plugin — download `MCL Multi Column.css` from GitHub, put it in the `.obsidian/snippets` folder, then enable it under `Settings → Appearance → CSS snippets`.
 - There's also one I wrote myself, [[002-2homepage-dashboard|homepage-columns.css]], which adds rounded corners, shadows, and colors to the buttons and cards, and adapts to light/dark themes.
@@ -99,3 +99,44 @@ The whole homepage is just a combination of a **Markdown file + plugins + a bit 
 - **one scoped CSS snippet** unifies the look and adapts to light/dark themes automatically.
 
 It uses no theme-private APIs, so switching themes won't break it. Tweak the code above to fit your own folders, templates, and frequent pages, and you'll have a homepage that's truly your own.
+
+
+# Supplement
+
+## Video addenda
+
+### CSS
+There was a [[002-2homepage-dashboard|CSS snippet]] I forgot to mention in the video; it's been added to this article — see [[#CSS snippet]].
+
+### Plugins
+- Better Word Count — records your daily word count.
+The word-count heatmap relies on this plugin to tally words.
+
+## The obsidian-echarts plugin being delisted
+
+The word-count heatmap in the video uses the **Obsidian ECharts** plugin, but it has been removed from the community store — you can no longer find it or install it with one click. The repo most likely went without updates/maintenance for a long time, so the team cleared it from the directory.
+
+There are two fixes:
+### Option 1: Manually install the original plugin from GitHub
+
+The repo is still up: [cumany/obsidian-echarts](https://github.com/cumany/obsidian-echarts).
+
+1. Download `main.js` and `manifest.json` from the repo's Releases (or source);
+2. Create the folder `.obsidian/plugins/obsidian-echarts/` in your vault and drop both files in;
+3. Restart Obsidian and enable it under `Settings → Community plugins`.
+
+Pros: you get the exact word-count heatmap from the video. Cons: the plugin is unmaintained and may break with future Obsidian updates.
+
+### Option 2: Switch to Contribution Graph
+
+In fact, **the word-count heatmap and the activity heatmap can share the same plugin** — **Contribution Graph**.
+
+The new homepage [[002-1homepage template]] keeps all three heatmaps; a side-by-side comparison is below, pick whichever suits you:
+
+
+![[Pasted image 20260612182850.png]]
+
+
+## Folder structure
+Some folks asked to see the folder structure, so here it is:
+![[Pasted image 20260612110005.png]]
