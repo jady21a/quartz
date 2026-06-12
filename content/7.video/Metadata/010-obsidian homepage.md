@@ -1,6 +1,6 @@
 ---
 title:
-  - 010-obsidian homepage
+  - 010-Obsidian homepage
 tags:
   - video
   - obsidian

@@ -38,6 +38,14 @@
   white-space: pre-wrap;
 }
 
+// 收起目录时真正隐藏列表。
+// base.scss 里为了让右栏整体滚动，把 .toc / .toc-content 的 overflow 改成 visible、
+// max-height 改成 none，导致原版"收起时靠裁剪隐藏"的机制失效，收起的目录会溢出
+// 并叠到下方的反向链接 / 漫步笔记 / 最新上。这里在收起态显式隐藏列表。
+.toc-content.collapsed {
+  display: none;
+}
+
 //p {
   //  text-indent: 2em; /* 段首缩进两个字 */
   //}
