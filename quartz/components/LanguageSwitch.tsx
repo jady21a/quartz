@@ -13,6 +13,13 @@ const LanguageSwitch: QuartzComponent = ({
   allFiles,
   displayClass,
 }: QuartzComponentProps) => {
+  // 如果整站没有任何英文页（例如线上构建用 ignorePatterns 跳过了 en/），
+  // 整个切换控件不渲染，避免页面上出现一个永远点不动的灰 EN。
+  const hasEnglish = allFiles.some((f) => f.slug === "en" || f.slug?.startsWith(EN_PREFIX))
+  if (!hasEnglish) {
+    return null
+  }
+
   const slug = fileData.slug!
   const isEnglish = slug === "en" || slug.startsWith(EN_PREFIX)
   const otherSlug = (isEnglish ? slug.slice(EN_PREFIX.length) : EN_PREFIX + slug) as FullSlug

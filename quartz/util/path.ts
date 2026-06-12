@@ -244,9 +244,20 @@ export function transformLink(src: FullSlug, target: string, opts: TransformOpti
         return targetCanonical === fileName
       })
 
-      // only match, just use it
-      if (matchingFileNames.length === 1) {
-        const targetSlug = matchingFileNames[0]
+      if (matchingFileNames.length >= 1) {
+        // When a bare [[note]] matches multiple files (e.g. a Chinese page and its
+        // English mirror under en/ share the same file name), prefer the match in the
+        // same language tree as the source page, then the shortest path. This keeps a
+        // Chinese page's bare links resolving to the Chinese note instead of falling
+        // back to a wrong vault-root path. Full-path links like [[en/foo]] don't match
+        // by file name and still resolve via the absolute fallback below.
+        const srcIsEn = src.startsWith("en/")
+        const targetSlug = [...matchingFileNames].sort((a, b) => {
+          const aSame = a.startsWith("en/") === srcIsEn ? 0 : 1
+          const bSame = b.startsWith("en/") === srcIsEn ? 0 : 1
+          if (aSame !== bSame) return aSame - bSame
+          return a.split("/").length - b.split("/").length
+        })[0]
         return (resolveRelative(src, targetSlug) + targetAnchor) as RelativeURL
       }
     }

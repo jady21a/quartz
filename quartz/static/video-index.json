@@ -1,10 +1,10 @@
 [
   {
     "title": "010-obsidian homepage",
-    "videoid": "VIDEO_ID",
+    "videoid": "NG5vwZffKlY",
     "bilibiliid": "BV1btEi6vEtz",
     "sources": {
-      "youtube": "VIDEO_ID",
+      "youtube": "NG5vwZffKlY",
       "bilibili": "BV1btEi6vEtz"
     },
     "defaultSource": "youtube",
@@ -16,7 +16,7 @@
     "date": "2026-06-11",
     "description": "",
     "category": "obsidian",
-    "thumbnail": "https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg",
+    "thumbnail": "https://i.ytimg.com/vi/NG5vwZffKlY/hqdefault.jpg",
     "related_notes": [
       {
         "target": "002-1homepage template",
@@ -37,6 +37,10 @@
       {
         "target": "002-1homepage template",
         "label": "002-1homepage template"
+      },
+      {
+        "target": "Pasted image 20260612110005.png",
+        "label": "Pasted image 20260612110005.png"
       }
     ],
     "createTime": ""

@@ -4,7 +4,7 @@ title:
 tags:
   - video
   - obsidian
-videoid: VIDEO_ID
+videoid: https://youtu.be/NG5vwZffKlY
 bilibiliid: 【我的 Obsidian 首页搭建：5 个模块 + 动态显示】 https://www.bilibili.com/video/BV1btEi6vEtz/?share_source=copy_web&vd_source=0301e644f5fde063fd132a7c560992cb
 defaultSource: youtube
 date: 2026-06-11
@@ -99,3 +99,8 @@ category: obsidian
 - **一段作用域 CSS** 统一外观，并自动适配深浅主题。
 
 没有用任何主题私有接口，换主题也不会坏。把上面的代码按你自己的目录、模板和常用页面改一改，就能搭出一份属于你自己的首页。
+
+
+## 目录结构
+有小伙伴说想看看目录结构,放这里了
+![[Pasted image 20260612110005.png]]
