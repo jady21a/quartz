@@ -23,6 +23,7 @@ import Breadcrumbs from "./Breadcrumbs"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import LanguageSwitch from "./LanguageSwitch"
+import SocialLinks from "./SocialLinks"
 
 import mediaInfo from "./MediaInfo"
 
@@ -58,6 +59,7 @@ export {
   Flex,
   ConditionalRender,
   LanguageSwitch, // 中英语言切换
+  SocialLinks, // “Why Z” 下方的社交平台图标
   BookInfo, // 添加这一行,书籍元数据显示
   MovieInfo,
 }
