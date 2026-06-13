@@ -14,11 +14,13 @@
     if (!imageUrl) return ""
     const url = String(imageUrl).trim()
     if (!url || url === "N/A") return ""
-    if (url.startsWith("/") || url.startsWith("./")) return url
+    if (url.startsWith("/")) return url
+    if (url.startsWith("./")) return url.slice(1) // ./imgs/... → /imgs/...
     if (/^https?:\/\//.test(url)) {
       return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=200&h=280&fit=cover&output=webp&q=85`
     }
-    return url
+    // content 相对路径（如 "2.Read/douban/..."）→ 根绝对路径，否则相对当前页解析 404
+    return "/" + url
   }
 
   // 把笔记路径修正为可访问的 URL

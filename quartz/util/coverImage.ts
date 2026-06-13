@@ -77,5 +77,8 @@ export function resolveCoverUrl(
     return `https://images.weserv.nl/?url=${encodeURIComponent(url)}`
   }
 
-  return url
+  // 其余为 content 相对路径（如 "2.Read/douban/0_dimage/xxx.jpg"）：静态资源原样
+  // 拷到站点根，必须转成根绝对路径，否则浏览器会相对当前页解析而 404（裂图）。
+  const cleaned = url.replace(/^\.\//, "")
+  return cleaned.startsWith("/") ? cleaned : `/${cleaned}`
 }

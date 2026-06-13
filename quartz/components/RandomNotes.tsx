@@ -17,7 +17,9 @@ function loadCreatedMap(): Map<string, number> {
   const manifestPath = path.join(process.cwd(), "quartz", "static", "created-dates.json")
   try {
     const obj = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as Record<string, number>
-    return new Map(Object.entries(obj).map(([k, v]) => [k, Number(v)]))
+    // key 统一小写:git 历史里记录的文件名大小写可能和磁盘当前文件名不一致
+    // (例如先以小写名提交、后重命名为大写),区分大小写会导致查不到 → 该笔记从“最新”消失
+    return new Map(Object.entries(obj).map(([k, v]) => [k.toLowerCase(), Number(v)]))
   } catch {}
   return buildGitCreatedMap()
 }
@@ -36,7 +38,7 @@ function buildGitCreatedMap(): Map<string, number> {
       if (/^\d+$/.test(trimmed)) {
         currentTs = parseInt(trimmed, 10) * 1000
       } else if (currentTs && trimmed.startsWith("content/")) {
-        const rel = trimmed.slice("content/".length)
+        const rel = trimmed.slice("content/".length).toLowerCase()
         if (!map.has(rel)) {
           map.set(rel, currentTs)
         }
@@ -47,6 +49,22 @@ function buildGitCreatedMap(): Map<string, number> {
 }
 
 const gitDateMap = loadCreatedMap()
+
+// “最新”排序用的时间戳。
+// 优先用 frontmatter 的 date —— 它写在文件里,随文件走,重命名/移动都不会丢;
+// 没有 date 的笔记再回退到 git 新增清单(Cloudflare 浅克隆下唯一可靠的创建时间来源)。
+// 清单按文件名查找,而文件名大小写或路径可能漂移,所以这层兜底不如 frontmatter 稳。
+function noteTimestamp(file: {
+  frontmatter?: Record<string, unknown>
+  relativePath?: string
+}): number {
+  const fm = file.frontmatter?.date as string | number | Date | undefined
+  if (fm != null) {
+    const t = new Date(fm).getTime()
+    if (!Number.isNaN(t)) return t
+  }
+  return gitDateMap.get((file.relativePath ?? "").toLowerCase()) ?? 0
+}
 
 interface Options {
   title?: string
@@ -102,9 +120,9 @@ export default ((userOpts?: Partial<Options>) => {
       })
       .map((file) => ({
         file,
-        gitDate: gitDateMap.get(file.relativePath!) ?? 0,
+        ts: noteTimestamp(file),
       }))
-      .sort((a, b) => b.gitDate - a.gitDate)
+      .sort((a, b) => b.ts - a.ts)
       .slice(0, opts.recentLimit)
 
     return (
@@ -152,9 +170,8 @@ export default ((userOpts?: Partial<Options>) => {
         </div>
         <div class="tab-panel" data-panel="recent">
           <ul class="random-notes-list">
-            {recentFiles.map(({ file, gitDate }) => {
+            {recentFiles.map(({ file }) => {
               const title = file.frontmatter?.title || file.slug || "Untitled"
-              const date = gitDate ? new Date(gitDate) : null
               return (
                 <li key={file.slug}>
                   <a href={`/${file.slug}`} class="internal">
