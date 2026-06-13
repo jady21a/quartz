@@ -1,5 +1,4 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import { getDate } from "./Date"
 import { execSync } from "child_process"
 import fs from "fs"
 import path from "path"
@@ -91,7 +90,6 @@ export default ((userOpts?: Partial<Options>) => {
     allFiles,
     fileData,
     displayClass,
-    cfg,
   }: QuartzComponentProps) => {
     const currentSlug = fileData.slug
     const eligibleFiles = allFiles.filter(
