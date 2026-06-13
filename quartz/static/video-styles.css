@@ -79,7 +79,9 @@
 }
 
 .video-card-date {
-  margin: 0 0.6rem;
+  /* margin-top:auto 把日期连同下方的标签一起顶到卡片底部,
+     让日期统一紧贴 obsidian 标签上方、各卡片对齐 */
+  margin: auto 0.6rem 0.3rem;
   font-size: 0.72rem;
   color: var(--gray);
 }
@@ -96,7 +98,8 @@
 }
 
 .video-card-category {
-  margin: auto 0.6rem 0.55rem;
+  /* 沉底改由上方的 .video-card-date 的 margin-top:auto 负责 */
+  margin: 0 0.6rem 0.55rem;
   align-self: flex-start;
   font-size: 0.68rem;
   padding: 0.12rem 0.45rem;
@@ -111,7 +114,7 @@
     font-size: 1rem;
   }
   .video-card-date {
-    margin: 0 0.75rem;
+    margin: auto 0.75rem 0.35rem;
     font-size: 0.8rem;
   }
   .video-card-desc {
@@ -119,7 +122,7 @@
     font-size: 0.85rem;
   }
   .video-card-category {
-    margin: auto 0.75rem 0.65rem;
+    margin: 0 0.75rem 0.65rem;
     font-size: 0.72rem;
     padding: 0.15rem 0.5rem;
   }

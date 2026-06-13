@@ -48,8 +48,8 @@ export default ((opts?: Options) => {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
-                width="20"
-                height="20"
+                width="16"
+                height="16"
               >
                 <path d={icon.path} />
               </svg>
@@ -64,9 +64,13 @@ export default ((opts?: Options) => {
 .social-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.7rem;
+  gap: 0.45rem;
   align-items: center;
-  margin: 0;
+  justify-content: flex-start;
+  /* 侧栏各模块间统一 gap:1.2rem,用负边距把这排图标往上提、贴近标题 */
+  margin-top: -0.8rem;
+  /* 标题前有羽毛 emoji + 空格,留左缩进让图标起点对齐到 “W” 文字下方 */
+  padding-left: 21px;
 }
 .social-links .social-link {
   color: var(--gray);
