@@ -13,6 +13,22 @@ const __dirname = path.dirname(__filename)
 const CONTENT_DIR = path.join(__dirname, "../content/2.Read")
 const OUTPUT_FILE = path.join(__dirname, "../quartz/static/movie-index.json")
 
+// 与 Quartz 的 sluggify 保持一致：空格→-、&→-and-、%→-percent、去掉 ? #
+// 否则文件名带空格的影视(如 "September 1923 (2023)")生成的链接会和真实 slug 不一致 → 404
+function sluggifyPath(p) {
+  return p
+    .split("/")
+    .map((segment) =>
+      segment
+        .replace(/\s/g, "-")
+        .replace(/&/g, "-and-")
+        .replace(/%/g, "-percent")
+        .replace(/\?/g, "")
+        .replace(/#/g, ""),
+    )
+    .join("/")
+}
+
 // ===== 加载图片映射 =====
 let imageMapping = { books: {}, movies: {} };
 try {
@@ -112,7 +128,7 @@ function parseMovieData(filePath) {
 
   return {
     title,
-    file: "/2.Read/" + relativePath,
+    file: "/2.Read/" + sluggifyPath(relativePath),
     tags,
     type: normalizeField(frontmatter.type),
     score: normalizeField(frontmatter.score),
