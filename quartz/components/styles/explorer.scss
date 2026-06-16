@@ -237,7 +237,12 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
     .explorer-content {
       box-sizing: border-box;
       z-index: 100;
-      position: absolute;
+      // fixed (not absolute) so left/100vw/translateX resolve against the
+      // viewport. The sticky `.sidebar.left:has(.explorer)` is a positioned
+      // ancestor; with `absolute` the indented sidebar became the containing
+      // block, so translateX(-100vw) left a ~16px sliver of open folders
+      // poking out at the screen's left edge on mobile.
+      position: fixed;
       top: 0;
       left: 0;
       margin-top: 0;
