@@ -113,6 +113,15 @@ function getThumbnailUrl(videoid) {
   return `https://i.ytimg.com/vi/${videoid}/hqdefault.jpg`
 }
 
+// ===== 封面 URL =====
+// 优先用 frontmatter.cover(通常是 B站自定义封面),回退到 YouTube 自动缩略图。
+// http 一律升级为 https,避免 https 站点上的 mixed-content 拦截。
+function getCoverUrl(cover, videoid) {
+  const raw = normalizeField(cover)
+  if (raw) return String(raw).trim().replace(/^http:\/\//i, "https://")
+  return getThumbnailUrl(videoid)
+}
+
 function extractPlayerSource(bodyContent, sourceName) {
   if (!bodyContent) return ""
   const pattern = new RegExp(`data-${sourceName}="([^"]*)"`, "i")
@@ -205,7 +214,7 @@ function parseVideoData(filePath) {
     date: cleanDate(frontmatter.date),
     description,
     category: normalizeField(frontmatter.category) || "",
-    thumbnail: getThumbnailUrl(videoid),
+    thumbnail: getCoverUrl(frontmatter.cover, videoid),
     related_notes: extractWikilinks(bodyContent),
     aliases: normalizeField(frontmatter.aliases),
     createTime: cleanDate(frontmatter.createTime),

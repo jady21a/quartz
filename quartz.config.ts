@@ -16,7 +16,7 @@ const config: QuartzConfig = {
       provider: "plausible",
     },
     locale: "zh-CN",
-    baseUrl: "jz-quartz.pages.dev",
+    baseUrl: "jz21.eu.org",
     // 英文翻译暂不发布：默认构建(线上 Cloudflare 用的就是 `npx quartz build`)跳过 en/。
     // 本地预览英文版时加环境变量：SHOW_EN=1 npx quartz build --serve
     ignorePatterns: ["private", "templates", ".obsidian", ...(process.env.SHOW_EN ? [] : ["en", "en/**"])],

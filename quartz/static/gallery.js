@@ -72,8 +72,19 @@
     return text.split(",")[0].replace(/\s/g, "-") || "Unknown"
   }
 
+  // B站封面在 i*.hdslb.com,跨域直链会被防盗链(Referer 校验)拦掉,
+  // 统一走 weserv 代理(保持 16:9 比例,只限宽不裁切)。YouTube 等直链照常。
+  function videoCoverSrc(url) {
+    if (!url) return ""
+    if (/(^https?:)?\/\/[^/]*hdslb\.com\//i.test(url)) {
+      const https = url.replace(/^http:\/\//i, "https://")
+      return `https://images.weserv.nl/?url=${encodeURIComponent(https)}&w=480&output=webp&q=85`
+    }
+    return url
+  }
+
   function getPreferredThumbnail(video) {
-    if (video.thumbnail) return video.thumbnail
+    if (video.thumbnail) return videoCoverSrc(video.thumbnail)
     if (video.videoid) return `https://i.ytimg.com/vi/${video.videoid}/hqdefault.jpg`
     return ""
   }

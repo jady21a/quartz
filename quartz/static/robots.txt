@@ -1,3 +1,3 @@
 User-agent: * 
 Allow: / 
-Sitemap: https://https://jz-quartz.pages.dev//sitemap.xml
+Sitemap: https://jz21.eu.org/sitemap.xml
