@@ -106,4 +106,27 @@
   }
 }
 
+// ── 小屏:目录抽屉展开时,钉住 Why Z + 搜索 ──────────────────────
+// 移动端点开 explorer 时,explorer.scss 把 .explorer-content 做成覆盖全屏的
+// fixed 遮罩(z-index:100、不透明 var(--light) 底),会把顶部的 Why Z 标题和
+// 搜索框整个盖住——这就是"展开目录后头部不见了"的真正原因。
+// 这里不改抽屉本身,只把标题和搜索行的层级抬到遮罩之上(z-index:102),让它们
+// 在抽屉打开时仍然钉在顶部、随时可搜;再把目录树顶部下移给这两行让位。
+@media all and (max-width: 800px) {
+  .sidebar.left:has(.explorer:not(.collapsed)) {
+    & .page-title,
+    & .social-links,
+    & .flex-component {
+      position: relative;
+      z-index: 102; // 高于全屏遮罩(100)和 ☰ 按钮(101)
+      background-color: var(--light); // 自带底色,避免下方目录树透出来
+    }
+  }
+
+  // 目录树顶部多留空间,给钉住的标题 + 搜索行让位(原本是 4rem)
+  .explorer:not(.collapsed) > .explorer-content {
+    padding-top: 6.5rem;
+  }
+}
+
  
