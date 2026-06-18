@@ -50,4 +50,60 @@
   //  text-indent: 2em; /* 段首缩进两个字 */
   //}
 
+// ── 小屏(≤800px)头部修复 ──────────────────────────────────
+// 默认情况下左侧栏在手机上被压成单行,标题 / 社交图标 / 搜索框 / 暗色·语言切换
+// 全部争抢宽度,导致 "Why Z" 被迫折成两行、整条栏挤成一团。
+// 这里把头部拆成两行:
+//   第一行: ☰ 汉堡 + 🪶Why Z 标题 + 社交图标
+//   第二行: 搜索框(撑满)+ 暗色 / 语言切换
+@media all and (max-width: 800px) {
+  .sidebar.left:has(.explorer) {
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 0.6rem;
+    row-gap: 0.75rem;
+
+    // 标题永不折行,字号略收一点,给同行的社交图标留位置
+    & .page-title {
+      font-size: 1.4rem;
+      white-space: nowrap;
+    }
+
+    // 社交图标与标题同行排列,去掉桌面端用于对齐的负上边距 / 左缩进,
+    // 再单独留一点左间距,让图标和 “Z” 拉开距离
+    & .social-links {
+      margin-top: 0;
+      padding-left: 0;
+      margin-left: 0.6rem;
+      flex-wrap: nowrap;
+    }
+
+    // 搜索 + 切换按钮整体掉到第二行,占满整宽
+    & .flex-component {
+      flex: 1 1 100%;
+      order: 1;
+    }
+  }
+}
+
+// ── 订阅表单:大屏 / 小屏样式保持一致 ──────────────────────────
+// Mailchimp 自带 CSS 在 ≤400px 把表单底部(订阅按钮 + Mailchimp 徽标)
+// 从大屏的「按钮在左、徽标在右,同一行」(.foot 用 3fr/1fr 两列网格)
+// 改成「单列竖排、宽度 100%」,导致手机上和桌面布局不一致。
+// 这里在小屏把它统一回大屏的横排样式,并按比例缩小徽标避免溢出压住按钮。
+// 注:Mailchimp 的 <link> 样式插在页面正文、晚于本文件加载,选择器权重又相同,
+// 不加 !important 会被它的小屏规则盖回去,所以这里强制覆盖。
+@media screen and (max-width: 400px) {
+  #mc_embed_signup .foot {
+    grid-template-columns: 3fr 1fr !important;
+    width: 96% !important;
+  }
+  #mc_embed_signup .foot img.refferal_badge {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 140px;
+    margin-left: auto;
+  }
+}
+
  
