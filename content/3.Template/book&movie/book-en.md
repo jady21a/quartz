@@ -25,13 +25,10 @@ desc: "{{description}}"
 
 
 # 总结笔记
-## a.书籍观点
+## a.overview
+书籍观点+自我总结
 
-
-## b.自我总结
-
-
-## c.永久笔记
+## b.永久笔记
 
 
 
@@ -47,9 +44,6 @@ desc: "{{description}}"
 
 
 三、新知识
-
-
-四、overview
 
 
 五、作者推荐
