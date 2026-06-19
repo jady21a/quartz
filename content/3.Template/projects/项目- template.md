@@ -1,8 +1,10 @@
 ````
 <%*
 const projectName = await tp.system.prompt("请输入项目名称");
+// 取消或留空则删除刚创建的文档
 if (!projectName) {
-  throw new Error("未输入项目名称");
+  await app.vault.trash(tp.config.target_file, true);
+  return;
 }
 const safeProjectName = projectName.replace(/[\\\\/:*?\"<>|]/g, "-").trim();
 await tp.file.move("4.Projects/I.projects/" + safeProjectName);
