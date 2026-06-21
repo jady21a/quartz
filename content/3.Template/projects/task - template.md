@@ -1,7 +1,7 @@
 ````
 <%*
 // 1. 输入类型
-const type = await tp.system.prompt("分类", "");
+const type = await tp.system.prompt("task分类", "");
 // 取消则删除刚创建的文档
 if (type === null) {
   await app.vault.trash(tp.config.target_file, true);
