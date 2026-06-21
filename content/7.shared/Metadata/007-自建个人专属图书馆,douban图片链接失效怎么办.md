@@ -30,7 +30,7 @@ category: obsidian
 02:01 本地图片路径修改
 
 相关代码: [[book-ch|douban书籍模板]]   [[book-en|book search书籍模板]]    [[movie-ch|douban电影模板]]    [[movie-en|media DB模板]]
-相关视频:  [[005-写笔记=更新博客]]
+相关视频:  [[7.shared/Metadata/005-写笔记=更新博客]]
 
 
 ## content
