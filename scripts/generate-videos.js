@@ -1,5 +1,5 @@
 // scripts/generate-videos.js
-// 扫描 content/7.video/ 目录,解析视频 frontmatter,生成 video-index.json
+// 扫描 content/7.shared/ 目录,解析视频 frontmatter,生成 video-index.json
 
 import fs from "fs"
 import path from "path"
@@ -10,7 +10,10 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // ===== 配置 =====
-const CONTENT_DIR = path.join(__dirname, "../content/7.video")
+// 视频源目录名:扫描目录和卡片链接前缀都从这里取,避免目录改名后两者脱节
+// (历史上目录从 7.video 改名成 7.shared,这里没跟上 → 索引扫成空 → 页面"暂无视频")
+const VIDEO_DIR_NAME = "7.shared"
+const CONTENT_DIR = path.join(__dirname, "../content/" + VIDEO_DIR_NAME)
 const OUTPUT_FILE = path.join(__dirname, "../quartz/static/video-index.json")
 
 // ===== 递归读取所有 Markdown 文件 =====
@@ -209,7 +212,7 @@ function parseVideoData(filePath) {
     bilibiliid,
     sources,
     defaultSource,
-    file: "/7.video/" + sluggifyPath(relativePath),
+    file: "/" + VIDEO_DIR_NAME + "/" + sluggifyPath(relativePath),
     tags,
     date: cleanDate(frontmatter.date),
     description,

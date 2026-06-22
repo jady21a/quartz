@@ -1,1 +1,367 @@
-[]
+[
+  {
+    "title": "010-Obsidian homepage",
+    "videoid": "NG5vwZffKlY",
+    "bilibiliid": "BV1btEi6vEtz",
+    "sources": {
+      "youtube": "NG5vwZffKlY",
+      "bilibili": "BV1btEi6vEtz"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/010-Obsidian-homepage",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-06-11",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i2.hdslb.com/bfs/archive/f94d58f9ffdeb62548a2741ccd77d3c59bc8b662.jpg",
+    "related_notes": [
+      {
+        "target": "002-1homepage template",
+        "label": "002-1homepage template"
+      },
+      {
+        "target": "002-2homepage-dashboard",
+        "label": "002-2homepage-dashboard"
+      },
+      {
+        "target": "002-2homepage-dashboard",
+        "label": "homepage-columns.css"
+      },
+      {
+        "target": "002-2homepage-dashboard",
+        "label": "002-2homepage-dashboard"
+      },
+      {
+        "target": "002-1homepage template",
+        "label": "002-1homepage template"
+      },
+      {
+        "target": "002-2homepage-dashboard",
+        "label": "css代码"
+      },
+      {
+        "target": "#CSS snippet",
+        "label": "#CSS snippet"
+      },
+      {
+        "target": "002-1homepage template",
+        "label": "002-1homepage template"
+      },
+      {
+        "target": "Pasted image 20260612182850.png",
+        "label": "Pasted image 20260612182850.png"
+      },
+      {
+        "target": "Pasted image 20260612110005.png",
+        "label": "Pasted image 20260612110005.png"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "009-一个指令，让AI 自动生成周复盘",
+    "videoid": "WvVzqwzfL_I",
+    "bilibiliid": "BV1id7X64E1D",
+    "sources": {
+      "youtube": "WvVzqwzfL_I",
+      "bilibili": "BV1id7X64E1D"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/009-一个指令，让AI-自动生成周复盘",
+    "tags": [
+      "video"
+    ],
+    "date": "2026-05-22",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i2.hdslb.com/bfs/archive/1aedc0ea98ee19cdc7a9801fd8e639adceb5fbba.jpg",
+    "related_notes": [
+      {
+        "target": "7.shared/Metadata/008-项目管理",
+        "label": "7.shared/Metadata/008-项目管理"
+      },
+      {
+        "target": "7.shared/Metadata/008-项目管理",
+        "label": "7.shared/Metadata/008-项目管理"
+      },
+      {
+        "target": "周复盘prompt-成长",
+        "label": "周复盘prompt-成长"
+      },
+      {
+        "target": "周复盘prompt-稳定",
+        "label": "周复盘prompt-稳定"
+      },
+      {
+        "target": "Pasted image 20260529184117.png",
+        "label": "Pasted image 20260529184117.png"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "008-项目管理",
+    "videoid": "Izcl79wQYUg",
+    "bilibiliid": "BV1EQ5e6iEyE",
+    "sources": {
+      "youtube": "Izcl79wQYUg",
+      "bilibili": "BV1EQ5e6iEyE"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/008-项目管理",
+    "tags": [
+      "video"
+    ],
+    "date": "2026-05-15",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i2.hdslb.com/bfs/archive/5bfaf45ddc9982258ada4472197815bf685b986f.jpg",
+    "related_notes": [
+      {
+        "target": "项目- template",
+        "label": "project-template"
+      },
+      {
+        "target": "task - template",
+        "label": "task-template"
+      },
+      {
+        "target": "try",
+        "label": "try"
+      },
+      {
+        "target": "daily",
+        "label": "daily"
+      },
+      {
+        "target": "7.shared/Metadata/001-自动继承昨日任务",
+        "label": "7.shared/Metadata/001-自动继承昨日任务"
+      },
+      {
+        "target": "7.shared/Metadata/002-模版自动归档、命名与编号",
+        "label": "7.shared/Metadata/002-模版自动归档、命名与编号"
+      },
+      {
+        "target": "7.shared/Metadata/003-代码复制无效的排查",
+        "label": "7.shared/Metadata/003-代码复制无效的排查"
+      },
+      {
+        "target": "Pasted image 20260515220310.png",
+        "label": "700"
+      },
+      {
+        "target": "Pasted image 20260515224009.png",
+        "label": "700"
+      },
+      {
+        "target": "Pasted image 20260515224546.png",
+        "label": "700"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "007-自建个人专属图书馆,douban图片链接失效怎么办",
+    "videoid": "OrVOLyWmqz4",
+    "bilibiliid": "BV1UjR4BZEHT",
+    "sources": {
+      "youtube": "OrVOLyWmqz4",
+      "bilibili": "BV1UjR4BZEHT"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/007-自建个人专属图书馆,douban图片链接失效怎么办",
+    "tags": [
+      "video"
+    ],
+    "date": "2026-05-06",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i0.hdslb.com/bfs/archive/182883e8cc12c04f762b574b836deac58279e7ed.jpg",
+    "related_notes": [
+      {
+        "target": "book-ch",
+        "label": "douban书籍模板"
+      },
+      {
+        "target": "book-en",
+        "label": "book search书籍模板"
+      },
+      {
+        "target": "movie-ch",
+        "label": "douban电影模板"
+      },
+      {
+        "target": "movie-en",
+        "label": "media DB模板"
+      },
+      {
+        "target": "7.shared/Metadata/005-写笔记=更新博客",
+        "label": "7.shared/Metadata/005-写笔记=更新博客"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "006-一键去掉复制文字里的版权信息和引号",
+    "videoid": "wxFmL2uSXx0",
+    "bilibiliid": "BV1LyoEBsEBX",
+    "sources": {
+      "youtube": "wxFmL2uSXx0",
+      "bilibili": "BV1LyoEBsEBX"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/006-自制去版权信息插件",
+    "tags": [
+      "video",
+      "obsidian",
+      "插件"
+    ],
+    "date": "2026-04-24",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i0.hdslb.com/bfs/archive/1566950373e5a2c0ef4f67b4342c9ffcf35588cd.jpg",
+    "related_notes": [
+      {
+        "target": "001-自制 Obsidian 插件：一键去掉复制文字里的版权信息和引号",
+        "label": "代码链接"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "005-写笔记=更新博客",
+    "videoid": "Xg7mhaWDIcc",
+    "bilibiliid": "BV1gho4BKEM7",
+    "sources": {
+      "youtube": "Xg7mhaWDIcc",
+      "bilibili": "BV1gho4BKEM7"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/005-写笔记=更新博客",
+    "tags": [
+      "video",
+      "quartz"
+    ],
+    "date": "2026-04-22",
+    "description": "",
+    "category": "project",
+    "thumbnail": "https://i2.hdslb.com/bfs/archive/890c978eec66d996ff21cf3b98bc201a226fe231.jpg",
+    "related_notes": [
+      {
+        "target": "1.个人博客-obsidian+quartz",
+        "label": "相关笔记"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "004-运动网站分享",
+    "videoid": "F-m_rst8Rps",
+    "bilibiliid": "BV1xodJB3Ea4",
+    "sources": {
+      "youtube": "F-m_rst8Rps",
+      "bilibili": "BV1xodJB3Ea4"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/004-运动网站分享",
+    "tags": [
+      "video",
+      "工具"
+    ],
+    "date": "2026-04-18",
+    "description": "",
+    "category": "project",
+    "thumbnail": "https://i2.hdslb.com/bfs/archive/24b938d37efefdfc301c3a0d94c1b0c24b4bf51b.jpg",
+    "related_notes": [],
+    "createTime": ""
+  },
+  {
+    "title": "003-代码复制无效的排查",
+    "videoid": "didne9K-CeQ",
+    "bilibiliid": "BV1WsdYB6ESD",
+    "sources": {
+      "youtube": "didne9K-CeQ",
+      "bilibili": "BV1WsdYB6ESD"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/003-代码复制无效的排查",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-04-16",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i0.hdslb.com/bfs/archive/13abdda29abf8c9e328d84a5f5930b3a41d3cd28.jpg",
+    "related_notes": [
+      {
+        "target": "daily",
+        "label": "daily"
+      },
+      {
+        "target": "task - template",
+        "label": "task - template"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "002-模版自动归档、命名与编号",
+    "videoid": "ALDAEYwmzU4",
+    "bilibiliid": "BV1sADyBoE3d",
+    "sources": {
+      "youtube": "ALDAEYwmzU4",
+      "bilibili": "BV1sADyBoE3d"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/002-模版自动归档、命名与编号",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-04-12",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i0.hdslb.com/bfs/archive/e5499d86884d210a4858316a3afd558a34e1cee8.jpg",
+    "related_notes": [
+      {
+        "target": "task - template",
+        "label": "task - template"
+      }
+    ],
+    "createTime": ""
+  },
+  {
+    "title": "001-自动继承昨日任务",
+    "videoid": "m2BxaTHl4Jo",
+    "bilibiliid": "BV1G8DWBmEhf",
+    "sources": {
+      "youtube": "m2BxaTHl4Jo",
+      "bilibili": "BV1G8DWBmEhf"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/Metadata/001-自动继承昨日任务",
+    "tags": [
+      "video",
+      "obsidian"
+    ],
+    "date": "2026-04-09",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i0.hdslb.com/bfs/archive/af6b4a49e14f305eded13cf7bad484d8e52feb08.jpg",
+    "related_notes": [
+      {
+        "target": "daily",
+        "label": "daily"
+      },
+      {
+        "target": "Pasted image 20260508234013.png",
+        "label": "Pasted image 20260508234013.png"
+      }
+    ],
+    "createTime": ""
+  }
+]
