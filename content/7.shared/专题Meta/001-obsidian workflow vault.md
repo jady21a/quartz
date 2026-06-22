@@ -1,3 +1,14 @@
+---
+title: Obsidian 工作流模板库分享
+tags:
+  - 专题
+  - obsidian
+date: 2026-06-21
+category: obsidian
+cover: snap/CleanShot 2026-06-21 at 23.15.11@2x.png
+description: 把我日常在用的整套 Obsidian 系统抽成可直接复制的模板库,目录、模板、Dataview、主页仪表盘都配好,下载即用。
+---
+
 ## Obsidian 工作流模板库分享
 
 对着空白的 Obsidian 不知道从哪下手?
@@ -18,7 +29,7 @@
 
 1. **下载** 仓库 ZIP,解压;
 2. 用 Obsidian **当作仓库打开**,按 README 启用核心插件;
-3. 把每个区里的**「示例」换成你自己的内容**,它就真正属于你了。
+3. 把每个区里的 **「示例」换成你自己的内容**,它就真正属于你了。
 
 README 里写清了依赖插件、主题 CSS、快捷键和常见问题,跟着走基本不会卡。
 
@@ -26,7 +37,6 @@ README 里写清了依赖插件、主题 CSS、快捷键和常见问题,跟着�
 > 别怕改:目录名、模板字段、Dataview 查询都能按你的习惯调。
 > 如果你有更多想法,欢迎来评论区交流~
 
-**keywords**:
-Obsidian, Obsidian模板, 笔记软件, 效率工具, 知识管理, 第二大脑, PKM, second brain, Dataview, 数字花园
+
 
 

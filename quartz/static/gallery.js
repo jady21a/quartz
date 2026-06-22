@@ -501,12 +501,52 @@
     render: renderVideoCard,
   }
 
+  // 图文合集:复用视频卡片(封面 + 标题 + 日期 + 简介 + 分类)与栅格样式，
+  // 只是数据来自 /image-index.json(由 scripts/generate-images.js 生成)。
+  const imageConfig = {
+    prefix: "image",
+    selector: "[data-image-query]",
+    indexUrl: "/image-index.json",
+    gridClass: "video-grid",
+    loadingClass: "video-query-loading",
+    loadingText: "🖼️ 加载图文中...",
+    errorClass: "video-query-error",
+    emptyClass: "video-query-empty",
+    defaultSort: "date",
+    emptyText: function () {
+      return "暂无图文"
+    },
+    filter: function (items, container) {
+      const category = container.getAttribute("data-category")
+      const search = container.getAttribute("data-search")
+      let result = items
+      if (category) {
+        result = result.filter(function (v) {
+          return v.category === category
+        })
+      }
+      if (search) {
+        const q = search.toLowerCase()
+        result = result.filter(function (v) {
+          return (
+            (v.title || "").toLowerCase().indexOf(q) !== -1 ||
+            (v.description || "").toLowerCase().indexOf(q) !== -1 ||
+            (v.category || "").toLowerCase().indexOf(q) !== -1
+          )
+        })
+      }
+      return result
+    },
+    render: renderVideoCard,
+  }
+
   // ==================== init ====================
 
   function renderAll() {
     loadGallery(bookConfig)
     loadGallery(movieConfig)
     loadGallery(videoConfig)
+    loadGallery(imageConfig)
   }
 
   if (document.readyState === "loading") {

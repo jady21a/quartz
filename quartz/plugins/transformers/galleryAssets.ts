@@ -11,6 +11,7 @@ declare module "vfile" {
     usesBookGallery: boolean
     usesMovieGallery: boolean
     usesVideoQuery: boolean
+    usesImageQuery: boolean
     usesVideoPlayer: boolean
   }
 }
@@ -24,6 +25,7 @@ export const GalleryAssets: QuartzTransformerPlugin = () => ({
         file.data.usesBookGallery = src.includes("data-book-query")
         file.data.usesMovieGallery = src.includes("data-movie-query")
         file.data.usesVideoQuery = src.includes("data-video-query")
+        file.data.usesImageQuery = src.includes("data-image-query")
         file.data.usesVideoPlayer =
           src.includes("video-player-container") || src.includes("lite-youtube")
       },

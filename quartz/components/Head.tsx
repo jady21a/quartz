@@ -41,8 +41,10 @@ export default (() => {
     const usesBookGallery = fileData.usesBookGallery ?? false
     const usesMovieGallery = fileData.usesMovieGallery ?? false
     const usesVideoQuery = fileData.usesVideoQuery ?? false
+    const usesImageQuery = fileData.usesImageQuery ?? false
     const usesVideoPlayer = fileData.usesVideoPlayer ?? false
-    const usesVideoStyles = usesVideoQuery || usesVideoPlayer
+    // 图文卡片复用视频卡样式，因此用到 data-image-query 的页面也要加载 video-styles.css
+    const usesVideoStyles = usesVideoQuery || usesImageQuery || usesVideoPlayer
 
     return (
       <head>

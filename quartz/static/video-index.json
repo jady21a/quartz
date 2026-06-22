@@ -8,7 +8,7 @@
       "bilibili": "BV1btEi6vEtz"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/010-Obsidian-homepage",
+    "file": "/7.shared/视频Meta/010-Obsidian-homepage",
     "tags": [
       "video",
       "obsidian"
@@ -70,7 +70,7 @@
       "bilibili": "BV1id7X64E1D"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/009-一个指令，让AI-自动生成周复盘",
+    "file": "/7.shared/视频Meta/009-一个指令，让AI-自动生成周复盘",
     "tags": [
       "video"
     ],
@@ -80,12 +80,12 @@
     "thumbnail": "https://i2.hdslb.com/bfs/archive/1aedc0ea98ee19cdc7a9801fd8e639adceb5fbba.jpg",
     "related_notes": [
       {
-        "target": "7.shared/Metadata/008-项目管理",
-        "label": "7.shared/Metadata/008-项目管理"
+        "target": "7.shared/视频Meta/008-项目管理",
+        "label": "7.shared/视频Meta/008-项目管理"
       },
       {
-        "target": "7.shared/Metadata/008-项目管理",
-        "label": "7.shared/Metadata/008-项目管理"
+        "target": "7.shared/视频Meta/008-项目管理",
+        "label": "7.shared/视频Meta/008-项目管理"
       },
       {
         "target": "周复盘prompt-成长",
@@ -111,7 +111,7 @@
       "bilibili": "BV1EQ5e6iEyE"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/008-项目管理",
+    "file": "/7.shared/视频Meta/008-项目管理",
     "tags": [
       "video"
     ],
@@ -137,16 +137,16 @@
         "label": "daily"
       },
       {
-        "target": "7.shared/Metadata/001-自动继承昨日任务",
-        "label": "7.shared/Metadata/001-自动继承昨日任务"
+        "target": "7.shared/视频Meta/001-自动继承昨日任务",
+        "label": "7.shared/视频Meta/001-自动继承昨日任务"
       },
       {
-        "target": "7.shared/Metadata/002-模版自动归档、命名与编号",
-        "label": "7.shared/Metadata/002-模版自动归档、命名与编号"
+        "target": "7.shared/视频Meta/002-模版自动归档、命名与编号",
+        "label": "7.shared/视频Meta/002-模版自动归档、命名与编号"
       },
       {
-        "target": "7.shared/Metadata/003-代码复制无效的排查",
-        "label": "7.shared/Metadata/003-代码复制无效的排查"
+        "target": "7.shared/视频Meta/003-代码复制无效的排查",
+        "label": "7.shared/视频Meta/003-代码复制无效的排查"
       },
       {
         "target": "Pasted image 20260515220310.png",
@@ -172,7 +172,7 @@
       "bilibili": "BV1UjR4BZEHT"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/007-自建个人专属图书馆,douban图片链接失效怎么办",
+    "file": "/7.shared/视频Meta/007-自建个人专属图书馆,douban图片链接失效怎么办",
     "tags": [
       "video"
     ],
@@ -198,8 +198,8 @@
         "label": "media DB模板"
       },
       {
-        "target": "7.shared/Metadata/005-写笔记=更新博客",
-        "label": "7.shared/Metadata/005-写笔记=更新博客"
+        "target": "7.shared/视频Meta/005-写笔记=更新博客",
+        "label": "7.shared/视频Meta/005-写笔记=更新博客"
       }
     ],
     "createTime": ""
@@ -213,7 +213,7 @@
       "bilibili": "BV1LyoEBsEBX"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/006-自制去版权信息插件",
+    "file": "/7.shared/视频Meta/006-自制去版权信息插件",
     "tags": [
       "video",
       "obsidian",
@@ -240,7 +240,7 @@
       "bilibili": "BV1gho4BKEM7"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/005-写笔记=更新博客",
+    "file": "/7.shared/视频Meta/005-写笔记=更新博客",
     "tags": [
       "video",
       "quartz"
@@ -266,7 +266,7 @@
       "bilibili": "BV1xodJB3Ea4"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/004-运动网站分享",
+    "file": "/7.shared/视频Meta/004-运动网站分享",
     "tags": [
       "video",
       "工具"
@@ -287,7 +287,7 @@
       "bilibili": "BV1WsdYB6ESD"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/003-代码复制无效的排查",
+    "file": "/7.shared/视频Meta/003-代码复制无效的排查",
     "tags": [
       "video",
       "obsidian"
@@ -317,7 +317,7 @@
       "bilibili": "BV1sADyBoE3d"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/002-模版自动归档、命名与编号",
+    "file": "/7.shared/视频Meta/002-模版自动归档、命名与编号",
     "tags": [
       "video",
       "obsidian"
@@ -343,7 +343,7 @@
       "bilibili": "BV1G8DWBmEhf"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/Metadata/001-自动继承昨日任务",
+    "file": "/7.shared/视频Meta/001-自动继承昨日任务",
     "tags": [
       "video",
       "obsidian"
