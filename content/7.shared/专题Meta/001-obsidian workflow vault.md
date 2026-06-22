@@ -1,7 +1,7 @@
 ---
 title: Obsidian 工作流模板库分享
 tags:
-  - 专题
+  - topic
   - obsidian
 date: 2026-06-21
 category: obsidian

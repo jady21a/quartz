@@ -128,6 +128,16 @@
   }
 }
 
+/* ========== 专题合集:无封面的纯文字卡 ========== */
+/* 没有封面图,给标题加点上内边距,避免顶到卡片上边框,读起来更像一张「文章卡」 */
+.video-card--no-cover .video-card-title {
+  margin-top: 0.85rem;
+}
+.video-card--no-cover .video-card-date {
+  /* 文字卡较矮,日期不必沉底,紧跟标题即可 */
+  margin-top: 0.15rem;
+}
+
 /* ========== 视频详情页播放器 ========== */
 
 .video-player-container {

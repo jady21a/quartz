@@ -501,8 +501,16 @@
     render: renderVideoCard,
   }
 
-  // 图文合集:复用视频卡片(封面 + 标题 + 日期 + 简介 + 分类)与栅格样式，
-  // 只是数据来自 /image-index.json(由 scripts/generate-images.js 生成)。
+  // 专题合集:复用视频卡片的栅格/标题/日期/分类样式，但走「纯文字卡」——
+  // 既不展示简介(详情)、也不展示封面(抹掉 description / thumbnail / videoid 即可)，
+  // 再打上 no-cover 标记类做一点排版微调。只影响专题卡，视频卡不动。
+  function renderImageCard(item) {
+    const card = renderVideoCard(
+      Object.assign({}, item, { description: "", thumbnail: "", videoid: "" }),
+    )
+    card.classList.add("video-card--no-cover")
+    return card
+  }
   const imageConfig = {
     prefix: "image",
     selector: "[data-image-query]",
@@ -537,7 +545,7 @@
       }
       return result
     },
-    render: renderVideoCard,
+    render: renderImageCard,
   }
 
   // ==================== init ====================

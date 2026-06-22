@@ -17,7 +17,7 @@ const SCAN_DIR = path.join(CONTENT_DIR, "7.shared")
 const OUTPUT_FILE = path.join(__dirname, "../quartz/static/image-index.json")
 
 // 命中这些 tag(忽略大小写)的笔记视为"图文"
-const IMAGE_TAGS = ["专题", "图文", "imagetext", "graphic", "专题教程", "图文教程"]
+const IMAGE_TAGS = ["topic", "专题", "图文", "imagetext", "graphic", "deepdive", "专题教程", "图文教程"]
 
 // ===== 递归读取所有 Markdown 文件 =====
 function getAllMarkdownFiles(dir, fileList = []) {
