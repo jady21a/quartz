@@ -19,12 +19,27 @@ const defaultOptions: ContentMetaOptions = {
   showComma: true,
 }
 
+// 这些是导览 / 索引类页面(首页、藏书馆、观影库、各类合集),正文多为内嵌脚本或纯链接,
+// 日期和阅读时长都没有意义(阅读时长还会被订阅脚本撑得很离谱),整条 meta 不显示。
+const hideMetaSlugs = new Set([
+  "index",
+  "藏书馆",
+  "观影库",
+  "7.shared/视频合集",
+  "7.shared/专题合集",
+])
+
 export default ((opts?: Partial<ContentMetaOptions>) => {
   // Merge options with defaults
   const options: ContentMetaOptions = { ...defaultOptions, ...opts }
 
   function ContentMetadata({ cfg, fileData, displayClass }: QuartzComponentProps) {
     const text = fileData.text
+
+    // 导览 / 索引类页面:日期和阅读时间都不显示
+    if (hideMetaSlugs.has(fileData.slug ?? "")) {
+      return null
+    }
 
     if (text) {
       const segments: (string | JSX.Element)[] = []
