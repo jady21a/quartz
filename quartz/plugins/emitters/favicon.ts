@@ -9,6 +9,7 @@ export const Favicon: QuartzEmitterPlugin = () => ({
   async *emit({ argv }) {
     const iconPath = joinSegments(QUARTZ, "static", "icon2.PNG")
 
+    // icon2.PNG 已是成品图标(含留白/圆角),这里只缩到 48px 生成 .ico
     const faviconContent = sharp(iconPath).resize(48, 48).toFormat("png")
 
     yield write({
