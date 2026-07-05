@@ -1,5 +1,66 @@
 [
   {
+    "title": "011-obsidian开箱即用模板库",
+    "videoid": "ocwFtT9Vs70",
+    "bilibiliid": "BV1cNTC65EQF",
+    "sources": {
+      "youtube": "ocwFtT9Vs70",
+      "bilibili": "BV1cNTC65EQF"
+    },
+    "defaultSource": "youtube",
+    "file": "/7.shared/视频Meta/011-obsidian开箱即用模板库",
+    "tags": [
+      "video"
+    ],
+    "date": "2026-07-05",
+    "description": "",
+    "category": "obsidian",
+    "thumbnail": "https://i1.hdslb.com/bfs/archive/994c7e20c40ac45f7f6ed36501f55b6fa3cd0d38.jpg",
+    "related_notes": [
+      {
+        "target": "7.shared/视频Meta/010-Obsidian homepage",
+        "label": "主页搭建"
+      },
+      {
+        "target": "7.shared/视频Meta/008-项目管理",
+        "label": "项目管理"
+      },
+      {
+        "target": "7.shared/视频Meta/009-一个指令，让AI 自动生成周复盘",
+        "label": "AI 周复盘"
+      },
+      {
+        "target": "7.shared/视频Meta/001-自动继承昨日任务",
+        "label": "日记任务继承"
+      },
+      {
+        "target": "7.shared/视频Meta/007-自建个人专属图书馆,douban图片链接失效怎么办",
+        "label": "个人图书馆"
+      },
+      {
+        "target": "7.shared/视频Meta/008-项目管理",
+        "label": "任务管理"
+      },
+      {
+        "target": "7.shared/视频Meta/010-Obsidian homepage",
+        "label": "主页搭建"
+      },
+      {
+        "target": "7.shared/专题Meta/001-obsidian workflow vault",
+        "label": "模板库分享页"
+      },
+      {
+        "target": "7.shared/视频Meta/008-项目管理",
+        "label": "项目管理那期"
+      },
+      {
+        "target": "7.shared/视频Meta/006-自制去版权信息插件",
+        "label": "这期"
+      }
+    ],
+    "createTime": ""
+  },
+  {
     "title": "010-Obsidian homepage",
     "videoid": "NG5vwZffKlY",
     "bilibiliid": "BV1btEi6vEtz",

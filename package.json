@@ -25,6 +25,7 @@
     "generate-books": "node scripts/generate-book-index.js",
     "generate-movies": "node scripts/generate-movies.js",
     "generate-videos": "node scripts/generate-videos.js",
+    "backfill-covers": "node scripts/backfill-video-covers.mjs",
     "generate-images": "node scripts/generate-images.js",
     "generate-created-dates": "node scripts/generate-created-dates.js",
     "gen:mapping": "node scripts/generate-image-mapping.js",

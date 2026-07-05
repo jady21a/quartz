@@ -4,6 +4,7 @@ tags:
   - video
 videoid: OrVOLyWmqz4
 bilibiliid: BV1UjR4BZEHT
+cover: https://i0.hdslb.com/bfs/archive/182883e8cc12c04f762b574b836deac58279e7ed.jpg
 defaultSource: youtube
 date: 2026-05-06
 category: obsidian
