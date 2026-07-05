@@ -32,6 +32,7 @@ tags:
   - video
 videoid: VIDEO_ID
 bilibiliid: BILIBILI_ID
+cover:
 defaultSource: youtube
 date: <% tp.date.now("YYYY-MM-DD") %>
 category: obsidian
