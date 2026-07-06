@@ -174,7 +174,18 @@ async function setupExplorer(currentSlug: FullSlug) {
 
     const data = await fetchData
     const entries = [...Object.entries(data)] as [FullSlug, ContentDetails][]
-    const trie = FileTrieNode.fromEntries(entries)
+    let trie = FileTrieNode.fromEntries(entries)
+
+    // 中英分树:文件树只显示当前页面语言的那一半,配合 LanguageSwitch 实现整页切换。
+    // 英文页把树根切到 en/ 子树——节点 slug 保留完整路径(含 en/ 前缀),链接不受影响;
+    // 中文页把顶层 en 文件夹整个滤掉。
+    const isEnglish = currentSlug === "en" || currentSlug.startsWith("en/")
+    if (isEnglish) {
+      const enRoot = trie.children.find((c) => c.isFolder && c.slugSegment === "en")
+      if (enRoot) trie = enRoot
+    } else {
+      trie.children = trie.children.filter((c) => c.slugSegment !== "en")
+    }
 
     // Apply functions in order
     for (const fn of opts.order) {

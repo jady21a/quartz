@@ -52,10 +52,15 @@ export default ((opts?: Partial<BreadcrumbOptions>) => {
   }: QuartzComponentProps) => {
     const trie = (ctx.trie ??= trieFromAllFiles(allFiles))
     const slugParts = fileData.slug!.split("/")
-    const pathNodes = trie.ancestryChain(slugParts)
+    let pathNodes = trie.ancestryChain(slugParts)
 
     if (!pathNodes) {
       return null
+    }
+
+    // 英文页去掉全站根那层,让 "en" 节点当 Home——面包屑首链指向英文首页而不是中文站
+    if (slugParts[0] === "en" && pathNodes.length > 1) {
+      pathNodes = pathNodes.slice(1)
     }
 
     const crumbs: CrumbData[] = pathNodes.map((node, idx) => {

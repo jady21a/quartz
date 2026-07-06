@@ -446,11 +446,16 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     }
 
     // order titles ahead of content
-    const allIds: Set<number> = new Set([
-      ...getByField("title"),
-      ...getByField("content"),
-      ...getByField("tags"),
-    ])
+    // 搜索索引是全站共建一次的(含中英两份内容),这里按当前页面语言过滤结果,
+    // 中文页只出中文结果、英文页只出英文结果,和 LanguageSwitch 的整页切换保持一致
+    const pageIsEnglish = currentSlug === "en" || currentSlug.startsWith("en/")
+    const sameLang = (id: number) => {
+      const slug = idDataMap[id]
+      return (slug === "en" || slug.startsWith("en/")) === pageIsEnglish
+    }
+    const allIds: Set<number> = new Set(
+      [...getByField("title"), ...getByField("content"), ...getByField("tags")].filter(sameLang),
+    )
     const finalResults = [...allIds].map((id) => formatForDisplay(currentSearchTerm, id))
     await displayResults(finalResults)
   }

@@ -92,8 +92,13 @@ export default ((userOpts?: Partial<Options>) => {
     displayClass,
   }: QuartzComponentProps) => {
     const currentSlug = fileData.slug
+    // 中英分站:随机/最新都只推当前页面语言的笔记,避免中文页漏出英文条目(反之亦然)
+    const pageIsEnglish = currentSlug === "en" || (currentSlug ?? "").startsWith("en/")
+    const sameLang = (slug: string | undefined) =>
+      (slug === "en" || (slug ?? "").startsWith("en/")) === pageIsEnglish
     const eligibleFiles = allFiles.filter(
       (file) =>
+        sameLang(file.slug) &&
         file.slug !== currentSlug &&
         !file.slug?.endsWith("index") &&
         file.frontmatter?.title &&
@@ -111,6 +116,7 @@ export default ((userOpts?: Partial<Options>) => {
     const recentFiles = allFiles
       .filter((file) => {
         if (!file.slug || file.slug.endsWith("index") || !file.frontmatter?.title) return false
+        if (!sameLang(file.slug)) return false
         if ((file.frontmatter?.tags || []).includes("movies")) return false
         const slug = file.slug
         if (opts.excludeSlugs.includes(slug)) return false
@@ -217,8 +223,11 @@ export default ((userOpts?: Partial<Options>) => {
 
       async function eligible() {
         const data = await fetchData
+        var pageIsEnglish = currentSlug === "en" || currentSlug.indexOf("en/") === 0
         return Object.values(data).filter(function (d) {
+          var slug = String(d.slug)
           return (
+            (slug === "en" || slug.indexOf("en/") === 0) === pageIsEnglish &&
             d.slug !== currentSlug &&
             !String(d.slug).endsWith("index") &&
             d.title &&

@@ -32,6 +32,24 @@ for (const f of existing) {
 }
 const seq = String(maxNum + 1).padStart(3, "0");
 
+// 2.5 a2 任务再问一层:视频期自动带 期数/阶段 两个字段(a2-02 SOP 的进度看板靠它们)
+let videoFields = "";
+if (type === "a2") {
+  const isVideo = await tp.system.suggester(["普通任务", "视频期"], [false, true], false, "a2 任务类型");
+  if (isVideo) {
+    // 期数 = 全库已有最大期数 + 1;基线 11(001-011 期发布在前、未回填 frontmatter)
+    let maxEpi = 11;
+    const taskFiles = app.vault.getMarkdownFiles()
+      .filter(f => f.path.startsWith("4.Projects/II.tasks"));
+    for (const f of taskFiles) {
+      const v = app.metadataCache.getFileCache(f)?.frontmatter?.["期数"];
+      const n = parseInt(String(v ?? ""), 10);
+      if (!Number.isNaN(n)) maxEpi = Math.max(maxEpi, n);
+    }
+    videoFields = `期数: "${String(maxEpi + 1).padStart(3, "0")}"\n阶段: 选题`;
+  }
+}
+
 // 3. 输入短标题
 const shortTitle = await tp.system.prompt("标题 (short-title)");
 // 取消则删除刚创建的文档
@@ -59,6 +77,7 @@ tags:
 详情:
 check:
 try:
+<%* if (videoFields) tR += videoFields + "\n" -%>
 ---
 
 
