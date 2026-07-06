@@ -5,6 +5,7 @@ import { PageList, SortFn } from "../PageList"
 import { Root } from "hast"
 import { htmlToJsx } from "../../util/jsx"
 import { i18n } from "../../i18n"
+import { localeForSlug } from "../../util/locale"
 import { QuartzPluginData } from "../../plugins/vfile"
 import { ComponentChildren } from "preact"
 import { concatenateResources } from "../../util/resources"
@@ -108,7 +109,7 @@ export default ((opts?: Partial<FolderContentOptions>) => {
         <div class="page-listing">
           {options.showFolderCount && (
             <p>
-              {i18n(cfg.locale).pages.folderContent.itemsUnderFolder({
+              {i18n(localeForSlug(fileData.slug, cfg.locale)).pages.folderContent.itemsUnderFolder({
                 count: allPagesInFolder.length,
               })}
             </p>

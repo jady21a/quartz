@@ -111,6 +111,11 @@ export default ((userOpts?: Partial<Options>) => {
       return null
     }
 
+    // 英文页把三个自定义标签换成英文（这几个是本站独有词，不在 i18n locale 里）
+    const labels = pageIsEnglish
+      ? { recent: "Recent", random: "Wander", refresh: "Shuffle", refreshAria: "Shuffle notes" }
+      : { recent: "最新", random: opts.title, refresh: "换一批", refreshAria: "刷新随机笔记" }
+
     const initial = [...eligibleFiles].sort(() => Math.random() - 0.5).slice(0, opts.limit)
 
     const recentFiles = allFiles
@@ -139,10 +144,10 @@ export default ((userOpts?: Partial<Options>) => {
       >
         <div class="random-notes-tabs">
           <button class="tab-btn active" data-tab="recent">
-            最新
+            {labels.recent}
           </button>
           <button class="tab-btn" data-tab="random">
-            {opts.title}
+            {labels.random}
           </button>
         </div>
         <div class="tab-panel hidden" data-panel="random">
@@ -168,8 +173,8 @@ export default ((userOpts?: Partial<Options>) => {
               )
             })}
           </ul>
-          <button class="refresh-button" data-refresh-random-notes aria-label="刷新随机笔记">
-            换一批
+          <button class="refresh-button" data-refresh-random-notes aria-label={labels.refreshAria}>
+            {labels.refresh}
           </button>
         </div>
         <div class="tab-panel" data-panel="recent">

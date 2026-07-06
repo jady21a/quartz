@@ -4,6 +4,7 @@ import style from "./styles/search.scss"
 import script from "./scripts/search.inline"
 import { classNames } from "../util/lang"
 import { i18n } from "../i18n"
+import { localeForSlug } from "../util/locale"
 
 export interface SearchOptions {
   enablePreview: boolean
@@ -14,9 +15,10 @@ const defaultOptions: SearchOptions = {
 }
 
 export default ((userOpts?: Partial<SearchOptions>) => {
-  const Search: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
+  const Search: QuartzComponent = ({ displayClass, fileData, cfg }: QuartzComponentProps) => {
     const opts = { ...defaultOptions, ...userOpts }
-    const searchPlaceholder = i18n(cfg.locale).components.search.searchBarPlaceholder
+    const locale = localeForSlug(fileData.slug, cfg.locale)
+    const searchPlaceholder = i18n(locale).components.search.searchBarPlaceholder
     return (
       <div class={classNames(displayClass, "search")}>
         <button class="search-button">
@@ -27,7 +29,7 @@ export default ((userOpts?: Partial<SearchOptions>) => {
               <circle cx="8" cy="8" r="7" />
             </g>
           </svg>
-          <p>{i18n(cfg.locale).components.search.title}</p>
+          <p>{i18n(locale).components.search.title}</p>
         </button>
         <div class="search-container">
           <div class="search-space">

@@ -9,6 +9,7 @@ import { visit } from "unist-util-visit"
 import { Root, Element, ElementContent } from "hast"
 import { GlobalConfiguration } from "../cfg"
 import { i18n } from "../i18n"
+import { localeForSlug } from "../util/locale"
 
 interface RenderComponents {
   head: QuartzComponent
@@ -230,7 +231,10 @@ export function renderPage(
     </div>
   )
 
-  const lang = componentData.fileData.frontmatter?.lang ?? cfg.locale?.split("-")[0] ?? "en"
+  const lang =
+    componentData.fileData.frontmatter?.lang ??
+    localeForSlug(componentData.fileData.slug, cfg.locale)?.split("-")[0] ??
+    "en"
   const direction = i18n(cfg.locale).direction ?? "ltr"
   const doc = (
     <html lang={lang} dir={direction}>

@@ -1,4 +1,5 @@
 import { i18n } from "../i18n"
+import { localeForSlug } from "../util/locale"
 import { FullSlug, getFileExtension, joinSegments, pathToRoot } from "../util/path"
 import { CSSResourceToStyleElement, JSResourceToScriptElement } from "../util/resources"
 import { googleFontHref, googleFontSubsetHref } from "../util/theme"
@@ -12,13 +13,14 @@ export default (() => {
     externalResources,
     ctx,
   }: QuartzComponentProps) => {
+    const locale = localeForSlug(fileData.slug, cfg.locale)
     const titleSuffix = cfg.pageTitleSuffix ?? ""
     const title =
-      (fileData.frontmatter?.title ?? i18n(cfg.locale).propertyDefaults.title) + titleSuffix
+      (fileData.frontmatter?.title ?? i18n(locale).propertyDefaults.title) + titleSuffix
     const description =
       fileData.frontmatter?.socialDescription ??
       fileData.frontmatter?.description ??
-      unescapeHTML(fileData.description?.trim() ?? i18n(cfg.locale).propertyDefaults.description)
+      unescapeHTML(fileData.description?.trim() ?? i18n(locale).propertyDefaults.description)
 
     const { css, js, additionalHead } = externalResources
 

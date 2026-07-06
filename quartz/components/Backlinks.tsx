@@ -2,6 +2,7 @@ import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } fro
 import style from "./styles/backlinks.scss"
 import { resolveRelative, simplifySlug } from "../util/path"
 import { i18n } from "../i18n"
+import { localeForSlug } from "../util/locale"
 import { classNames } from "../util/lang"
 import OverflowListFactory from "./OverflowList"
 
@@ -24,13 +25,14 @@ export default ((opts?: Partial<BacklinksOptions>) => {
     cfg,
   }: QuartzComponentProps) => {
     const slug = simplifySlug(fileData.slug!)
+    const locale = localeForSlug(fileData.slug, cfg.locale)
     const backlinkFiles = allFiles.filter((file) => file.links?.includes(slug))
     if (options.hideWhenEmpty && backlinkFiles.length == 0) {
       return null
     }
     return (
       <div class={classNames(displayClass, "backlinks")}>
-        <h3>{i18n(cfg.locale).components.backlinks.title}</h3>
+        <h3>{i18n(locale).components.backlinks.title}</h3>
         <OverflowList>
           {backlinkFiles.length > 0 ? (
             backlinkFiles.map((f) => (
@@ -41,7 +43,7 @@ export default ((opts?: Partial<BacklinksOptions>) => {
               </li>
             ))
           ) : (
-            <li>{i18n(cfg.locale).components.backlinks.noBacklinksFound}</li>
+            <li>{i18n(locale).components.backlinks.noBacklinksFound}</li>
           )}
         </OverflowList>
       </div>

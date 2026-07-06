@@ -105,7 +105,7 @@ const sourcePrefix = foundDate && daysAgo > 1
 ```dataviewjs
 const date = dv.date(dv.current().file.name);
 if (date) {
-  const scheduledTasks = dv.pages().file.tasks
+  const scheduledTasks = dv.pages('"5.todo"').file.tasks
     .where(t => !t.completed && t.scheduled && t.scheduled <= date)
     .sort(t => t.scheduled, 'asc');
 
