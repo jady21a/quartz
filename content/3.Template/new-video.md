@@ -34,6 +34,7 @@ videoid: VIDEO_ID
 bilibiliid: BILIBILI_ID
 cover:
 defaultSource: youtube
+draft: ture
 date: <% tp.date.now("YYYY-MM-DD") %>
 category: obsidian
 ---

@@ -167,6 +167,9 @@ function parseVideoData(filePath) {
   const content = fs.readFileSync(filePath, "utf-8")
   const { data: frontmatter, content: bodyContent } = matter(content)
 
+  // draft 页不进索引：Quartz 构建时会整页排除(RemoveDrafts)，索引若收录会指向 404
+  if (frontmatter.draft === true || frontmatter.draft === "true") return null
+
   const tags = frontmatter.tags || []
   const isVideo = tags.some(
     (tag) =>
