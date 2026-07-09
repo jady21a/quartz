@@ -5,7 +5,13 @@
 
   function normalizePathname(pathname) {
     if (!pathname) return '';
-    return pathname.replace(/\.html$/, '').replace(/\/index$/, '');
+    var decoded = pathname;
+    try {
+      decoded = decodeURIComponent(pathname);
+    } catch (e) {
+      decoded = pathname;
+    }
+    return decoded.replace(/\.html$/, '').replace(/\/index$/, '');
   }
 
   function loadVideoIndex() {
