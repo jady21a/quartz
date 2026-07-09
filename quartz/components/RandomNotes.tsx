@@ -65,6 +65,17 @@ function noteTimestamp(file: {
   return gitDateMap.get((file.relativePath ?? "").toLowerCase()) ?? 0
 }
 
+// “最新”列表里每条笔记后面的日期,统一 YYYY-MM-DD;时间戳为 0(查不到日期)时返回空串不显示
+function fmtDate(ts: number): string {
+  if (!ts) return ""
+  const d = new Date(ts)
+  if (Number.isNaN(d.getTime())) return ""
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, "0")
+  const day = String(d.getDate()).padStart(2, "0")
+  return `${y}-${m}-${day}`
+}
+
 interface Options {
   title?: string
   limit?: number
@@ -179,13 +190,15 @@ export default ((userOpts?: Partial<Options>) => {
         </div>
         <div class="tab-panel" data-panel="recent">
           <ul class="random-notes-list">
-            {recentFiles.map(({ file }) => {
+            {recentFiles.map(({ file, ts }) => {
               const title = file.frontmatter?.title || file.slug || "Untitled"
+              const dateStr = fmtDate(ts)
               return (
                 <li key={file.slug}>
                   <a href={`/${file.slug}`} class="internal">
                     {title}
                   </a>
+                  {dateStr && <span class="recent-date">{dateStr}</span>}
                 </li>
               )
             })}
