@@ -8,7 +8,7 @@ import { FileTrieNode } from "./quartz/util/fileTrie"
 // 必须是自包含函数(不能闭包引用外部变量)。
 const explorerMapFn = (node: FileTrieNode) => {
   const labels: Record<string, string> = {
-    "1.Why Z": "关于本站",
+    "1.Why-Z": "关于本站",
     "2.Read": "读书笔记",
     "3.Template": "模板库",
     "4.技术记录": "技术折腾",
