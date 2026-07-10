@@ -412,19 +412,34 @@ export async function handleBuild(argv) {
       }
 
       let fp = req.url?.split("?")[0] ?? "/"
+      const decodedFp = decodeURIComponent(fp)
+
+      // serve-handler 把带点的路径段(如 2.Read)当文件扩展名,不会做目录 index.html 解析,
+      // 这类目录请求绕过它直接读文件返回
+      const serveIndexDirectly = async (indexPath) => {
+        const release = await buildMutex.acquire()
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
+        res.end(fs.readFileSync(indexPath))
+        console.log(styleText("green", "[200]") + styleText("grey", ` ${argv.baseDir}${fp}`))
+        release()
+      }
 
       // handle redirects
       if (fp.endsWith("/")) {
         // /trailing/
         // does /trailing/index.html exist? if so, serve it
-        const indexFp = path.posix.join(fp, "index.html")
-        if (fs.existsSync(path.posix.join(argv.output, indexFp))) {
+        const indexFp = path.posix.join(decodedFp, "index.html")
+        const fullIndexFp = path.posix.join(argv.output, indexFp)
+        if (fs.existsSync(fullIndexFp)) {
+          if (path.extname(decodedFp.slice(0, -1)) !== "") {
+            return serveIndexDirectly(fullIndexFp)
+          }
           req.url = fp
           return serve()
         }
 
         // does /trailing.html exist? if so, redirect to /trailing
-        let base = fp.slice(0, -1)
+        let base = decodedFp.slice(0, -1)
         if (path.extname(base) === "") {
           base += ".html"
         }
@@ -434,17 +449,19 @@ export async function handleBuild(argv) {
       } else {
         // /regular
         // does /regular.html exist? if so, serve it
-        let base = fp
+        let base = decodedFp
         if (path.extname(base) === "") {
           base += ".html"
         }
-        if (fs.existsSync(path.posix.join(argv.output, base))) {
+        const fullBase = path.posix.join(argv.output, base)
+        // 目录也会让 existsSync 为真(如 public/2.Read),必须确认是文件才交给 serve-handler
+        if (fs.existsSync(fullBase) && fs.statSync(fullBase).isFile()) {
           req.url = fp
           return serve()
         }
 
         // does /regular/index.html exist? if so, redirect to /regular/
-        let indexFp = path.posix.join(fp, "index.html")
+        let indexFp = path.posix.join(decodedFp, "index.html")
         if (fs.existsSync(path.posix.join(argv.output, indexFp))) {
           return redirect(fp + "/")
         }

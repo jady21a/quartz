@@ -15,8 +15,11 @@ export default (() => {
   }: QuartzComponentProps) => {
     const locale = localeForSlug(fileData.slug, cfg.locale)
     const titleSuffix = cfg.pageTitleSuffix ?? ""
-    const title =
-      (fileData.frontmatter?.title ?? i18n(locale).propertyDefaults.title) + titleSuffix
+    const baseTitle = fileData.frontmatter?.title ?? i18n(locale).propertyDefaults.title
+    // 标题本身已含站名时不再追加后缀,避免出现 "Why Z's Notes · Why Z"
+    const title = baseTitle.includes(titleSuffix.replace(/^[\s·|–—-]+/, ""))
+      ? baseTitle
+      : baseTitle + titleSuffix
     const description =
       fileData.frontmatter?.socialDescription ??
       fileData.frontmatter?.description ??

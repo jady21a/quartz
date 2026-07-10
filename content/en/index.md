@@ -1,6 +1,5 @@
 ---
-title:
-  - Welcome to Why Z's home
+title: Why Z's Notes
 ---
 
 This site contains:
