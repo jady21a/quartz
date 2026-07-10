@@ -56,12 +56,23 @@
 // 这里把头部拆成两行:
 //   第一行: ☰ 汉堡 + 🪶Why Z 标题 + 社交图标
 //   第二行: 搜索框(撑满)+ 暗色 / 语言切换
+// ── 桌面端左侧栏:标题 / 社交图标 / 搜索 / 目录树的纵向间距收紧 ──
+// Quartz base 给 .sidebar 的默认 gap 是 1.2rem,偏松;带 ID 前缀压过它
+@media all and (min-width: 801px) {
+  .page > #quartz-body .sidebar.left {
+    gap: 0.8rem;
+  }
+}
+
 @media all and (max-width: 800px) {
-  .sidebar.left:has(.explorer) {
+  // 注意:必须带 .page > #quartz-body 前缀。Quartz base 的移动端规则
+  // `.page>#quartz-body .sidebar.left` 里有 ID 选择器且设了 gap:0,
+  // 不带前缀的话 gap 永远被它压掉(其余不冲突的声明倒是能生效)。
+  .page > #quartz-body .sidebar.left:has(.explorer) {
     flex-wrap: wrap;
     align-items: center;
     column-gap: 0.6rem;
-    row-gap: 0.75rem;
+    row-gap: 0.2rem;
 
     // 标题永不折行,字号略收一点,给同行的社交图标留位置
     & .page-title {
@@ -78,11 +89,38 @@
       flex-wrap: nowrap;
     }
 
+    // 顶栏收掉底部 padding(explorer.scss 给的 1rem 0),搜索行贴住下缘
+    padding-bottom: 0;
+
     // 搜索 + 切换按钮整体掉到第二行,占满整宽
     & .flex-component {
       flex: 1 1 100%;
       order: 1;
+
+      // 放开 search.scss 的 max-width:14rem,让搜索框吃满剩余宽度,
+      // 暗色/语言切换按钮靠右
+      & .search {
+        max-width: none;
+      }
     }
+  }
+
+  // 滚动后只钉标题行:搜索行收起(高度、透明度渐变,负 margin 连
+  // row-gap 一起收掉)。状态类 body.header-scrolled 由 explorer.inline.ts
+  // 维护;抽屉打开(explorer 未折叠)时不收起,目录模式下保持可搜。
+  .page > #quartz-body .sidebar.left:has(.explorer.collapsed) .flex-component {
+    overflow: hidden;
+    max-height: 4rem;
+    transition:
+      max-height 0.25s ease,
+      opacity 0.2s ease,
+      margin-top 0.25s ease;
+  }
+
+  body.header-scrolled .page > #quartz-body .sidebar.left:has(.explorer.collapsed) .flex-component {
+    max-height: 0;
+    opacity: 0;
+    margin-top: -0.2rem; // 抵消两行之间的 row-gap
   }
 }
 
@@ -123,17 +161,23 @@
     }
   }
 
-  // 目录树顶部多留空间,给钉住的标题 + 搜索行让位(原本是 4rem)
+  // 目录树顶部多留空间,给钉住的标题 + 搜索行让位(原本是 4rem;
+  // 数值要跟上面头部两行的 row-gap 联动)
   .explorer:not(.collapsed) > .explorer-content {
     padding-top: 6.5rem;
   }
 }
 
  
-// 首页(data-slug="index")的区块节奏:h2 上方多留白,避免区块黏在一起
+// 首页(data-slug="index")的区块节奏:h2 上方多留白,避免区块黏在一起;
+// 手机上屏幕小,留白相应收窄
 body[data-slug="index"] .center {
   article > h2 {
     margin-top: 3.2rem;
+
+    @media all and (max-width: 800px) {
+      margin-top: 2.2rem;
+    }
   }
 }
 
@@ -144,12 +188,13 @@ body[data-slug="index"] .center {
   display: grid;
   // 栅格总宽对齐 hero 最长一行文字(约 37 个全角字符),不铺满整个内容栏
   grid-template-columns: repeat(2, 1fr);
-  max-width: 33rem;
+  max-width: 43rem;
   gap: 1.1rem;
   margin: 1.6rem 0 0;
 
+  // 手机上保持双列,间距收窄挤出文字空间
   @media all and (max-width: 480px) {
-    grid-template-columns: 1fr;
+    gap: 0.7rem;
   }
 }
 
@@ -158,6 +203,11 @@ a.home-nav-item {
   flex-direction: column;
   gap: 0.5rem;
   padding: 1.15rem 1.25rem;
+
+  // 手机双列时卡片较窄,收内边距避免文字挤成多行
+  @media all and (max-width: 480px) {
+    padding: 0.85rem 0.9rem;
+  }
   border: 1px solid var(--lightgray);
   border-radius: 8px;
   background-color: var(--light);
@@ -180,13 +230,16 @@ a.home-nav-item {
     opacity: 0.8;
   }
 
-  &:hover {
-    background-color: var(--light); // 盖掉 .internal 链接默认的 hover 底色
-    border-color: var(--secondary);
-    transform: translateY(-2px);
+  // 触屏设备没有真悬停,点击后 hover 态会"粘住",所以只在有鼠标的设备上启用
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--light); // 盖掉 .internal 链接默认的 hover 底色
+      border-color: var(--secondary);
+      transform: translateY(-2px);
 
-    .item-title {
-      color: var(--secondary);
+      .item-title {
+        color: var(--secondary);
+      }
     }
   }
 }
@@ -197,7 +250,7 @@ a.home-nav-item {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  max-width: 26rem;
+  max-width: 36rem;
   margin: 1.4rem 0 2.5rem;
 
   input[type="email"] {

@@ -5,7 +5,6 @@ enableToc: false
 欢迎来到 **Why Z** 的小站!
 视频里讲过的教程和模板都收录在这里；来不及细说的问题和补充，也会持续更新。
 此外，还有一些读书分享与折腾记录。→ [[关于 Why Z]]
-
 ## 快速导览
 
 <div class="home-nav-list">
@@ -27,7 +26,7 @@ enableToc: false
   </a>
 </div>
 
-## 更多
+### 更多
 <div class="home-nav-list">
   <a class="home-nav-item" data-no-popover="true" href="/藏书馆">
     <span class="item-title">藏书馆</span>
@@ -42,7 +41,7 @@ enableToc: false
 
 ## 订阅
 
-免费订阅获取最新推送
+  免费订阅获取最新推送
 
 <form class="home-subscribe" action="https://gmail.us14.list-manage.com/subscribe/post?u=5d932dbece429d6399b0508ee&amp;id=931ca35638&amp;f_id=001db7e5f0" method="post" target="_blank">
   <input type="email" name="EMAIL" placeholder="你的邮箱" required>

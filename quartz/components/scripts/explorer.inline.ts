@@ -310,3 +310,18 @@ window.addEventListener("resize", function () {
 function setFolderState(folderElement: HTMLElement, collapsed: boolean) {
   return collapsed ? folderElement.classList.remove("open") : folderElement.classList.add("open")
 }
+
+// ── 移动端顶栏:滚动后给 body 打状态类 ──────────────────────────
+// 纯 CSS 的 sticky 只能钉住整个 .sidebar.left(标题行+搜索行),做不到
+// "只钉标题行"。这里维护 body.header-scrolled,custom.scss 据此在小屏
+// 滚动后收起搜索行。nav 后(SPA 换页会重置滚动位置/body 属性)重算一次。
+// 收起/展开用两条拉开的阈值(迟滞):搜索行收起会让页面变矮 ~44px,
+// 滚动锚定随之回调 scrollY,单一阈值会在临界点来回横跳造成闪烁。
+function updateHeaderScrolled() {
+  const y = window.scrollY
+  const cl = document.body.classList
+  if (y > 96) cl.add("header-scrolled")
+  else if (y < 16) cl.remove("header-scrolled")
+}
+window.addEventListener("scroll", updateHeaderScrolled, { passive: true })
+document.addEventListener("nav", () => updateHeaderScrolled())

@@ -1,84 +1,29 @@
-import mappingJson from "../../scripts/image-mapping.json"
-
-type CoverMapping = {
-  books: Record<string, string>
-  movies: Record<string, string>
-}
-
-const mapping = mappingJson as CoverMapping
-
-function asDisplayString(v: unknown): string {
-  if (v === undefined || v === null) return ""
-  if (Array.isArray(v)) {
-    const first = v[0]
-    return first === undefined || first === null ? "" : String(first).trim()
-  }
-  return String(v).trim()
-}
-
-/** 与 generate-book-index / generate-movies 中映射查找顺序尽量一致 */
-function titleKeys(fm: Record<string, unknown>, relativePath?: string): string[] {
-  const keys: string[] = []
-  const push = (s: string) => {
-    const t = s.trim()
-    if (t && !keys.includes(t)) keys.push(t)
-  }
-  push(asDisplayString(fm.title))
-  push(asDisplayString(fm.originalTitle))
-  push(asDisplayString(fm.CNTitle))
-  if (relativePath) {
-    const base = relativePath.split("/").pop()?.replace(/\.md$/i, "") ?? ""
-    push(base)
-  }
-  return keys
-}
-
-function lookupMapping(kind: "book" | "movie", keys: string[]): string | undefined {
-  const table = kind === "book" ? mapping.books : mapping.movies
-  for (const k of keys) {
-    const hit = table[k]
-    if (hit) return hit
-  }
-  return undefined
-}
-
 /**
- * 详情页封面 URL：优先 image-mapping、再豆瓣图 ID → /imgs/、其余外链走 weserv。
- * 与 JSON 索引里的 processImagePath 行为对齐，避免「列表有图、内页无图」。
+ * 详情页封面 URL:外链走 weserv 代理、content 相对路径转根绝对路径。
+ * 与 generate-book-index / generate-movies 的 processImagePath 行为对齐,
+ * 避免「列表有图、内页无图」。
+ * 旧逻辑优先查 scripts/image-mapping.json 按标题映射到 /imgs/旧ID,映射早已
+ * 错位导致封面张冠李戴,已连同 /imgs 老图一并移除,这里不再做任何映射改写。
  */
 export function resolveCoverUrl(
   raw: unknown,
-  fm: Record<string, unknown>,
-  relativePath: string | undefined,
-  kind: "book" | "movie",
+  _fm: Record<string, unknown>,
+  _relativePath: string | undefined,
+  _kind: "book" | "movie",
 ): string {
   if (typeof raw !== "string" || !raw.trim()) return ""
-
-  const mapped = lookupMapping(kind, titleKeys(fm, relativePath))
-  if (mapped) {
-    return mapped.startsWith("./") ? mapped.slice(1) : mapped
-  }
 
   const url = raw
     .replace(/^\uFEFF/, "")
     .replace(/^\t+/, "")
     .trim()
 
-  if (url.startsWith("/imgs/") || url.startsWith("./imgs/")) {
-    return url.startsWith("./") ? url.slice(1) : url
-  }
-
-  const match = url.match(/\/(s\d+|p\d+)\.(jpg|jpeg|webp|png)$/i)
-  if (match) {
-    return `/imgs/${match[1]}.${match[2]}`
-  }
-
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return `https://images.weserv.nl/?url=${encodeURIComponent(url)}`
   }
 
-  // 其余为 content 相对路径（如 "2.Read/douban/0_dimage/xxx.jpg"）：静态资源原样
-  // 拷到站点根，必须转成根绝对路径，否则浏览器会相对当前页解析而 404（裂图）。
+  // content 相对路径(如 "2.Read/douban/0_dimage/xxx.jpg"):静态资源原样
+  // 拷到站点根,必须转成根绝对路径,否则浏览器会相对当前页解析而 404(裂图)。
   const cleaned = url.replace(/^\.\//, "")
   return cleaned.startsWith("/") ? cleaned : `/${cleaned}`
 }

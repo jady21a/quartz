@@ -29,40 +29,12 @@ function sluggifyPath(p) {
     .join("/")
 }
 
-// ===== 加载图片映射 =====
-let imageMapping = { books: {}, movies: {} };
-try {
-  const mappingPath = path.join(__dirname, './image-mapping.json');
-  if (fs.existsSync(mappingPath)) {
-    imageMapping = JSON.parse(fs.readFileSync(mappingPath, 'utf-8'));
-    console.log('✅ 已加载图片映射文件');
-  }
-} catch (error) {
-  console.warn('⚠️  未找到图片映射文件,将使用原始封面链接');
-}
-
 // ===== 处理图片路径 =====
-function processImagePath(originalPath, title) {
-  // 优先使用映射文件中的路径
-  if (imageMapping.movies[title]) {
-    return imageMapping.movies[title];
-  }
-  
-  // 如果已经是本地路径,直接返回
-  if (originalPath && (originalPath.startsWith('/imgs/') || originalPath.startsWith('./imgs/'))) {
-    return originalPath;
-  }
-  
-  // 尝试从豆瓣URL提取图片ID
-  if (originalPath && typeof originalPath === 'string') {
-    const match = originalPath.match(/\/(s\d+|p\d+)\.(jpg|webp|png)$/);
-    if (match) {
-      return `/imgs/${match[1]}.${match[2]}`;
-    }
-  }
-  
-  // 返回原始路径作为后备
-  return originalPath || '';
+// 直接信任 frontmatter 的封面路径（本地 2.Read/... 或 http 外链，gallery.js 会自行代理）。
+// 旧逻辑优先查 image-mapping.json 按标题映射到 /imgs/旧ID，映射早已错位，
+// 曾导致线上影视封面大面积张冠李戴，已连同 /imgs 老图一并移除。
+function processImagePath(originalPath) {
+  return typeof originalPath === 'string' ? originalPath.trim() : '';
 }
 
 // ===== 递归读取所有 Markdown 文件 =====

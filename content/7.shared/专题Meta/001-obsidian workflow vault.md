@@ -7,6 +7,7 @@ date: 2026-06-21
 category: obsidian
 cover: snap/CleanShot 2026-06-21 at 23.15.11@2x.png
 description: 把我日常在用的整套 Obsidian 系统抽成可直接复制的模板库,目录、模板、Dataview、主页仪表盘都配好,下载即用。
+draft: "true"
 ---
 
 ## Obsidian 工作流模板库分享
