@@ -37,10 +37,20 @@
       display: none;
     }
 
+    // 「最新」条目:标题+日期在色块内纵向排布;flex 让日期成为原子项,
+    // 既能精确控间距,hover 下划线也不会传播到日期上
+    .tab-panel[data-panel="recent"] .random-notes-list li a {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.4;
+    }
+
     .recent-date {
+      align-self: flex-end;
+      line-height: 1;
       font-size: 0.75rem;
+      font-weight: normal;
       color: var(--gray);
-      margin-left: 0.4rem;
     }
 
     h3 {

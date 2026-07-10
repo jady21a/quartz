@@ -353,7 +353,10 @@
     coverAlt: "书籍封面",
     withProgress: true,
     infoItems: function (book) {
-      const days = calculateDays(book.开始时间, book.结束阅读, book.添加时间)
+      // 没有结束时间（还没读完）不显示用时；起点缺开始时间时退回添加时间
+      const days = book.结束阅读
+        ? calculateDays(book.开始时间, book.结束阅读, book.添加时间)
+        : 0
       return [
         { label: "原名", value: book.originalTitle },
         { label: "作者", value: book.author },
@@ -364,7 +367,11 @@
         { label: "用时", value: days > 0 ? days + " 天" : null },
         {
           label: "进度",
-          value: book.totalPage ? (book.currentPage || 0) + "/" + book.totalPage + " 页" : null,
+          // currentPage 没数据就整行不显示，避免出现 "0/300 页" 这种假进度
+          value:
+            parseInt(book.currentPage) > 0 && book.totalPage
+              ? book.currentPage + "/" + book.totalPage + " 页"
+              : null,
         },
       ]
     },

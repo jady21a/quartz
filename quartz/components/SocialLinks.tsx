@@ -97,7 +97,12 @@ export default ((opts?: Options) => {
   color: #ff2442;
 }
 .social-links .social-link--rss:hover {
-  color: #f26522;
+  color: #1e80ff;
+}
+/* RSS glyph 把 24x24 viewBox 填满、没有内部留白,光学上比其他图标大一圈,缩小补偿 */
+.social-links .social-link--rss svg {
+  width: 11px;
+  height: 11px;
 }
 `
 

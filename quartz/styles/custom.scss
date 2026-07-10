@@ -130,3 +130,112 @@
 }
 
  
+// 首页(data-slug="index")的区块节奏:h2 上方多留白,避免区块黏在一起
+body[data-slug="index"] .center {
+  article > h2 {
+    margin-top: 3.2rem;
+  }
+}
+
+// 首页导航卡片(content/index.md 里的 .home-nav-list):
+// 栅格卡片,标题(标题字体)+ 一句说明,悬停描边变主题色并微微上浮;
+// 平板两列、手机单列;亮暗模式跟随主题变量自动适配
+.home-nav-list {
+  display: grid;
+  // 栅格总宽对齐 hero 最长一行文字(约 37 个全角字符),不铺满整个内容栏
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 33rem;
+  gap: 1.1rem;
+  margin: 1.6rem 0 0;
+
+  @media all and (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+a.home-nav-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  background-color: var(--light);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  .item-title {
+    font-family: var(--headerFont);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--dark);
+    transition: color 0.2s ease;
+  }
+
+  .item-desc {
+    font-size: 0.85rem;
+    color: var(--darkgray);
+    opacity: 0.8;
+  }
+
+  &:hover {
+    background-color: var(--light); // 盖掉 .internal 链接默认的 hover 底色
+    border-color: var(--secondary);
+    transform: translateY(-2px);
+
+    .item-title {
+      color: var(--secondary);
+    }
+  }
+}
+
+// 首页订阅表单(content/index.md 里的 .home-subscribe):
+// 自定义样式替代 Mailchimp 默认皮肤,输入框 + 按钮一行排,窄屏自动换行
+.home-subscribe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  max-width: 26rem;
+  margin: 1.4rem 0 2.5rem;
+
+  input[type="email"] {
+    flex: 1;
+    min-width: 12rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--lightgray);
+    border-radius: 6px;
+    background-color: var(--light);
+    color: var(--dark);
+    font-size: 0.95rem;
+
+    &:focus {
+      outline: none;
+      border-color: var(--secondary);
+    }
+  }
+
+  button {
+    padding: 0.55rem 1.3rem;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--secondary);
+    color: var(--light);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--tertiary);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.home-nav-item,
+  a.home-nav-item .item-title,
+  .home-subscribe button {
+    transition: none;
+  }
+}

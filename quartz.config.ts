@@ -97,6 +97,17 @@ const config: QuartzConfig = {
       Plugin.ContentIndex({
         enableSiteMap: true,
         enableRSS: true,
+        // 与侧栏「最新」(RandomNotes)同一套排除规则;另排除 en/ 英文镜像,避免中英重复条目
+        rssExcludeFolders: [
+          ".trash",
+          "1.",
+          "2.Read/dataview",
+          "2.Read/douban",
+          "2.Read/media-DB",
+          "3.",
+          "en/",
+        ],
+        rssExcludeSlugs: ["藏书馆", "观影库", "7.shared/专题合集", "7.shared/视频合集"],
       }),
       Plugin.Assets(),
       Plugin.Static(),
