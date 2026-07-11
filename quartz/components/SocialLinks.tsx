@@ -71,10 +71,12 @@ export default ((opts?: Options) => {
   gap: 0.45rem;
   align-items: center;
   justify-content: flex-start;
-  /* 侧栏各模块间统一 gap:1.2rem,用负边距把这排图标往上提、贴近标题 */
-  margin-top: -0.8rem;
   /* 标题前有羽毛 emoji + 空格,留左缩进让图标起点对齐到 “W” 文字下方 */
   padding-left: 21px;
+}
+/* 图标行外层 Flex 容器:贴近标题,与搜索行一致的负边距 */
+.flex-component:has(.social-links) {
+  margin-top: -0.8rem;
 }
 .social-links .social-link {
   color: var(--gray);

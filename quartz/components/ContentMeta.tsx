@@ -37,8 +37,11 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
   function ContentMetadata({ cfg, fileData, displayClass }: QuartzComponentProps) {
     const text = fileData.text
 
-    // 导览 / 索引类页面:日期和阅读时间都不显示
-    if (hideMetaSlugs.has(fileData.slug ?? "")) {
+    // 导览 / 索引类页面:日期和阅读时间都不显示。
+    // 名单按中文 slug 维护,英文镜像(en/ 前缀)剥掉前缀后同样命中,保持两种语言一致。
+    const slug = fileData.slug ?? ""
+    const baseSlug = slug === "en" ? "index" : slug.startsWith("en/") ? slug.slice(3) : slug
+    if (hideMetaSlugs.has(baseSlug)) {
       return null
     }
 

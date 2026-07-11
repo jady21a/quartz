@@ -1,18 +1,51 @@
 ---
 title: Why Z's Notes
+enableToc: false
+hideFolderList: true
 ---
+Welcome to **Why Z**'s corner of the web!
+The tutorials and templates from my videos all live here, along with follow-ups there wasn't time to cover in the videos — plus some reading notes and build logs. → [[en/1.Why Z/关于 Why Z|About Why Z]]
+## Quick tour
 
-This site contains:
-- Personal notes
-- Reading notes & book takeaways
-- Build logs (my tinkering with tools)
+<div class="home-nav-list">
+  <a class="home-nav-item" data-no-popover="true" href="/en/7.shared/视频合集">
+    <span class="item-title">Video Collection</span>
+    <span class="item-desc">Written tutorials for every video</span>
+  </a>
+  <a class="home-nav-item" data-no-popover="true" href="/en/7.shared/专题合集">
+    <span class="item-title">Topic Collection</span>
+    <span class="item-desc">Long-form guides organized by theme</span>
+  </a>
+  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/">
+    <span class="item-title">Template Library</span>
+    <span class="item-desc">All the templates from my videos</span>
+  </a>
+  <a class="home-nav-item" data-no-popover="true" href="/en/4.技术记录/">
+    <span class="item-title">Tech Notes</span>
+    <span class="item-desc">Field notes from all my tinkering</span>
+  </a>
+</div>
 
-The site is optimized for desktop — a PC browser is recommended.
+### More
+<div class="home-nav-list">
+  <a class="home-nav-item" data-no-popover="true" href="/en/藏书馆">
+    <span class="item-title">Library</span>
+    <span class="item-desc">Books I'm reading and have finished</span>
+  </a>
+  <a class="home-nav-item" data-no-popover="true" href="/en/观影库">
+    <span class="item-title">Watch List</span>
+    <span class="item-desc">Movies and shows I'm watching and have finished</span>
+  </a>
+</div>
 
-Quick links
->[[en/6.about/智囊团|Mastermind Group]]
+> Most notes here are written in Chinese. This English section covers the key pages; the full archive lives on the [Chinese site](/).
 
-> Most notes here are written in Chinese. This English section covers the key pages — who I am, what I build, and how. The full archive lives on the [Chinese site](/).
+## Subscribe
 
-Related links
-[Blog](https://jz-quartz.pages.dev/)  |  [My GitHub](https://github.com/jady21a)  |  [Self-built workout web app](https://jady21a-github-io.pages.dev/)
+  Subscribe for free to get new posts by email
+
+<form class="home-subscribe" action="https://gmail.us14.list-manage.com/subscribe/post?u=5d932dbece429d6399b0508ee&amp;id=931ca35638&amp;f_id=001db7e5f0" method="post" target="_blank">
+  <input type="email" name="EMAIL" placeholder="Your email" required>
+  <div aria-hidden="true" style="position: absolute; left: -5000px;"><input type="text" name="b_5d932dbece429d6399b0508ee_931ca35638" tabindex="-1" value=""></div>
+  <button type="submit" name="subscribe">Subscribe</button>
+</form>

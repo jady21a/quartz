@@ -150,6 +150,7 @@ declare module "vfile" {
         lang: string
         enableToc: string
         cssclasses: string[]
+        hideFolderList: boolean | string
         socialImage: string
         comments: boolean | string
       }>

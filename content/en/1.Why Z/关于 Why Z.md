@@ -16,8 +16,7 @@ title:
 
 | Section                              | What's inside                                                                        |
 | ------------------------------------ | ------------------------------------------------------------------------------------ |
-| Build logs                           | Full guides on blog setup, syncing, SEO indexing, and plugin dev                     |
-| Obsidian explorations                | The Obsidian plugins I've built and the thinking behind them                         |
+| Tech notes                           | Full guides on blog setup, syncing, SEO indexing, and plugin dev — plus the plugins I've built and the thinking behind them |
 | Template library                     | Copy-paste templates: home dashboard, weekly review, daily notes, reading & watching |
 | Library / Watchlist                  | What I'm reading and watching, plus what I've finished                               |
 | Video collection / Topic collection  | Curated, structured series of content                                                |

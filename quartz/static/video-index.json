@@ -9,6 +9,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/011-obsidian开箱即用模板库",
+    "hasEn": true,
+    "enTitle": "011 - Obsidian ready-to-use template vault",
+    "enDescription": "",
     "tags": [
       "video"
     ],
@@ -46,8 +49,8 @@
         "label": "主页搭建"
       },
       {
-        "target": "7.shared/专题Meta/001-obsidian workflow vault",
-        "label": "模板库分享页"
+        "target": "7.shared/专题Meta/001-obsidian工作流总结",
+        "label": "工作流总结"
       },
       {
         "target": "7.shared/视频Meta/008-项目管理",
@@ -70,6 +73,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/010-Obsidian-homepage",
+    "hasEn": true,
+    "enTitle": "010 - obsidian homepage",
+    "enDescription": "",
     "tags": [
       "video",
       "obsidian"
@@ -132,6 +138,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/009-一个指令，让AI-自动生成周复盘",
+    "hasEn": true,
+    "enTitle": "009 - One command to make AI auto-generate your weekly review",
+    "enDescription": "",
     "tags": [
       "video"
     ],
@@ -173,6 +182,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/008-项目管理",
+    "hasEn": true,
+    "enTitle": "008 - Project management",
+    "enDescription": "",
     "tags": [
       "video"
     ],
@@ -234,6 +246,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/007-自建个人专属图书馆,douban图片链接失效怎么办",
+    "hasEn": true,
+    "enTitle": "007 - Build your own personal library; what to do when douban image links break",
+    "enDescription": "",
     "tags": [
       "video"
     ],
@@ -275,6 +290,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/006-自制去版权信息插件",
+    "hasEn": true,
+    "enTitle": "006 - One click to strip copyright notices and quotes from copied text",
+    "enDescription": "",
     "tags": [
       "video",
       "obsidian",
@@ -302,6 +320,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/005-写笔记=更新博客",
+    "hasEn": true,
+    "enTitle": "005 - Writing a note = updating the blog",
+    "enDescription": "",
     "tags": [
       "video",
       "quartz"
@@ -312,7 +333,7 @@
     "thumbnail": "https://i2.hdslb.com/bfs/archive/890c978eec66d996ff21cf3b98bc201a226fe231.jpg",
     "related_notes": [
       {
-        "target": "1.个人博客-obsidian+quartz",
+        "target": "01.个人博客-obsidian+quartz",
         "label": "相关笔记"
       }
     ],
@@ -328,6 +349,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/004-运动网站分享",
+    "hasEn": true,
+    "enTitle": "004 - Sharing my workout website",
+    "enDescription": "",
     "tags": [
       "video",
       "工具"
@@ -349,6 +373,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/003-代码复制无效的排查",
+    "hasEn": true,
+    "enTitle": "003 - Troubleshooting \"copy code\" not working",
+    "enDescription": "",
     "tags": [
       "video",
       "obsidian"
@@ -379,6 +406,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/002-模版自动归档、命名与编号",
+    "hasEn": true,
+    "enTitle": "002 - Templates that auto-archive, name, and number notes",
+    "enDescription": "",
     "tags": [
       "video",
       "obsidian"
@@ -405,6 +435,9 @@
     },
     "defaultSource": "youtube",
     "file": "/7.shared/视频Meta/001-自动继承昨日任务",
+    "hasEn": true,
+    "enTitle": "001 - Auto-carry over yesterday's tasks",
+    "enDescription": "",
     "tags": [
       "video",
       "obsidian"

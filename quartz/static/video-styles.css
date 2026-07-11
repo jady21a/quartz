@@ -128,14 +128,52 @@
   }
 }
 
-/* ========== 专题合集:无封面的纯文字卡 ========== */
-/* 没有封面图,给标题加点上内边距,避免顶到卡片上边框,读起来更像一张「文章卡」 */
-.video-card--no-cover .video-card-title {
-  margin-top: 0.85rem;
+/* ========== 专题合集:带简介的列表 ========== */
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
 }
-.video-card--no-cover .video-card-date {
-  /* 文字卡较矮,日期不必沉底,紧跟标题即可 */
-  margin-top: 0.15rem;
+
+.topic-list-item {
+  padding: 0.9rem 0.2rem;
+  border-bottom: 1px solid var(--lightgray);
+}
+
+.topic-list-item:last-child {
+  border-bottom: none;
+}
+
+.topic-list-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.topic-list-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.topic-list-date {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+.topic-list-desc {
+  margin-top: 0.35rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--darkgray);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ========== 视频详情页播放器 ========== */

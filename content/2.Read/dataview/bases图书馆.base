@@ -48,3 +48,5 @@ views:
     imageFit: contain
   - type: cards
     name: View 2
+  - type: table
+    name: 视图

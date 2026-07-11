@@ -1,6 +1,6 @@
 import { i18n } from "../i18n"
 import { localeForSlug } from "../util/locale"
-import { FullSlug, getFileExtension, joinSegments, pathToRoot } from "../util/path"
+import { FullSlug, getFileExtension, joinSegments, pathToRoot, simplifySlug } from "../util/path"
 import { CSSResourceToStyleElement, JSResourceToScriptElement } from "../util/resources"
 import { googleFontHref, googleFontSubsetHref } from "../util/theme"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
@@ -96,6 +96,10 @@ export default (() => {
             <meta property="og:url" content={socialUrl}></meta>
             <meta property="twitter:url" content={socialUrl}></meta>
           </>
+        )}
+        {/* 规范 URL 一律指向正式域名,旧域名 jz-quartz.pages.dev 上的同内容页由此归并 */}
+        {cfg.baseUrl && fileData.slug !== "404" && (
+          <link rel="canonical" href={new URL(simplifySlug(fileData.slug!), url).toString()} />
         )}
 
         <link rel="icon" href={iconPath} />

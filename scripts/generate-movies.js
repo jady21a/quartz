@@ -83,13 +83,18 @@ function parseMovieData(filePath) {
   // draft 页不进索引：Quartz 构建时会整页排除(RemoveDrafts)，索引若收录会指向 404
   if (frontmatter.draft === true || frontmatter.draft === "true") return null
 
-  const tags = frontmatter.tags || []
+  // tags 可能是字符串(Media DB 写成 mediaDB/tv/movie)也可能是数组,先归一成数组;
+  // 嵌套 tag 按 / 拆段匹配,否则 mediaDB/tv/movie 命中不了 movie
+  const tags = [].concat(frontmatter.tags || [])
   const isMovie = tags.some(
     (tag) =>
       tag &&
-      ["movies", "movie", "teleplay", "tv", "电影", "电视剧"].includes(
-        tag.toLowerCase()
-      )
+      String(tag)
+        .toLowerCase()
+        .split("/")
+        .some((seg) =>
+          ["movies", "movie", "teleplay", "tv", "电影", "电视剧"].includes(seg)
+        )
   )
   if (!isMovie) return null
 
@@ -146,13 +151,16 @@ function generateMovieIndex() {
   }
 
   const booksOnly = existingData.filter((item) => {
-    const tags = item.tags || []
+    const tags = [].concat(item.tags || [])
     const isMovie = tags.some(
       (tag) =>
         tag &&
-        ["movies", "movie", "teleplay", "tv", "电影", "电视剧"].includes(
-          tag.toLowerCase()
-        )
+        String(tag)
+          .toLowerCase()
+          .split("/")
+          .some((seg) =>
+            ["movies", "movie", "teleplay", "tv", "电影", "电视剧"].includes(seg)
+          )
     )
     return !isMovie
   })

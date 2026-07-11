@@ -44,7 +44,11 @@ export const Assets: QuartzEmitterPlugin = () => {
         } else if (changeEvent.type === "delete") {
           const name = slugifyFilePath(changeEvent.path)
           const dest = joinSegments(ctx.argv.output, name) as FilePath
-          await fs.promises.unlink(dest)
+          // 短命文件(编辑器/同步脚本的原子写临时文件)可能在事件到达前已消失,
+          // 不容错会把整个 serve 进程带崩
+          await fs.promises.unlink(dest).catch((e) => {
+            if (e.code !== "ENOENT") throw e
+          })
         }
       }
     },

@@ -210,7 +210,9 @@ a.home-nav-item {
   }
   border: 1px solid var(--lightgray);
   border-radius: 8px;
-  background-color: var(--light);
+  // 淡鼠尾草绿底(--tertiary 22%)+ 主题蓝标题:给首屏一处色彩锚点,
+  // 全部取自既有色盘,亮暗模式自动适配
+  background-color: color-mix(in srgb, var(--tertiary) 22%, transparent);
   text-decoration: none;
   transition:
     border-color 0.2s ease,
@@ -220,7 +222,7 @@ a.home-nav-item {
     font-family: var(--headerFont);
     font-weight: 700;
     font-size: 1.05rem;
-    color: var(--dark);
+    color: var(--secondary);
     transition: color 0.2s ease;
   }
 
@@ -233,7 +235,8 @@ a.home-nav-item {
   // 触屏设备没有真悬停,点击后 hover 态会"粘住",所以只在有鼠标的设备上启用
   @media (hover: hover) {
     &:hover {
-      background-color: var(--light); // 盖掉 .internal 链接默认的 hover 底色
+      // 盖掉 .internal 链接默认的 hover 底色,维持常态底色
+      background-color: color-mix(in srgb, var(--tertiary) 22%, transparent);
       border-color: var(--secondary);
       transform: translateY(-2px);
 
@@ -242,6 +245,43 @@ a.home-nav-item {
       }
     }
   }
+}
+
+// 模板库卡片(content/3.Template/index.md 里的 .template-cards,叠加在 .home-nav-list 上):
+// 暖沙调(陶土色),整站唯一暖色——和首页冷调(蓝标题+绿底)按色温错开,
+// 层级区分靠色相而非深浅;各处颜色都由 --template-accent 混出,亮暗模式自适配
+.template-cards {
+  --template-accent: #b08968;
+  // 备用蓝调方案(2026-07-11 二选一时落选,留档):
+  // --template-accent 换成 var(--secondary),且底色降为 10%、描边降为 35%、
+  // 标题直接用 var(--secondary) 不混色,即得"蓝底+蓝题+蓝边"版
+}
+
+.template-cards a.home-nav-item {
+  background-color: color-mix(in srgb, var(--template-accent) 15%, transparent);
+  border-color: color-mix(in srgb, var(--template-accent) 50%, transparent);
+
+  .item-title {
+    color: color-mix(in srgb, var(--template-accent) 55%, var(--dark));
+  }
+
+  // 悬停留在暖族(盖掉基础样式的变蓝),描边实色、标题加深
+  @media (hover: hover) {
+    &:hover {
+      background-color: color-mix(in srgb, var(--template-accent) 15%, transparent);
+      border-color: var(--template-accent);
+
+      .item-title {
+        color: color-mix(in srgb, var(--template-accent) 35%, var(--dark));
+      }
+    }
+  }
+}
+
+// 文件夹落地页(如 content/3.Template/index.md,frontmatter 里 cssclasses: hide-folder-listing):
+// 手写导览已覆盖全部条目,隐藏 FolderPage 自动追加的"此文件夹下有N条笔记"列表
+.popover-hint:has(> article.hide-folder-listing) > .page-listing {
+  display: none;
 }
 
 // 首页订阅表单(content/index.md 里的 .home-subscribe):

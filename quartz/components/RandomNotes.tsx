@@ -51,6 +51,7 @@ export default ((userOpts?: Partial<Options>) => {
         !file.slug?.endsWith("index") &&
         file.frontmatter?.title &&
         !(file.frontmatter?.tags || []).includes("movies") &&
+        !opts.excludeFolders.some((prefix) => (file.slug ?? "").startsWith(prefix)) &&
         file.text &&
         file.text.trim().length > 121,
     )
@@ -89,6 +90,7 @@ export default ((userOpts?: Partial<Options>) => {
         data-slug={currentSlug}
         data-limit={String(opts.limit)}
         data-show-tags={String(opts.showTags)}
+        data-exclude-folders={JSON.stringify(opts.excludeFolders)}
       >
         <div class="random-notes-tabs">
           <button class="tab-btn active" data-tab="recent">
@@ -162,6 +164,7 @@ export default ((userOpts?: Partial<Options>) => {
       const limit = parseInt(container.getAttribute("data-limit") || "3", 10)
       const showTags = container.getAttribute("data-show-tags") === "true"
       const currentSlug = container.getAttribute("data-slug") || ""
+      const excludeFolders = JSON.parse(container.getAttribute("data-exclude-folders") || "[]")
 
       // Tab switching
       const tabBtns = container.querySelectorAll(".tab-btn")
@@ -187,6 +190,7 @@ export default ((userOpts?: Partial<Options>) => {
             !String(d.slug).endsWith("index") &&
             d.title &&
             !(d.tags || []).includes("movies") &&
+            !excludeFolders.some(function (prefix) { return slug.indexOf(prefix) === 0 }) &&
             String(d.content || "").trim().length > 121
           )
         })

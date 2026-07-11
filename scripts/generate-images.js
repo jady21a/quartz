@@ -109,6 +109,9 @@ function parseImageData(filePath) {
   )
   if (!isImage) return null
 
+  // draft 页不进索引：Quartz 构建时会整页排除(RemoveDrafts)，索引若收录会指向 404
+  if (fm.draft === true || fm.draft === "true") return null
+
   const relToContent = path.relative(CONTENT_DIR, filePath).replace(/\\/g, "/")
   const relNoExt = relToContent.replace(/\.md$/, "")
   const postDirRel = path.dirname(relToContent)
@@ -131,9 +134,24 @@ function parseImageData(filePath) {
 
   const coverRaw = fm.cover || firstBodyImage(body)
 
+  const enPath = path.join(CONTENT_DIR, "en", relToContent)
+  const hasEn = fs.existsSync(enPath)
+  let enTitle = ""
+  let enDescription = ""
+  if (hasEn) {
+    try {
+      const enFm = matter(fs.readFileSync(enPath, "utf-8")).data
+      enTitle = normalizeField(enFm.title) || ""
+      enDescription = normalizeField(enFm.description) || ""
+    } catch {}
+  }
+
   return {
     title,
     file: "/" + sluggifyPath(relNoExt),
+    hasEn,
+    enTitle,
+    enDescription,
     tags,
     date: cleanDate(fm.date),
     description,

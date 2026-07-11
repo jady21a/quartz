@@ -23,12 +23,15 @@
     return "/" + url
   }
 
-  // 把笔记路径修正为可访问的 URL
-  function fixFilePath(filePath) {
+  // 把笔记路径修正为可访问的 URL;hasEn=条目有 en/ 镜像时,英文页上改链英文版
+  function fixFilePath(filePath, hasEn) {
     if (!filePath) return "#"
     if (filePath.startsWith("http://") || filePath.startsWith("https://")) return filePath
     let path = filePath.replace(/^\.?\//, "")
     if (!path.startsWith("/")) path = "/" + path
+    if (hasEn && (location.pathname === "/en" || location.pathname.startsWith("/en/"))) {
+      path = "/en" + path
+    }
     if (!path.match(/\.\w+$/) || path.endsWith(".md")) {
       path = path.replace(/\.md$/, "") + ".html"
     }
@@ -104,7 +107,7 @@
     coverWrapper.className = p + "-cover-wrapper"
 
     const coverLink = document.createElement("a")
-    coverLink.href = fixFilePath(item.file)
+    coverLink.href = fixFilePath(item.file, item.hasEn)
     coverLink.className = p + "-cover-link"
     coverLink.title = item.title || "查看详情"
 
@@ -138,7 +141,7 @@
     const title = document.createElement("h3")
     title.className = p + "-title"
     const titleLink = document.createElement("a")
-    titleLink.href = fixFilePath(item.file)
+    titleLink.href = fixFilePath(item.file, item.hasEn)
     titleLink.textContent = item.title || "未命名"
     titleLink.title = item.title || "未命名"
     title.appendChild(titleLink)
@@ -215,7 +218,7 @@
     const coverSrc = getPreferredThumbnail(video)
     if (coverSrc) {
       const coverLink = document.createElement("a")
-      coverLink.href = fixFilePath(video.file)
+      coverLink.href = fixFilePath(video.file, video.hasEn)
       coverLink.className = "video-cover-link"
       coverLink.title = video.title || "播放视频"
 
@@ -237,7 +240,7 @@
     const title = document.createElement("h3")
     title.className = "video-card-title"
     const link = document.createElement("a")
-    link.href = fixFilePath(video.file)
+    link.href = fixFilePath(video.file, video.hasEn)
     link.textContent = video.title || "未命名"
     link.title = video.title || "未命名"
     title.appendChild(link)
@@ -297,7 +300,18 @@
 
       try {
         const all = await fetchIndex(cfg.indexUrl)
-        let items = cfg.filter(all.slice(), container)
+        // 英文页优先展示条目的英文标题/描述(索引对象跨页缓存,须拷贝后改)
+        let source = all
+        if (location.pathname === "/en" || location.pathname.startsWith("/en/")) {
+          source = all.map(function (it) {
+            if (!it || (!it.enTitle && !it.enDescription)) return it
+            const copy = Object.assign({}, it)
+            if (it.enTitle) copy.title = it.enTitle
+            if (it.enDescription) copy.description = it.enDescription
+            return copy
+          })
+        }
+        let items = cfg.filter(source.slice(), container)
 
         items.sort(function (a, b) {
           const aVal = a[sortBy] || ""
@@ -508,21 +522,43 @@
     render: renderVideoCard,
   }
 
-  // 专题合集:复用视频卡片的栅格/标题/日期/分类样式，但走「纯文字卡」——
-  // 既不展示简介(详情)、也不展示封面(抹掉 description / thumbnail / videoid 即可)，
-  // 再打上 no-cover 标记类做一点排版微调。只影响专题卡，视频卡不动。
-  function renderImageCard(item) {
-    const card = renderVideoCard(
-      Object.assign({}, item, { description: "", thumbnail: "", videoid: "" }),
-    )
-    card.classList.add("video-card--no-cover")
-    return card
+  // 专题合集:带简介的列表行——标题(链接)+ 日期靠右,下面是两行截断的简介。
+  // 专题是纯文字长文没有封面,列表比卡片信息密度高、条目少时也不显空。
+  function renderImageListItem(item) {
+    const row = document.createElement("div")
+    row.className = "topic-list-item"
+
+    const header = document.createElement("div")
+    header.className = "topic-list-header"
+
+    const title = document.createElement("a")
+    title.className = "topic-list-title"
+    title.href = fixFilePath(item.file, item.hasEn)
+    title.textContent = item.title || "未命名"
+    title.title = item.title || "未命名"
+    header.appendChild(title)
+
+    if (item.date) {
+      const dateEl = document.createElement("span")
+      dateEl.className = "topic-list-date"
+      dateEl.textContent = item.date
+      header.appendChild(dateEl)
+    }
+    row.appendChild(header)
+
+    if (item.description) {
+      const desc = document.createElement("div")
+      desc.className = "topic-list-desc"
+      desc.textContent = item.description
+      row.appendChild(desc)
+    }
+    return row
   }
   const imageConfig = {
     prefix: "image",
     selector: "[data-image-query]",
     indexUrl: "/image-index.json",
-    gridClass: "video-grid",
+    gridClass: "topic-list",
     loadingClass: "video-query-loading",
     loadingText: "🖼️ 加载图文中...",
     errorClass: "video-query-error",
@@ -552,7 +588,7 @@
       }
       return result
     },
-    render: renderImageCard,
+    render: renderImageListItem,
   }
 
   // ==================== init ====================

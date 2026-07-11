@@ -103,21 +103,29 @@ export default ((opts?: Partial<FolderContentOptions>) => {
         : htmlToJsx(fileData.filePath!, tree)
     ) as ComponentChildren
 
+    // frontmatter 加 hideFolderList: true 可去掉文件夹页自带的子条目列表(如英文首页 en/index)
+    const hideFolderList =
+      fileData.frontmatter?.hideFolderList === true || fileData.frontmatter?.hideFolderList === "true"
+
     return (
       <div class="popover-hint">
         <article class={classes}>{content}</article>
-        <div class="page-listing">
-          {options.showFolderCount && (
-            <p>
-              {i18n(localeForSlug(fileData.slug, cfg.locale)).pages.folderContent.itemsUnderFolder({
-                count: allPagesInFolder.length,
-              })}
-            </p>
-          )}
-          <div>
-            <PageList {...listProps} />
+        {!hideFolderList && (
+          <div class="page-listing">
+            {options.showFolderCount && (
+              <p>
+                {i18n(
+                  localeForSlug(fileData.slug, cfg.locale),
+                ).pages.folderContent.itemsUnderFolder({
+                  count: allPagesInFolder.length,
+                })}
+              </p>
+            )}
+            <div>
+              <PageList {...listProps} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     )
   }

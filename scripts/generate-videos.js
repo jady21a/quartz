@@ -216,6 +216,7 @@ function parseVideoData(filePath) {
     sources,
     defaultSource,
     file: "/" + VIDEO_DIR_NAME + "/" + sluggifyPath(relativePath),
+    ...enFields(relativePath),
     tags,
     date: cleanDate(frontmatter.date),
     description,
@@ -225,6 +226,20 @@ function parseVideoData(filePath) {
     aliases: normalizeField(frontmatter.aliases),
     createTime: cleanDate(frontmatter.createTime),
   }
+}
+
+// 英文镜像字段:hasEn + 英文标题/描述(供 gallery.js 在英文页展示)
+function enFields(relativePath) {
+  const enPath = path.join(__dirname, "../content/en/" + VIDEO_DIR_NAME, relativePath + ".md")
+  if (!fs.existsSync(enPath)) return { hasEn: false, enTitle: "", enDescription: "" }
+  let enTitle = ""
+  let enDescription = ""
+  try {
+    const enFm = matter(fs.readFileSync(enPath, "utf-8")).data
+    enTitle = normalizeField(enFm.title) || ""
+    enDescription = normalizeField(enFm.description) || ""
+  } catch {}
+  return { hasEn: true, enTitle, enDescription }
 }
 
 // ===== 主函数 =====

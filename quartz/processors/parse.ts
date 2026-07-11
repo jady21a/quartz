@@ -112,6 +112,12 @@ export function createFileParser(ctx: BuildCtx, fps: FilePath[]) {
           console.log(`[markdown] ${fp} -> ${file.data.slug} (${perf.timeSince()})`)
         }
       } catch (err) {
+        // Obsidian/Templater 新建笔记后立刻 move,文件在解析途中消失是常态,
+        // 跳过即可,不能把整个 serve 进程带崩
+        if ((err as NodeJS.ErrnoException)?.code === "ENOENT") {
+          console.log(`\nSkipped \`${fp}\` (file vanished mid-build)`)
+          continue
+        }
         trace(`\nFailed to process markdown \`${fp}\``, err as Error)
       }
     }
