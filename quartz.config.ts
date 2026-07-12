@@ -32,10 +32,11 @@ const config: QuartzConfig = {
     },
     locale: "zh-CN",
     baseUrl: "jz21.eu.org",
-    // 英文翻译暂不发布：默认构建(线上 Cloudflare 用的就是 `npx quartz build`)跳过 en/。
-    // 本地预览英文版时加环境变量：SHOW_EN=1 npx quartz build --serve
+    // 英文版已发布：en/ 无条件进构建(线上 Cloudflare 的 `npx quartz build` 也会打包)。
+    // 语言切换控件 LanguageSwitch 靠 allFiles 里有无对应 en 页决定亮不亮,自动生效。
+    // 若以后想临时下线英文版,把 en/en/** 加回下面的 ignorePatterns 即可。
     // 3.Template/content-template 是本库自用的 Templater 活模板（new-video/new-topic），只在 Obsidian 用，不上站
-    ignorePatterns: ["private", "templates", ".obsidian", "3.Template/content-template", "3.Template/content-template/**", ...(process.env.SHOW_EN ? [] : ["en", "en/**"])],
+    ignorePatterns: ["private", "templates", ".obsidian", "3.Template/content-template", "3.Template/content-template/**"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
