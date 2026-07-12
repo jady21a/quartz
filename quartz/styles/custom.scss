@@ -134,16 +134,23 @@
     }
   }
 
-  // 移动端顶栏固定:仅在「目录/列表页」(文件夹页、标签页)钉住整条顶栏
-  // (☰ + 标题 + 社交 + 搜索),正文从其下方滚过。其余页(单篇笔记、首页等)
-  // 顶栏照常随内容滚走。目录页的判定:只有 FolderContent / TagContent 会渲染
-  // `.page-listing`,用 `body:has(.page-listing)` 精确圈定,单篇页不含此节点。
+  // 移动端顶栏固定:仅在「目录页」钉住整条顶栏(☰ + 标题 + 社交 + 搜索),
+  // 正文从其下方滚过;其余页(卡片墙、单篇笔记等)顶栏照常随内容滚走。
+  // 「目录页」= 两类:
+  //   1) 文件夹列表页 / 标签页:只有 FolderContent / TagContent 渲染 `.page-listing`,
+  //      用 `body:has(.page-listing)` 圈定(如 模板库 3.Template、折腾记录 4.技术记录、tags/*)。
+  //   2) 栏目首页:自带 index.md 的自定义页(关于本站、视频与专题),DOM 上没有
+  //      `.page-listing`,改用 frontmatter `cssclasses: [sticky-header]` 显式标记
+  //      —— Content.tsx 会把它打到 `<article class="popover-hint sticky-header">`,
+  //      用 `body:has(article.sticky-header)` 命中。以后要给某栏目首页加/去固定,
+  //      只需在该页 frontmatter 增删 sticky-header,不用动这里的 CSS。
   // explorer.scss 已给 `.sidebar.left:has(.explorer)` 设了 position:sticky + var(--light) 底色,
   // base.scss 的 `.sidebar` 提供 top:0;但 base 移动端又把 `.sidebar.left` 设成
   // position:initial 覆盖掉了。这里加 body 前缀抬高特异性,重申 sticky + top:0,
   // 确保钉住(升级 Quartz 重排 bundle 后也不失效)。滚动超过 96px 后,下方的
   // header-scrolled 规则会把搜索行收起、只留标题行,顶栏更紧凑。
-  body:has(.page-listing) .page > #quartz-body .sidebar.left:has(.explorer) {
+  body:has(.page-listing) .page > #quartz-body .sidebar.left:has(.explorer),
+  body:has(article.sticky-header) .page > #quartz-body .sidebar.left:has(.explorer) {
     position: sticky;
     top: 0;
     z-index: 2; // 高于正文,滚动时正文从顶栏底下穿过
@@ -151,8 +158,11 @@
 
   // 非目录页:explorer.scss 给 `.sidebar.left:has(.explorer)` 设的 position:sticky
   // 特异性高于 base 的 position:initial,不显式关掉的话顶栏会在所有页都钉住。
-  // 这里在非目录页强制 static,让顶栏随内容滚走(配上方浮动的 ☰ chip)。
-  body:not(:has(.page-listing)) .page > #quartz-body .sidebar.left:has(.explorer) {
+  // 这里在「既非列表页、也无 sticky-header 标记」的页强制 static,让顶栏随内容滚走。
+  body:not(:has(.page-listing)):not(:has(article.sticky-header))
+    .page
+    > #quartz-body
+    .sidebar.left:has(.explorer) {
     position: static;
   }
 
@@ -166,7 +176,7 @@
   // 非目录页:顶栏随内容滚走,☰ 会跟着滚出视口够不到,
   // 故在这些页把 ☰ 单独 fixed 成左上角浅色圆形 chip(与右下角滚动按钮成套)常驻。
   // 目录页顶栏已钉住,☰ 靠 explorer 的 order:-1 排在标题左侧随顶栏常驻,无需浮动。
-  body:not(:has(.page-listing)) .mobile-explorer {
+  body:not(:has(.page-listing)):not(:has(article.sticky-header)) .mobile-explorer {
     position: fixed;
     top: 0.75rem;
     left: 1rem;
@@ -181,7 +191,7 @@
 
   // ☰ fixed 后脱离 .explorer 容器的流,容器塌成 0 宽、标题左移钻到 ☰ 底下。
   // 只在非目录页给容器保留等宽占位,让标题起点始终落在 ☰ 右侧。
-  body:not(:has(.page-listing)) .explorer {
+  body:not(:has(.page-listing)):not(:has(article.sticky-header)) .explorer {
     min-width: 2.4rem;
   }
 

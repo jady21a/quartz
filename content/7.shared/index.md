@@ -3,6 +3,7 @@ title: 视频与专题
 description: 视频教程与专题长文合集，点击封面进入详情。
 cssclasses:
   - video-hub
+  - sticky-header
 hideFolderList: true
 ---
 

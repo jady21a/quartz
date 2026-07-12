@@ -1,6 +1,8 @@
 ---
 title:
   - 关于 Why Z
+cssclasses:
+  - sticky-header
 hideFolderList: true
 ---
 

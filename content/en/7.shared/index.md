@@ -3,6 +3,7 @@ title: Videos & Topics
 description: Video tutorials and long-form topic guides — click a cover to open the details.
 cssclasses:
   - video-hub
+  - sticky-header
 hideFolderList: true
 ---
 
