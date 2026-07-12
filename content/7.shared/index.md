@@ -1,12 +1,12 @@
 ---
-title: Videos & Topics
-description: Video tutorials and long-form topic guides — click a cover to open the details.
+title: 视频与专题
+description: 视频教程与专题长文合集，点击封面进入详情。
 cssclasses:
   - video-hub
 hideFolderList: true
 ---
 
-## Obsidian
+## Obsidian探索
 
 <div data-video-query data-category="obsidian" data-sort="date" data-order="DESC"></div>
 
@@ -18,6 +18,6 @@ hideFolderList: true
 
 ---
 
-## Topic Collection
+## 专题合集
 
 <div data-image-query data-sort="date" data-order="DESC"></div>

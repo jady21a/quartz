@@ -1,6 +1,7 @@
 ---
 title:
   - 关于 Why Z
+hideFolderList: true
 ---
 
 ## 我在折腾什么

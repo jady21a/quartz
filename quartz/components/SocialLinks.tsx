@@ -86,20 +86,30 @@ export default ((opts?: Options) => {
 .social-links .social-link:hover {
   transform: translateY(-2px);
 }
-.social-links .social-link--github:hover {
-  color: var(--dark);
+/* 有 hover 的设备(桌面):默认灰,悬停显品牌色 */
+@media (hover: hover) {
+  .social-links .social-link--github:hover {
+    color: var(--dark);
+  }
+  .social-links .social-link--youtube:hover {
+    color: #ff0000;
+  }
+  .social-links .social-link--bilibili:hover {
+    color: #00aeec;
+  }
+  .social-links .social-link--xiaohongshu:hover {
+    color: #ff2442;
+  }
+  .social-links .social-link--rss:hover {
+    color: #1e80ff;
+  }
 }
-.social-links .social-link--youtube:hover {
-  color: #ff0000;
-}
-.social-links .social-link--bilibili:hover {
-  color: #00aeec;
-}
-.social-links .social-link--xiaohongshu:hover {
-  color: #ff2442;
-}
-.social-links .social-link--rss:hover {
-  color: #1e80ff;
+/* 无 hover 的设备(触屏/移动端):没有悬停态,默认灰太浅、五色品牌色又太花。
+   统一用比默认灰更深的中性色(与标题同色系),清晰可辨又保持整块冷调协调。 */
+@media (hover: none) {
+  .social-links .social-link {
+    color: var(--darkgray);
+  }
 }
 /* RSS glyph 把 24x24 viewBox 填满、没有内部留白,光学上比其他图标大一圈,缩小补偿 */
 .social-links .social-link--rss svg {

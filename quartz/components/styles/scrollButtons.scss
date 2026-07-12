@@ -1,0 +1,67 @@
+// 移动端浮动「回到顶部 / 回到底部」按钮。
+// 取消了移动端 header 固定后,☰ 会随内容滚走;这组浮动按钮补位:
+// 回到顶部即可重新够到 header 里的 ☰ 打开目录。桌面有常驻侧栏,不显示。
+.scroll-buttons {
+  position: fixed;
+  right: 1rem;
+  bottom: 1.5rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+
+  // 滚过一屏后整组淡入
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // 桌面(≥801px)不出现:左侧栏常驻,无需浮动按钮
+  @media all and (min-width: 801px) {
+    display: none;
+  }
+
+  .scroll-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    padding: 0;
+    border: 1px solid var(--lightgray);
+    border-radius: 50%;
+    // 磨砂半透明浅底:辅助控件压低存在感,明暗主题都跟着 --light 自适应
+    background-color: color-mix(in srgb, var(--light) 72%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--darkgray);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      background-color 0.2s ease;
+
+    & svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      stroke: currentColor;
+    }
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--light) 92%, transparent);
+    }
+
+    // 到顶时隐藏「回顶部」、到底时隐藏「回底部」,各自单独收起
+    &.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.8);
+    }
+  }
+}

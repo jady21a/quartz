@@ -83,6 +83,13 @@
       white-space: nowrap;
     }
 
+    // 圆形图标跟着标题一起缩:桌面 1.8rem 配 1.75rem 标题,手机标题收到 1.4rem,
+    // 图标不缩就会比文字大一圈、把整条 header 撑高。按同比例收到 1.5rem。
+    & .page-title-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
     // 社交图标与标题同行排列,去掉桌面端用于对齐的负上边距 / 左缩进
     & .social-links {
       margin-top: 0;
@@ -125,6 +132,57 @@
         max-width: none;
       }
     }
+  }
+
+  // 移动端顶栏固定:仅在「目录/列表页」(文件夹页、标签页)钉住整条顶栏
+  // (☰ + 标题 + 社交 + 搜索),正文从其下方滚过。其余页(单篇笔记、首页等)
+  // 顶栏照常随内容滚走。目录页的判定:只有 FolderContent / TagContent 会渲染
+  // `.page-listing`,用 `body:has(.page-listing)` 精确圈定,单篇页不含此节点。
+  // explorer.scss 已给 `.sidebar.left:has(.explorer)` 设了 position:sticky + var(--light) 底色,
+  // base.scss 的 `.sidebar` 提供 top:0;但 base 移动端又把 `.sidebar.left` 设成
+  // position:initial 覆盖掉了。这里加 body 前缀抬高特异性,重申 sticky + top:0,
+  // 确保钉住(升级 Quartz 重排 bundle 后也不失效)。滚动超过 96px 后,下方的
+  // header-scrolled 规则会把搜索行收起、只留标题行,顶栏更紧凑。
+  body:has(.page-listing) .page > #quartz-body .sidebar.left:has(.explorer) {
+    position: sticky;
+    top: 0;
+    z-index: 2; // 高于正文,滚动时正文从顶栏底下穿过
+  }
+
+  // 非目录页:explorer.scss 给 `.sidebar.left:has(.explorer)` 设的 position:sticky
+  // 特异性高于 base 的 position:initial,不显式关掉的话顶栏会在所有页都钉住。
+  // 这里在非目录页强制 static,让顶栏随内容滚走(配上方浮动的 ☰ chip)。
+  body:not(:has(.page-listing)) .page > #quartz-body .sidebar.left:has(.explorer) {
+    position: static;
+  }
+
+  // ── ☰ 汉堡按钮 ────────────────────────────────────────────────
+  // 图标尺寸(所有页通用),让 ☰ 与 1.4rem 标题比例协调。
+  .mobile-explorer .lucide-menu {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  // 非目录页:顶栏随内容滚走,☰ 会跟着滚出视口够不到,
+  // 故在这些页把 ☰ 单独 fixed 成左上角浅色圆形 chip(与右下角滚动按钮成套)常驻。
+  // 目录页顶栏已钉住,☰ 靠 explorer 的 order:-1 排在标题左侧随顶栏常驻,无需浮动。
+  body:not(:has(.page-listing)) .mobile-explorer {
+    position: fixed;
+    top: 0.75rem;
+    left: 1rem;
+    z-index: 101;
+    width: 2.4rem;
+    height: 2.4rem;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--light);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  // ☰ fixed 后脱离 .explorer 容器的流,容器塌成 0 宽、标题左移钻到 ☰ 底下。
+  // 只在非目录页给容器保留等宽占位,让标题起点始终落在 ☰ 右侧。
+  body:not(:has(.page-listing)) .explorer {
+    min-width: 2.4rem;
   }
 
   // 滚动后只钉第一行(标题 + 社交 + 中/EN):第二行的搜索行收起(高度、透明度
@@ -189,13 +247,13 @@
   }
 
   // 目录树顶部多留空间,给钉住的标题行 + 搜索行让位。头部两行(标题/社交/语言
-  // 一行 + 搜索一行)实测高约 5.25rem,留 6.5rem 让第一项「About」和搜索行之间
+  // 一行 + 搜索一行)实测约 6.7rem,留 8rem 让第一项「About」和搜索行之间
   // 有约 1rem 的呼吸缝,别贴在一起。
-  // 左右各留 1rem:抽屉是 position:fixed/width:100vw,脱离了 .page 的 `padding:0 1rem`,
-  // 不补的话目录项会顶到屏幕左缘,与上方缩进的标题 / 搜索框错位(explorer.scss 原值为 0)。
+  // 左 2rem / 右 1rem:抽屉是 position:fixed/width:100vw,脱离了 .page 的 `padding:0 1rem`,
+  // 左侧补到 2rem 让目录项起点对齐上方带圆形图标缩进的标题 / 搜索框(explorer.scss 原值为 0)。
   .explorer:not(.collapsed) > .explorer-content {
-    padding-top: 6.5rem;
-    padding-left: 1rem;
+    padding-top: 8rem;
+    padding-left: 2rem;
     padding-right: 1rem;
   }
 }

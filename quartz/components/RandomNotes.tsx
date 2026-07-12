@@ -27,7 +27,18 @@ const defaultOptions: Options = {
   limit: 3,
   showTags: true,
   recentLimit: 4,
-  excludeFolders: [".trash", "1.", "2.Read/dataview", "2.Read/douban", "2.Read/media-DB", "3."],
+  // 只推「站上真能看到」的笔记:侧栏隐藏且没有卡片墙/反链入口的目录一律排除,
+  // 否则会漏出网页上访问不到的孤儿页(如 8.主题阅读)。
+  // 注:2.Read 虽不进侧栏但走藏书馆卡片墙,6.about 有大量书评反链,都算「显示得到」,故保留。
+  excludeFolders: [
+    ".trash",
+    "1.",
+    "2.Read/dataview",
+    "2.Read/douban",
+    "2.Read/media-DB",
+    "3.",
+    "8.主题阅读",
+  ],
   excludeSlugs: ["藏书馆", "观影库"],
 }
 

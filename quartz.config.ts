@@ -23,7 +23,7 @@ const byTitleDescFolderFirst = (f1: QuartzPluginData, f2: QuartzPluginData): num
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "🪶Why Z",
+    pageTitle: "Why Z",
     pageTitleSuffix: " · Why Z",
     enableSPA: true,
     enablePopovers: true,

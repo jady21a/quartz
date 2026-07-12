@@ -24,6 +24,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import LanguageSwitch from "./LanguageSwitch"
 import SocialLinks from "./SocialLinks"
+import ScrollButtons from "./ScrollButtons"
 
 import mediaInfo from "./MediaInfo"
 
@@ -60,6 +61,7 @@ export {
   ConditionalRender,
   LanguageSwitch, // 中英语言切换
   SocialLinks, // “Why Z” 下方的社交平台图标
+  ScrollButtons, // 移动端浮动「回到顶部 / 回到底部」按钮
   BookInfo, // 添加这一行,书籍元数据显示
   MovieInfo,
 }

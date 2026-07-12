@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:8123*)",
+      "Bash(curl -s \"http://localhost:8123*)",
+      "Bash(SHOW_EN=1 npx quartz build *)",
+      "Bash(curl -s https://jz21.eu.org*)",
+      "Bash(curl -s \"https://jz21.eu.org*)"
+    ]
+  }
+}

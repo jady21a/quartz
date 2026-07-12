@@ -26,6 +26,7 @@ const hideMetaSlugs = new Set([
   "index",
   "藏书馆",
   "观影库",
+  "7.shared/index",
   "7.shared/视频合集",
   "7.shared/专题合集",
 ])
