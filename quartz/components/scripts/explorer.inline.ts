@@ -179,7 +179,10 @@ async function setupExplorer(currentSlug: FullSlug) {
     // 中英分树:文件树只显示当前页面语言的那一半,配合 LanguageSwitch 实现整页切换。
     // 英文页把树根切到 en/ 子树——节点 slug 保留完整路径(含 en/ 前缀),链接不受影响;
     // 中文页把顶层 en 文件夹整个滤掉。
-    const isEnglish = currentSlug === "en" || currentSlug.startsWith("en/")
+    // langPref=en 时即使落在无译文中文页也保持英文树,让 UI 不因语言缺失而闪回中文。
+    const langPref = localStorage.getItem("langPref")
+    const slugIsEnglish = currentSlug === "en" || currentSlug.startsWith("en/")
+    const isEnglish = langPref === "en" || (langPref === null && slugIsEnglish)
     if (isEnglish) {
       const enRoot = trie.children.find((c) => c.isFolder && c.slugSegment === "en")
       if (enRoot) trie = enRoot

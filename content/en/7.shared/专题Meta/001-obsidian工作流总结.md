@@ -10,8 +10,6 @@ description: "Eleven scattered videos tied into one pipeline: homepage entry poi
 draft:
 ---
 
-## My Obsidian workflow: the full picture
-
 Each episode in the video collection covered one piece of the system. This page assembles all the pieces into a single map.
 > [!abstract] In short
 > Obsidian is the operating system, templates + Dataview the automation engine, git + AI the review engine, Quartz the output end.
@@ -19,7 +17,7 @@ Each episode in the video collection covered one piece of the system. This page 
 
 ---
 
-## The big picture: one information pipeline
+## The big picture
 
 | Stage            | What it handles                        | Episode                                                                                                        |
 | ---------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -35,7 +33,7 @@ Below, each stage in pipeline order.
 
 ---
 
-## 1. Capture: the homepage dashboard
+## 1. Capture
 
 Everything starts the second Obsidian opens. The **Homepage plugin** makes every launch land on a dashboard page, and that page does exactly one job: **reduce capture friction** — when an idea strikes, you don't dig through folders for a file; one button takes you straight there.
 
@@ -51,7 +49,7 @@ The whole page is just **a Markdown file + plugins (Homepage / Dataview / Templa
 
 ---
 
-## 2. Daily execution: a journal system with automatic task rollover
+## 2. Daily execution
 
 Each day's workbench is a daily note generated from a template. The core design: **a new day opens ready to go, with nothing to tidy up by hand**:
 
@@ -65,7 +63,7 @@ The rollover logic is implemented in Dataviewjs, with **automatic deduplication*
 
 ---
 
-## 3. Project progress: long-running projects + try records
+## 3. Project progress
 
 > The scariest thing about projects isn't having too many tasks — it's opening the laptop the next day and burning half of it just remembering where you left off.
 
@@ -79,7 +77,7 @@ Two summary pages round it out: a **project overview** (every project with statu
 
 ---
 
-## 4. Periodic review: an AI weekly review in one command
+## 4. Periodic review
 
 Everything recorded above converges into a weekly review. Most people use AI for reviews backwards: they shoulder the heaviest part themselves — recalling and compiling — and hand AI only the lightest part, the summarizing. This system flips the whole flow:
 
@@ -94,7 +92,7 @@ It all closes into a single `/weekly-review` command: the AI reads the journal, 
 
 ---
 
-## 5. Content intake: personal library and paste cleanup
+## 5. Content intake
 
 Two small things on the input side:
 
@@ -103,13 +101,13 @@ Two small things on the input side:
 
 ---
 
-## 6. Publishing: writing a note = updating the blog
+## 6. Publishing
 
 Notes shouldn't end their lives sitting in the vault. **Obsidian + Quartz + Cloudflare Pages** turns "writing a note" and "updating the blog" into the same action: push your notes and the site builds and deploys itself, entirely free — with a private-repo setup to keep anything you don't want public on your own machine. The site you're reading right now runs exactly this way; see [[en/7.shared/视频Meta/005-写笔记=更新博客|episode 005]].
 
 ---
 
-## 7. The whole bundle: a ready-to-use template vault
+## 7. The whole bundle
 
 All of the above is packaged into a **download-and-go template vault** — a replica of my daily main vault with private content removed, one sample note plus matching templates per area, and plugins, CSS snippets, and hotkeys pre-configured.
 
@@ -122,7 +120,7 @@ If you're building it by hand from the videos and hit "I copied the code but not
 
 ---
 
-## Closing: build the system once, compound for years
+## Closing
 
 Looking back, no piece of this workflow is a "big project" — every episode solved one small, concrete friction: files slow to find, tasks copied by hand, projects losing the thread, reviews running on memory, publishing being a chore. But once they're strung together, the system starts running itself:
 

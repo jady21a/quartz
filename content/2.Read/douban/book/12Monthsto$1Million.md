@@ -41,3 +41,5 @@ map of business
 
 
 五、作者推荐
+
+相关:[[12 Months to $1 Million]] · [[MillionDollarWeekend]] · [[精益创业实战（第2版）|精益创业实战]]

@@ -68,11 +68,11 @@ export default ((opts?: Options) => {
 .social-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.35rem;
   align-items: center;
   justify-content: flex-start;
   /* 标题前有羽毛 emoji + 空格,留左缩进让图标起点对齐到 “W” 文字下方 */
-  padding-left: 21px;
+  padding-left: 11px;
 }
 /* 图标行外层 Flex 容器:贴近标题,与搜索行一致的负边距 */
 .flex-component:has(.social-links) {

@@ -38,7 +38,7 @@ draft: "true"
 
 ## <% title %>
 
-> [!abstract] 一句话版本
+> [!abstract] 摘要
 >
 
 ---

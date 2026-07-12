@@ -54,8 +54,8 @@
 // 默认情况下左侧栏在手机上被压成单行,标题 / 社交图标 / 搜索框 / 暗色·语言切换
 // 全部争抢宽度,导致 "Why Z" 被迫折成两行、整条栏挤成一团。
 // 这里把头部拆成两行:
-//   第一行: ☰ 汉堡 + 🪶Why Z 标题 + 社交图标
-//   第二行: 搜索框(撑满)+ 暗色 / 语言切换
+//   第一行: ☰ 汉堡 + 🪶Why Z 标题 + 社交图标 + 中/EN 语言切换(填满标题右侧留白)
+//   第二行: 搜索框(撑满)+ 暗色切换
 // ── 桌面端左侧栏:标题 / 社交图标 / 搜索 / 目录树的纵向间距收紧 ──
 // Quartz base 给 .sidebar 的默认 gap 是 1.2rem,偏松;带 ID 前缀压过它
 @media all and (min-width: 801px) {
@@ -71,7 +71,10 @@
   .page > #quartz-body .sidebar.left:has(.explorer) {
     flex-wrap: wrap;
     align-items: center;
-    column-gap: 0.6rem;
+    // column-gap 只管「☰ ↔ 标题」这段,收紧让汉堡贴住品牌名;
+    // 「标题 ↔ 社交图标」那段更宽,由社交组自己的 margin-left 单独撑(见下),
+    // 两段职责分开,视觉上 ☰+标题 是一组、社交图标+中/EN 是另一组。
+    column-gap: 0.4rem;
     row-gap: 0.2rem;
 
     // 标题永不折行,字号略收一点,给同行的社交图标留位置
@@ -80,35 +83,55 @@
       white-space: nowrap;
     }
 
-    // 社交图标与标题同行排列,去掉桌面端用于对齐的负上边距 / 左缩进,
-    // 再单独留一点左间距,让图标和 “Z” 拉开距离
+    // 社交图标与标题同行排列,去掉桌面端用于对齐的负上边距 / 左缩进
     & .social-links {
       margin-top: 0;
       padding-left: 0;
-      margin-left: 0.6rem;
       flex-wrap: nowrap;
     }
 
     // 顶栏收掉底部 padding(explorer.scss 给的 1rem 0),搜索行贴住下缘
     padding-bottom: 0;
 
-    // 搜索 + 切换按钮整体掉到第二行,占满整宽
-    & .flex-component {
+    // 社交图标 + 语言切换这一组:留在第一行(order 0),撑满标题右侧剩余宽度。
+    // 组件内部 SocialLinks 设了 grow,会把 “中/EN” 顶到最右,图标从标题右侧起排。
+    & .flex-component:has(.social-links) {
+      flex: 1 1 auto;
+      order: 0;
+      min-width: 0; // 允许被压缩,只有极窄屏才换行到第二行
+      // 「标题 ↔ 社交图标」总间距 = column-gap(0.4) + 这里的 margin(0.9)= 1.3rem,
+      // 明显宽于「☰ ↔ 标题」的 0.4rem,把社交图标从品牌名推开成独立一组
+      margin-left: 0.9rem;
+      // 关键:SocialLinks.css 给 `.flex-component:has(.social-links)` 设了非媒体查询的
+      // margin-top:-0.8rem(桌面竖排时把图标上提贴住标题)。在移动端横排里这个负边距
+      // 会把这组整体上移 0.8rem:平时表现为图标/中英切换比标题略高(轻微不对齐),
+      // 一旦窄到换行,更会把换行后的这组拽上去盖到标题行底下 → “中/EN 不见了”。
+      // 这里在移动端清零,横排按 align-items:center 正常居中,换行也乖乖落到下一行。
+      margin-top: 0;
+    }
+
+    // 原本用来把搜索行顶下去的占位 Spacer 现在多余(第一行已被社交组填满),隐藏
+    & .spacer {
+      display: none;
+    }
+
+    // 搜索 + 暗色按钮整体掉到第二行,占满整宽
+    & .flex-component:has(.search) {
       flex: 1 1 100%;
       order: 1;
 
-      // 放开 search.scss 的 max-width:14rem,让搜索框吃满剩余宽度,
-      // 暗色/语言切换按钮靠右
+      // 放开 search.scss 的 max-width:14rem,让搜索框吃满剩余宽度,暗色按钮靠右
       & .search {
         max-width: none;
       }
     }
   }
 
-  // 滚动后只钉标题行:搜索行收起(高度、透明度渐变,负 margin 连
-  // row-gap 一起收掉)。状态类 body.header-scrolled 由 explorer.inline.ts
-  // 维护;抽屉打开(explorer 未折叠)时不收起,目录模式下保持可搜。
-  .page > #quartz-body .sidebar.left:has(.explorer.collapsed) .flex-component {
+  // 滚动后只钉第一行(标题 + 社交 + 中/EN):第二行的搜索行收起(高度、透明度
+  // 渐变,负 margin 连 row-gap 一起收掉)。状态类 body.header-scrolled 由
+  // explorer.inline.ts 维护;抽屉打开(explorer 未折叠)时不收起,目录模式下保持可搜。
+  // 只作用于含搜索框的那一组,避免把已并入第一行的社交 / 语言切换也收掉。
+  .page > #quartz-body .sidebar.left:has(.explorer.collapsed) .flex-component:has(.search) {
     overflow: hidden;
     max-height: 4rem;
     transition:
@@ -117,7 +140,11 @@
       margin-top 0.25s ease;
   }
 
-  body.header-scrolled .page > #quartz-body .sidebar.left:has(.explorer.collapsed) .flex-component {
+  body.header-scrolled
+    .page
+    > #quartz-body
+    .sidebar.left:has(.explorer.collapsed)
+    .flex-component:has(.search) {
     max-height: 0;
     opacity: 0;
     margin-top: -0.2rem; // 抵消两行之间的 row-gap
@@ -161,10 +188,15 @@
     }
   }
 
-  // 目录树顶部多留空间,给钉住的标题 + 搜索行让位(原本是 4rem;
-  // 数值要跟上面头部两行的 row-gap 联动)
+  // 目录树顶部多留空间,给钉住的标题行 + 搜索行让位。头部两行(标题/社交/语言
+  // 一行 + 搜索一行)实测高约 5.25rem,留 6.5rem 让第一项「About」和搜索行之间
+  // 有约 1rem 的呼吸缝,别贴在一起。
+  // 左右各留 1rem:抽屉是 position:fixed/width:100vw,脱离了 .page 的 `padding:0 1rem`,
+  // 不补的话目录项会顶到屏幕左缘,与上方缩进的标题 / 搜索框错位(explorer.scss 原值为 0)。
   .explorer:not(.collapsed) > .explorer-content {
     padding-top: 6.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
