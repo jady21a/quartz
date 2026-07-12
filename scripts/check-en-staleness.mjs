@@ -16,9 +16,13 @@ const root = process.cwd()
 const contentDir = path.join(root, "content")
 const enDir = path.join(contentDir, "en")
 
+// 不再翻译的隐藏文件夹:对齐 quartz.layout.ts Explorer filterFn 里不显示的文件夹。
+// MISSING 和 STALE/ORPHAN 全跳过——不上导航的内容,存量英文页也不用跟着中文更新。
+const HIDDEN_DIRS = ["6.about", "8.主题阅读"]
 // MISSING 扫描排除的中文目录(相对 content/)。前四个对齐 quartz.config.ts 的 ignorePatterns
-// (根本不发布);后两个是本 skill 约定不翻:读书笔记、模板。隐藏目录(.obsidian/.trash)另行跳过。
-const EXCLUDE_DIRS = ["private", "templates", ".obsidian", ".trash", "2.Read", "3.Template"]
+// (根本不发布);2.Read、3.Template 是本 skill 约定不翻:读书笔记、模板(存量英文模板页
+// 仍参与 STALE 盯过期)。隐藏目录(.obsidian/.trash)另行跳过。
+const EXCLUDE_DIRS = ["private", "templates", ".obsidian", ".trash", "2.Read", "3.Template", ...HIDDEN_DIRS]
 // 策展页:手写精简落地页,非逐篇镜像翻译,不参与 STALE(相对 en/)。
 const CURATED = ["index.md"]
 
@@ -60,8 +64,11 @@ function guessMoved(base) {
 
 const stale = []
 const orphan = []
+const isHidden = (rel) => HIDDEN_DIRS.some((d) => rel === d || rel.startsWith(d + path.sep))
+
 for (const enPath of walk(enDir)) {
   const rel = path.relative(enDir, enPath)
+  if (isHidden(rel)) continue // 隐藏文件夹的存量英文页不盯过期/孤儿
   const base = path.basename(rel)
   const zhPath = path.join(contentDir, rel)
   if (!fs.existsSync(zhPath)) {
