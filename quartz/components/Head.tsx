@@ -127,7 +127,37 @@ export default (() => {
           </>
         )}
         {usesVideoStyles && <link rel="stylesheet" href="/video-styles.css" />}
-        {usesVideoQuery && <link rel="preconnect" href="https://i.ytimg.com" />}
+        {/*
+          视频合集/列表页(data-video-query):用户几乎必然会点卡片进详情页,而合集页本身
+          不加载 lite-youtube。提前 prefetch 脚本/样式,点进详情时就是缓存命中、<lite-youtube>
+          立即 define,消除「从合集点进详情、YouTube 源加载不出来」的空白窗口。用 prefetch
+          而非 preload:本页不消费这些资源,preload 会触发「预载未使用」告警;prefetch 正是
+          「为下一次导航预取」的语义,且自定义元素注册表在 SPA 导航间常驻,预热一次即长期受益。
+        */}
+        {usesVideoQuery && (
+          <>
+            <link rel="preconnect" href="https://i.ytimg.com" />
+            <link rel="prefetch" as="script" href="/lite-yt-embed.js" />
+            <link rel="prefetch" as="style" href="/lite-yt-embed.css" />
+          </>
+        )}
+        {/*
+          播放器页面(usesVideoPlayer)：
+          - lite-yt-embed.css 必须作为常驻 <link rel=stylesheet> SSR 进本页 head。
+            它给 <lite-youtube> 撑起 16:9 尺寸;若靠 video-player.js 运行时注入,SPA 导航
+            会把非 spa-preserve 的 head 元素全清掉(spa.inline.ts 的 head 补丁),而
+            __liteYoutubeLoaded 标记又拦住重新注入 → 详情页互跳后样式丢失、播放器塌成 20px、
+            「不刷新就加载不出来」。SSR 进本页 head 后,每次导航 head 补丁都会重新补上,稳。
+          - lite-yt-embed.js 只 preload 预热:自定义元素注册表在 SPA 导航间常驻,首访由
+            video-player.js 运行时注入并 define,之后一直有效,故脚本不需要常驻、只预取加速。
+        */}
+        {usesVideoPlayer && (
+          <>
+            <link rel="stylesheet" href="/lite-yt-embed.css" />
+            <link rel="preload" as="script" href="/lite-yt-embed.js" />
+            <link rel="preconnect" href="https://i.ytimg.com" />
+          </>
+        )}
         {/*
           渲染脚本必须全局常驻：SPA 导航时新注入到 <head> 的 <script> 不会执行，
           需要它们在首次整页加载时绑定 nav 事件来驱动后续渲染。两个脚本在页面没有

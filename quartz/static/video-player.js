@@ -195,22 +195,24 @@
     container.setAttribute('data-player-ready', 'true');
   }
 
-  // 按需注入 lite-youtube 资源（用 createElement 才会执行，SPA 导航下也有效），
-  // 这样普通页面不会加载它，只有出现播放器时才拉取。
-  // 自托管而非走 jsDelivr：cdn.jsdelivr.net 国内节点 2021 年已下线,且多数代理
-  // 分流规则把 jsdelivr 归「直连」放行 → 代理开着也连不上 → 库加载不出 →
-  // <lite-youtube> 退化成纯黑盒(其 CSS 默认 background:#000)。改引本站根路径
-  // /lite-yt-embed.{js,css}(源文件由 quartz/static 拷到站点根),对国内访客也稳。
+  // 运行时注入 lite-youtube 的「脚本」(用 createElement 才会执行，SPA 导航下也有效)。
+  // 只注入 JS、不注入 CSS：自定义元素注册表在 SPA 导航间常驻,首访 define 之后一直有效,
+  // 所以脚本被 head 补丁清掉也没关系。但 CSS 不同 —— 它必须一直在 head 里才生效,而 SPA
+  // 导航会清掉运行时注入的 <link>(spa.inline.ts 的 head 补丁去掉非 spa-preserve 元素),
+  // __liteYoutubeLoaded 又拦住重注入 → 详情页互跳后样式没了、播放器塌成 20px。故 CSS 改由
+  // Head.tsx 在播放器页 SSR 成常驻 <link rel=stylesheet>(每次导航 head 补丁会重新补上)。
+  // 自托管而非走 jsDelivr：cdn.jsdelivr.net 国内节点 2021 年已下线,且多数代理分流规则把
+  // jsdelivr 归「直连」放行 → 代理开着也连不上 → 库加载不出。改引本站根路径 /lite-yt-embed.js
+  // (源文件由 quartz/static 拷到站点根),对国内访客也稳。
   function ensureLiteYoutube() {
     if (window.__liteYoutubeLoaded) return;
     window.__liteYoutubeLoaded = true;
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = '/lite-yt-embed.css';
-    document.head.appendChild(link);
     var script = document.createElement('script');
     script.src = '/lite-yt-embed.js';
     script.defer = true;
+    // 首访冷缓存时让脚本抢在其它资源前面加载,配合 Head 里的 preload 尽快 define
+    // 出 <lite-youtube>,避免 YouTube 源首访的空白窗口。
+    script.fetchPriority = 'high';
     document.head.appendChild(script);
   }
 
