@@ -75,7 +75,11 @@ for (const [k, v] of Object.entries(rawSlugMap as Record<string, string>)) {
 }
 
 function mapSegment(segment: string): string {
-  return SEGMENT_MAP.get(segment) ?? SEGMENT_MAP.get(sluggifySegment(segment)) ?? sluggifySegment(segment)
+  return (
+    SEGMENT_MAP.get(segment) ??
+    SEGMENT_MAP.get(sluggifySegment(segment)) ??
+    sluggifySegment(segment)
+  )
 }
 
 function sluggify(s: string, applyMap: boolean = true): string {

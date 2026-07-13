@@ -87,9 +87,8 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ContentMeta(),
     Component.TagList(),
     // Component.ContentMeta(), // 显示元数据
-    Component.BookInfo(),  // 添加这一行,显示书籍元数据
-    Component.MovieInfo(),  // 添加这一行,显示电影元数据
-
+    Component.BookInfo(), // 添加这一行,显示书籍元数据
+    Component.MovieInfo(), // 添加这一行,显示电影元数据
   ],
   left: [
     Component.PageTitle(),
@@ -123,24 +122,25 @@ export const defaultContentPageLayout: PageLayout = {
         // { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer({ mapFn: explorerMapFn, sortFn: explorerSortFn, filterFn: explorerFilterFn }),
+    Component.Explorer({
+      mapFn: explorerMapFn,
+      sortFn: explorerSortFn,
+      filterFn: explorerFilterFn,
+    }),
 
     //Component.Graph(),
   ],
   right: [
-
-
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
 
     Component.RandomNotes({
-      title: "漫步笔记",  // 可自定义标题
-      limit: 3,           // 显示数量
-      showTags: false,     // 是否显示标签
+      title: "漫步笔记", // 可自定义标题
+      limit: 3, // 显示数量
+      showTags: false, // 是否显示标签
     }),
 
     // Component.Graph(),
-
   ],
 }
 
@@ -178,7 +178,11 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer({ mapFn: explorerMapFn, sortFn: explorerSortFn, filterFn: explorerFilterFn }),
+    Component.Explorer({
+      mapFn: explorerMapFn,
+      sortFn: explorerSortFn,
+      filterFn: explorerFilterFn,
+    }),
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),

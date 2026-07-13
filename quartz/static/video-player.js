@@ -195,17 +195,21 @@
     container.setAttribute('data-player-ready', 'true');
   }
 
-  // 按需注入 lite-youtube CDN（用 createElement 才会执行，SPA 导航下也有效），
+  // 按需注入 lite-youtube 资源（用 createElement 才会执行，SPA 导航下也有效），
   // 这样普通页面不会加载它，只有出现播放器时才拉取。
+  // 自托管而非走 jsDelivr：cdn.jsdelivr.net 国内节点 2021 年已下线,且多数代理
+  // 分流规则把 jsdelivr 归「直连」放行 → 代理开着也连不上 → 库加载不出 →
+  // <lite-youtube> 退化成纯黑盒(其 CSS 默认 background:#000)。改引本站根路径
+  // /lite-yt-embed.{js,css}(源文件由 quartz/static 拷到站点根),对国内访客也稳。
   function ensureLiteYoutube() {
     if (window.__liteYoutubeLoaded) return;
     window.__liteYoutubeLoaded = true;
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.css';
+    link.href = '/lite-yt-embed.css';
     document.head.appendChild(link);
     var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.2/src/lite-yt-embed.js';
+    script.src = '/lite-yt-embed.js';
     script.defer = true;
     document.head.appendChild(script);
   }
