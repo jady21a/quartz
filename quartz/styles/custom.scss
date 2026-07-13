@@ -468,3 +468,24 @@ a.home-nav-item {
     transition: none;
   }
 }
+
+// 访问量计数(busuanzi):默认隐藏,busuanzi.js 拿到数据才 removeAttribute('hidden') 显示。
+// 用 !important 压过 content-meta / footer 里可能的 display 规则,避免 [hidden] 被覆盖。
+.busuanzi-page[hidden],
+.busuanzi-site[hidden] {
+  display: none !important;
+}
+.busuanzi-page span {
+  font-weight: 600;
+}
+.busuanzi-site {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--gray);
+
+  span {
+    color: var(--darkgray);
+    font-weight: 600;
+  }
+}

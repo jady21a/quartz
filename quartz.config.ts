@@ -27,9 +27,11 @@ const config: QuartzConfig = {
     pageTitleSuffix: " · Why Z",
     enableSPA: true,
     enablePopovers: true,
-    analytics: {
-      provider: "plausible",
-    },
+    // 自己看的流量分析走 Cloudflare Web Analytics(在 CF 后台对 jz21.eu.org 用 Automatic
+    // setup 边缘注入 beacon,零代码)。原来的 plausible 是死配置:运行时往 plausible.io 发
+    // pageview 但没那边账号 → 数据被丢弃、每次访问白 ping 第三方,故置 null 关掉。
+    // 访客看的阅读量由自建 busuanzi 计数负责(见 workers/busuanzi/ + static/busuanzi.js)。
+    analytics: null,
     locale: "zh-CN",
     baseUrl: "jz21.eu.org",
     // 英文版已发布：en/ 无条件进构建(线上 Cloudflare 的 `npx quartz build` 也会打包)。

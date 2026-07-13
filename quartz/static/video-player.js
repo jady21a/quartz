@@ -118,8 +118,8 @@
     var bilibiliId = (container.getAttribute('data-bilibili') || '').trim();
 
     return [
-      { key: 'youtube', label: 'YouTube', id: youtubeId, available: isValidSourceId(youtubeId) },
       { key: 'bilibili', label: 'Bilibili', id: bilibiliId, available: isValidSourceId(bilibiliId) },
+      { key: 'youtube', label: 'YouTube', id: youtubeId, available: isValidSourceId(youtubeId) },
     ];
   }
 

@@ -7,7 +7,7 @@
       "youtube": "ocwFtT9Vs70",
       "bilibili": "BV1cNTC65EQF"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/011-obsidian-template-vault",
     "hasEn": true,
     "enTitle": "011 - Obsidian ready-to-use template vault",
@@ -71,7 +71,7 @@
       "youtube": "NG5vwZffKlY",
       "bilibili": "BV1btEi6vEtz"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/010-Obsidian-homepage",
     "hasEn": true,
     "enTitle": "010 - obsidian homepage",
@@ -136,7 +136,7 @@
       "youtube": "WvVzqwzfL_I",
       "bilibili": "BV1id7X64E1D"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/009-ai-weekly-review-one-command",
     "hasEn": true,
     "enTitle": "009 - One command to make AI auto-generate your weekly review",
@@ -180,7 +180,7 @@
       "youtube": "Izcl79wQYUg",
       "bilibili": "BV1EQ5e6iEyE"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/008-project-management",
     "hasEn": true,
     "enTitle": "008 - Project management",
@@ -244,7 +244,7 @@
       "youtube": "OrVOLyWmqz4",
       "bilibili": "BV1UjR4BZEHT"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/007-personal-library-douban-image-fix",
     "hasEn": true,
     "enTitle": "007 - Build your own personal library; what to do when douban image links break",
@@ -288,7 +288,7 @@
       "youtube": "wxFmL2uSXx0",
       "bilibili": "BV1LyoEBsEBX"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/006-copyright-cleaner-plugin",
     "hasEn": true,
     "enTitle": "006 - One click to strip copyright notices and quotes from copied text",
@@ -318,7 +318,7 @@
       "youtube": "Xg7mhaWDIcc",
       "bilibili": "BV1gho4BKEM7"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/005-write-notes-update-blog",
     "hasEn": true,
     "enTitle": "005 - Writing a note = updating the blog",
@@ -347,7 +347,7 @@
       "youtube": "F-m_rst8Rps",
       "bilibili": "BV1xodJB3Ea4"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/004-workout-website-share",
     "hasEn": true,
     "enTitle": "004 - Sharing my workout website",
@@ -371,7 +371,7 @@
       "youtube": "didne9K-CeQ",
       "bilibili": "BV1WsdYB6ESD"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/003-code-copy-not-working-debug",
     "hasEn": true,
     "enTitle": "003 - Troubleshooting \"copy code\" not working",
@@ -404,7 +404,7 @@
       "youtube": "ALDAEYwmzU4",
       "bilibili": "BV1sADyBoE3d"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/002-template-auto-archive-naming-numbering",
     "hasEn": true,
     "enTitle": "002 - Templates that auto-archive, name, and number notes",
@@ -433,7 +433,7 @@
       "youtube": "m2BxaTHl4Jo",
       "bilibili": "BV1G8DWBmEhf"
     },
-    "defaultSource": "youtube",
+    "defaultSource": "bilibili",
     "file": "/videos/video-notes/001-auto-inherit-yesterday-tasks",
     "hasEn": true,
     "enTitle": "001 - Auto-carry over yesterday's tasks",

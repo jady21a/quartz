@@ -11,3 +11,7 @@ private/
 replit.nix
 content/.obsidian/
 .wip
+
+# Cloudflare Worker local state
+.wrangler/
+workers/**/.wrangler/

@@ -47,6 +47,10 @@ export default (() => {
     const usesMovieGallery = fileData.usesMovieGallery ?? false
     const usesVideoQuery = fileData.usesVideoQuery ?? false
     const usesImageQuery = fileData.usesImageQuery ?? false
+
+    // 访问量计数(busuanzi)总开关:访客看的部分暂不上线。false=不加载 busuanzi.js →
+    // SSR 的计数 span 一直是 hidden、不显示、不请求后端(不计数)。想上线时改成 true 再 push。
+    const enableBusuanzi = false
     const usesVideoPlayer = fileData.usesVideoPlayer ?? false
     // 图文卡片复用视频卡样式，因此用到 data-image-query 的页面也要加载 video-styles.css
     const usesVideoStyles = usesVideoQuery || usesImageQuery || usesVideoPlayer
@@ -166,6 +170,9 @@ export default (() => {
         */}
         <script src="/gallery.js" defer></script>
         <script src="/video-player.js" defer></script>
+        {/* 访问量计数:全站常驻,绑定 nav 事件后驱动每次页面/导航的计数上报与显示。
+            由 enableBusuanzi 总开关控制,暂不上线(见上方常量)。 */}
+        {enableBusuanzi && <script src="/busuanzi.js" defer></script>}
       </head>
     )
   }

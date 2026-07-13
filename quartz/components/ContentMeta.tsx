@@ -63,6 +63,15 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
         segments.push(<span>{displayedTime}</span>)
       }
 
+      // 本页阅读量:由 busuanzi.js 运行时填充 #busuanzi_page_pv,填好前整段隐藏(hidden),
+      // 后端不可用则一直不显示,不占位、不报错。
+      segments.push(
+        <span class="busuanzi-page" hidden>
+          <span id="busuanzi_page_pv" />
+          {" 次阅读"}
+        </span>,
+      )
+
       return (
         <p show-comma={options.showComma} class={classNames(displayClass, "content-meta")}>
           {segments}

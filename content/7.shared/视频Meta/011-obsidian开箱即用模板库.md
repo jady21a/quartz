@@ -6,7 +6,7 @@ tags:
 videoid: https://youtu.be/ocwFtT9Vs70
 bilibiliid: <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=116866865432483&bvid=BV1cNTC65EQF&cid=39674711564&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 cover: https://i1.hdslb.com/bfs/archive/994c7e20c40ac45f7f6ed36501f55b6fa3cd0d38.jpg
-defaultSource: youtube
+defaultSource: bilibili
 date: 2026-07-05
 category: obsidian
 ---

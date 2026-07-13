@@ -25,7 +25,6 @@ export default ((opts?: Options) => {
             </li>
           ))}
         </ul>
-        
       </footer>
     )
   }

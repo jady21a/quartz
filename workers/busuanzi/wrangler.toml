@@ -1,0 +1,19 @@
+# 自托管的「不蒜子式」访问量计数后端(Cloudflare Worker + KV)。
+# 部署在博客主账号(Jadyzhang21),与 jz21.eu.org 同账号,避免压在代理小号上。
+# 客户端 quartz/static/busuanzi.js 跨域调用本 Worker,填充页面里的计数 span。
+name = "busuanzi"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+# 走自有域(jz21.eu.org 在本账号是 zone),避免该账号 workers.dev 子域未开通导致 1101。
+# wrangler 会自动在该 zone 建 count.jz21.eu.org 的代理 DNS 记录 + 证书。
+workers_dev = false
+
+[[routes]]
+pattern = "count.jz21.eu.org"
+custom_domain = true
+
+[[kv_namespaces]]
+binding = "COUNTER"
+id = "c7212c424dae43509e0a4c61659a6003"
+
+# IP 哈希用的盐由 secret 提供,不进仓库:  wrangler secret put SALT
