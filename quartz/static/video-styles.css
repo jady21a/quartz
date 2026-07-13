@@ -24,10 +24,13 @@
 .video-card {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--lightgray);
+  /* 卡片底色和页面同为 --light,纯 --lightgray 边太淡撑不起轮廓:
+     边框加深到 --gray 45% 混色,并补上书影卡片同款的常态投影 */
+  border: 1px solid color-mix(in srgb, var(--gray) 45%, transparent);
   border-radius: 12px;
   overflow: hidden;
   background: var(--light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.2s ease, transform 0.15s ease;
 }
 

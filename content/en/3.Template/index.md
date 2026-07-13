@@ -18,19 +18,19 @@ Here are all the Obsidian templates I use daily, in full. Copy them one by one, 
 Pair with the Book Search / Media DB plugins to grab metadata and generate a note in one click.
 
 <div class="home-nav-list template-cards">
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/book-and-movie/book-ch">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/book-and-movie/book-ch">
     <span class="item-title">book-ch</span>
     <span class="item-desc">Chinese book template: Douban source, with reading status and progress fields</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/book-and-movie/book-en">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/book-and-movie/book-en">
     <span class="item-title">book-en</span>
     <span class="item-desc">English book template: Book Search source</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/book-and-movie/movie-ch">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/book-and-movie/movie-ch">
     <span class="item-title">movie-ch</span>
     <span class="item-desc">Chinese movie template: Douban source</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/book-and-movie/movie-en">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/book-and-movie/movie-en">
     <span class="item-title">movie-en</span>
     <span class="item-desc">English movie template: Media DB source</span>
   </a>
@@ -41,15 +41,15 @@ Pair with the Book Search / Media DB plugins to grab metadata and generate a not
 A Templater-driven project management skeleton — walkthrough in [[en/7.shared/视频Meta/008-项目管理|008 Project management]].
 
 <div class="home-nav-list template-cards">
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/projects/task---template">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/projects/task-template">
     <span class="item-title">task - template</span>
     <span class="item-desc">New task: auto-matches the project of the same name; video tasks take their own branch</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/projects/项目--template">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/projects/project-template">
     <span class="item-title">project - template</span>
     <span class="item-desc">New project: type a name and it files itself in the right place</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/projects/try">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/projects/try">
     <span class="item-title">try</span>
     <span class="item-desc">Appends today's attempt to a task's try log</span>
   </a>
@@ -58,15 +58,15 @@ A Templater-driven project management skeleton — walkthrough in [[en/7.shared/
 ## Daily notes & reviews
 
 <div class="home-nav-list template-cards">
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/todo/daily">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/todo/daily">
     <span class="item-title">daily</span>
     <span class="item-desc">Daily note template: yesterday's goals roll over, unfinished items carry forward automatically</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/todo/周复盘prompt-稳定">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/todo/weekly-review-prompt-stable">
     <span class="item-title">weekly review prompt</span>
     <span class="item-desc">Weekly summary prompt: behavior-data-only, contradiction-hunting "logic mirror" style</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/todo/周复盘prompt-成长">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/todo/weekly-review-prompt-growth">
     <span class="item-title">weekly review growth profile</span>
     <span class="item-desc">Blind-spot list + pattern log, maintained automatically by script with each review</span>
   </a>
@@ -77,15 +77,15 @@ A Templater-driven project management skeleton — walkthrough in [[en/7.shared/
 Homepage build walkthrough in [[en/7.shared/视频Meta/010-Obsidian homepage|010 Obsidian homepage]].
 
 <div class="home-nav-list template-cards">
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/code/002-1homepage-template">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/code/002-1homepage-template">
     <span class="item-title">homepage template</span>
     <span class="item-desc">Homepage template: dataviewjs quick-action panel</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/code/002-2homepage-dashboard">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/code/002-2homepage-dashboard">
     <span class="item-title">homepage-dashboard</span>
     <span class="item-desc">Companion CSS: a light/dark-adaptive card dashboard</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/en/3.Template/code/001-自制-Obsidian-插件：一键去掉复制文字里的版权信息和引号">
+  <a class="home-nav-item" data-no-popover="true" href="/en/templates/code/001-obsidian-copyright-cleaner-plugin">
     <span class="item-title">paste optimizer plugin</span>
     <span class="item-desc">My plugin's source: strips copyright tails and quotes on paste</span>
   </a>

@@ -173,12 +173,16 @@
     height: 1.2rem;
   }
 
-  // 非目录页:顶栏随内容滚走,☰ 会跟着滚出视口够不到,
-  // 故在这些页把 ☰ 单独 fixed 成左上角浅色圆形 chip(与右下角滚动按钮成套)常驻。
-  // 目录页顶栏已钉住,☰ 靠 explorer 的 order:-1 排在标题左侧随顶栏常驻,无需浮动。
-  body:not(:has(.page-listing)):not(:has(article.sticky-header)) .mobile-explorer {
+  // ☰ 统一成左上角浅色圆形 chip、fixed 常驻(与右下角滚动按钮成套),所有页一致。
+  // 非目录页顶栏随内容滚走,☰ 不 fixed 就会跟着滚出视口够不到;目录页顶栏虽已钉住,
+  // 但若 ☰ 走内联(order:-1),它会跟着标题行居中(中心偏低),与非目录页的 chip
+  // 位置差约 13px、尺寸也不同 —— 切页时 ☰ 就"一会高一会低"。这里让两类页共用同一套
+  // fixed chip 定位,坐标 / 尺寸完全一致,消除跳动。
+  .mobile-explorer {
     position: fixed;
-    top: 0.75rem;
+    // top 让 2.4rem 高的 chip 垂直中心落在头部第一行(标题 / 社交图标)的基线上
+    // (实测行中心 ≈ 44px):top = 44 - 2.4rem/2 ≈ 25px。对齐后 ☰ 不再比标题高一截。
+    top: 1.55rem;
     left: 1rem;
     z-index: 101;
     width: 2.4rem;
@@ -190,8 +194,8 @@
   }
 
   // ☰ fixed 后脱离 .explorer 容器的流,容器塌成 0 宽、标题左移钻到 ☰ 底下。
-  // 只在非目录页给容器保留等宽占位,让标题起点始终落在 ☰ 右侧。
-  body:not(:has(.page-listing)):not(:has(article.sticky-header)) .explorer {
+  // 所有页都给容器保留等宽占位,让标题起点始终落在 ☰ 右侧。
+  .explorer {
     min-width: 2.4rem;
   }
 
@@ -256,13 +260,43 @@
     }
   }
 
-  // 目录树顶部多留空间,给钉住的标题行 + 搜索行让位。头部两行(标题/社交/语言
-  // 一行 + 搜索一行)实测约 6.7rem,留 8rem 让第一项「About」和搜索行之间
-  // 有约 1rem 的呼吸缝,别贴在一起。
+  // 抽屉打开时把整条顶栏(☰ + 标题 + 社交 + 搜索)钉回视口顶部。
+  // 上面的 z-index 抬升只在顶栏还在视口内时有效;非目录页顶栏随内容滚走,
+  // 滚远后点浮动 ☰ 开抽屉,顶栏在视口外,层级再高也看不见——必须 fixed。
+  // 布局补偿:脱离文档流后失去 #quartz-body 的 `padding:0 1rem` 横向内缩和
+  // explorer.scss 给的 1rem 顶部 padding,这里原样补回,和在流内时像素对齐。
+  // :not(:has(.hide-until-loaded)):JS 就绪前 SSR 的 explorer 没有 .collapsed,
+  // 不挡的话每次加载都会闪一下 fixed;该类由 explorer.inline.ts 就绪后移除。
+  // :root body 前缀纯为特异性 (1,7,1):上方"非目录页 position:static"规则因
+  // :not(:has(article.sticky-header)) 里的元素选择器算到 (1,6,2),必须压过它。
+  :root body .page > #quartz-body .sidebar.left:has(.explorer:not(.collapsed)):not(:has(.hide-until-loaded)) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem 1rem 0 1rem;
+    background-color: var(--light);
+    z-index: 102;
+    // 显式定高到抽屉顶(下方抽屉规则的 top:7rem),不留缝:内容自然高约 6.7rem,
+    // 不定高的话头部底和抽屉顶之间有几像素透明带,正文会从缝里透出来一条残影。
+    height: 7rem;
+  }
+
+  // 抽屉盒子从钉住的头部「下方」开始(top:7rem),而不是从视口顶(top:0)再垫
+  // 8rem padding。垫 padding 的老方案有两个坑:
+  //   1) padding 本身制造 8rem 的假滚动溢出,树稍微一划就整体滑进头部底下,
+  //      从标题行和搜索行之间的空隙透出来(表现为头部下方闪出一行残影);
+  //   2) 划完这 8rem 就到滚动尽头,加上 overscroll-behavior:contain 拦住外溢,
+  //      屏幕看起来像整页卡死。
+  // 头部两行实测约 6.7rem,取 7rem;padding-top 1rem 做呼吸缝(树起点视觉不变)。
   // 左 2rem / 右 1rem:抽屉是 position:fixed/width:100vw,脱离了 .page 的 `padding:0 1rem`,
   // 左侧补到 2rem 让目录项起点对齐上方带圆形图标缩进的标题 / 搜索框(explorer.scss 原值为 0)。
   .explorer:not(.collapsed) > .explorer-content {
-    padding-top: 8rem;
+    top: 7rem;
+    height: calc(100dvh - 7rem);
+    max-height: calc(100dvh - 7rem);
+    padding-top: 1rem;
     padding-left: 2rem;
     padding-right: 1rem;
   }
@@ -397,9 +431,11 @@ a.home-nav-item {
     flex: 1;
     min-width: 12rem;
     padding: 0.55rem 0.9rem;
-    border: 1px solid var(--lightgray);
+    // 页面背景就是 --light,输入框若同色就只剩一条淡边撑轮廓,整个框显得洗白。
+    // 边框提到中灰、底色向 --dark 混 5%,让框体从页面里浮出来,明暗主题都成立。
+    border: 1px solid var(--gray);
     border-radius: 6px;
-    background-color: var(--light);
+    background-color: color-mix(in srgb, var(--dark) 5%, var(--light));
     color: var(--dark);
     font-size: 0.95rem;
 

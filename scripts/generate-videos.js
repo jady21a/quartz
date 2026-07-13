@@ -94,21 +94,8 @@ function extractBilibiliId(value) {
   return bv ? bv[0] : raw
 }
 
-// 与 Quartz 的 sluggify 保持一致：空格→-、&→-and-、%→-percent、去掉 ? #
-// 否则文件名带空格的页面(如 009)生成的链接会和真实 slug 不一致 → 404
-function sluggifyPath(p) {
-  return p
-    .split("/")
-    .map((segment) =>
-      segment
-        .replace(/\s/g, "-")
-        .replace(/&/g, "-and-")
-        .replace(/%/g, "-percent")
-        .replace(/\?/g, "")
-        .replace(/#/g, ""),
-    )
-    .join("/")
-}
+// 与 Quartz 的 sluggify 保持一致(含中文段→英文映射),否则链接和真实 slug 不一致 → 404
+import { sluggify as sluggifyPath } from "./slug-map-util.js"
 
 // ===== YouTube 缩略图 URL =====
 function getThumbnailUrl(videoid) {
@@ -215,7 +202,7 @@ function parseVideoData(filePath) {
     bilibiliid,
     sources,
     defaultSource,
-    file: "/" + VIDEO_DIR_NAME + "/" + sluggifyPath(relativePath),
+    file: "/" + sluggifyPath(VIDEO_DIR_NAME + "/" + relativePath),
     ...enFields(relativePath),
     tags,
     date: cleanDate(frontmatter.date),

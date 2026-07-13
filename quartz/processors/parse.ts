@@ -7,7 +7,7 @@ import { Root as HTMLRoot } from "hast"
 import { MarkdownContent, ProcessedContent } from "../plugins/vfile"
 import { PerfTimer } from "../util/perf"
 import { read } from "to-vfile"
-import { FilePath, QUARTZ, slugifyFilePath } from "../util/path"
+import { FilePath, QUARTZ, slugifyFilePath, warnIfUnmappedCjkSlug } from "../util/path"
 import path from "path"
 import workerpool, { Promise as WorkerPromise } from "workerpool"
 import { QuartzLogger } from "../util/log"
@@ -103,6 +103,7 @@ export function createFileParser(ctx: BuildCtx, fps: FilePath[]) {
         file.data.filePath = file.path as FilePath
         file.data.relativePath = path.posix.relative(argv.directory, file.path) as FilePath
         file.data.slug = slugifyFilePath(file.data.relativePath)
+        warnIfUnmappedCjkSlug(file.data.slug)
 
         const ast = processor.parse(file)
         const newAst = await processor.run(ast, file)

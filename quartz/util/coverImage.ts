@@ -1,3 +1,5 @@
+import { FilePath, slugifyFilePath } from "./path"
+
 /**
  * 详情页封面 URL:外链走 weserv 代理、content 相对路径转根绝对路径。
  * 与 generate-book-index / generate-movies 的 processImagePath 行为对齐,
@@ -22,8 +24,9 @@ export function resolveCoverUrl(
     return `https://images.weserv.nl/?url=${encodeURIComponent(url)}`
   }
 
-  // content 相对路径(如 "2.Read/douban/0_dimage/xxx.jpg"):静态资源原样
-  // 拷到站点根,必须转成根绝对路径,否则浏览器会相对当前页解析而 404(裂图)。
-  const cleaned = url.replace(/^\.\//, "")
-  return cleaned.startsWith("/") ? cleaned : `/${cleaned}`
+  // content 相对路径(如 "2.Read/douban/0_dimage/xxx.jpg"):资产落盘路径经过
+  // slugifyFilePath(含中文段→英文映射,与 Assets emitter 同一函数),这里必须
+  // 走同一转换再转根绝对,否则相对当前页解析或路径没映射都会 404(裂图)。
+  const cleaned = url.replace(/^\.\//, "").replace(/^\//, "")
+  return "/" + slugifyFilePath(cleaned as FilePath)
 }

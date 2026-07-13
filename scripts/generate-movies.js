@@ -13,28 +13,17 @@ const __dirname = path.dirname(__filename)
 const CONTENT_DIR = path.join(__dirname, "../content/2.Read")
 const OUTPUT_FILE = path.join(__dirname, "../quartz/static/movie-index.json")
 
-// 与 Quartz 的 sluggify 保持一致：空格→-、&→-and-、%→-percent、去掉 ? #
-// 否则文件名带空格的影视(如 "September 1923 (2023)")生成的链接会和真实 slug 不一致 → 404
-function sluggifyPath(p) {
-  return p
-    .split("/")
-    .map((segment) =>
-      segment
-        .replace(/\s/g, "-")
-        .replace(/&/g, "-and-")
-        .replace(/%/g, "-percent")
-        .replace(/\?/g, "")
-        .replace(/#/g, ""),
-    )
-    .join("/")
-}
+// 与 Quartz 的 sluggify 保持一致(含中文段→英文映射),否则链接和真实 slug 不一致 → 404
+import { sluggify as sluggifyPath, slugifyAssetPath } from "./slug-map-util.js"
 
 // ===== 处理图片路径 =====
-// 直接信任 frontmatter 的封面路径（本地 2.Read/... 或 http 外链，gallery.js 会自行代理）。
-// 旧逻辑优先查 image-mapping.json 按标题映射到 /imgs/旧ID，映射早已错位，
-// 曾导致线上影视封面大面积张冠李戴，已连同 /imgs 老图一并移除。
+// http 外链原样交给 gallery.js 代理;本地路径(2.Read/...)必须在这里就
+// slug 映射成站点真实资产路径(/read/...)并转根绝对——客户端不做映射,
+// 原样输出会 404。旧的 image-mapping.json 按标题映射逻辑早已错位移除。
 function processImagePath(originalPath) {
-  return typeof originalPath === 'string' ? originalPath.trim() : '';
+  const p = typeof originalPath === 'string' ? originalPath.trim() : ''
+  if (!p || /^https?:\/\//i.test(p)) return p
+  return '/' + slugifyAssetPath(p.replace(/^\.?\//, ''))
 }
 
 // ===== 递归读取所有 Markdown 文件 =====
@@ -108,7 +97,7 @@ function parseMovieData(filePath) {
 
   return {
     title,
-    file: "/2.Read/" + sluggifyPath(relativePath),
+    file: "/" + sluggifyPath("2.Read/" + relativePath),
     tags,
     type: normalizeField(frontmatter.type),
     score: normalizeField(frontmatter.score),

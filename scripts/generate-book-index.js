@@ -16,20 +16,9 @@ function getFileExtension(s) {
   return s.match(/\.[A-Za-z0-9]+$/)?.[0];
 }
 
-function sluggify(s) {
-  return s
-    .split('/')
-    .map((segment) =>
-      segment
-        .replace(/\s/g, '-')
-        .replace(/&/g, '-and-')
-        .replace(/%/g, '-percent')
-        .replace(/\?/g, '')
-        .replace(/#/g, ''),
-    )
-    .join('/')
-    .replace(/\/$/, '');
-}
+// 中文路径段 → 英文 slug,与 quartz/util/path.ts 共用同一份 slug-map.json,
+// 保证卡片链接与站点 HTML 路径一致(两边都映射,或都不映射)。
+import { sluggify, slugifyAssetPath } from './slug-map-util.js';
 
 function slugifyFilePathLikeQuartz(relativePathWithExt) {
   let fp = relativePathWithExt.replace(/^\/+|\/+$/g, '');
@@ -43,11 +32,13 @@ function slugifyFilePathLikeQuartz(relativePathWithExt) {
 }
 
 // ===== 处理图片路径 =====
-// 直接信任 frontmatter 的封面路径（本地 2.Read/... 或 http 外链，gallery.js 会自行代理）。
-// 旧逻辑优先查 image-mapping.json 按标题映射到 /imgs/旧ID，映射早已错位，
-// 曾导致线上封面张冠李戴，已连同 /imgs 老图一并移除。
+// http 外链原样交给 gallery.js 代理;本地路径(2.Read/...)必须在这里就
+// slug 映射成站点真实资产路径(/read/...)并转根绝对——客户端不做映射,
+// 原样输出会 404。旧的 image-mapping.json 按标题映射逻辑早已错位移除。
 function processImagePath(originalPath) {
-  return typeof originalPath === 'string' ? originalPath.trim() : '';
+  const p = typeof originalPath === 'string' ? originalPath.trim() : '';
+  if (!p || /^https?:\/\//i.test(p)) return p;
+  return '/' + slugifyAssetPath(p.replace(/^\.?\//, ''));
 }
 
 // 递归读取目录下的所有 .md 文件

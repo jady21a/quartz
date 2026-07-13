@@ -8,19 +8,19 @@ enableToc: false
 ## 快速导览
 
 <div class="home-nav-list">
-  <a class="home-nav-item" data-no-popover="true" href="/7.shared/视频合集">
+  <a class="home-nav-item" data-no-popover="true" href="/videos/video-collection">
     <span class="item-title">视频合集</span>
     <span class="item-desc">视频对应的图文教程</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/7.shared/专题合集">
+  <a class="home-nav-item" data-no-popover="true" href="/videos/topic-collection">
     <span class="item-title">专题合集</span>
     <span class="item-desc">按主题系统整理的长文</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/3.Template/">
+  <a class="home-nav-item" data-no-popover="true" href="/templates/">
     <span class="item-title">模板库</span>
     <span class="item-desc">视频中提到的所有模板</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/4.技术记录/">
+  <a class="home-nav-item" data-no-popover="true" href="/tech-notes/">
     <span class="item-title">折腾记录</span>
     <span class="item-desc">折腾过程中的实录</span>
   </a>
@@ -28,11 +28,11 @@ enableToc: false
 
 ### 更多
 <div class="home-nav-list">
-  <a class="home-nav-item" data-no-popover="true" href="/藏书馆">
+  <a class="home-nav-item" data-no-popover="true" href="/library">
     <span class="item-title">藏书馆</span>
     <span class="item-desc">我正在读与读完的书</span>
   </a>
-  <a class="home-nav-item" data-no-popover="true" href="/观影库">
+  <a class="home-nav-item" data-no-popover="true" href="/watch-list">
     <span class="item-title">观影库</span>
     <span class="item-desc">我正在看与看完的影视</span>
   </a>

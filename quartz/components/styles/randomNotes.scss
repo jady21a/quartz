@@ -50,7 +50,8 @@
       line-height: 1;
       font-size: 0.75rem;
       font-weight: normal;
-      color: var(--gray);
+      // 底色加深后纯 --gray 日期对比不够,往 darkgray 方向压半档
+      color: color-mix(in srgb, var(--gray) 50%, var(--darkgray));
     }
 
     h3 {
@@ -80,6 +81,13 @@
           text-decoration: none;
           display: block;
           margin-bottom: 0.3rem;
+          // base 给 a.internal 的 --highlight 底色只有 15% 透明度,删掉分隔线后
+          // 全靠它撑块的轮廓太淡;这里加深底色并补描边,让块自己立得住。
+          // 用 --gray 混色而非写死色值,明暗主题都自适配。
+          background-color: color-mix(in srgb, var(--gray) 20%, transparent);
+          border: 1px solid color-mix(in srgb, var(--gray) 45%, transparent);
+          border-radius: 6px;
+          padding: 0.45rem 0.6rem;
           transition: color 0.2s ease;
   
           &:hover {

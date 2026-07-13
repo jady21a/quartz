@@ -3,7 +3,14 @@ import remarkFrontmatter from "remark-frontmatter"
 import { QuartzTransformerPlugin } from "../types"
 import yaml from "js-yaml"
 import toml from "toml"
-import { FilePath, FullSlug, getFileExtension, slugifyFilePath, slugTag } from "../../util/path"
+import {
+  FilePath,
+  FullSlug,
+  getFileExtension,
+  slugifyFilePath,
+  slugTag,
+  warnIfUnmappedCjkSlug,
+} from "../../util/path"
 import { QuartzPluginData } from "../vfile"
 import { i18n } from "../../i18n"
 
@@ -79,6 +86,8 @@ export const FrontMatter: QuartzTransformerPlugin<Partial<Options>> = (userOpts)
 
             const tags = coerceToArray(coalesceAliases(data, ["tags", "tag"]))
             if (tags) data.tags = [...new Set(tags.map((tag: string) => slugTag(tag)))]
+            // 新增中文 tag 若没进 slug-map.json,tag 页 URL 会是中文,构建时提醒补
+            data.tags?.forEach((tag: string) => warnIfUnmappedCjkSlug("tags/" + tag))
 
             const aliases = coerceToArray(coalesceAliases(data, ["aliases", "alias"]))
             if (aliases) {

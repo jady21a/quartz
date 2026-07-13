@@ -18,21 +18,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const REPO = path.join(__dirname, "..")
 const STATIC = path.join(REPO, "quartz", "static")
 
-// 与 quartz/util/path.ts 的 sluggify 完全一致（注意：Quartz 不转小写，保留原大小写）
-function sluggify(s) {
-  return s
-    .split("/")
-    .map((seg) =>
-      seg
-        .replace(/\s/g, "-")
-        .replace(/&/g, "-and-")
-        .replace(/%/g, "-percent")
-        .replace(/\?/g, "")
-        .replace(/#/g, ""),
-    )
-    .join("/")
-    .replace(/\/$/, "")
-}
+// 与 quartz/util/path.ts 的 sluggify 完全一致(含中文段→英文映射;注意:Quartz 不转小写,保留原大小写)
+import { sluggify } from "./slug-map-util.js"
 
 // content/7.video/Metadata/010-Obsidian homepage.md → /7.video/Metadata/010-Obsidian-homepage
 function slugOfTrackedFile(repoRelPath) {

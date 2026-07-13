@@ -1,6 +1,7 @@
 import { slug as slugAnchor } from "github-slugger"
 import type { Element as HastElement } from "hast"
 import { clone } from "./clone"
+import rawSlugMap from "./slug-map.json"
 
 // this file must be isomorphic so it can't use node libs (e.g. path)
 
@@ -54,17 +55,33 @@ export function getFullSlug(window: Window): FullSlug {
   return res
 }
 
-function sluggify(s: string): string {
+function sluggifySegment(segment: string): string {
+  return segment
+    .replace(/\s/g, "-")
+    .replace(/&/g, "-and-")
+    .replace(/%/g, "-percent")
+    .replace(/\?/g, "")
+    .replace(/#/g, "")
+}
+
+// 中文路径段 → 英文 slug 的映射(单一真相在 slug-map.json,generate-book-index.js 共用)。
+// 键同时收录「原始段名」和「基础 slug 化后的段名」:文件路径走前者,
+// wikilink 目标可能已带连字符,走后者。"//" 是 JSON 里的注释键,跳过。
+const SEGMENT_MAP: Map<string, string> = new Map()
+for (const [k, v] of Object.entries(rawSlugMap as Record<string, string>)) {
+  if (k === "//") continue
+  SEGMENT_MAP.set(k, v)
+  SEGMENT_MAP.set(sluggifySegment(k), v)
+}
+
+function mapSegment(segment: string): string {
+  return SEGMENT_MAP.get(segment) ?? SEGMENT_MAP.get(sluggifySegment(segment)) ?? sluggifySegment(segment)
+}
+
+function sluggify(s: string, applyMap: boolean = true): string {
   return s
     .split("/")
-    .map((segment) =>
-      segment
-        .replace(/\s/g, "-")
-        .replace(/&/g, "-and-")
-        .replace(/%/g, "-percent")
-        .replace(/\?/g, "")
-        .replace(/#/g, ""),
-    )
+    .map((segment) => (applyMap ? mapSegment(segment) : sluggifySegment(segment)))
     .join("/") // always use / as sep
     .replace(/\/$/, "")
 }
@@ -84,6 +101,32 @@ export function slugifyFilePath(fp: FilePath, excludeExt?: boolean): FullSlug {
     slug = slug.replace(/_index$/, "index")
   }
 
+  return (slug + ext) as FullSlug
+}
+
+// 页面 slug 映射后仍含 CJK = slug-map.json 漏了条目。只给真实页面 slug 用
+// (parse.ts / TagPage),别放进 slugifyFilePath——frontmatter 里故意留中文的
+// aliases 和指向 vault 内部页的死链也走那条路,会误报。
+const warnedCjkSlugs = new Set<string>()
+export function warnIfUnmappedCjkSlug(slug: string): void {
+  if (/[一-鿿㐀-䶿぀-ヿ]/.test(slug) && !warnedCjkSlugs.has(slug)) {
+    warnedCjkSlugs.add(slug)
+    console.warn(`[slug-map] 未映射的中文 slug: "${slug}" ← 请在 quartz/util/slug-map.json 补条目`)
+  }
+}
+
+/** 映射前的旧 slug(线上历史 URL),给旧链接重定向用 */
+export function legacySlugifyFilePath(fp: FilePath, excludeExt?: boolean): FullSlug {
+  fp = stripSlashes(fp) as FilePath
+  let ext = getFileExtension(fp)
+  const withoutFileExt = fp.replace(new RegExp(ext + "$"), "")
+  if (excludeExt || [".md", ".html", undefined].includes(ext)) {
+    ext = ""
+  }
+  let slug = sluggify(withoutFileExt, false)
+  if (endsWith(slug, "_index")) {
+    slug = slug.replace(/_index$/, "index")
+  }
   return (slug + ext) as FullSlug
 }
 

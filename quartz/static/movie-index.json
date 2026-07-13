@@ -1,12 +1,12 @@
 [
   {
     "title": "Thinking Fast and Slow",
-    "file": "/2.Read/books/Thinking-Fast-and-Slow",
+    "file": "/read/books/Thinking-Fast-and-Slow",
     "tags": [
       "book",
       "movies"
     ],
-    "封面": "2.Read/douban/0_dimage/gbooks_TA7Q27RWlj0C.jpg",
+    "封面": "/read/douban/0_dimage/gbooks_TA7Q27RWlj0C.jpg",
     "originalTitle": "Thinking, Fast and Slow",
     "genre": "Psychology",
     "author": "Daniel Kahneman",
@@ -20,7 +20,7 @@
   },
   {
     "title": "不可饶恕",
-    "file": "/2.Read/douban/movie/不可饶恕",
+    "file": "/read/douban/movie/unforgiven",
     "tags": [
       "movies"
     ],
@@ -28,7 +28,7 @@
     "score": "8.5",
     "scoreStar": "⭐⭐⭐⭐",
     "myRate": "9",
-    "封面": "2.Read/douban/0_dimage/p1083392613.webp",
+    "封面": "/read/douban/0_dimage/p1083392613.webp",
     "originalTitle": "Unforgiven",
     "aliases": "豪情盖天(港) / 杀无赦(台) / 不被饶恕的人 / The_Cut_Whore_Killings / The_William_Munny_Killings\"",
     "genre": " - 剧情 - 西部",
@@ -48,7 +48,7 @@
   },
   {
     "title": "会计刺客",
-    "file": "/2.Read/douban/movie/会计刺客",
+    "file": "/read/douban/movie/the-accountant",
     "tags": [
       "movies"
     ],
@@ -56,7 +56,7 @@
     "score": "7.6",
     "scoreStar": "⭐⭐⭐☆☆",
     "myRate": "8",
-    "封面": "2.Read/douban/0_dimage/p2355993802.webp",
+    "封面": "/read/douban/0_dimage/p2355993802.webp",
     "originalTitle": "TheAccountant",
     "aliases": " / 暗算(港) / 会计师(台)\"",
     "genre": " / 动作 / 惊悚 / 犯罪\"",
@@ -76,14 +76,14 @@
   },
   {
     "title": "你好，李焕英",
-    "file": "/2.Read/douban/movie/你好，李焕英",
+    "file": "/read/douban/movie/hi-mom",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "7.7",
     "scoreStar": "⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2629056068.webp",
+    "封面": "/read/douban/0_dimage/p2629056068.webp",
     "aliases": "Hi__Mom / こんにちは、私のお母さん\"",
     "genre": " - 剧情 - 喜剧 - 奇幻",
     "country": " - 中国大陆",
@@ -102,14 +102,14 @@
   },
   {
     "title": "出走的决心",
-    "file": "/2.Read/douban/movie/出走的决心",
+    "file": "/read/douban/movie/like-a-rolling-stone",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.8",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2912830708.webp",
+    "封面": "/read/douban/0_dimage/p2912830708.webp",
     "aliases": "婚姻往事 / 亲爱的妈妈 / Like_A_Rolling_Stone\"",
     "genre": "剧情 / 家庭",
     "country": "中国大陆",
@@ -128,7 +128,7 @@
   },
   {
     "title": "分裂",
-    "file": "/2.Read/douban/movie/分裂",
+    "file": "/read/douban/movie/split",
     "tags": [
       "movies"
     ],
@@ -136,7 +136,7 @@
     "score": "7.4",
     "scoreStar": "⭐⭐⭐☆☆",
     "myRate": "6",
-    "封面": "2.Read/douban/0_dimage/p2412064264.webp",
+    "封面": "/read/douban/0_dimage/p2412064264.webp",
     "originalTitle": "Split",
     "aliases": " - 思·裂(港)",
     "genre": " - 悬疑 - 惊悚 - 犯罪",
@@ -155,14 +155,14 @@
   },
   {
     "title": "周处除三害",
-    "file": "/2.Read/douban/movie/周处除三害",
+    "file": "/read/douban/movie/the-pig-the-snake-and-the-pigeon",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.1",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2905021483.webp",
+    "封面": "/read/douban/0_dimage/p2905021483.webp",
     "originalTitle": "周處除三害",
     "aliases": "The_Pig__the_Snake__and_the_Pigeon\"",
     "genre": " - 动作 - 犯罪",
@@ -182,14 +182,14 @@
   },
   {
     "title": "哈利·波特与魔法石",
-    "file": "/2.Read/douban/movie/哈利·波特与魔法石",
+    "file": "/read/douban/movie/harry-potter-and-the-sorcerers-stone",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "9.2",
     "scoreStar": "⭐⭐⭐⭐☆",
-    "封面": "2.Read/douban/0_dimage/p2913781448.webp",
+    "封面": "/read/douban/0_dimage/p2913781448.webp",
     "originalTitle": "HarryPotterandtheSorcerer'sStone",
     "aliases": " - 哈利波特1：神秘的魔法石(港 - 台) - 哈1 - Harry Potter and the Philosopher's Stone",
     "genre": " - 奇幻 - 冒险",
@@ -208,14 +208,14 @@
   },
   {
     "title": "哪吒之魔童闹海",
-    "file": "/2.Read/douban/movie/哪吒之魔童闹海",
+    "file": "/read/douban/movie/ne-zha-2",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.5",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2916323291.webp",
+    "封面": "/read/douban/0_dimage/p2916323291.webp",
     "aliases": "哪吒2 / 哪吒2之魔童闹海 / Ne_Zha_2\"",
     "genre": " - 剧情 - 喜剧 - 动画 - 奇幻",
     "country": " - 中国大陆",
@@ -234,14 +234,14 @@
   },
   {
     "title": "大人物拿破仑",
-    "file": "/2.Read/douban/movie/大人物拿破仑",
+    "file": "/read/douban/movie/napoleon-dynamite",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "7.6",
     "scoreStar": "⭐⭐⭐☆☆",
-    "封面": "2.Read/douban/0_dimage/p2540518828.webp",
+    "封面": "/read/douban/0_dimage/p2540518828.webp",
     "originalTitle": "NapoleonDynamite",
     "aliases": " / 炸弹的异想世界 / 炸药拿破仑 / 炸弹头拿破仑(港)\"",
     "genre": " / 剧情 / 喜剧 / 爱情\"",
@@ -261,14 +261,14 @@
   },
   {
     "title": "大话西游之大圣娶亲",
-    "file": "/2.Read/douban/movie/大话西游之大圣娶亲",
+    "file": "/read/douban/movie/a-chinese-odyssey-part-two-cinderella",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "9.2",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2455050536.webp",
+    "封面": "/read/douban/0_dimage/p2455050536.webp",
     "originalTitle": "西遊記大結局之仙履奇緣",
     "aliases": "西游记完结篇仙履奇缘 / 齐天大圣西游记 / 大话东游之二 / 大话西游之大圣娶妻 / A_Chinese_Odyssey_Part_Two___Cinderella\"",
     "genre": " - 喜剧 - 爱情 - 奇幻 - 古装",
@@ -288,7 +288,7 @@
   },
   {
     "title": "好人寥寥",
-    "file": "/2.Read/douban/movie/好人寥寥",
+    "file": "/read/douban/movie/a-few-good-men",
     "tags": [
       "movies"
     ],
@@ -296,7 +296,7 @@
     "score": "8.0",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "8",
-    "封面": "2.Read/douban/0_dimage/p2242713860.webp",
+    "封面": "/read/douban/0_dimage/p2242713860.webp",
     "originalTitle": "AFewGoodMen",
     "aliases": " / 义海雄风(港) / 军官与魔鬼(台) / 军人机密 / 义海雄心\"",
     "genre": " / 剧情 / 惊悚\"",
@@ -316,7 +316,7 @@
   },
   {
     "title": "好家伙",
-    "file": "/2.Read/douban/movie/好家伙",
+    "file": "/read/douban/movie/goodfellas",
     "tags": [
       "movies"
     ],
@@ -324,7 +324,7 @@
     "score": "8.5",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "7",
-    "封面": "2.Read/douban/0_dimage/p1403069323.webp",
+    "封面": "/read/douban/0_dimage/p1403069323.webp",
     "originalTitle": "GoodFellas",
     "aliases": " / 盗亦有道(港) / 四海好家伙(台)\"",
     "genre": " / 剧情 / 传记 / 犯罪\"",
@@ -344,14 +344,14 @@
   },
   {
     "title": "小偷家族",
-    "file": "/2.Read/douban/movie/小偷家族",
+    "file": "/read/douban/movie/shoplifters",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.7",
     "scoreStar": "⭐⭐⭐⭐☆",
-    "封面": "2.Read/douban/0_dimage/p2530599636.webp",
+    "封面": "/read/douban/0_dimage/p2530599636.webp",
     "originalTitle": "万引き家族",
     "aliases": "Shoplifters / Une_Affaire_de_Famille / Manbiki_kazoku\"",
     "genre": "剧情 / 家庭 / 犯罪\"",
@@ -371,14 +371,14 @@
   },
   {
     "title": "小妇人",
-    "file": "/2.Read/douban/movie/小妇人",
+    "file": "/read/douban/movie/little-women",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.0",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2572928166.webp",
+    "封面": "/read/douban/0_dimage/p2572928166.webp",
     "originalTitle": "LittleWomen",
     "aliases": "她们(台)\"",
     "genre": "剧情 / 爱情",
@@ -398,7 +398,7 @@
   },
   {
     "title": "小猪宝贝",
-    "file": "/2.Read/douban/movie/小猪宝贝",
+    "file": "/read/douban/movie/babe",
     "tags": [
       "movies"
     ],
@@ -406,7 +406,7 @@
     "score": "8.2",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "8",
-    "封面": "2.Read/douban/0_dimage/p2503827571.webp",
+    "封面": "/read/douban/0_dimage/p2503827571.webp",
     "originalTitle": "Babe",
     "aliases": " / 我不笨_所以我有话要说 / 宝贝小猪罗 / 小猪巴比 / 小猪贝贝 / 宝贝小猪唛 / 猪宝贝\"",
     "genre": " / 剧情 / 喜剧\"",
@@ -426,14 +426,14 @@
   },
   {
     "title": "怪物",
-    "file": "/2.Read/douban/movie/怪物",
+    "file": "/read/douban/movie/monster",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.6",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/monster2023_kvUJUyUGOhEoiWWNH04IXoExPE2.jpg",
+    "封面": "/read/douban/0_dimage/monster2023_kvUJUyUGOhEoiWWNH04IXoExPE2.jpg",
     "aliases": "Monster / Kaibutsu",
     "genre": " - 剧情",
     "country": " - 日本",
@@ -452,14 +452,14 @@
   },
   {
     "title": "怪物史瑞克",
-    "file": "/2.Read/douban/movie/怪物史瑞克",
+    "file": "/read/douban/movie/shrek",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "7.9",
     "scoreStar": "⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p1910896706.webp",
+    "封面": "/read/douban/0_dimage/p1910896706.webp",
     "originalTitle": "Shrek",
     "aliases": "史力加(港) / 史瑞克(台) / 怪物史莱克\"",
     "genre": " - 喜剧 - 动画 - 家庭 - 奇幻 - 冒险",
@@ -479,14 +479,14 @@
   },
   {
     "title": "我的表兄维尼",
-    "file": "/2.Read/douban/movie/我的表兄维尼",
+    "file": "/read/douban/movie/my-cousin-vinny",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "7.9",
     "scoreStar": "⭐⭐⭐☆☆",
-    "封面": "2.Read/douban/0_dimage/p2328716218.webp",
+    "封面": "/read/douban/0_dimage/p2328716218.webp",
     "originalTitle": "MyCousinVinny",
     "aliases": " / 智勇急转弯 / 妙计扭乾坤 / 我的堂兄维尼\"",
     "genre": " / 喜剧 / 犯罪\"",
@@ -506,14 +506,14 @@
   },
   {
     "title": "抓娃娃",
-    "file": "/2.Read/douban/movie/抓娃娃",
+    "file": "/read/douban/movie/successor",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "7.1",
     "scoreStar": "⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2910105262.webp",
+    "封面": "/read/douban/0_dimage/p2910105262.webp",
     "aliases": "Successor\"",
     "genre": " - 喜剧",
     "country": " - 中国大陆",
@@ -532,7 +532,7 @@
   },
   {
     "title": "指环王1：护戒使者",
-    "file": "/2.Read/douban/movie/指环王1：护戒使者",
+    "file": "/read/douban/movie/the-lord-of-the-rings-1-the-fellowship-of-the-ring",
     "tags": [
       "movies"
     ],
@@ -540,7 +540,7 @@
     "score": "9.1",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "7",
-    "封面": "2.Read/douban/0_dimage/p2197698335.webp",
+    "封面": "/read/douban/0_dimage/p2197698335.webp",
     "originalTitle": "TheLordoftheRings:TheFellowshipoftheRing",
     "aliases": "指环王1：魔戒再现 / 指环王I：护戒使者 / 魔戒首部曲：魔戒现身 / 魔戒1：护戒联盟\"",
     "genre": "剧情 / 动作 / 奇幻 / 冒险\"",
@@ -560,7 +560,7 @@
   },
   {
     "title": "指环王2：双塔奇兵",
-    "file": "/2.Read/douban/movie/指环王2：双塔奇兵",
+    "file": "/read/douban/movie/the-lord-of-the-rings-2-the-two-towers",
     "tags": [
       "movies"
     ],
@@ -568,7 +568,7 @@
     "score": "9.2",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "8",
-    "封面": "2.Read/douban/0_dimage/p2640236255.webp",
+    "封面": "/read/douban/0_dimage/p2640236255.webp",
     "originalTitle": "TheLordoftheRings:TheTwoTowers\"\"",
     "aliases": "魔戒二部曲：双城奇谋 / 指环王II：双塔 / 魔戒2：双塔奇谋\"",
     "genre": "剧情 / 动作 / 奇幻 / 冒险\"",
@@ -588,14 +588,14 @@
   },
   {
     "title": "机器人之梦",
-    "file": "/2.Read/douban/movie/机器人之梦",
+    "file": "/read/douban/movie/robot-dreams",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "9.1",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2904305126.webp",
+    "封面": "/read/douban/0_dimage/p2904305126.webp",
     "originalTitle": "RobotDreams",
     "aliases": "再见机器人(台) / 汪汪梦里人(港) / Mon_ami_robot\"",
     "genre": " - 剧情 - 动画 - 音乐",
@@ -615,14 +615,14 @@
   },
   {
     "title": "猫狗大战",
-    "file": "/2.Read/douban/movie/猫狗大战",
+    "file": "/read/douban/movie/cats-and-dogs",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "6.9",
     "scoreStar": "⭐⭐⭐☆☆",
-    "封面": "2.Read/douban/0_dimage/p2525537693.webp",
+    "封面": "/read/douban/0_dimage/p2525537693.webp",
     "originalTitle": "Cats&Dogs",
     "aliases": " - 猫狗斗一番(港)",
     "genre": " - 喜剧 - 动作 - 冒险",
@@ -641,14 +641,14 @@
   },
   {
     "title": "神秘村",
-    "file": "/2.Read/douban/movie/神秘村",
+    "file": "/read/douban/movie/the-village",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "7.0",
     "scoreStar": "⭐⭐⭐☆☆",
-    "封面": "2.Read/douban/0_dimage/p2161515392.webp",
+    "封面": "/read/douban/0_dimage/p2161515392.webp",
     "originalTitle": "TheVillage",
     "aliases": " / 森魔(港) / 阴森林(台) / 灵异村庄\"",
     "genre": " / 悬疑 / 惊悚\"",
@@ -668,14 +668,14 @@
   },
   {
     "title": "第六感",
-    "file": "/2.Read/douban/movie/第六感",
+    "file": "/read/douban/movie/the-sixth-sense",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.9",
     "scoreStar": "⭐⭐⭐⭐☆",
-    "封面": "2.Read/douban/0_dimage/p2220184425.webp",
+    "封面": "/read/douban/0_dimage/p2220184425.webp",
     "originalTitle": "TheSixthSense",
     "aliases": " / 鬼眼(港) / 灵异第六感(台)\"",
     "genre": " / 剧情 / 悬疑 / 惊悚\"",
@@ -695,7 +695,7 @@
   },
   {
     "title": "篮坛怪杰",
-    "file": "/2.Read/douban/movie/篮坛怪杰",
+    "file": "/read/douban/movie/hoosiers",
     "tags": [
       "movies"
     ],
@@ -703,7 +703,7 @@
     "score": "7.1",
     "scoreStar": "⭐⭐⭐☆☆",
     "myRate": "6",
-    "封面": "2.Read/douban/0_dimage/p2174345651.webp",
+    "封面": "/read/douban/0_dimage/p2174345651.webp",
     "originalTitle": "Hoosiers",
     "aliases": " / 火爆教头草地兵(港) / 球场雄心 / 印第安纳人\"",
     "genre": " / 剧情 / 运动\"",
@@ -723,14 +723,14 @@
   },
   {
     "title": "老狐狸",
-    "file": "/2.Read/douban/movie/老狐狸",
+    "file": "/read/douban/movie/old-fox",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.1",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2900908599.webp",
+    "封面": "/read/douban/0_dimage/p2900908599.webp",
     "aliases": "老狐狸没教我的事 / Old_Fox\"",
     "genre": " - 剧情",
     "country": " - 中国台湾",
@@ -749,14 +749,14 @@
   },
   {
     "title": "花样年华",
-    "file": "/2.Read/douban/movie/花样年华",
+    "file": "/read/douban/movie/in-the-mood-for-love",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.8",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2918312477.webp",
+    "封面": "/read/douban/0_dimage/p2918312477.webp",
     "originalTitle": "花樣年華",
     "aliases": "花样年华导演特别版 / 花样年华4K修复版 / 花样年华导演剪辑版 / In_the_Mood_for_Love / 秘密 / 对倒\"",
     "genre": " - 剧情 - 爱情",
@@ -776,14 +776,14 @@
   },
   {
     "title": "调音师",
-    "file": "/2.Read/douban/movie/调音师",
+    "file": "/read/douban/movie/andhadhun",
     "tags": [
       "movies"
     ],
     "type": "movie",
     "score": "8.2",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2551995207.webp",
+    "封面": "/read/douban/0_dimage/p2551995207.webp",
     "originalTitle": "Andhadhun",
     "aliases": "看不见的旋律 / 调琴师 / 盲调 / The_Blind_Melody\"",
     "genre": " - 喜剧 - 悬疑 - 惊悚 - 犯罪",
@@ -803,7 +803,7 @@
   },
   {
     "title": "谍影重重",
-    "file": "/2.Read/douban/movie/谍影重重",
+    "file": "/read/douban/movie/the-bourne-identity",
     "tags": [
       "movies"
     ],
@@ -811,7 +811,7 @@
     "score": "8.6",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "8.5",
-    "封面": "2.Read/douban/0_dimage/谍影重重.webp",
+    "封面": "/read/douban/0_dimage/the-bourne-identity.webp",
     "originalTitle": "TheBourneIdentity",
     "aliases": " / 叛谍追击(港) / 神鬼认证(台) / 伯恩的身份 / 身份的迷惑\"",
     "genre": " / 动作 / 悬疑 / 惊悚\"",
@@ -831,7 +831,7 @@
   },
   {
     "title": "赌城风云",
-    "file": "/2.Read/douban/movie/赌城风云",
+    "file": "/read/douban/movie/casino",
     "tags": [
       "movies"
     ],
@@ -839,7 +839,7 @@
     "score": "8.3",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "7",
-    "封面": "2.Read/douban/0_dimage/p1236519296.webp",
+    "封面": "/read/douban/0_dimage/p1236519296.webp",
     "originalTitle": "Casino",
     "aliases": " / 赌国风云(台) / 赌场\"",
     "genre": " / 剧情 / 传记 / 犯罪\"",
@@ -859,7 +859,7 @@
   },
   {
     "title": "1923第一季",
-    "file": "/2.Read/douban/teleplay/1923第一季",
+    "file": "/read/douban/teleplay/1923-season-1",
     "tags": [
       "movies"
     ],
@@ -867,7 +867,7 @@
     "score": "9.2",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "8",
-    "封面": "2.Read/douban/0_dimage/p2884549449.webp",
+    "封面": "/read/douban/0_dimage/p2884549449.webp",
     "originalTitle": "1923Season1",
     "aliases": " / 1923__A_Yellowstone_Origin_Story / 黄石前传 / 黄石：1923 / 黄石：1932 / 1932\"",
     "genre": " / 剧情 / 西部\"",
@@ -887,7 +887,7 @@
   },
   {
     "title": "1923第二季",
-    "file": "/2.Read/douban/teleplay/1923第二季",
+    "file": "/read/douban/teleplay/1923-season-2",
     "tags": [
       "movies"
     ],
@@ -895,7 +895,7 @@
     "score": "8.7",
     "scoreStar": "⭐⭐⭐⭐☆",
     "myRate": "7",
-    "封面": "2.Read/douban/0_dimage/p2918020941.webp",
+    "封面": "/read/douban/0_dimage/p2918020941.webp",
     "originalTitle": "1923Season2",
     "aliases": " / 1923__A_Yellowstone_Origin_Story / 黄石前传 / 黄石：1923 / 黄石：1932 / 1932\"",
     "genre": " / 剧情 / 西部\"",
@@ -915,14 +915,14 @@
   },
   {
     "title": "摩登家庭第一季",
-    "file": "/2.Read/douban/teleplay/摩登家庭第一季",
+    "file": "/read/douban/teleplay/modern-family-season-1",
     "tags": [
       "movies"
     ],
     "type": "teleplay",
     "score": "9.5",
     "scoreStar": "⭐⭐⭐⭐☆",
-    "封面": "2.Read/douban/0_dimage/p455073620.webp",
+    "封面": "/read/douban/0_dimage/p455073620.webp",
     "originalTitle": "ModernFamilySeason1",
     "aliases": " - 当代家庭 第一季 - 摩登家庭",
     "genre": " - 喜剧 - 家庭",
@@ -941,14 +941,14 @@
   },
   {
     "title": "进击的巨人",
-    "file": "/2.Read/douban/teleplay/进击的巨人",
+    "file": "/read/douban/teleplay/attack-on-titan",
     "tags": [
       "movies"
     ],
     "type": "teleplay",
     "score": "9.4",
     "scoreStar": "⭐⭐⭐⭐☆",
-    "封面": "2.Read/douban/0_dimage/p1981730273.webp",
+    "封面": "/read/douban/0_dimage/p1981730273.webp",
     "originalTitle": "進撃の巨人",
     "aliases": " - Shingeki no Kyojin - Attack on Titan",
     "genre": " - 动作 - 科幻 - 动画 - 灾难",
@@ -967,14 +967,14 @@
   },
   {
     "title": "阿浅来了",
-    "file": "/2.Read/douban/teleplay/阿浅来了",
+    "file": "/read/douban/teleplay/asa-ga-kita",
     "tags": [
       "movies"
     ],
     "type": "teleplay",
     "score": "8.8",
     "scoreStar": "⭐⭐⭐⭐",
-    "封面": "2.Read/douban/0_dimage/p2268743922.webp",
+    "封面": "/read/douban/0_dimage/p2268743922.webp",
     "originalTitle": "あさが来た",
     "aliases": "阿淺人生(港)",
     "genre": "剧情",
@@ -994,13 +994,13 @@
   },
   {
     "title": "The Big Bang Theory",
-    "file": "/2.Read/media-DB/series/The-Big-Bang-Theory-(2007–2019)",
+    "file": "/read/media-db/series/The-Big-Bang-Theory-(2007–2019)",
     "tags": [
       "movies"
     ],
     "type": "series",
     "score": "8.1",
-    "封面": "2.Read/douban/0_dimage/MV5BZjgzY2QyNzItNDhhYi00ZWIwLWFjN2UtZDJkN2MxYWNjMmJjXkEyXkFqcGc@._V1_SX300.jpg",
+    "封面": "/read/douban/0_dimage/MV5BZjgzY2QyNzItNDhhYi00ZWIwLWFjN2UtZDJkN2MxYWNjMmJjXkEyXkFqcGc@._V1_SX300.jpg",
     "originalTitle": "The Big Bang Theory",
     "genre": "Comedy,Romance",
     "director": "{{ INVALID TEMPLATE TAG - object undefined }}",

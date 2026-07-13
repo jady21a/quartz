@@ -17,7 +17,8 @@
 
 .book-card,
 .movie-card {
-  border: 1px solid var(--lightgray);
+  /* 与视频卡片同款加深边(--gray 45%),三个画廊轮廓浓度一致 */
+  border: 1px solid color-mix(in srgb, var(--gray) 45%, transparent);
   border-radius: 12px;
   padding: 0.6rem 0.8rem;
   margin: 0.5rem;

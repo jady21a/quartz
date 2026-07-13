@@ -8,7 +8,7 @@
       "bilibili": "BV1cNTC65EQF"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/011-obsidian开箱即用模板库",
+    "file": "/videos/video-notes/011-obsidian-template-vault",
     "hasEn": true,
     "enTitle": "011 - Obsidian ready-to-use template vault",
     "enDescription": "",
@@ -72,7 +72,7 @@
       "bilibili": "BV1btEi6vEtz"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/010-Obsidian-homepage",
+    "file": "/videos/video-notes/010-Obsidian-homepage",
     "hasEn": true,
     "enTitle": "010 - obsidian homepage",
     "enDescription": "",
@@ -137,7 +137,7 @@
       "bilibili": "BV1id7X64E1D"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/009-一个指令，让AI-自动生成周复盘",
+    "file": "/videos/video-notes/009-ai-weekly-review-one-command",
     "hasEn": true,
     "enTitle": "009 - One command to make AI auto-generate your weekly review",
     "enDescription": "",
@@ -181,7 +181,7 @@
       "bilibili": "BV1EQ5e6iEyE"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/008-项目管理",
+    "file": "/videos/video-notes/008-project-management",
     "hasEn": true,
     "enTitle": "008 - Project management",
     "enDescription": "",
@@ -245,7 +245,7 @@
       "bilibili": "BV1UjR4BZEHT"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/007-自建个人专属图书馆,douban图片链接失效怎么办",
+    "file": "/videos/video-notes/007-personal-library-douban-image-fix",
     "hasEn": true,
     "enTitle": "007 - Build your own personal library; what to do when douban image links break",
     "enDescription": "",
@@ -289,7 +289,7 @@
       "bilibili": "BV1LyoEBsEBX"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/006-自制去版权信息插件",
+    "file": "/videos/video-notes/006-copyright-cleaner-plugin",
     "hasEn": true,
     "enTitle": "006 - One click to strip copyright notices and quotes from copied text",
     "enDescription": "",
@@ -319,7 +319,7 @@
       "bilibili": "BV1gho4BKEM7"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/005-写笔记=更新博客",
+    "file": "/videos/video-notes/005-write-notes-update-blog",
     "hasEn": true,
     "enTitle": "005 - Writing a note = updating the blog",
     "enDescription": "",
@@ -348,7 +348,7 @@
       "bilibili": "BV1xodJB3Ea4"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/004-运动网站分享",
+    "file": "/videos/video-notes/004-workout-website-share",
     "hasEn": true,
     "enTitle": "004 - Sharing my workout website",
     "enDescription": "",
@@ -372,7 +372,7 @@
       "bilibili": "BV1WsdYB6ESD"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/003-代码复制无效的排查",
+    "file": "/videos/video-notes/003-code-copy-not-working-debug",
     "hasEn": true,
     "enTitle": "003 - Troubleshooting \"copy code\" not working",
     "enDescription": "",
@@ -405,7 +405,7 @@
       "bilibili": "BV1sADyBoE3d"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/002-模版自动归档、命名与编号",
+    "file": "/videos/video-notes/002-template-auto-archive-naming-numbering",
     "hasEn": true,
     "enTitle": "002 - Templates that auto-archive, name, and number notes",
     "enDescription": "",
@@ -434,7 +434,7 @@
       "bilibili": "BV1G8DWBmEhf"
     },
     "defaultSource": "youtube",
-    "file": "/7.shared/视频Meta/001-自动继承昨日任务",
+    "file": "/videos/video-notes/001-auto-inherit-yesterday-tasks",
     "hasEn": true,
     "enTitle": "001 - Auto-carry over yesterday's tasks",
     "enDescription": "",

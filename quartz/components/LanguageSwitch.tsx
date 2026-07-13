@@ -9,9 +9,14 @@ import styles from "./styles/languageSwitch.scss"
 const EN_PREFIX = "en/"
 
 // 首访自动分流:手动选择(langPref)优先,否则按浏览器语言;非中文浏览器跳英文首页。
-// 只内联在中文首页(深层链接不跳转),SPA 站内导航不会重跑,不会把人从内页拽走。
+// 只内联在中文首页(深层链接不跳转)。注意:SPA 站内导航 morph 进首页时本脚本会被
+// 重新执行,而 spa.inline.ts 是 morph 完才 pushState,此刻 location 还停在旧页面,
+// "./en/" 会相对旧路径解析出 /旧路径/en/ 404 —— 所以先确认 location 真的在站点根,
+// 硬加载首页才分流,SPA 导航天然不命中。
 const homepageRedirectScript = `(function () {
   try {
+    var path = location.pathname
+    if (path !== "/" && path.slice(-11) !== "/index.html") return
     var pref = localStorage.getItem("langPref")
     var langs =
       navigator.languages && navigator.languages.length

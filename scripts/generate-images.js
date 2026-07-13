@@ -55,21 +55,8 @@ function cleanDate(value) {
   return String(value)
 }
 
-// 与 Quartz 的 sluggify 保持一致:空格→-、&→-and-、%→-percent、去掉 ? #
-// 其余字符(含中文、@、.)原样保留,否则资源/页面链接会和真实 slug 对不上 → 404
-function sluggifyPath(p) {
-  return p
-    .split("/")
-    .map((seg) =>
-      seg
-        .replace(/\s/g, "-")
-        .replace(/&/g, "-and-")
-        .replace(/%/g, "-percent")
-        .replace(/\?/g, "")
-        .replace(/#/g, ""),
-    )
-    .join("/")
-}
+// 与 Quartz 的 sluggify 保持一致(含中文段→英文映射),否则资源/页面链接会和真实 slug 对不上 → 404
+import { sluggify as sluggifyPath, slugifyAssetPath } from "./slug-map-util.js"
 
 // 从正文里取第一张图片(支持 ![[x]] 和 ![](x))
 function firstBodyImage(body) {
@@ -96,7 +83,8 @@ function resolveCover(raw, postDirRel) {
   if (/^https?:\/\//i.test(cover)) return cover.replace(/^http:\/\//i, "https://")
   if (cover.startsWith("/")) return cover
   const rel = path.posix.join(postDirRel.split(path.sep).join("/"), cover)
-  return "/" + sluggifyPath(rel)
+  // 资产路径走与 Assets emitter 同规则的转换(去扩展名→映射→接回)
+  return "/" + slugifyAssetPath(rel)
 }
 
 function parseImageData(filePath) {

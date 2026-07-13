@@ -24,11 +24,11 @@ const defaultOptions: ContentMetaOptions = {
 // 日期和阅读时长都没有意义(阅读时长还会被订阅脚本撑得很离谱),整条 meta 不显示。
 const hideMetaSlugs = new Set([
   "index",
-  "藏书馆",
-  "观影库",
-  "7.shared/index",
-  "7.shared/视频合集",
-  "7.shared/专题合集",
+  "library",
+  "watch-list",
+  "videos/index",
+  "videos/video-collection",
+  "videos/topic-collection",
 ])
 
 export default ((opts?: Partial<ContentMetaOptions>) => {
@@ -39,7 +39,7 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
     const text = fileData.text
 
     // 导览 / 索引类页面:日期和阅读时间都不显示。
-    // 名单按中文 slug 维护,英文镜像(en/ 前缀)剥掉前缀后同样命中,保持两种语言一致。
+    // 名单按映射后的英文 slug 维护,英文镜像(en/ 前缀)剥掉前缀后同样命中,保持两种语言一致。
     const slug = fileData.slug ?? ""
     const baseSlug = slug === "en" ? "index" : slug.startsWith("en/") ? slug.slice(3) : slug
     if (hideMetaSlugs.has(baseSlug)) {

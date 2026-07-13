@@ -46,6 +46,12 @@
     opacity: 0.8;
   }
 
+  // 桌面端箭头指示点击后的动作:有任一文件夹打开时朝上(点击=全折叠),
+  // 全部折叠时朝下(点击=全展开)
+  &.any-open .fold {
+    transform: rotateZ(180deg);
+  }
+
   @media all and ($mobile) {
     order: -1;
     height: initial;
@@ -229,7 +235,10 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       flex: 0 0 34px;
 
       & > .explorer-content {
-        transform: translateX(0);
+        // 打开态用 none 而不是 translateX(0):fixed 滚动容器上挂着 transform 时,
+        // Chrome 合成器的滚轮命中(wheel latching)会失灵——滚轮在树上没反应、
+        // 只能拖滚动条。none 与 translateX(-100vw) 之间照样能过渡动画。
+        transform: none;
         visibility: visible;
       }
     }
@@ -253,11 +262,22 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       transition:
         transform 200ms ease,
         visibility 200ms ease;
-      overflow: hidden;
+      // 滚动放在抽屉自身而不是内层 ul:fixed 抽屉里再嵌一层滚动容器时,
+      // 滚轮经常找错目标(树上滚不动)。抽屉自己就是唯一滚动层,命中稳定。
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      overflow-anchor: none;
       padding: 4rem 0 2rem 0;
       height: 100dvh;
       max-height: 100dvh;
       visibility: hidden;
+    }
+
+    // 抽屉内的树列表不再自建滚动,跟着抽屉整体滚
+    .explorer-content .explorer-ul {
+      max-height: none;
+      overflow-y: visible;
     }
 
     .mobile-explorer {

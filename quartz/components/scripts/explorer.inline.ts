@@ -37,6 +37,36 @@ function toggleExplorer(this: HTMLElement) {
   }
 }
 
+// 箭头方向跟随树状态:有任一文件夹打开(含部分打开)→ 箭头朝上,提示"点击=全折叠";
+// 全部折叠 → 箭头朝下,提示"点击=全展开"。单个文件夹开合时也要调用保持同步。
+function updateFoldChevron(explorer: HTMLElement) {
+  const anyOpen = [...explorer.querySelectorAll(".folder-outer")].some((el) =>
+    el.classList.contains("open"),
+  )
+  explorer.classList.toggle("any-open", anyOpen)
+}
+
+// 桌面端"探索"旁的箭头:一键展开/折叠所有目录(原上游行为是收起整个探索区,
+// 桌面端没什么用,移动端抽屉另有汉堡按钮,故改造)。
+// 有任一文件夹打开(含部分打开)时点击=全折叠;全部折叠时点击=全展开。
+function toggleAllFolders(this: HTMLElement) {
+  const explorer = this.closest(".explorer") as HTMLElement | null
+  if (!explorer) return
+  const folderOuters = [...explorer.querySelectorAll(".folder-outer")]
+  const expandAll = folderOuters.every((el) => !el.classList.contains("open"))
+  for (const outer of folderOuters) {
+    outer.classList.toggle("open", expandAll)
+  }
+  updateFoldChevron(explorer)
+  this.setAttribute("aria-expanded", expandAll ? "true" : "false")
+
+  // 全量同步状态并落盘,保证换页/刷新后保持
+  for (const state of currentExplorerState) {
+    state.collapsed = !expandAll
+  }
+  localStorage.setItem("fileTree", JSON.stringify(currentExplorerState))
+}
+
 function toggleFolder(evt: MouseEvent) {
   evt.stopPropagation()
   const target = evt.target as MaybeHTMLElement
@@ -77,6 +107,10 @@ function toggleFolder(evt: MouseEvent) {
 
   const stringifiedFileTree = JSON.stringify(currentExplorerState)
   localStorage.setItem("fileTree", stringifiedFileTree)
+
+  // 单个文件夹开合后同步顶部箭头方向
+  const explorer = folderContainer.closest(".explorer") as HTMLElement | null
+  if (explorer) updateFoldChevron(explorer)
 }
 
 function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElement {
@@ -219,6 +253,12 @@ async function setupExplorer(currentSlug: FullSlug) {
     const explorerUl = explorer.querySelector(".explorer-ul")
     if (!explorerUl) continue
 
+    // SPA 换页时 micromorph 不一定会清空旧树(explorer-ul 在所有页面共用同一个 id),
+    // 这里不清的话新旧两棵树会叠加,表现为"目录显示两份"。只保留 overflow-end 哨兵。
+    for (const child of [...explorerUl.children]) {
+      if (!child.classList.contains("overflow-end")) child.remove()
+    }
+
     // Create and insert new content
     const fragment = document.createDocumentFragment()
     for (const child of trie.children) {
@@ -238,18 +278,27 @@ async function setupExplorer(currentSlug: FullSlug) {
       // try to scroll to the active element if it exists
       const activeElement = explorerUl.querySelector(".active")
       if (activeElement) {
-        activeElement.scrollIntoView({ behavior: "smooth" })
+        // 只滚动树列表自身;scrollIntoView 会把包括主窗口在内的所有可滚祖先
+        // 一起滚,换页后正文会被莫名带跑
+        const ulRect = explorerUl.getBoundingClientRect()
+        const elRect = activeElement.getBoundingClientRect()
+        explorerUl.scrollTop += elRect.top - ulRect.top - ulRect.height / 2
       }
     }
 
     // Set up event handlers
+    // 移动端汉堡=开合抽屉(toggleExplorer);桌面端箭头=全展开/全折叠(toggleAllFolders)
     const explorerButtons = explorer.getElementsByClassName(
       "explorer-toggle",
     ) as HTMLCollectionOf<HTMLElement>
     for (const button of explorerButtons) {
-      button.addEventListener("click", toggleExplorer)
-      window.addCleanup(() => button.removeEventListener("click", toggleExplorer))
+      const handler = button.dataset.mobile === "true" ? toggleExplorer : toggleAllFolders
+      button.addEventListener("click", handler)
+      window.addCleanup(() => button.removeEventListener("click", handler))
     }
+
+    // 初始箭头方向与当前树状态一致
+    updateFoldChevron(explorer)
 
     // Set up folder click handlers
     if (opts.folderClickBehavior === "collapse") {
@@ -268,6 +317,33 @@ async function setupExplorer(currentSlug: FullSlug) {
     for (const icon of folderIcons) {
       icon.addEventListener("click", toggleFolder)
       window.addCleanup(() => icon.removeEventListener("click", toggleFolder))
+    }
+
+    // "hover 即聚焦":滚轮悬停在左侧栏时,垂直滚动一律喂给目录,并阻止外溢
+    // 滚动正文。目录容器不可滚(内容不超高)时,Chrome 的滚轮黏附会跳过它
+    // 直接滚页面,纯 CSS(overscroll-behavior)拦不住,只能 JS 接管。
+    // - 桌面端:喂给树列表 explorer-ul;
+    // - 移动端(≤800)抽屉打开时:喂给抽屉 explorer-content(触摸滑动走原生
+    //   路径不受影响,这里只兜住触控板/鼠标滚轮);抽屉关着时不拦,页面正常滚。
+    const sidebar = explorer.closest(".sidebar.left") as HTMLElement | null
+    if (sidebar) {
+      const ul = explorerUl as HTMLElement
+      const onWheel = (e: WheelEvent) => {
+        if (e.ctrlKey) return // 捏合缩放不拦
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
+        // 搜索弹层在侧栏 DOM 内,里面的滚动(结果列表/预览)不劫持
+        if ((e.target as HTMLElement).closest(".search-container")) return
+        let scroller = ul
+        if (window.matchMedia("(max-width: 800px)").matches) {
+          if (explorer.classList.contains("collapsed")) return
+          scroller = explorer.querySelector(".explorer-content") as HTMLElement
+          if (!scroller) return
+        }
+        e.preventDefault()
+        scroller.scrollTop += e.deltaMode === 1 ? e.deltaY * 24 : e.deltaY
+      }
+      sidebar.addEventListener("wheel", onWheel, { passive: false })
+      window.addCleanup(() => sidebar.removeEventListener("wheel", onWheel))
     }
   }
 }

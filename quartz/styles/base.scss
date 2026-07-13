@@ -224,6 +224,28 @@ a {
       z-index: 1;
       grid-area: grid-sidebar-left;
       flex-direction: column;
+
+      // 树的滚动区(explorer-ul)吃满侧栏"探索"以下的全部剩余高度:
+      // 滚轮悬停在树上、树下方空白处都命中树,不会误滚正文
+      // (ul 自带 overscroll-behavior: contain,见 explorer.scss)。
+      // 头部(标题/搜索)不参与滚动,滚动条只出现在树的右侧。
+      // 移动端(≤800)树在抽屉里,另有一套布局,不适用。
+      @media all and not ($mobile) {
+        & .explorer:not(.collapsed) {
+          flex: 1 1 auto;
+        }
+        & .explorer:not(.collapsed) .explorer-content {
+          display: flex;
+          flex-direction: column;
+          flex: 1 1 auto;
+          min-height: 0;
+        }
+        & .explorer:not(.collapsed) .explorer-ul {
+          flex: 1 1 auto;
+          min-height: 0;
+        }
+      }
+
       @media all and ($mobile) {
         gap: 0;
         align-items: center;
@@ -251,7 +273,12 @@ a {
           flex-shrink: 0;
         }
 
-        & .toc {
+        // 注意:下面的 div:has(> .overflow) 规则会给 .toc / .backlinks 盒子
+        // 扣一个 max-height:100% 的上限;只放开 overflow 而不放开 max-height 的话,
+        // 长目录会溢出盒子、叠印在下方的反向链接 / 漫步笔记上(看起来像两份目录)。
+        & .toc,
+        & .backlinks {
+          max-height: none;
           overflow-y: visible;
         }
         & .toc-content.overflow,

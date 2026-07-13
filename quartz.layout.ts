@@ -11,16 +11,16 @@ const explorerMapFn = (node: FileTrieNode) => {
   const isEnglish = node.slug === "en" || node.slug.startsWith("en/")
   const labels: Record<string, string> = isEnglish
     ? {
-        "1.Why-Z": "About",
-        "3.Template": "Template Library",
-        "4.技术记录": "Tech Notes",
-        "7.shared": "Videos & Topics",
+        "why-z": "About",
+        templates: "Template Library",
+        "tech-notes": "Tech Notes",
+        videos: "Videos & Topics",
       }
     : {
-        "1.Why-Z": "关于本站",
-        "3.Template": "模板库",
-        "4.技术记录": "折腾记录",
-        "7.shared": "视频与专题",
+        "why-z": "关于本站",
+        templates: "模板库",
+        "tech-notes": "折腾记录",
+        videos: "视频与专题",
       }
   const label = labels[node.slugSegment]
   if (label) {
@@ -28,17 +28,33 @@ const explorerMapFn = (node: FileTrieNode) => {
   }
 }
 
-// 改名后若按 displayName 排序,中文标签会打乱侧栏原有的 1-8 顺序,
-// 所以改按未改动的 slugSegment(仍带数字前缀)排序,保持文件夹在前、序号递增。
 // 这些目录整棵不进侧栏(只滤「显示」,页面照常构建,站内链接/卡片墙不受影响):
-// - 2.Read:藏书馆/观影库卡片墙的数据源,真笔记本来就能从藏书馆卡片点进去,树里反而是噪音
-// - 6.about(智囊团)、8.主题阅读:按需隐藏
+// - read(原 2.Read):藏书馆/观影库卡片墙的数据源,真笔记本来就能从藏书馆卡片点进去,树里反而是噪音
+// - about(原 6.about,智囊团)、topic-reading(原 8.主题阅读):按需隐藏
 // 中英两棵树的节点 slugSegment 相同,一条规则通杀;"tags" 是上游默认过滤项,保留。
 const explorerFilterFn = (node: FileTrieNode) =>
-  !["tags", "2.Read", "6.about", "8.主题阅读"].includes(node.slugSegment)
+  !["tags", "read", "about", "topic-reading"].includes(node.slugSegment)
 
+// 目录段经 slug-map.json 映射成英文后,纯字母序会打乱原有的 1-8 序号顺序,
+// 用显式顺序表锚定;不同层级的段名互不相遇,共用一张表没问题。
+// 表外节点(带 NN- 前缀的文件等)回退到数字感知的字母序。
 const explorerSortFn = (a: FileTrieNode, b: FileTrieNode) => {
   if ((!a.isFolder && !b.isFolder) || (a.isFolder && b.isFolder)) {
+    const rank: Record<string, number> = {
+      "why-z": 1,
+      templates: 3,
+      "tech-notes": 4,
+      videos: 7,
+      "video-notes": 1,
+      "topic-notes": 2,
+      "video-collection": 1,
+      "topic-collection": 2,
+    }
+    const ra = rank[a.slugSegment]
+    const rb = rank[b.slugSegment]
+    if (ra !== undefined && rb !== undefined) return ra - rb
+    if (ra !== undefined) return -1
+    if (rb !== undefined) return 1
     return a.slugSegment.localeCompare(b.slugSegment, undefined, {
       numeric: true,
       sensitivity: "base",
