@@ -7,9 +7,10 @@
 //   额外:同时累加「日别桶」(d_pv:YYYY-MM-DD / d_uv:YYYY-MM-DD),用于面板画趋势。
 //
 // 统计面板(私密,只给站长本人):
-//   GET /stats?token=XXX       → 返回自包含的 HTML 数据面板
-//   GET /stats.json?token=XXX  → 返回面板数据(站点 PV/UV、每页 PV 排行、日趋势,
-//                                 以及可选的 Cloudflare 边缘 zone 数据)
+//   GET /stats#token=XXX  → HTML 壳页,公开返回(不含数据);前端从 URL fragment 读 token,
+//                           以 Authorization: Bearer 头请求数据。fragment 不进服务端日志。
+//   GET /stats.json       → 面板数据(站点 PV/UV、每页 PV 排行、日趋势,以及可选的
+//                           Cloudflare 边缘 zone 数据)。鉴权:Bearer 头(或兼容 ?token=)。
 //   token 与 env.STATS_TOKEN 常数时间比对,不匹配 → 401。面板不被搜索引擎收录。
 //
 // 绑定:KV = COUNTER;Secret = SALT(哈希访客 IP);Secret = STATS_TOKEN(面板口令)。
@@ -21,6 +22,9 @@
 //   被浏览器拦截的问题(本 Worker 与博客不同源,cookie 方案不可靠)。
 // - KV 非原子:高并发下 read-modify-write 可能少记几次。个人博客量级可接受。
 // - CORS 只放行博客自己的源。面板端点不参与 CORS(同源直接浏览器打开)。
+// - 只有 Origin 在白名单里的请求才计数(浏览器跨域 fetch 必带 Origin);裸 GET
+//   (扫描器/curl)只回读数不累加——count.* 域名会进证书透明度日志,扫描流量不小。
+//   挡不住刻意伪造 Origin 的刷量,个人站量级够用。
 
 const ALLOWED_ORIGINS = ["https://jz21.eu.org", "https://jz-quartz.pages.dev"]
 const CF_ZONE_NAME = "jz21.eu.org"
@@ -71,8 +75,9 @@ export default {
   async fetch(request, env) {
     try {
       const url = new URL(request.url)
-      if (url.pathname === "/stats") return handleStatsPage(request, env)
+      if (url.pathname === "/stats") return handleStatsPage()
       if (url.pathname === "/stats.json") return handleStatsData(request, env)
+      if (url.pathname === "/stats/snapshot") return handleSnapshot(request, env)
       return await handleCount(request, env)
     } catch (e) {
       console.error("busuanzi error:", e && e.stack ? e.stack : String(e))
@@ -83,6 +88,16 @@ export default {
           "Content-Type": "application/json",
         },
       })
+    }
+  },
+
+  // 定时任务(Cron Trigger,见 wrangler.toml [triggers]):每天快照 CF 边缘日别数据。
+  async scheduled(event, env, ctx) {
+    try {
+      const n = await snapshotCloudflareDaily(env)
+      console.log("cf snapshot ok:", n, "days")
+    } catch (e) {
+      console.error("cf snapshot error:", e && e.stack ? e.stack : String(e))
     }
   },
 }
@@ -105,7 +120,19 @@ async function handleCount(request, env) {
 
   const kv = env.COUNTER
   const day = todayUTC()
-  const DAY_TTL = 60 * 60 * 24 * 400 // 日别桶留 ~400 天
+  // 日别桶(d_pv/d_uv)永久保存,不设 TTL —— 保留全部历史趋势。
+
+  // Origin 不在白名单 → 只读不计数(见文件头注释)。
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return new Response(
+      JSON.stringify({
+        site_uv: await read(kv, "site_uv"),
+        site_pv: await read(kv, "site_pv"),
+        page_pv: await read(kv, pageKey),
+      }),
+      { headers: { ...corsHeaders(origin), "Content-Type": "application/json" } },
+    )
+  }
 
   // UV:按加盐 IP 哈希做全站去重(首见才 +1);同时记「当天首见」做日 UV。
   let site_uv
@@ -124,7 +151,7 @@ async function handleCount(request, env) {
     const uvDayKey = "uvd:" + day + ":" + ipHash
     if (!(await kv.get(uvDayKey))) {
       await kv.put(uvDayKey, "1", { expirationTtl: 60 * 60 * 48 })
-      await incr(kv, "d_uv:" + day, DAY_TTL)
+      await incr(kv, "d_uv:" + day) // 永久桶,不设 TTL
     }
   } else {
     site_uv = await read(kv, "site_uv")
@@ -132,7 +159,7 @@ async function handleCount(request, env) {
 
   const site_pv = await incr(kv, "site_pv")
   const page_pv = await incr(kv, pageKey)
-  await incr(kv, "d_pv:" + day, DAY_TTL) // 日 PV 桶
+  await incr(kv, "d_pv:" + day) // 日 PV 桶(永久,不设 TTL)
 
   return new Response(JSON.stringify({ site_uv, site_pv, page_pv }), {
     headers: { ...corsHeaders(origin), "Content-Type": "application/json" },
@@ -141,9 +168,12 @@ async function handleCount(request, env) {
 
 // ───────────────────────── 统计数据(私密) ─────────────────────────
 function checkToken(request, env) {
+  // 首选 Authorization: Bearer(token 不进 URL / 日志);兼容旧的 ?token= 查询串。
+  const auth = request.headers.get("Authorization") || ""
+  const bearer = auth.startsWith("Bearer ") ? auth.slice(7) : ""
   const url = new URL(request.url)
-  const token = url.searchParams.get("token") || ""
-  return env.STATS_TOKEN && safeEqual(token, env.STATS_TOKEN)
+  const token = bearer || url.searchParams.get("token") || ""
+  return !!env.STATS_TOKEN && safeEqual(token, env.STATS_TOKEN)
 }
 
 // 列出某前缀下所有 key(小站量级,单页 1000 足够)
@@ -193,7 +223,7 @@ async function handleStatsData(request, env) {
     .map(([date, v]) => ({ date, pv: v.pv, uv: v.uv }))
     .sort((a, b) => (a.date < b.date ? -1 : 1))
 
-  // Cloudflare 边缘 zone 数据(可选,需 CF_API_TOKEN)
+  // Cloudflare 边缘 zone 数据(可选,需 CF_API_TOKEN):KPI/维度分解用实时 30 天查询。
   let cf = null
   let cfError = null
   if (env.CF_API_TOKEN) {
@@ -204,6 +234,9 @@ async function handleStatsData(request, env) {
     }
   }
 
+  // CF 边缘「日趋势」改读定时快照攒下来的全部历史(不受套餐保留期限制)。
+  const cfDaily = await readCfDaily(kv)
+
   return new Response(
     JSON.stringify({
       generatedAt: new Date().toISOString(),
@@ -211,10 +244,32 @@ async function handleStatsData(request, env) {
       pages,
       daily,
       cf,
+      cfDaily,
       cfError,
     }),
     { headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } },
   )
+}
+
+// 手动触发一次快照(Bearer token 鉴权),用于部署后立刻回填初始历史 / 排障。
+async function handleSnapshot(request, env) {
+  if (!checkToken(request, env)) {
+    return new Response(JSON.stringify({ error: "unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+  try {
+    const n = await snapshotCloudflareDaily(env)
+    return new Response(JSON.stringify({ ok: true, days: n }), {
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  } catch (e) {
+    return new Response(JSON.stringify({ ok: false, error: String(e && e.message ? e.message : e) }), {
+      status: 500,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
 }
 
 // ───────────────────────── Cloudflare zone GraphQL ─────────────────────────
@@ -309,14 +364,87 @@ async function fetchCloudflare(env) {
   }
 }
 
-// ───────────────────────── 面板 HTML(私密) ─────────────────────────
-function handleStatsPage(request, env) {
-  if (!checkToken(request, env)) {
-    return new Response("401 Unauthorized — 需要 ?token=", {
-      status: 401,
-      headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" },
-    })
+// 轻量:只取 CF 边缘日别数字(requests/pageViews/uniques/bytes/threats),给定时快照用。
+async function fetchCfDaily(env, zoneTag, since, until) {
+  const query = `
+    query ($zoneTag: String!, $since: String!, $until: String!) {
+      viewer {
+        zones(filter: { zoneTag: $zoneTag }) {
+          httpRequests1dGroups(
+            limit: 60
+            filter: { date_geq: $since, date_leq: $until }
+            orderBy: [date_ASC]
+          ) {
+            dimensions { date }
+            uniq { uniques }
+            sum { requests pageViews bytes threats }
+          }
+        }
+      }
+    }`
+  const r = await fetch("https://api.cloudflare.com/client/v4/graphql", {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + env.CF_API_TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query, variables: { zoneTag, since, until } }),
+  })
+  const j = await r.json()
+  if (j.errors && j.errors.length) throw new Error(JSON.stringify(j.errors))
+  const groups = j?.data?.viewer?.zones?.[0]?.httpRequests1dGroups || []
+  return groups.map((g) => ({
+    date: g.dimensions.date,
+    requests: g.sum.requests,
+    pageViews: g.sum.pageViews,
+    uniques: g.uniq.uniques,
+    bytes: g.sum.bytes,
+    threats: g.sum.threats,
+  }))
+}
+
+// 每天定时把最近 30 天的 CF 边缘日别数据「upsert」进 KV(cfd:YYYY-MM-DD,永久不设 TTL)。
+// 回查 30 天可自愈补洞、并把昨天/前几天的临时数据更正为最终值;因为只增不删,累积历史
+// 会超出 CF 免费套餐的保留期,面板即可展示全部历史。
+async function snapshotCloudflareDaily(env) {
+  if (!env.CF_API_TOKEN) return 0
+  const zoneTag = await resolveZoneTag(env)
+  const since = new Date(Date.now() - 29 * 864e5).toISOString().slice(0, 10)
+  const until = todayUTC()
+  const daily = await fetchCfDaily(env, zoneTag, since, until)
+  for (const d of daily) {
+    await env.COUNTER.put(
+      "cfd:" + d.date,
+      JSON.stringify({
+        requests: d.requests,
+        pageViews: d.pageViews,
+        uniques: d.uniques,
+        bytes: d.bytes,
+        threats: d.threats,
+      }),
+    ) // 无 expirationTtl = 永久保存
   }
+  return daily.length
+}
+
+// 读回累积的 CF 边缘日趋势(全部历史,按日期升序)。
+async function readCfDaily(kv) {
+  const keys = await listPrefix(kv, "cfd:")
+  const rows = await Promise.all(
+    keys.map(async (k) => {
+      let o = {}
+      try {
+        o = JSON.parse((await kv.get(k)) || "{}") || {}
+      } catch {}
+      return { date: k.slice("cfd:".length), ...o }
+    }),
+  )
+  return rows.sort((a, b) => (a.date < b.date ? -1 : 1))
+}
+
+// ───────────────────────── 面板 HTML(公开壳页,数据靠 token) ─────────────────────────
+function handleStatsPage() {
+  // 壳页本身不含任何数据,公开返回;鉴权在 /stats.json 上。
   return new Response(STATS_HTML, {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
@@ -386,7 +514,14 @@ const STATS_HTML = `<!DOCTYPE html>
   <div id="app"><div class="card muted">加载中…</div></div>
 </div>
 <script>
-const token = new URLSearchParams(location.search).get('token') || '';
+// token 放 URL fragment(#token=):不会随请求发给服务器、不进任何访问日志。
+// 兼容旧书签的 ?token=:读到后立刻迁移进 fragment 并抹掉查询串。
+let token = new URLSearchParams(location.hash.slice(1)).get('token') || '';
+const legacyTok = new URLSearchParams(location.search).get('token');
+if (!token && legacyTok) {
+  token = legacyTok;
+  history.replaceState(null, '', location.pathname + '#token=' + encodeURIComponent(token));
+}
 const fmt = n => (n==null?'—':n.toLocaleString('en-US'));
 const bytes = n => { if(n==null) return '—'; const u=['B','KB','MB','GB','TB']; let i=0,v=n;
   while(v>=1024&&i<u.length-1){v/=1024;i++} return v.toFixed(i?1:0)+' '+u[i]; };
@@ -427,8 +562,12 @@ async function load(){
   const app=document.getElementById('app');
   app.innerHTML='<div class="card muted">加载中…</div>';
   let d;
+  if(!token){
+    app.innerHTML='<div class="card err">缺少口令 —— 在地址后面加 <b>#token=你的口令</b> 再打开。</div>';
+    return;
+  }
   try{
-    const r=await fetch('/stats.json?token='+encodeURIComponent(token),{cache:'no-store'});
+    const r=await fetch('/stats.json',{cache:'no-store',headers:{Authorization:'Bearer '+token}});
     if(r.status===401){app.innerHTML='<div class="card err">401 未授权 —— token 不对。</div>';return;}
     d=await r.json();
   }catch(e){ app.innerHTML='<div class="card err">加载失败:'+esc(e.message||e)+'</div>'; return; }
@@ -469,16 +608,18 @@ async function load(){
        '<span><span class="dot" style="background:var(--acc2)"></span>UV</span></div>';
   } else h+='<div class="muted">日别桶从今天起累积,明天开始有趋势。</div>';
   h+='</div>';
-  // CF 日趋势
-  h+='<div class="card"><h2>每日趋势 · Cloudflare 边缘</h2>';
-  if(cf&&cf.daily.length){
+  // CF 日趋势:优先用定时快照攒下的全部历史,回退到实时 30 天查询。
+  const cfd=(d.cfDaily&&d.cfDaily.length)?d.cfDaily:(cf?cf.daily:[]);
+  h+='<div class="card"><h2>每日趋势 · Cloudflare 边缘'+
+     (cfd.length?' <span class="muted" style="font-weight:400">('+cfd.length+' 天)</span>':'')+'</h2>';
+  if(cfd.length){
     h+=lineChart(
-      [{values:cf.daily.map(x=>x.requests)},{values:cf.daily.map(x=>x.uniques)}],
+      [{values:cfd.map(x=>x.requests||0)},{values:cfd.map(x=>x.uniques||0)}],
       ['var(--acc)','var(--acc2)'],
-      cf.daily.map(x=>x.date.slice(5)));
+      cfd.map(x=>x.date.slice(5)));
     h+='<div class="legend"><span><span class="dot" style="background:var(--acc)"></span>请求</span>'+
        '<span><span class="dot" style="background:var(--acc2)"></span>独立 IP</span></div>';
-  } else h+='<div class="muted">未接入 CF。</div>';
+  } else h+='<div class="muted">未接入 CF,或定时快照尚未开始累积。</div>';
   h+='</div>';
   h+='</div>';
 

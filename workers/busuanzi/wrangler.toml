@@ -16,4 +16,9 @@ custom_domain = true
 binding = "COUNTER"
 id = "c7212c424dae43509e0a4c61659a6003"
 
+# 每天定时把 CF 边缘日别数据快照进 KV(cfd:YYYY-MM-DD,永久不过期),
+# 让边缘趋势不受 CF 免费套餐 ~30 天保留期限制、历史无限累积。00:17 UTC 跑一次。
+[triggers]
+crons = ["17 0 * * *"]
+
 # IP 哈希用的盐由 secret 提供,不进仓库:  wrangler secret put SALT
