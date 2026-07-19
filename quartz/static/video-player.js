@@ -112,14 +112,27 @@
     return PLACEHOLDER_SOURCE_IDS.indexOf(id.toLowerCase()) === -1;
   }
 
-  // 默认播放源自动分流(对齐语言切换的优先级设计,见 LanguageSwitch.tsx):
-  // 手动选过的源(videoSourcePref,点击切换时写入)最优先;其次跟随站点语言偏好
-  // langPref(选英文的人大概率翻墙无碍 → YouTube);都没有则按浏览器语言,
-  // 中文浏览器默认 Bilibili,其余默认 YouTube。返回空串表示不干预。
-  function detectPreferredSource() {
+  // 默认播放源自动分流。真正要回答的问题是「这个访客当前的网络能不能顺畅看 YouTube」,
+  // 所以按网络信号而非语言判断,优先级:
+  //   1. 手动选过的源(videoSourcePref,点击切换时写入,localStorage 持久化)
+  //   2. IP 归属地:Cloudflare 自带的同源端点 /cdn-cgi/trace 返回 loc 国家码,
+  //      非 CN(含开着全局代理的国内访客)→ YouTube
+  //   3. loc=CN 时实测 i.ytimg.com 缩略图连通性,兜住「博客直连、YouTube 走代理」
+  //      的分流规则用户:1.5s 内加载成功 → YouTube,否则 → Bilibili
+  //   4. geo 拿不到(端点异常/超时)→ 按站点语言偏好 langPref / 浏览器语言兜底
+  // 自动判定结果缓存在 sessionStorage:代理开关是会话级状态,别用 localStorage 固化。
+  var AUTO_SOURCE_KEY = 'videoSourceAuto';
+
+  function getManualSourcePref() {
     try {
       var pref = localStorage.getItem('videoSourcePref');
       if (pref === 'bilibili' || pref === 'youtube') return pref;
+    } catch (e) {}
+    return '';
+  }
+
+  function languageFallbackSource() {
+    try {
       var langPref = localStorage.getItem('langPref');
       if (langPref === 'en') return 'youtube';
       if (langPref === 'zh') return 'bilibili';
@@ -133,6 +146,70 @@
     } catch (e) {
       return '';
     }
+  }
+
+  function withTimeout(promise, ms, fallbackValue) {
+    return new Promise(function(resolve) {
+      var done = false;
+      var timer = setTimeout(function() {
+        if (!done) { done = true; resolve(fallbackValue); }
+      }, ms);
+      promise.then(function(value) {
+        if (!done) { done = true; clearTimeout(timer); resolve(value); }
+      }, function() {
+        if (!done) { done = true; clearTimeout(timer); resolve(fallbackValue); }
+      });
+    });
+  }
+
+  function fetchVisitorCountry() {
+    var req = fetch('/cdn-cgi/trace')
+      .then(function(response) {
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.text();
+      })
+      .then(function(text) {
+        var match = text.match(/^loc=([A-Z]+)$/m);
+        return match ? match[1] : '';
+      });
+    return withTimeout(req, 2000, '');
+  }
+
+  function probeYouTubeReachable(youtubeId) {
+    var probe = new Promise(function(resolve) {
+      var img = new Image();
+      img.onload = function() { resolve(true); };
+      img.onerror = function() { resolve(false); };
+      // 带时间戳防 HTTP 缓存假阳性:上个会话代理开着缓存过这张图,这次关了仍「加载成功」
+      img.src = 'https://i.ytimg.com/vi/' + encodeURIComponent(youtubeId) + '/default.jpg?t=' + Date.now();
+    });
+    return withTimeout(probe, 1500, false);
+  }
+
+  async function detectPreferredSource(youtubeId) {
+    var manual = getManualSourcePref();
+    if (manual) return manual;
+
+    try {
+      var cached = sessionStorage.getItem(AUTO_SOURCE_KEY);
+      if (cached === 'bilibili' || cached === 'youtube') return cached;
+    } catch (e) {}
+
+    var loc = await fetchVisitorCountry();
+    var result;
+    if (loc && loc !== 'CN') {
+      result = 'youtube';
+    } else if (loc === 'CN') {
+      // 本页没有 YouTube 源就没法探测:直接给 Bilibili,且不缓存,留给有源的页面再测
+      if (!youtubeId) return 'bilibili';
+      result = (await probeYouTubeReachable(youtubeId)) ? 'youtube' : 'bilibili';
+    } else {
+      // geo 失败属临时故障,语言兜底且不缓存,下次导航重试
+      return languageFallbackSource();
+    }
+
+    try { sessionStorage.setItem(AUTO_SOURCE_KEY, result); } catch (e) {}
+    return result;
   }
 
   function rememberSourcePref(key) {
@@ -172,8 +249,10 @@
         return source.key === key;
       });
     };
-    // 访客侧信号(手动偏好/语言)优先于页面 frontmatter 里写死的 defaultSource
-    var chosen = findAvailable(detectPreferredSource()) || findAvailable(defaultSource) || availableSources[0];
+    // 访客侧信号(手动偏好/网络探测)优先于页面 frontmatter 里写死的 defaultSource
+    var youtubeSource = findAvailable('youtube');
+    var preferred = await detectPreferredSource(youtubeSource ? youtubeSource.id : '');
+    var chosen = findAvailable(preferred) || findAvailable(defaultSource) || availableSources[0];
     var activeKey = chosen.key;
 
     container.innerHTML = '';

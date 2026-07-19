@@ -31,8 +31,8 @@ hideFolderList: true
 
 也可以邮箱订阅,有新内容第一时间收到:
 
-<form class="home-subscribe" action="https://gmail.us14.list-manage.com/subscribe/post?u=5d932dbece429d6399b0508ee&amp;id=931ca35638&amp;f_id=001db7e5f0" method="post" target="_blank">
-  <input type="email" name="EMAIL" placeholder="你的邮箱" required>
-  <div aria-hidden="true" style="position: absolute; left: -5000px;"><input type="text" name="b_5d932dbece429d6399b0508ee_931ca35638" tabindex="-1" value=""></div>
-  <button type="submit" name="subscribe">订阅</button>
+<form class="home-subscribe" action="https://buttondown.com/api/emails/embed-subscribe/WhyZ" method="post" target="_blank">
+  <input type="email" name="email" placeholder="你的邮箱" required>
+  <input type="hidden" name="embed" value="1">
+  <button type="submit">订阅</button>
 </form>

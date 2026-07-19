@@ -223,26 +223,6 @@
   }
 }
 
-// ── 订阅表单:大屏 / 小屏样式保持一致 ──────────────────────────
-// Mailchimp 自带 CSS 在 ≤400px 把表单底部(订阅按钮 + Mailchimp 徽标)
-// 从大屏的「按钮在左、徽标在右,同一行」(.foot 用 3fr/1fr 两列网格)
-// 改成「单列竖排、宽度 100%」,导致手机上和桌面布局不一致。
-// 这里在小屏把它统一回大屏的横排样式,并按比例缩小徽标避免溢出压住按钮。
-// 注:Mailchimp 的 <link> 样式插在页面正文、晚于本文件加载,选择器权重又相同,
-// 不加 !important 会被它的小屏规则盖回去,所以这里强制覆盖。
-@media screen and (max-width: 400px) {
-  #mc_embed_signup .foot {
-    grid-template-columns: 3fr 1fr !important;
-    width: 96% !important;
-  }
-  #mc_embed_signup .foot img.refferal_badge {
-    width: 100% !important;
-    height: auto !important;
-    max-width: 140px;
-    margin-left: auto;
-  }
-}
-
 // ── 小屏:目录抽屉展开时,钉住 Why Z + 搜索 ──────────────────────
 // 移动端点开 explorer 时,explorer.scss 把 .explorer-content 做成覆盖全屏的
 // fixed 遮罩(z-index:100、不透明 var(--light) 底),会把顶部的 Why Z 标题和
@@ -419,7 +399,7 @@ a.home-nav-item {
 }
 
 // 首页订阅表单(content/index.md 里的 .home-subscribe):
-// 自定义样式替代 Mailchimp 默认皮肤,输入框 + 按钮一行排,窄屏自动换行
+// 自定义样式(表单提交到 Buttondown),输入框 + 按钮一行排,窄屏自动换行
 .home-subscribe {
   display: flex;
   flex-wrap: wrap;
