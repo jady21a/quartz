@@ -112,6 +112,35 @@
     return PLACEHOLDER_SOURCE_IDS.indexOf(id.toLowerCase()) === -1;
   }
 
+  // 默认播放源自动分流(对齐语言切换的优先级设计,见 LanguageSwitch.tsx):
+  // 手动选过的源(videoSourcePref,点击切换时写入)最优先;其次跟随站点语言偏好
+  // langPref(选英文的人大概率翻墙无碍 → YouTube);都没有则按浏览器语言,
+  // 中文浏览器默认 Bilibili,其余默认 YouTube。返回空串表示不干预。
+  function detectPreferredSource() {
+    try {
+      var pref = localStorage.getItem('videoSourcePref');
+      if (pref === 'bilibili' || pref === 'youtube') return pref;
+      var langPref = localStorage.getItem('langPref');
+      if (langPref === 'en') return 'youtube';
+      if (langPref === 'zh') return 'bilibili';
+      var langs = (navigator.languages && navigator.languages.length)
+        ? navigator.languages
+        : [navigator.language || ''];
+      var isZh = langs.some(function(l) {
+        return l.toLowerCase().lastIndexOf('zh', 0) === 0;
+      });
+      return isZh ? 'bilibili' : 'youtube';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function rememberSourcePref(key) {
+    try {
+      localStorage.setItem('videoSourcePref', key);
+    } catch (e) {}
+  }
+
   // 始终返回 YouTube 和 Bilibili 两个源；没有有效 ID 的标记为不可用
   function getSources(container) {
     var youtubeId = (container.getAttribute('data-youtube') || '').trim();
@@ -138,10 +167,14 @@
     var playLabel = existingLite ? existingLite.getAttribute('playlabel') : '';
     var title = playLabel || container.getAttribute('data-title') || '';
     var defaultSource = (container.getAttribute('data-default-source') || '').trim();
-    var defaultAvailable = availableSources.find(function(source) {
-      return source.key === defaultSource;
-    });
-    var activeKey = defaultAvailable ? defaultAvailable.key : availableSources[0].key;
+    var findAvailable = function(key) {
+      return availableSources.find(function(source) {
+        return source.key === key;
+      });
+    };
+    // 访客侧信号(手动偏好/语言)优先于页面 frontmatter 里写死的 defaultSource
+    var chosen = findAvailable(detectPreferredSource()) || findAvailable(defaultSource) || availableSources[0];
+    var activeKey = chosen.key;
 
     container.innerHTML = '';
     container.classList.add('video-player-enhanced');
@@ -183,6 +216,7 @@
       sources.forEach(function(source) {
         tabs.appendChild(
           createSourceButton(source.label, source.key === activeKey, source.available, function() {
+            rememberSourcePref(source.key);
             if (source.key !== activeKey) {
               renderActiveSource(source.key);
             }
