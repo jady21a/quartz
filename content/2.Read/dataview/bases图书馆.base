@@ -1,52 +1,123 @@
+filters:
+  and:
+    - file.hasTag("book")
 formulas:
-  用时: |
-    结束阅读-开始阅读
+  cover: link(封面)
+  状态: if(阅读状态.contains("已读完"), "✅ 已读完", if(阅读状态.contains("正在阅读"), "📖 在读", if(阅读状态.contains("未读完"), "⏸ 搁置", "📚 未开始")))
+  用时: if(开始阅读 && 结束阅读, (date(结束阅读) - date(开始阅读)).days.toString() + " 天", "")
+  进度: if(currentPage && totalPage, (number(currentPage) / number(totalPage) * 100).round(0).toString() + "%", "")
+  读完年份: if(结束阅读, date(结束阅读).year, "")
+properties:
+  file.name:
+    displayName: 书名
+  originalTitle:
+    displayName: 原标题
+  author:
+    displayName: 作者
+  score:
+    displayName: 豆瓣分
+  scoreStar:
+    displayName: 评分
+  myRate:
+    displayName: 我的评分
+  totalPage:
+    displayName: 页数
+  publishDate:
+    displayName: 出版
+  添加时间:
+    displayName: 添加
+  formula.状态:
+    displayName: 状态
+  formula.用时:
+    displayName: 用时
+  formula.进度:
+    displayName: 进度
+  formula.读完年份:
+    displayName: 年份
 views:
   - type: cards
-    name: 所有图书
+    name: 📖 在读
     filters:
       and:
-        - file.hasTag("book")
+        - 阅读状态.contains("正在阅读")
+        - '!阅读状态.contains("已读完")'
     order:
       - file.name
-      - originalTitle
-      - scoreStar
-      - score
-      - yearPublished
-      - 结束阅读
+      - author
+      - formula.进度
       - 开始阅读
-      - formula.用时
-      - 阅读状态
     sort:
       - property: 开始阅读
         direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.85
-    cardSize: 150
+    image: formula.cover
+    imageAspectRatio: 0.7
+    cardSize: 200
     imageFit: contain
   - type: cards
-    name: 已读
+    name: ✅ 已读
     filters:
       and:
-        - file.folder.contains("2.Read")
-        - 阅读状态 == ["已读完"]
+        - 阅读状态.contains("已读完")
     order:
-      - title
+      - file.name
       - scoreStar
+      - myRate
+      - 结束阅读
+      - formula.用时
+    sort:
+      - property: 结束阅读
+        direction: DESC
+    image: formula.cover
+    imageAspectRatio: 0.7
+    cardSize: 180
+    imageFit: contain
+  - type: table
+    name: 📚 待读
+    filters:
+      and:
+        - '!阅读状态.contains("已读完")'
+        - '!阅读状态.contains("正在阅读")'
+    order:
+      - file.name
+      - author
+      - totalPage
       - score
-      - yearPublished
-      - originalTitle
+      - 添加时间
+    sort:
+      - property: 添加时间
+        direction: DESC
+  - type: table
+    name: 📅 年度书单
+    filters:
+      and:
+        - 阅读状态.contains("已读完")
+        - 结束阅读
+    groupBy:
+      property: formula.读完年份
+      direction: DESC
+    order:
+      - file.name
+      - author
+      - scoreStar
       - 开始阅读
       - 结束阅读
       - formula.用时
     sort:
       - property: 结束阅读
         direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.95
+    summaries:
+      file.name: Filled
+  - type: cards
+    name: 🗄 全部藏书
+    order:
+      - file.name
+      - formula.状态
+      - author
+      - score
+    sort:
+      - property: 添加时间
+        direction: DESC
+    image: formula.cover
+    imageAspectRatio: 0.7
     cardSize: 160
     imageFit: contain
-  - type: cards
-    name: View 2
-  - type: table
-    name: 视图
