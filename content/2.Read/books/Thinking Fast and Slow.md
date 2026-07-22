@@ -6,7 +6,8 @@ genre: Psychology
 publisher: Doubleday Canada
 publishDate: 2011-11-01
 totalPage: "619"
-currentPage: 第三章
+进度: 12%
+章节: 第三章
 tags:
   - book
   - movies
@@ -14,7 +15,6 @@ isbn: "9780385676526"
 封面: 2.Read/douban/0_dimage/gbooks_TA7Q27RWlj0C.jpg
 阅读状态:
   - 正在阅读
-  - 已读完
 阅读进度:
 添加时间: 2026-03-17
 开始阅读:

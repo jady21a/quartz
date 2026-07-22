@@ -1,8 +1,7 @@
 ---
 title:
   - ExactlyWhattoSay
-author:
-  - PhilMJones"
+author: "PhilMJones"
 publishDate: 2017-07-26
 开始阅读:
 结束阅读:

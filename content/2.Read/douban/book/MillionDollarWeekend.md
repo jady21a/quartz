@@ -1,10 +1,7 @@
 ---
 title:
   - MillionDollarWeekend
-author:
-  - 
-  - NoahKagan
-  - TahlRaz"
+author: "NoahKagan、TahlRaz"
 publishDate: 2024-01-30
 阅读状态:
   - 已读完

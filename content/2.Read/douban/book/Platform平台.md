@@ -1,8 +1,7 @@
 ---
 title:
   - platform
-author:
-  - Hyatt,Michael;Hyatt,Michael;
+author: "Hyatt,Michael"
 publishDate: ""
 阅读状态:
   - 已读完

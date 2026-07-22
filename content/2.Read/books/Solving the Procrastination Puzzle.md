@@ -14,7 +14,6 @@ isbn: "9780698148314"
 封面: 2.Read/douban/0_dimage/gbooks_1AAsyQ1wgaEC.jpg
 阅读状态:
   - 正在阅读
-  - 已读完
 阅读进度:
 添加时间: 2026-05-11
 开始阅读:

@@ -1,8 +1,7 @@
 ---
 title:
   - GiftsDiffering
-author:
-  - IsabelBriggsMyers"
+author: "IsabelBriggsMyers"
 publishDate: 1995-05-03
 开始阅读: 2025-07-21
 结束阅读: 2025-07-28

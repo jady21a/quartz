@@ -14,7 +14,6 @@ isbn: "9781439144831"
 封面: 2.Read/douban/0_dimage/gbooks_Z5PpkQadm5EC.jpg
 阅读状态:
   - 正在阅读
-  - 已读完
 阅读进度:
 添加时间: 2026-01-30
 开始阅读:

@@ -1,9 +1,7 @@
 ---
 title:
   - NonviolentCommunication
-author:
-  - 
-  - MarshallB.Rosenberg"
+author: "MarshallB.Rosenberg"
 publishDate: 2003-09-01
 阅读状态:
   - 概览

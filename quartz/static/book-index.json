@@ -28,8 +28,7 @@
     "publishDate": "2011-05-10",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
-      "已读完"
+      "正在阅读"
     ],
     "totalPage": "452",
     "currentPage": "",
@@ -51,8 +50,7 @@
     "publishDate": "2000-10-12",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
-      "已读完"
+      "正在阅读"
     ],
     "totalPage": "152",
     "currentPage": "",
@@ -74,8 +72,7 @@
     "publishDate": "2013-10-29",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
-      "已读完"
+      "正在阅读"
     ],
     "totalPage": "130",
     "currentPage": "",
@@ -97,7 +94,6 @@
     "publishDate": "2021-03-09",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
       "已读完"
     ],
     "totalPage": "305",
@@ -114,11 +110,7 @@
     "title": "10xIsEasierThan2x",
     "封面": "/read/douban/0_dimage/s34536381.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "DanSullivan",
-      "Dr.BenjaminHardy\""
-    ],
+    "author": "DanSullivan、Dr.BenjaminHardy",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.1",
     "publishDate": "2023-05-09",
@@ -138,12 +130,9 @@
   {
     "file": "/read/douban/book/12Monthsto$1Million",
     "title": "12Monthsto$1Million",
-    "封面": "https://play.google.com/books/publisher/content/images/frontcover/uwO5DwAAQBAJ?fife=w480-h690",
+    "封面": "/read/douban/0_dimage/gbooks_uwO5DwAAQBAJ.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "RyanDanielMoran\""
-    ],
+    "author": "RyanDanielMoran",
     "scoreStar": "",
     "score": "",
     "publishDate": "",
@@ -166,9 +155,7 @@
     "title": "82年生的金智英",
     "封面": "/read/douban/0_dimage/s33463759.jpg",
     "originalTitle": "",
-    "author": [
-      " - 韩/赵南柱"
-    ],
+    "author": "韩/赵南柱",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.1",
     "publishDate": "2019-08-01",
@@ -190,9 +177,7 @@
     "title": "ExactlyWhattoSay",
     "封面": "/read/douban/0_dimage/71LzPlsDcEL._SY522_.jpg",
     "originalTitle": "",
-    "author": [
-      "PhilMJones\""
-    ],
+    "author": "PhilMJones",
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.4",
     "publishDate": "2017-07-26",
@@ -214,9 +199,7 @@
     "title": "GiftsDiffering",
     "封面": "/read/douban/0_dimage/s3247795.jpg",
     "originalTitle": "",
-    "author": [
-      "IsabelBriggsMyers\""
-    ],
+    "author": "IsabelBriggsMyers",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.4",
     "publishDate": "1995-05-03",
@@ -238,9 +221,7 @@
     "title": "MakeMoneyEasy",
     "封面": "/read/douban/0_dimage/s35158296.jpg",
     "originalTitle": "",
-    "author": [
-      "Lewis HowesLewis Howes"
-    ],
+    "author": "Lewis Howes",
     "scoreStar": "",
     "score": "",
     "publishDate": "2025-03-18",
@@ -263,11 +244,7 @@
     "title": "MillionDollarWeekend",
     "封面": "/read/douban/0_dimage/s34776686.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "NoahKagan",
-      "TahlRaz\""
-    ],
+    "author": "NoahKagan、TahlRaz",
     "scoreStar": "",
     "score": "",
     "publishDate": "2024-01-30",
@@ -289,10 +266,7 @@
     "title": "NonviolentCommunication",
     "封面": "/read/douban/0_dimage/s4584066.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "MarshallB.Rosenberg\""
-    ],
+    "author": "MarshallB.Rosenberg",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "9.3",
     "publishDate": "2003-09-01",
@@ -314,9 +288,7 @@
     "title": "platform",
     "封面": "/read/douban/0_dimage/716ulwY6ycL._SY522_.jpg",
     "originalTitle": "",
-    "author": [
-      "Hyatt,Michael;Hyatt,Michael;"
-    ],
+    "author": "Hyatt,Michael",
     "scoreStar": "",
     "score": "",
     "publishDate": "",
@@ -360,7 +332,7 @@
     "title": "一个悲观主义者的积极思考",
     "封面": "/read/douban/0_dimage/s26822759.jpg",
     "originalTitle": "",
-    "author": " - 叔本华",
+    "author": "叔本华",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.5",
     "publishDate": "2013-05-01",
@@ -382,10 +354,7 @@
     "title": "人类简史",
     "封面": "/read/douban/0_dimage/s27814883.jpg",
     "originalTitle": "Sapiens: A brief history of humankind",
-    "author": [
-      null,
-      "以色列/尤瓦尔·赫拉利\""
-    ],
+    "author": "以色列/尤瓦尔·赫拉利",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "9.1",
     "publishDate": "2014-11-01",
@@ -407,11 +376,7 @@
     "title": "从0到1",
     "封面": "/read/douban/0_dimage/s28299265.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "美/彼得·蒂尔",
-      "美/布莱克·马斯特斯\""
-    ],
+    "author": "美/彼得·蒂尔、美/布莱克·马斯特斯",
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.6",
     "publishDate": "2015-01-01",
@@ -433,9 +398,7 @@
     "title": "你想活出怎样的人生",
     "封面": "/read/douban/0_dimage/s33439128.jpg",
     "originalTitle": "",
-    "author": [
-      " - 日/吉野源三郎 - 日/胁田和(绘)"
-    ],
+    "author": "日/吉野源三郎、日/胁田和(绘)",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.6",
     "publishDate": "2019-08-01",
@@ -477,11 +440,9 @@
   {
     "file": "/read/douban/book/carnegie-art-of-public-speaking",
     "title": "卡耐基口才的艺术与人际关系",
-    "封面": "https://m.media-amazon.com/images/I/61g1WQHK8QL._SY522_.jpg",
+    "封面": "/read/douban/0_dimage/amz_61g1WQHK8QL.jpg",
     "originalTitle": "",
-    "author": [
-      "(美)戴尔·卡耐基|译者:马剑涛//肖文键"
-    ],
+    "author": "(美)戴尔·卡耐基|译者:马剑涛//肖文键",
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.3",
     "publishDate": "2010-05-01",
@@ -526,11 +487,7 @@
     "title": "原子習慣",
     "封面": "/read/douban/0_dimage/s34937323.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "JamesClear",
-      "詹姆斯．克利爾\""
-    ],
+    "author": "JamesClear、詹姆斯．克利爾",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "9",
     "publishDate": "2019-06-01",
@@ -552,10 +509,7 @@
     "title": "只工作、不上班的自主人生",
     "封面": "/read/douban/0_dimage/BWL094.png",
     "originalTitle": "",
-    "author": [
-      null,
-      "瓦基（莊勝翔）\""
-    ],
+    "author": "瓦基（莊勝翔）",
     "scoreStar": "",
     "score": "",
     "publishDate": "2022-11-30",
@@ -599,10 +553,7 @@
     "title": "哈佛非虚构写作课",
     "封面": "/read/douban/0_dimage/s28364301.jpg",
     "originalTitle": "",
-    "author": [
-      "美/马克·克雷默",
-      "美/温迪·考尔\""
-    ],
+    "author": "美/马克·克雷默、美/温迪·考尔",
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.9",
     "publishDate": "2015-12-01",
@@ -624,10 +575,7 @@
     "title": "基层女性",
     "封面": "/read/douban/0_dimage/s34001866.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "王慧玲\""
-    ],
+    "author": "王慧玲",
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.5",
     "publishDate": "2021-08-01",
@@ -649,10 +597,7 @@
     "title": "天生不同",
     "封面": "/read/douban/0_dimage/s29085860.jpg",
     "originalTitle": "",
-    "author": [
-      "【美】伊莎贝尔•迈尔斯（IsabelBriggsMyers）",
-      "【美】彼得•迈尔斯（PeterB.Myers）\""
-    ],
+    "author": "【美】伊莎贝尔•迈尔斯（IsabelBriggsMyers）、【美】彼得•迈尔斯（PeterB.Myers）",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.1",
     "publishDate": "2016-11-01",
@@ -674,9 +619,7 @@
     "title": "失去的三十年",
     "封面": "/read/douban/0_dimage/s34185604.jpg",
     "originalTitle": "",
-    "author": [
-      " - 日/野口悠纪雄"
-    ],
+    "author": "日/野口悠纪雄",
     "scoreStar": "⭐⭐⭐",
     "score": "6.4",
     "publishDate": "2022-04-01",
@@ -720,9 +663,7 @@
     "title": "如何迅速建立强大的心理素质",
     "封面": "/read/douban/0_dimage/s28425245.jpg",
     "originalTitle": "",
-    "author": [
-      " - 何明昊"
-    ],
+    "author": "何明昊",
     "scoreStar": "⭐⭐⭐",
     "score": "7.3",
     "publishDate": "2016-01-01",
@@ -744,9 +685,7 @@
     "title": "孩子：挑战",
     "封面": "/read/douban/0_dimage/s29049074.jpg",
     "originalTitle": "",
-    "author": [
-      " - 【美】鲁道夫·德雷克斯 - 【美】薇姬·索尔兹"
-    ],
+    "author": "【美】鲁道夫·德雷克斯、【美】薇姬·索尔兹",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.1",
     "publishDate": "2015-01-01",
@@ -790,9 +729,7 @@
     "title": "富爸爸，穷爸爸",
     "封面": "/read/douban/0_dimage/s11229869.jpg",
     "originalTitle": "",
-    "author": [
-      " - （美）罗伯特・T・清崎 - 莎伦・L・莱希特"
-    ],
+    "author": "（美）罗伯特・T・清崎、莎伦・L・莱希特",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.3",
     "publishDate": "2000-09-01",
@@ -814,9 +751,7 @@
     "title": "小狗钱钱",
     "封面": "/read/douban/0_dimage/s33789389.jpg",
     "originalTitle": "",
-    "author": [
-      " - 德/博多·舍费尔"
-    ],
+    "author": "德/博多·舍费尔",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.2",
     "publishDate": "2021-02-01",
@@ -860,9 +795,7 @@
     "title": "影响力",
     "封面": "/read/douban/0_dimage/s1657785.jpg",
     "originalTitle": "",
-    "author": [
-      "美/罗伯特·西奥迪尼\""
-    ],
+    "author": "美/罗伯特·西奥迪尼",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.6",
     "publishDate": "2006-05-01",
@@ -906,12 +839,7 @@
     "title": "思考致富",
     "封面": "/read/douban/0_dimage/s28289884.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "（美）拿破仑·希尔（NapoleonHill）",
-      "比尔·哈德利（BillHartley）",
-      "安·哈德利（AnnHartley）\""
-    ],
+    "author": "（美）拿破仑·希尔（NapoleonHill）、比尔·哈德利（BillHartley）、安·哈德利（AnnHartley）",
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "7.5",
     "publishDate": "2015-09-01",
@@ -955,9 +883,7 @@
     "title": "搞定",
     "封面": "/read/douban/0_dimage/s33860665.jpg",
     "originalTitle": "",
-    "author": [
-      " - 戴维•艾伦（DavidAllen）；迈克•威廉斯（MikeWilliams）；马克•华莱士(MarkWallace)"
-    ],
+    "author": "戴维•艾伦（DavidAllen）；迈克•威廉斯（MikeWilliams）；马克•华莱士(MarkWallace)",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.3",
     "publishDate": "2020-01-01",
@@ -979,9 +905,7 @@
     "title": "改变人生的谈话",
     "封面": "/read/douban/0_dimage/s33838655.jpg",
     "originalTitle": "",
-    "author": [
-      " - 黄启团"
-    ],
+    "author": "黄启团",
     "scoreStar": "⭐⭐⭐",
     "score": "7.4",
     "publishDate": "2021-03-01",
@@ -1003,9 +927,7 @@
     "title": "故事课1：说故事的人最有影响力",
     "封面": "/read/douban/0_dimage/s29824182.jpg",
     "originalTitle": "",
-    "author": [
-      "许荣哲\""
-    ],
+    "author": "许荣哲",
     "scoreStar": "⭐⭐⭐☆☆",
     "score": "6.8",
     "publishDate": "2018-06-01",
@@ -1033,8 +955,7 @@
     "publishDate": "2014-11-01",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
-      "已读完"
+      "正在阅读"
     ],
     "totalPage": "530",
     "currentPage": "",
@@ -1050,9 +971,7 @@
     "title": "普通人的財富自由之道",
     "封面": "/read/douban/0_dimage/714FD0hNmfL._SY522_.jpg",
     "originalTitle": "",
-    "author": [
-      "JohnLeeDumas\""
-    ],
+    "author": "JohnLeeDumas",
     "scoreStar": "",
     "score": "",
     "publishDate": "2022-01-26",
@@ -1074,20 +993,13 @@
     "title": "枪炮、病菌与钢铁",
     "封面": "/read/douban/0_dimage/s1738643.jpg",
     "originalTitle": "Guns, Germs and Steel: The Fates of Human Societies",
-    "author": [
-      null,
-      "美/贾雷德·戴蒙德\""
-    ],
+    "author": "美/贾雷德·戴蒙德",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.7",
     "publishDate": "2006-04-01",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
-      "已读完",
-      "未开始",
-      "未读完",
-      "概览"
+      "已读完"
     ],
     "totalPage": "460",
     "currentPage": "",
@@ -1125,19 +1037,13 @@
     "title": "榮格論心理類型",
     "封面": "/read/douban/0_dimage/s29703716.jpg",
     "originalTitle": "Psychologische Typen",
-    "author": [
-      "瑞士/卡爾．榮格"
-    ],
+    "author": "瑞士/卡爾．榮格",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "9.9",
     "publishDate": "2017-11-11",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
-      "已读完",
-      "未开始",
-      "未读完",
-      "概览"
+      "未读完"
     ],
     "totalPage": "640",
     "currentPage": "",
@@ -1181,8 +1087,7 @@
     "publishDate": "2011-11-01",
     "myRate": "",
     "阅读状态": [
-      "正在阅读",
-      "已读完"
+      "正在阅读"
     ],
     "totalPage": "316",
     "currentPage": "",
@@ -1220,10 +1125,7 @@
     "title": "百万富翁快车道",
     "封面": "/read/douban/0_dimage/s29582069.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "美/MJ·德马科\""
-    ],
+    "author": "美/MJ·德马科",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.1",
     "publishDate": "2017-05-01",
@@ -1245,9 +1147,7 @@
     "title": "穷查理宝典",
     "封面": "/read/douban/0_dimage/s28875892.jpg",
     "originalTitle": "",
-    "author": [
-      " - CharlieT.Munger - PeterD.Kaufman"
-    ],
+    "author": "CharlieT.Munger、PeterD.Kaufman",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.6",
     "publishDate": "2016-08-01",
@@ -1288,41 +1188,11 @@
     ]
   },
   {
-    "file": "/read/douban/book/jane-eyre",
-    "title": "简爱",
-    "封面": "/read/douban/0_dimage/s33473798.jpg",
-    "originalTitle": "Jane Eyre",
-    "author": [
-      null,
-      "英/夏洛蒂·勃朗特\""
-    ],
-    "scoreStar": "⭐⭐⭐⭐☆",
-    "score": "8.5",
-    "publishDate": "2007-08-01",
-    "myRate": "",
-    "阅读状态": [
-      "已读完",
-      "未开始",
-      "未读完",
-      "概览"
-    ],
-    "totalPage": "495",
-    "currentPage": "",
-    "添加时间": "2025-10-23",
-    "开始时间": "",
-    "结束阅读": "",
-    "tags": [
-      "book"
-    ]
-  },
-  {
     "file": "/read/douban/book/running-lean",
     "title": "精益创业实战（第2版）",
     "封面": "/read/douban/0_dimage/s24610736.jpg",
     "originalTitle": "",
-    "author": [
-      " - AshMaurya"
-    ],
+    "author": "AshMaurya",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.8",
     "publishDate": "2013-01-01",
@@ -1344,11 +1214,7 @@
     "title": "纳瓦尔宝典",
     "封面": "/read/douban/0_dimage/s34241855.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "美/埃里克·乔根森",
-      "纳瓦尔·拉威康特\""
-    ],
+    "author": "美/埃里克·乔根森、纳瓦尔·拉威康特",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.4",
     "publishDate": "2022-04-01",
@@ -1392,10 +1258,7 @@
     "title": "自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）",
     "封面": "/read/douban/0_dimage/s34809926.jpg",
     "originalTitle": "THE WILLPOWER INSTINCT",
-    "author": [
-      null,
-      "【美】凯利·麦格尼格尔\""
-    ],
+    "author": "【美】凯利·麦格尼格尔",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.4",
     "publishDate": "2021-04-08",
@@ -1483,9 +1346,7 @@
     "title": "营销管理(第16版)",
     "封面": "/read/douban/0_dimage/s34804580.jpg",
     "originalTitle": "",
-    "author": [
-      " - 美/菲利普·科特勒 - 美/凯文·莱恩·凯勒 - 美/亚历山大·切尔内夫"
-    ],
+    "author": "美/菲利普·科特勒、美/凯文·莱恩·凯勒、美/亚历山大·切尔内夫",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.9",
     "publishDate": "2022-09-05",
@@ -1507,9 +1368,7 @@
     "title": "薛兆丰经济学讲义",
     "封面": "/read/douban/0_dimage/s29841565.jpg",
     "originalTitle": "",
-    "author": [
-      " - 薛兆丰"
-    ],
+    "author": "薛兆丰",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.1",
     "publishDate": "2018-07-01",
@@ -1531,9 +1390,7 @@
     "title": "表面活性剂、胶体与界面化学基础（崔正刚）（第二版）",
     "封面": "/read/douban/0_dimage/71fmmT6AC0L._SY522_.jpg",
     "originalTitle": "",
-    "author": [
-      ""
-    ],
+    "author": "",
     "scoreStar": "",
     "score": "",
     "publishDate": "",
@@ -1577,9 +1434,7 @@
     "title": "财务自由之路",
     "封面": "/read/douban/0_dimage/s35028819.jpg",
     "originalTitle": "",
-    "author": [
-      " - 德国/博多·舍费尔"
-    ],
+    "author": "德国/博多·舍费尔",
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.2",
     "publishDate": "2025-01-01",
@@ -1623,9 +1478,7 @@
     "title": "费曼学习法（用输出倒逼输入）",
     "封面": "/read/douban/0_dimage/s33891850.jpg",
     "originalTitle": "",
-    "author": [
-      " - 尹红心李伟"
-    ],
+    "author": "尹红心李伟",
     "scoreStar": "⭐⭐⭐",
     "score": "6.4",
     "publishDate": "2021-03-13",
@@ -1647,10 +1500,7 @@
     "title": "金钱心理学",
     "封面": "/read/douban/0_dimage/s34540496.jpg",
     "originalTitle": "",
-    "author": [
-      null,
-      "美/摩根·豪泽尔\""
-    ],
+    "author": "美/摩根·豪泽尔",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.3",
     "publishDate": "2023-06-01",
@@ -1672,9 +1522,7 @@
     "title": "非暴力沟通",
     "封面": "/read/douban/0_dimage/s29710777.jpg",
     "originalTitle": "",
-    "author": [
-      "美/马歇尔·卢森堡\""
-    ],
+    "author": "美/马歇尔·卢森堡",
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.4",
     "publishDate": "2009-01-01",

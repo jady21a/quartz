@@ -13,7 +13,6 @@ tags:
 isbn: "9780593330456"
 封面: 2.Read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg
 阅读状态:
-  - 正在阅读
   - 已读完
 阅读进度:
 添加时间: 2026-04-14

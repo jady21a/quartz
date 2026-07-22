@@ -1,0 +1,162 @@
+filters:
+  and:
+    - file.hasTag("movies")
+formulas:
+  cover: link(封面)
+  类型: if(type == "movie", "🎬 电影", if(type == "teleplay" || type == "series", "📺 剧集", "🎞 其他"))
+  状态: if(state.contains("已看"), "✅ 已看", if(state.contains("正在观看"), "▶️ 在看", if(state.contains("弃剧"), "🚫 弃剧", "🍿 待看")))
+  上映年份: if(datePublished, date(datePublished).year, "")
+properties:
+  file.name:
+    displayName: 片名
+  originalTitle:
+    displayName: 原名
+  director:
+    displayName: 导演
+  score:
+    displayName: 豆瓣分
+  scoreStar:
+    displayName: 评分
+  myRating:
+    displayName: 我的评分
+  datePublished:
+    displayName: 上映
+  country:
+    displayName: 地区
+  genre:
+    displayName: 类型
+  添加时间:
+    displayName: 添加
+  结束时间:
+    displayName: 看完
+  formula.类型:
+    displayName: 媒介
+  formula.状态:
+    displayName: 状态
+  formula.上映年份:
+    displayName: 年份
+views:
+  - type: editable-cards
+    name: ▶️ 在看
+    filters:
+      and:
+        - state.contains("正在观看")
+    order:
+      - file.name
+      - formula.类型
+      - director
+      - 开始时间
+    sort:
+      - property: 开始时间
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 200
+    imageFit: contain
+  - type: editable-cards
+    name: ✅ 已看
+    filters:
+      and:
+        - state.contains("已看")
+    order:
+      - file.name
+      - scoreStar
+      - myRating
+      - 结束时间
+    sort:
+      - property: 结束时间
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 180
+    imageFit: contain
+  - type: editable-cards
+    name: 🍿 待看
+    filters:
+      and:
+        - state.contains("待看")
+    order:
+      - file.name
+      - formula.类型
+      - director
+      - score
+      - country
+      - 添加时间
+    sort:
+      - property: 添加时间
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 180
+    imageFit: contain
+  - type: editable-cards
+    name: 🚫 弃剧
+    filters:
+      and:
+        - state.contains("弃剧")
+    order:
+      - file.name
+      - formula.类型
+      - director
+      - score
+      - 添加时间
+    sort:
+      - property: 添加时间
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 180
+    imageFit: contain
+  - type: editable-cards
+    name: 🎬 按媒介
+    groupBy:
+      property: formula.类型
+      direction: ASC
+    order:
+      - file.name
+      - formula.状态
+      - director
+      - score
+    sort:
+      - property: score
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 160
+    imageFit: contain
+  - type: editable-cards
+    name: 📅 按年度
+    groupBy:
+      property: formula.上映年份
+      direction: DESC
+    order:
+      - file.name
+      - formula.类型
+      - director
+      - score
+      - country
+    sort:
+      - property: datePublished
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 160
+    imageFit: contain
+  - type: editable-cards
+    name: 🗄 全部片库
+    order:
+      - file.name
+      - formula.类型
+      - formula.状态
+      - director
+      - score
+      - scoreStar
+      - country
+      - datePublished
+    sort:
+      - property: score
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 160
+    imageFit: contain

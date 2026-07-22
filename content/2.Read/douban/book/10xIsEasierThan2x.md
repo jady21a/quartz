@@ -1,10 +1,7 @@
 ---
 title:
   - 10xIsEasierThan2x
-author:
-  -
-  - DanSullivan
-  - Dr.BenjaminHardy"
+author: "DanSullivan、Dr.BenjaminHardy"
 publishDate: 2023-05-09
 阅读状态:
   - 已读完

@@ -2,15 +2,13 @@
 originalTitle: ""
 title:
   - 12Monthsto$1Million
-author:
-  - 
-  - RyanDanielMoran"
+author: "RyanDanielMoran"
 publishDate: ""
 阅读状态:
   - 概览
   - 未读完
 score: ""
-封面: "\thttps://play.google.com/books/publisher/content/images/frontcover/uwO5DwAAQBAJ?fife=w480-h690"
+封面: 2.Read/douban/0_dimage/gbooks_uwO5DwAAQBAJ.jpg
 yearPublished: ""
 tags:
   - book
