@@ -3,8 +3,8 @@ filters:
     - file.hasTag("movies")
 formulas:
   cover: link(封面)
-  类型: if(type == "movie", "🎬 电影", if(type == "teleplay" || type == "series", "📺 剧集", "🎞 其他"))
-  状态: if(state.contains("已看"), "✅ 已看", if(state.contains("正在观看"), "▶️ 在看", if(state.contains("弃剧"), "🚫 弃剧", "🍿 待看")))
+  类型: if(type == "movie", "电影", if(type == "teleplay" || type == "series", "剧集", "其他"))
+  状态: if(state.contains("已看"), "已看", if(state.contains("正在观看"), "在看", if(state.contains("弃剧"), "弃剧", "待看")))
   上映年份: if(datePublished, date(datePublished).year, "")
 properties:
   file.name:
@@ -37,7 +37,7 @@ properties:
     displayName: 年份
 views:
   - type: editable-cards
-    name: ▶️ 在看
+    name: 在看
     filters:
       and:
         - state.contains("正在观看")
@@ -54,7 +54,7 @@ views:
     cardSize: 200
     imageFit: contain
   - type: editable-cards
-    name: ✅ 已看
+    name: 已看
     filters:
       and:
         - state.contains("已看")
@@ -71,7 +71,7 @@ views:
     cardSize: 180
     imageFit: contain
   - type: editable-cards
-    name: 🍿 待看
+    name: 待看
     filters:
       and:
         - state.contains("待看")
@@ -90,7 +90,7 @@ views:
     cardSize: 180
     imageFit: contain
   - type: editable-cards
-    name: 🚫 弃剧
+    name: 弃剧
     filters:
       and:
         - state.contains("弃剧")
@@ -108,7 +108,7 @@ views:
     cardSize: 180
     imageFit: contain
   - type: editable-cards
-    name: 🎬 按媒介
+    name: 按媒介
     groupBy:
       property: formula.类型
       direction: ASC
@@ -125,7 +125,7 @@ views:
     cardSize: 160
     imageFit: contain
   - type: editable-cards
-    name: 📅 按年度
+    name: 按年度
     groupBy:
       property: formula.上映年份
       direction: DESC
@@ -143,7 +143,7 @@ views:
     cardSize: 160
     imageFit: contain
   - type: editable-cards
-    name: 🗄 全部片库
+    name: 全部片库
     order:
       - file.name
       - formula.类型

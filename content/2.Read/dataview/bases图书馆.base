@@ -4,12 +4,13 @@ filters:
     - '!file.inFolder("10.Template")'
 formulas:
   cover: link(封面)
-  状态: if(阅读状态.contains("已读完"), "✅ 已读完", if(阅读状态.contains("正在阅读"), "📖 在读", if(阅读状态.contains("未读完"), "⏸ 搁置", "📚 未开始")))
+  状态: if(阅读状态.contains("已读完"), "已读完", if(阅读状态.contains("正在阅读"), "在读", if(阅读状态.contains("未读完"), "未读完", "未开始")))
   用时: if(开始阅读 && 结束阅读, (date(结束阅读) - date(开始阅读)).days.toString() + " 天", "")
   距今: if(开始阅读, (now() - date(开始阅读)).days.round(0).toString() + " 天", "")
   进度: if(note.进度, if(note.进度.toString().contains("%"), note.进度.toString(), note.进度.toString() + "%"), if(currentPage && totalPage, (number(currentPage) / number(totalPage) * 100).round(0).toString() + "%", ""))
   读完年份: if(结束阅读, date(结束阅读).year, "")
   有结束: if(结束阅读, 1, 0)
+  深度: if(阅读方式.contains("概览"), "概览", "精读")
 properties:
   file.name:
     displayName: 书名
@@ -29,8 +30,12 @@ properties:
     displayName: 出版
   添加时间:
     displayName: 添加
+  阅读方式:
+    displayName: 方式
   formula.状态:
     displayName: 状态
+  formula.深度:
+    displayName: 深度
   formula.用时:
     displayName: 用时
   formula.距今:
@@ -41,7 +46,7 @@ properties:
     displayName: 年份
 views:
   - type: editable-cards
-    name: 📖 在读
+    name: 在读
     filters:
       and:
         - 阅读状态.contains("正在阅读")
@@ -58,13 +63,14 @@ views:
         direction: DESC
     image: note.封面
   - type: editable-cards
-    name: ✅ 已读
+    name: 已读
     filters:
       and:
         - 阅读状态.contains("已读完")
     order:
       - file.name
       - author
+      - formula.深度
       - myRate
       - 结束阅读
       - formula.用时
@@ -75,7 +81,7 @@ views:
         direction: DESC
     image: note.封面
   - type: editable-cards
-    name: ⏸ 搁置
+    name: 未读完
     filters:
       and:
         - 阅读状态.contains("未读完")
@@ -93,7 +99,7 @@ views:
         direction: DESC
     image: note.封面
   - type: editable-cards
-    name: 📚 待读
+    name: 待读
     filters:
       and:
         - '!阅读状态.contains("已读完")'
@@ -114,16 +120,16 @@ views:
     cardSize: 180
     imageFit: contain
   - type: editable-cards
-    name: 👀 概览
+    name: 概览
     filters:
       and:
-        - 阅读状态.contains("概览")
+        - 阅读方式.contains("概览")
     order:
       - file.name
       - author
+      - formula.状态
       - score
       - myRate
-      - formula.进度
       - 添加时间
     sort:
       - property: 添加时间
@@ -133,7 +139,7 @@ views:
     cardSize: 180
     imageFit: contain
   - type: table
-    name: 📅 年度书单
+    name: 年度书单
     filters:
       and:
         - 阅读状态.contains("已读完")
@@ -154,11 +160,12 @@ views:
     summaries:
       file.name: Filled
   - type: editable-cards
-    name: 🗄 全部藏书
+    name: 全部藏书
     order:
       - file.name
       - author
       - formula.状态
+      - formula.深度
       - score
       - myRate
       - 添加时间

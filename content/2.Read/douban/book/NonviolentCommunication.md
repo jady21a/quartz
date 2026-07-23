@@ -4,6 +4,8 @@ title:
 author: "MarshallB.Rosenberg"
 publishDate: 2003-09-01
 阅读状态:
+  - 已读完
+阅读方式:
   - 概览
 score: "9.3"
 封面: 2.Read/douban/0_dimage/s4584066.jpg
