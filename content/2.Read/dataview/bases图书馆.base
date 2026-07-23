@@ -81,24 +81,6 @@ views:
         direction: DESC
     image: note.封面
   - type: editable-cards
-    name: 未读完
-    filters:
-      and:
-        - 阅读状态.contains("未读完")
-        - '!阅读状态.contains("已读完")'
-        - '!阅读状态.contains("正在阅读")'
-    order:
-      - file.name
-      - author
-      - currentPage
-      - totalPage
-      - formula.进度
-      - 开始阅读
-    sort:
-      - property: 开始阅读
-        direction: DESC
-    image: note.封面
-  - type: editable-cards
     name: 待读
     filters:
       and:
@@ -119,6 +101,24 @@ views:
     imageAspectRatio: 0.7
     cardSize: 180
     imageFit: contain
+  - type: editable-cards
+    name: 未读完
+    filters:
+      and:
+        - 阅读状态.contains("未读完")
+        - '!阅读状态.contains("已读完")'
+        - '!阅读状态.contains("正在阅读")'
+    order:
+      - file.name
+      - author
+      - currentPage
+      - totalPage
+      - formula.进度
+      - 开始阅读
+    sort:
+      - property: 开始阅读
+        direction: DESC
+    image: note.封面
   - type: editable-cards
     name: 概览
     filters:
