@@ -1,6 +1,6 @@
 [
   {
-    "file": "/read/books/12-Months-to-$1-Million",
+    "file": "/read/add-book/books/12-Months-to-$1-Million",
     "title": "12 Months to $1 Million",
     "封面": "http://books.google.com/books/content?id=uwO5DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
     "originalTitle": "",
@@ -18,7 +18,7 @@
     "tags": []
   },
   {
-    "file": "/read/books/How-to-Read-a-Book",
+    "file": "/read/add-book/books/How-to-Read-a-Book",
     "title": "如何阅读一本书",
     "封面": "/read/douban/0_dimage/gbooks_Z5PpkQadm5EC.jpg",
     "originalTitle": "How to Read a Book",
@@ -40,7 +40,7 @@
     ]
   },
   {
-    "file": "/read/books/Logic-A-Very-Short-Introduction",
+    "file": "/read/add-book/books/Logic-A-Very-Short-Introduction",
     "title": "Logic A Very Short Introduction",
     "封面": "/read/douban/0_dimage/gbooks_1-4BLLgo0A8C.jpg",
     "originalTitle": "Logic: A Very Short Introduction",
@@ -62,7 +62,7 @@
     ]
   },
   {
-    "file": "/read/books/Solving-the-Procrastination-Puzzle",
+    "file": "/read/add-book/books/Solving-the-Procrastination-Puzzle",
     "title": "Solving the Procrastination Puzzle",
     "封面": "/read/douban/0_dimage/gbooks_1AAsyQ1wgaEC.jpg",
     "originalTitle": "Solving the Procrastination Puzzle",
@@ -84,7 +84,7 @@
     ]
   },
   {
-    "file": "/read/books/Unwinding-Anxiety",
+    "file": "/read/add-book/books/Unwinding-Anxiety",
     "title": "Unwinding Anxiety",
     "封面": "/read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg",
     "originalTitle": "Unwinding Anxiety",
