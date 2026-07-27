@@ -48,9 +48,11 @@ export default (() => {
     const usesVideoQuery = fileData.usesVideoQuery ?? false
     const usesImageQuery = fileData.usesImageQuery ?? false
 
-    // 访问量计数(busuanzi)总开关:访客看的部分暂不上线。false=不加载 busuanzi.js →
-    // SSR 的计数 span 一直是 hidden、不显示、不请求后端(不计数)。想上线时改成 true 再 push。
-    const enableBusuanzi = false
+    // 访问量计数(busuanzi)总开关:false=不加载 busuanzi.js → 不请求后端、不计数,
+    // 私密面板(count.jz21.eu.org/stats)里的 PV/UV 会一直是 0。
+    // true=上报计数;是否让访客看到数字另由 static/busuanzi.js 里的 SHOW_TO_VISITORS 控制,
+    // 当前是「只上报、不展示」:计数 span 保持 hidden,页面上看不到任何数字。
+    const enableBusuanzi = true
     const usesVideoPlayer = fileData.usesVideoPlayer ?? false
     // 图文卡片复用视频卡样式，因此用到 data-image-query 的页面也要加载 video-styles.css
     const usesVideoStyles = usesVideoQuery || usesImageQuery || usesVideoPlayer

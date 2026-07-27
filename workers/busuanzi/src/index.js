@@ -577,16 +577,27 @@ async function load(){
 
   // KPIs
   const cf=d.cf;
+  // busuanzi 一个上报都没有时,别拿三个干巴巴的 0 冒充「真的没人看」——多半是前端没在上报。
+  const bszEmpty = !d.site.pv && !d.site.uv;
+  const bszHint = t => bszEmpty ? '尚未收到上报' : t;
   h+='<div class="grid kpis" style="margin-bottom:14px">';
-  h+=kpi(fmt(d.site.pv),'累计浏览 PV','busuanzi · 真人');
-  h+=kpi(fmt(d.site.uv),'累计访客 UV','IP 去重');
-  h+=kpi(fmt(d.pages.length),'被访问页面数','有 PV 记录');
+  h+=kpi(fmt(d.site.pv),'累计浏览 PV',bszHint('busuanzi · 真人'));
+  h+=kpi(fmt(d.site.uv),'累计访客 UV',bszHint('IP 去重'));
+  h+=kpi(fmt(d.pages.length),'被访问页面数',bszHint('有 PV 记录'));
   if(cf){
+    h+=kpi(fmt(cf.totals.pageViews),'边缘页面浏览 30d','Cloudflare · 含爬虫');
     h+=kpi(fmt(cf.totals.requests),'边缘请求 30d','Cloudflare · 含爬虫');
     h+=kpi(fmt(cf.totals.uniques),'边缘独立 IP 30d','Cloudflare');
     h+=kpi(bytes(cf.totals.bytes),'流量 30d','Cloudflare');
   }
   h+='</div>';
+
+  // busuanzi 零上报提示(区分「没人看」和「压根没在计数」)
+  if(bszEmpty){
+    h+='<div class="note">busuanzi 自有计数为 0 —— 页面没有在上报。检查博客 '+
+       '<b>quartz/components/Head.tsx</b> 里的 <b>enableBusuanzi</b> 是否为 true、且已重新构建部署;'+
+       '右边 Cloudflare 的数字来自边缘日志,与此无关,所以照常有数。</div>';
+  }
 
   // CF 未接入提示
   if(!cf){
@@ -614,10 +625,11 @@ async function load(){
      (cfd.length?' <span class="muted" style="font-weight:400">('+cfd.length+' 天)</span>':'')+'</h2>';
   if(cfd.length){
     h+=lineChart(
-      [{values:cfd.map(x=>x.requests||0)},{values:cfd.map(x=>x.uniques||0)}],
-      ['var(--acc)','var(--acc2)'],
+      [{values:cfd.map(x=>x.requests||0)},{values:cfd.map(x=>x.pageViews||0)},{values:cfd.map(x=>x.uniques||0)}],
+      ['var(--acc)','var(--warn)','var(--acc2)'],
       cfd.map(x=>x.date.slice(5)));
     h+='<div class="legend"><span><span class="dot" style="background:var(--acc)"></span>请求</span>'+
+       '<span><span class="dot" style="background:var(--warn)"></span>页面浏览</span>'+
        '<span><span class="dot" style="background:var(--acc2)"></span>独立 IP</span></div>';
   } else h+='<div class="muted">未接入 CF,或定时快照尚未开始累积。</div>';
   h+='</div>';
