@@ -585,8 +585,9 @@ async function load(){
   h+=kpi(fmt(d.site.uv),'累计访客 UV',bszHint('IP 去重'));
   h+=kpi(fmt(d.pages.length),'被访问页面数',bszHint('有 PV 记录'));
   if(cf){
+    // 「边缘请求」不做 KPI:它主要由每页挂多少静态资源决定(换字体/加图就涨),对「有多少人看」
+    // 几乎无信息量,还容易被误读成访问量。基础设施压力看「流量」卡;异常扫描看趋势图里的请求线。
     h+=kpi(fmt(cf.totals.pageViews),'边缘页面浏览 30d','Cloudflare · 含爬虫');
-    h+=kpi(fmt(cf.totals.requests),'边缘请求 30d','Cloudflare · 含爬虫');
     h+=kpi(fmt(cf.totals.uniques),'边缘独立 IP 30d','Cloudflare');
     h+=kpi(bytes(cf.totals.bytes),'流量 30d','Cloudflare');
   }
