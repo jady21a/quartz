@@ -1,5 +1,8 @@
 /* Vendored: lite-youtube-embed@0.3.2 (Paul Irish, MIT). 自托管以摆脱 jsDelivr 国内不可达。
-   升级：重新从 npm/jsDelivr 拉取 src/lite-yt-embed.{js,css} 覆盖本文件，勿手改逻辑。 */
+   升级：重新从 npm/jsDelivr 拉取 src/lite-yt-embed.{js,css} 覆盖本文件，勿手改逻辑。
+   本地改动（升级后需重新打上）：把 youtube-nocookie.com 换成 youtube.com。nocookie 域不带
+   Google 登录 cookie，播放器只能当匿名会话，会被 YouTube 的机器人检测拦成
+   「请登录，以便我们确认你不是聊天机器人」。 */
 /**
  * A lightweight youtube embed. Still should feel the same to the user, just MUCH faster to initialize and paint.
  *
@@ -91,7 +94,7 @@ class LiteYTEmbed extends HTMLElement {
         if (LiteYTEmbed.preconnected) return;
 
         // The iframe document and most of its subresources come right off youtube.com
-        LiteYTEmbed.addPrefetch('preconnect', 'https://www.youtube-nocookie.com');
+        LiteYTEmbed.addPrefetch('preconnect', 'https://www.youtube.com');
         // The botguard script is fetched off from google.com
         LiteYTEmbed.addPrefetch('preconnect', 'https://www.google.com');
 
@@ -191,7 +194,7 @@ class LiteYTEmbed extends HTMLElement {
         iframeEl.allowFullscreen = true;
         // AFAIK, the encoding here isn't necessary for XSS, but we'll do it only because this is a URL
         // https://stackoverflow.com/q/64959723/89484
-        iframeEl.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(this.videoId)}?${this.getParams().toString()}`;
+        iframeEl.src = `https://www.youtube.com/embed/${encodeURIComponent(this.videoId)}?${this.getParams().toString()}`;
         return iframeEl;
     }
 
