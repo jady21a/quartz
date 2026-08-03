@@ -1,8 +1,11 @@
 // 首页订阅表单(content/index.md 与 content/en/index.md 里的 form.home-subscribe)的前端逻辑。
 //
-// 表单本身仍保留 action="…buttondown…embed-subscribe" + target="_blank",那是**禁用 JS 时的退路**;
-// 本脚本一接管就 preventDefault,改成 fetch 同源的 /api/subscribe(见 functions/api/subscribe.js),
-// 于是:不跳页,而且服务端用 Buttondown API 的 type:"regular" 免掉确认邮件,提交即订阅成功。
+// 表单的 action 就是 /api/subscribe(见 functions/api/subscribe.js):禁用 JS 时直接 POST 过去,
+// 服务端会回一个落地页;本脚本接管后改成 fetch 同一个地址,页面不跳转、原地出提示。
+//
+// 名单自建之后走的是**双重确认**:提交只是发出确认信,读者点了邮件里的链接才算订阅成功。
+// (为什么必须这么做,见 functions/api/subscribe.js 顶部的说明。)
+// 所以正常路径的文案是 confirm 而不是 done。
 //
 // SPA 说明:Quartz 是单页导航,DOM 会被整块替换。这里用挂在 document 上的**事件委托**,
 // 不需要在每次 nav 后重新绑定,也不会重复绑定。
@@ -16,7 +19,7 @@
       sending: "提交中…",
       done: "订阅成功,新文章会直接发到你邮箱。",
       already: "这个邮箱已经在订阅名单里了。",
-      confirm: "订阅成功,请到邮箱点一下确认链接。",
+      confirm: "确认信已发出,去邮箱点一下链接就好(没看到就翻翻垃圾箱)。",
       invalid: "邮箱格式好像不对,再检查一下?",
       failed: "提交失败,稍后再试一次。",
     },
@@ -24,7 +27,7 @@
       sending: "Submitting…",
       done: "You're subscribed. New posts will land in your inbox.",
       already: "That email is already on the list.",
-      confirm: "Almost there — check your inbox to confirm.",
+      confirm: "Almost there — check your inbox (and spam folder) to confirm.",
       invalid: "That doesn't look like a valid email address.",
       failed: "Something went wrong. Please try again later.",
     },

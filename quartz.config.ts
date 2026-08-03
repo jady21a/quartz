@@ -16,6 +16,24 @@ const byTitleDescFolderFirst = (f1: QuartzPluginData, f2: QuartzPluginData): num
   return f2Title.localeCompare(f1Title, "zh-CN", { numeric: true })
 }
 
+// feed 的排除规则(index.xml 的摘要 feed 与 newsletter.xml 的全文 feed 共用一份,
+// 免得以后加了排除目录只改一边、邮件里冒出不该发的页)
+const feedExcludeFolders = [
+  ".trash",
+  "why-z",
+  "read/dataview",
+  "read/douban",
+  "read/media-db",
+  "templates",
+  "en/",
+]
+const feedExcludeSlugs = [
+  "library",
+  "watch-list",
+  "videos/topic-collection",
+  "videos/video-collection",
+]
+
 /**
  * Quartz 4 Configuration
  *
@@ -38,7 +56,13 @@ const config: QuartzConfig = {
     // 语言切换控件 LanguageSwitch 靠 allFiles 里有无对应 en 页决定亮不亮,自动生效。
     // 若以后想临时下线英文版,把 en/en/** 加回下面的 ignorePatterns 即可。
     // 3.Template/content-template 是本库自用的 Templater 活模板（new-video/new-topic），只在 Obsidian 用，不上站
-    ignorePatterns: ["private", "templates", ".obsidian", "3.Template/content-template", "3.Template/content-template/**"],
+    ignorePatterns: [
+      "private",
+      "templates",
+      ".obsidian",
+      "3.Template/content-template",
+      "3.Template/content-template/**",
+    ],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
@@ -120,16 +144,14 @@ const config: QuartzConfig = {
         enableRSS: true,
         // 与侧栏「最新」(RandomNotes)同一套排除规则;另排除 en/ 英文镜像,避免中英重复条目
         // 段名以 slug-map.json 映射后的英文 slug 为准(linkIndex 的键是映射后 slug)
-        rssExcludeFolders: [
-          ".trash",
-          "why-z",
-          "read/dataview",
-          "read/douban",
-          "read/media-db",
-          "templates",
-          "en/",
-        ],
-        rssExcludeSlugs: ["library", "watch-list", "videos/topic-collection", "videos/video-collection"],
+        rssExcludeFolders: feedExcludeFolders,
+        rssExcludeSlugs: feedExcludeSlugs,
+      }),
+      // 邮件通讯用的全文 feed(/newsletter.xml):正文完整 + 所有 src/href 绝对化,
+      // 由 workers/newsletter 的定时 Worker 消费。详见该插件文件头部注释。
+      Plugin.NewsletterFeed({
+        excludeFolders: feedExcludeFolders,
+        excludeSlugs: feedExcludeSlugs,
       }),
       Plugin.Assets(),
       Plugin.Static(),

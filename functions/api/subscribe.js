@@ -1,26 +1,79 @@
-// 首页订阅的服务端中转(Cloudflare Pages Function,路由 = /api/subscribe)。
+// 首页订阅的服务端(Cloudflare Pages Function,路由 = /api/subscribe)。
 //
-// 为什么要有这一层:页面原来直接 POST 到 Buttondown 的 embed-subscribe 端点,
-// 浏览器会整页跳到 Buttondown 的落地页,而且 embed 端点一律走双重确认(double opt-in),
-// 读者还得回邮箱点一次链接才算订阅成功 —— 两道门,转化掉一大截。
+// 原来这里是转发给 Buttondown 的。现在名单自持,存在本站的 D1(binding = DB),
+// 发信走 SES(见 workers/newsletter/shared/mailer.js)。
 //
-// 走官方 API 就能同时解决:
-//   1. 请求由前端 fetch 到本站同源的这个函数,页面不跳转;
-//   2. 建订阅者时带 type: "regular",Buttondown 跳过确认邮件,提交即订阅成功。
+// 与 Buttondown 版本最大的行为差异:**恢复了双重确认**。
+// Buttondown 那版用 type:"regular" 故意跳过确认,图的是转化率。自建之后不能这么干:
+//   1. 没有确认环节,任何人都能把别人的邮箱填进来,而退信/投诉全记在我们自己的发信域上;
+//   2. Gmail/Yahoo 对批量发件人考核投诉率(<0.3%),名单不干净是直接后果;
+//   3. Buttondown 有自己的 IP 池扛着,我们没有 —— 域信誉一旦烧掉,恢复很慢。
+// 少掉的那点转化,换的是这个列表能长期发得出去。
 //
-// 依赖:Cloudflare Pages 项目里配一个环境变量(建议存成 Secret)BUTTONDOWN_API_KEY。
-// 没配也不会挂 —— 自动退回服务端调 embed 端点:页面依然不跳转,但确认邮件还在。
-const BUTTONDOWN_API = "https://api.buttondown.com/v1/subscribers"
-const BUTTONDOWN_EMBED = "https://buttondown.com/api/emails/embed-subscribe/WhyZ"
+// 需要在 Pages 项目上配:
+//   D1 绑定 DB → newsletter 库
+//   secret NEWSLETTER_SECRET / AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY
+//   变量 NEWSLETTER_FROM(如 hi@news.jz21.eu.org)、AWS_REGION、SITE_URL
+import { requestSubscribe } from "../../workers/newsletter/shared/db.js"
+import { sendMail } from "../../workers/newsletter/shared/mailer.js"
+import { resultPage } from "../../workers/newsletter/shared/pages.js"
+import { renderConfirm } from "../../workers/newsletter/shared/render.js"
+import { signToken } from "../../workers/newsletter/shared/tokens.js"
 
 // 只接受来自本站页面的提交,挡掉直接拿这个端点当公开写接口刷订阅的。
 // 预览域名 xxx.jz-quartz.pages.dev 也放行,方便上线前在预览环境点一遍。
 const ALLOWED_HOSTS = [/^jz21\.eu\.org$/, /(^|\.)jz-quartz\.pages\.dev$/, /^localhost(:\d+)?$/]
 
+// 确认链接的有效期。太短会让"晚上才看邮箱"的人白填一次,太长则一个泄漏的链接长期可用
+const CONFIRM_TTL_SECONDS = 7 * 24 * 3600
+
+// 禁用 JS 时表单会直接 POST 过来(见 content/index.md 的 form action)。
+// 那种情况下回 JSON 等于把一串裸 JSON 糊到读者脸上,得回一个正经页面。
+const PAGE_COPY = {
+  zh: {
+    sentTitle: "确认信已发出",
+    sentBody: "去邮箱点一下确认链接就订阅成功了。没看到的话翻一下垃圾邮件箱。",
+    alreadyTitle: "已经订阅过了",
+    alreadyBody: "这个邮箱已经在名单里,不用重复提交。",
+    badTitle: "邮箱格式不对",
+    badBody: "检查一下再填一次?",
+    errTitle: "出了点问题",
+    errBody: "服务端暂时没能处理这个请求,过一会儿再试一次。",
+  },
+  en: {
+    sentTitle: "Check your inbox",
+    sentBody:
+      "Click the confirmation link we just sent. If it's not there, check your spam folder.",
+    alreadyTitle: "Already subscribed",
+    alreadyBody: "This address is already on the list.",
+    badTitle: "Invalid email",
+    badBody: "That doesn't look like a valid address — mind checking it?",
+    errTitle: "Something went wrong",
+    errBody: "We couldn't process that right now. Please try again in a moment.",
+  },
+}
+
 function json(status, body) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json; charset=utf-8" },
+    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
+  })
+}
+
+// fetch 过来的请求带 content-type: application/json;裸表单提交则是 form-urlencoded
+function wantsHtml(request) {
+  const type = request.headers.get("content-type") || ""
+  return !type.includes("application/json")
+}
+
+function respond(request, lang, status, jsonBody, pageKey) {
+  if (!wantsHtml(request)) return json(status, jsonBody)
+  const copy = PAGE_COPY[lang] ?? PAGE_COPY.zh
+  return resultPage({
+    title: copy[`${pageKey}Title`],
+    message: copy[`${pageKey}Body`],
+    lang,
+    status,
   })
 }
 
@@ -32,6 +85,18 @@ function isSameSite(request) {
     return ALLOWED_HOSTS.some((re) => re.test(host))
   } catch {
     return false
+  }
+}
+
+// 中英同一棵树、按 /en 前缀分语言(与 static/subscribe.js、LanguageSwitch 判断一致)
+function langFromReferer(request) {
+  const referer = request.headers.get("referer")
+  if (!referer) return "zh"
+  try {
+    const path = new URL(referer).pathname
+    return path === "/en" || path.startsWith("/en/") ? "en" : "zh"
+  } catch {
+    return "zh"
   }
 }
 
@@ -52,50 +117,56 @@ export async function onRequest(context) {
   if (request.method !== "POST") {
     return json(405, { ok: false, reason: "method_not_allowed" })
   }
-
   if (!isSameSite(request)) {
     return json(403, { ok: false, reason: "forbidden" })
   }
 
-  const email = (await readEmail(request)).trim()
-  // 粗校验够用:真正的合法性以 Buttondown 的返回为准,这里只挡明显的空值/乱填。
+  const lang = langFromReferer(request)
+  const email = (await readEmail(request)).trim().toLowerCase()
   if (!email || email.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return json(400, { ok: false, reason: "invalid_email" })
+    return respond(request, lang, 400, { ok: false, reason: "invalid_email" }, "bad")
   }
 
-  const apiKey = env.BUTTONDOWN_API_KEY
-  if (!apiKey) {
-    // 退路:服务端替浏览器提交 embed 表单。页面不跳转,但仍是双重确认。
-    const form = new FormData()
-    form.set("email", email)
-    form.set("embed", "1")
-    const res = await fetch(BUTTONDOWN_EMBED, { method: "POST", body: form, redirect: "manual" })
-    const ok = res.status < 400
-    return json(ok ? 200 : 502, { ok, needsConfirm: true, reason: ok ? undefined : "upstream" })
+  if (!env.DB || !env.NEWSLETTER_SECRET) {
+    console.error("[subscribe] 缺少 DB 绑定或 NEWSLETTER_SECRET")
+    return respond(request, lang, 500, { ok: false, reason: "not_configured" }, "err")
   }
 
-  const res = await fetch(BUTTONDOWN_API, {
-    method: "POST",
-    headers: {
-      Authorization: `Token ${apiKey}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      email_address: email,
-      // 关键:regular 让 Buttondown 跳过确认邮件,直接置为已订阅。
-      type: "regular",
-      referrer_url: request.headers.get("referer") || undefined,
-    }),
-  })
-
-  if (res.ok) {
-    return json(200, { ok: true, needsConfirm: false })
+  let result
+  try {
+    result = await requestSubscribe(env.DB, {
+      email,
+      lang,
+      source: request.headers.get("referer") || null,
+    })
+  } catch (err) {
+    console.error("[subscribe] D1 写入失败", err)
+    return respond(request, lang, 500, { ok: false, reason: "storage" }, "err")
   }
 
-  const detail = await res.text().catch(() => "")
-  // 重复订阅不是错误,对读者来说结果一样(已经在名单里了),按成功回复但换个文案。
-  if (res.status === 400 && /already|exist|duplicate/i.test(detail)) {
-    return json(200, { ok: true, already: true })
+  if (result.action === "already") {
+    return respond(request, lang, 200, { ok: true, already: true }, "already")
   }
-  return json(502, { ok: false, reason: "upstream", status: res.status })
+
+  // blocked(退信过/投诉过)对外也回"已发确认信":
+  // 任何按邮箱区分的回复都会让这个端点变成"某人在不在名单里"的查询工具
+  if (result.shouldSend) {
+    const token = await signToken(env.NEWSLETTER_SECRET, email, "confirm", CONFIRM_TTL_SECONDS)
+    const base = (env.SITE_URL || "https://jz21.eu.org").replace(/\/$/, "")
+    const confirmUrl = `${base}/api/confirm?token=${encodeURIComponent(token)}`
+    const mail = renderConfirm({ confirmUrl, lang })
+
+    const sent = await sendMail(env, {
+      to: email,
+      subject: mail.subject,
+      html: mail.html,
+      text: mail.text,
+    })
+    if (!sent.ok) {
+      console.error(`[subscribe] 确认信发送失败 ${email}: ${sent.status} ${sent.error}`)
+      return respond(request, lang, 502, { ok: false, reason: "mail_failed" }, "err")
+    }
+  }
+
+  return respond(request, lang, 200, { ok: true, needsConfirm: true }, "sent")
 }

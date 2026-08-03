@@ -44,8 +44,7 @@ The tutorials and templates from my videos all live here, along with follow-ups 
 
   Subscribe for free to get new posts by email
 
-<form class="home-subscribe" action="https://buttondown.com/api/emails/embed-subscribe/WhyZ" method="post" target="_blank">
+<form class="home-subscribe" action="/api/subscribe" method="post">
   <input type="email" name="email" placeholder="Your email" required>
-  <input type="hidden" name="embed" value="1">
   <button type="submit">Subscribe</button>
 </form>

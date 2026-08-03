@@ -25,7 +25,7 @@ hideFolderList: true
 
 ## 找到我
 
-视频版教程在三个平台同步更新,留言我都会看:
+视频版教程在三个平台同步更新:
 
 [YouTube](https://www.youtube.com/@jzzxcvbnm) · [B站](https://space.bilibili.com/627566838) ·  [小红书](https://www.xiaohongshu.com/user/profile/6056c994000000000101d876)
 

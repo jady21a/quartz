@@ -1,0 +1,41 @@
+# 邮件通讯的定时群发 Worker(与 busuanzi 同账号:博客主账号 Jadyzhang21 / zone jz21.eu.org)。
+#
+# 部署:
+#   npx wrangler d1 create newsletter          # 把返回的 database_id 填到下面
+#   npx wrangler d1 execute newsletter --remote --file=workers/newsletter/schema.sql
+#   cd workers/newsletter && npx wrangler deploy
+#
+# secret(都不进仓库):
+#   npx wrangler secret put NEWSLETTER_SECRET      # 签确认/退订 token,与 Pages 侧必须一致
+#   npx wrangler secret put AWS_ACCESS_KEY_ID
+#   npx wrangler secret put AWS_SECRET_ACCESS_KEY
+#   npx wrangler secret put ADMIN_TOKEN            # 手动运维入口的口令
+name = "newsletter"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+# 不需要公网入口给访客用;运维入口走 workers.dev 即可,但该账号未开子域时可以改成自有域路由
+workers_dev = true
+
+[vars]
+SITE_URL = "https://jz21.eu.org"
+AWS_REGION = "us-east-1"
+NEWSLETTER_FROM = "hi@news.jz21.eu.org"
+NEWSLETTER_FROM_NAME = "Why Z"
+# 出事时往哪告警(熔断、feed 拉不到)
+ADMIN_EMAIL = ""
+# 免费版 Workers 单次调用 50 个 subrequest,单轮发送量要留余量;升 Paid 后可调到 800
+MAX_SENDS_PER_RUN = "35"
+# 一轮出现超过这么多篇新文章就熔断
+MAX_NEW_ENTRIES = "3"
+# SES 配置集,用于把退信/投诉事件推到 SNS(可留空)
+SES_CONFIGURATION_SET = ""
+
+[[d1_databases]]
+binding = "DB"
+database_name = "newsletter"
+database_id = "REPLACE_ME_AFTER_d1_create"
+
+# 每 15 分钟看一眼 feed。频率高不费钱(没新文章时只有一次 fetch + 一次 D1 查询),
+# 而且单轮发送有上限,分批续传靠的就是这个节奏。
+[triggers]
+crons = ["*/15 * * * *"]
