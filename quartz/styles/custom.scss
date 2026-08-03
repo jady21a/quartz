@@ -6,27 +6,26 @@
 // put your custom CSS here!
 /* 保留 Markdown 中的换行 */
 .center article p {
-    // white-space: pre-line;
-    margin-bottom: 1em;
-      /* 保留空格与换行，允许自动换行以避免横向滚动 */
+  // white-space: pre-line;
+  margin-bottom: 1em;
+  /* 保留空格与换行，允许自动换行以避免横向滚动 */
   white-space: pre-wrap;
   word-break: normal;
   /* 控制 Tab 的显示宽度（按需要改为 2/4/8） */
   tab-size: 4;
   -moz-tab-size: 4;
   -o-tab-size: 4;
-  }
-  
-  
+}
+
 //   /* 如果内容在其他容器 */
 //   .center article .content,
 //   .center article > div {
 //     // white-space: pre-line;
-    // white-space: pre-wrap;
+// white-space: pre-wrap;
 
 //   }
 
-  // 保留段落中的空格和缩进
+// 保留段落中的空格和缩进
 .content article p,
 .content article li {
   white-space: pre-wrap;
@@ -47,8 +46,8 @@
 }
 
 //p {
-  //  text-indent: 2em; /* 段首缩进两个字 */
-  //}
+//  text-indent: 2em; /* 段首缩进两个字 */
+//}
 
 // ── 小屏(≤800px)头部修复 ──────────────────────────────────
 // 默认情况下左侧栏在手机上被压成单行,标题 / 社交图标 / 搜索框 / 暗色·语言切换
@@ -249,7 +248,11 @@
   // 不挡的话每次加载都会闪一下 fixed;该类由 explorer.inline.ts 就绪后移除。
   // :root body 前缀纯为特异性 (1,7,1):上方"非目录页 position:static"规则因
   // :not(:has(article.sticky-header)) 里的元素选择器算到 (1,6,2),必须压过它。
-  :root body .page > #quartz-body .sidebar.left:has(.explorer:not(.collapsed)):not(:has(.hide-until-loaded)) {
+  :root
+    body
+    .page
+    > #quartz-body
+    .sidebar.left:has(.explorer:not(.collapsed)):not(:has(.hide-until-loaded)) {
     position: fixed;
     top: 0;
     left: 0;
@@ -282,7 +285,6 @@
   }
 }
 
- 
 // 首页(data-slug="index")的区块节奏:h2 上方多留白,避免区块黏在一起;
 // 手机上屏幕小,留白相应收窄
 body[data-slug="index"] .center {
@@ -407,6 +409,11 @@ a.home-nav-item {
   max-width: 36rem;
   margin: 1.4rem 0 2.5rem;
 
+  // 提交后 subscribe.js 会在表单后插入提示行,那时改由提示行接管下方留白
+  &:has(+ .home-subscribe-status) {
+    margin-bottom: 0.6rem;
+  }
+
   input[type="email"] {
     flex: 1;
     min-width: 12rem;
@@ -438,6 +445,28 @@ a.home-nav-item {
     &:hover {
       background-color: var(--tertiary);
     }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+  }
+}
+
+// 订阅结果提示:由 static/subscribe.js 在表单后插入并填文案。
+// 空文本时不占位,免得表单和下面的内容之间凭空多出一行空隙。
+.home-subscribe-status {
+  max-width: 36rem;
+  margin: 0 0 2.5rem;
+  font-size: 0.85rem;
+  color: var(--gray);
+
+  &[data-state="success"] {
+    color: var(--secondary);
+  }
+
+  &[data-state="error"] {
+    color: #d64545;
   }
 }
 

@@ -175,6 +175,9 @@ export default (() => {
         {/* 访问量计数:全站常驻,绑定 nav 事件后驱动每次页面/导航的计数上报与显示。
             由 enableBusuanzi 总开关控制,暂不上线(见上方常量)。 */}
         {enableBusuanzi && <script src="/busuanzi.js" defer></script>}
+        {/* 首页订阅表单:走 document 上的事件委托,SPA 导航后无需重绑;
+            页面上没有 form.home-subscribe 时不做任何事。 */}
+        <script src="/subscribe.js" defer></script>
       </head>
     )
   }
