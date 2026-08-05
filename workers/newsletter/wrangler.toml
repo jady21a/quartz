@@ -29,8 +29,9 @@ SITE_URL = "https://jz21.eu.org"
 AWS_REGION = "ap-southeast-1"
 NEWSLETTER_FROM = "hi@news.jz21.eu.org"
 NEWSLETTER_FROM_NAME = "Why Z"
-# 出事时往哪告警(熔断、feed 拉不到)
-ADMIN_EMAIL = ""
+# 出事时往哪告警(熔断、feed 拉不到)。空字符串 = 只写日志、不通知任何人。
+# 注意告警本身也走 SES,所以沙箱期这个地址没验证的话告警信同样发不出去。
+ADMIN_EMAIL = "jadyzhang21@gmail.com"
 # 免费版 Workers 单次调用 50 个 subrequest,单轮发送量要留余量;升 Paid 后可调到 800
 MAX_SENDS_PER_RUN = "35"
 # 一轮出现超过这么多篇新文章就熔断

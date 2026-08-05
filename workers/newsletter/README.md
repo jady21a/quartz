@@ -47,9 +47,18 @@ Pages Functions 和 Worker 共用 `shared/` 下的代码,所以 `functions/` 里
 - 四个 Pages Functions 端点已部署上线(`/api/subscribe`、`/api/confirm`、`/api/unsubscribe`、`/api/ses-webhook`)。
 - D1 库 `newsletter` 已建(`8ccbff33-…`),`subscribers` / `seen_entries` / `sent` 三张表都在。
   注意 `wrangler d1 list` 的 `num_tables` 是滞后统计,显示 0 不代表表没建,以 `sqlite_master` 为准。
-- Pages 已有 `NEWSLETTER_SECRET`、`SES_WEBHOOK_TOKEN`;Worker 已有 `NEWSLETTER_SECRET`、`ADMIN_TOKEN`。
-  三把都已备份进 Keychain(服务名 `quartz-newsletter`),指纹分别是 `332d34ef` / `495e9ca1` / `bd265afd`。
+- Pages 已有 `NEWSLETTER_SECRET`、`SES_WEBHOOK_TOKEN`、`AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`;
+  Worker 已有 `NEWSLETTER_SECRET`、`ADMIN_TOKEN`、以及同两把 AWS。全部备份在 Keychain(服务名 `quartz-newsletter`)。
+  指纹:`NEWSLETTER_SECRET` = `332d34ef`,`ADMIN_TOKEN` = `bd265afd`,`SES_WEBHOOK_TOKEN` = `8164fbd1`(8-6 轮换过,旧的 `495e9ca1` 已作废)。
   两侧的 `NEWSLETTER_SECRET` 是同一份 —— 灌进去时取自同一个值,且 Keychain 里那份指纹一致,可随时复核。
+- **AWS 凭证已建好并验证有效**。IAM 用户 `newsletter-ses`(`arn:aws:iam::110359221122:user/newsletter-ses`),
+  无控制台密码,只挂一条内联策略 `ses-send-only`(`ses:SendEmail` + `ses:SendRawEmail`,`Resource: "*"`)。
+  `Resource` 必须是 `*`:payload 里带 `ConfigurationSetName`,权限要同时覆盖身份和配置集。
+  验证凭证是否有效**不用发信**——签一个 `GET /v2/email/account`(策略故意没给 `ses:GetAccount`),
+  回 `User: …/newsletter-ses is not authorized to perform: ses:GetAccount` 就说明签名通过、身份有效;
+  若回 `InvalidClientTokenId` / `SignatureDoesNotMatch` 才是凭证本身有问题。
+- `ADMIN_EMAIL` 已填 `jadyzhang21@gmail.com`。注意告警信本身也走 SES,沙箱期该地址没验证就同样发不出去。
+- `jadyzhang21@gmail.com` 已加为 SES email identity(为沙箱期自测用),**等着去邮箱点 AWS 的验证链接**。
 - **Pages 的 D1 绑定和环境变量改由仓库根目录的 `wrangler.toml` 提供**,不再走后台面板。
   Worker 已部署(`newsletter`),cron `*/15` 在跑,`[observability]` 已打开。
 - 首次接管(上线步骤 6)**已经做完**:定时任务跑到 bootstrap 分支,20 篇存量文章全标记为已见、一封没发。
@@ -60,11 +69,11 @@ Pages Functions 和 Worker 共用 `shared/` 下的代码,所以 `functions/` 里
 
 装配密钥一律走 `scripts/bootstrap-newsletter.sh`(见下方「一条命令装配密钥」),别再手工复制粘贴。
 
-1. **AWS 的 access key 还没建**,所以两侧都缺 `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`,发信必然失败。这是整条链上唯一必须人去控制台点的一步:建只给 `ses:SendEmail` + `ses:SendRawEmail` 的 IAM 用户 → 下载 CSV → `scripts/bootstrap-newsletter.sh --aws-csv ~/Downloads/xxx_accessKeys.csv`。
-2. **Pages 改完 secret 必须重新部署才生效**。项目是 git 连接的,推一次仓库就会重建。Worker 侧不用管,写 secret 本身就会生成新版本。
-   根目录 `wrangler.toml` 里的 D1 绑定同样要等这次重建才生效 —— 在那之前 `/api/subscribe` 仍然拿不到 `env.DB`。
-3. SNS 的 HTTPS 订阅还没建。得等 `SES_WEBHOOK_TOKEN` 在 Pages 里随新部署生效之后,否则 SNS 的确认请求会撞 403、卡在 Pending。本机装了 aws CLI 的话脚本会顺手建掉。
-4. **SES 还在沙箱里,这是「读者订阅不了」的最后一道关**。沙箱只允许发给已验证的地址,所以哪怕上面全做完,陌生读者提交后那封确认信照样发不出去、他看到的还是报错页。
+1. **点掉 `jadyzhang21@gmail.com` 的 SES 验证链接**(identity 已建,状态还是 Verification pending)。不点掉,沙箱期连自测都做不了。
+2. **重建 SNS 的 HTTPS 订阅**。8-6 轮换 `SES_WEBHOOK_TOKEN` 时把旧订阅删了(它的 endpoint 里是旧 token,已经对不上),新的还没建。
+   endpoint 取法见「日常运维」;`Enable raw message delivery` 不要勾。建完状态应几秒内自动变 `Confirmed`。
+   顺序上必须在「新 token 已随 Pages 新部署生效」之后 —— 否则 SNS 的确认请求撞 403、卡在 Pending。这条已经满足了。
+3. **SES 还在沙箱里,这是「读者订阅不了」的最后一道关**。沙箱只允许发给已验证的地址,所以哪怕上面全做完,陌生读者提交后那封确认信照样发不出去、他看到的还是报错页。
    生产放行申请已提交,AWS 回了「需要补充信息」并开了支持工单 `178585586500019`,待回复。回复前最好先让退信回调真正跑通,这样材料能写成完成时。
    在放行之前想验证整条链路:把自己的 QQ/163/Gmail 各加一个 verified identity,用这些地址走一遍订阅→确认→群发→退订。
 
@@ -85,6 +94,23 @@ scripts/bootstrap-newsletter.sh
 - **密钥不打印、不落盘、不进 shell 历史**。屏幕上只有 sha256 前 8 位,用来核对推上去的是哪一份;`secret bulk` 从 stdin 读,中间不产生临时文件。
 - **名单里已有确认订阅者时,拒绝重新生成 `NEWSLETTER_SECRET`**,要覆盖得显式加 `--force-rotate`。这道闸门挡的正是「顺手重跑一下脚本,结果读者集体退不掉订」。
 - AWS 凭证按 Keychain → `--aws-csv` → 本机 aws CLI 的顺序取。走 CSV 那条路时,值从文件直接进 Keychain,不经过屏幕和剪贴板。
+- **`--dry-run` 打印的新密钥指纹不是最终会上线的那个。** dry-run 里 `kc_put` 是空操作,所以「来源=new」的那把只活在那次进程里;
+  紧接着的正式运行会**再生成一把新的**,指纹和 dry-run 那次不一样。这不是 bug,但第一次见会以为哪里错了 ——
+  以**正式运行**那次打印的指纹为准,它才是同时进了 Keychain 和 Cloudflare 的那一份。
+
+### 想轮换某一把密钥
+
+`ensure_secret` 是「Keychain 里有就复用」,所以直接重跑脚本不会换。要换先删掉 Keychain 里那条,再跑脚本:
+
+```bash
+security delete-generic-password -s quartz-newsletter -a SES_WEBHOOK_TOKEN
+scripts/bootstrap-newsletter.sh
+```
+
+`SES_WEBHOOK_TOKEN` 换完还有两步收尾,顺序不能反:**先**推一次仓库让新 token 在 Pages 生效,**再**去 SNS 删旧订阅建新的。
+反了的话新订阅的确认请求会撞 403、卡在 Pending。
+
+`NEWSLETTER_SECRET` 是例外 —— 名单里有确认订阅者时脚本会拒绝重新生成,因为换掉它等于废掉所有**已发出**邮件里的退订链接。
 
 跑完还要**推一次仓库触发 Pages 重新部署** —— Pages 的 secret 改动只对新部署生效,这步脚本代劳不了。
 
