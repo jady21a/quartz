@@ -77,6 +77,21 @@ export async function requestSubscribe(db, { email, lang, source }) {
 }
 
 /**
+ * 确认信没发出去时,把冷却时间戳退回去(同 deleteSent 的回滚思路)。
+ *
+ * requestSubscribe 是「先盖冷却戳、再发信」的顺序。发信失败若不回滚,
+ * 这个人 5 分钟内重试会命中冷却 → shouldSend=false → 前端照样显示
+ * 「确认信已发出」,而其实一封都没发出去。冷却本来是防刷的,
+ * 这种情况下它挡住的是唯一一个真想订阅的人。
+ */
+export async function clearConfirmCooldown(db, email) {
+  await db
+    .prepare("UPDATE subscribers SET last_confirm_sent_at = NULL WHERE email = ?")
+    .bind(email)
+    .run()
+}
+
+/**
  * 点确认链接。只允许 pending → confirmed;
  * 已经 confirmed 的重复点击按成功处理(用户可能点了两次)。
  * bounced/complained 不允许被一个旧链接复活。

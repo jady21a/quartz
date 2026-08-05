@@ -13,12 +13,20 @@
 name = "newsletter"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
-# 不需要公网入口给访客用;运维入口走 workers.dev 即可,但该账号未开子域时可以改成自有域路由
-workers_dev = true
+# 运维入口。**不要改回 workers.dev** —— 这个账号的 *.jadyzhang21.workers.dev 整个返回 1101
+# (连空 Worker 都 1101,不是本 Worker 的问题,详见 README 的坑那一节),所以走自有域。
+# custom_domain = true 让 wrangler 自己在 zone 里建那条橙云 DNS 记录,不用手点。
+# 入口本身没有公开用途,靠 ADMIN_TOKEN 挡住。
+workers_dev = false
+routes = [{ pattern = "newsletter.jz21.eu.org", custom_domain = true }]
+
+# 群发是定时任务,出事时没人盯着 —— 日志留痕是唯一的事后追查手段
+[observability]
+enabled = true
 
 [vars]
 SITE_URL = "https://jz21.eu.org"
-AWS_REGION = "us-east-1"
+AWS_REGION = "ap-southeast-1"
 NEWSLETTER_FROM = "hi@news.jz21.eu.org"
 NEWSLETTER_FROM_NAME = "Why Z"
 # 出事时往哪告警(熔断、feed 拉不到)
@@ -28,12 +36,14 @@ MAX_SENDS_PER_RUN = "35"
 # 一轮出现超过这么多篇新文章就熔断
 MAX_NEW_ENTRIES = "3"
 # SES 配置集,用于把退信/投诉事件推到 SNS(可留空)
-SES_CONFIGURATION_SET = ""
+# 已在 ap-southeast-1 建好:配置集 newsletter → 事件目的地 bounce-complaint-to-sns
+# → SNS topic newsletter-events(只推 Hard bounces 和 Complaints)
+SES_CONFIGURATION_SET = "newsletter"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "newsletter"
-database_id = "REPLACE_ME_AFTER_d1_create"
+database_id = "8ccbff33-c715-4f41-9384-703fdafccfe8"
 
 # 每 15 分钟看一眼 feed。频率高不费钱(没新文章时只有一次 fetch + 一次 D1 查询),
 # 而且单轮发送有上限,分批续传靠的就是这个节奏。

@@ -14,7 +14,7 @@
 //   D1 绑定 DB → newsletter 库
 //   secret NEWSLETTER_SECRET / AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY
 //   变量 NEWSLETTER_FROM(如 hi@news.jz21.eu.org)、AWS_REGION、SITE_URL
-import { requestSubscribe } from "../../workers/newsletter/shared/db.js"
+import { clearConfirmCooldown, requestSubscribe } from "../../workers/newsletter/shared/db.js"
 import { sendMail } from "../../workers/newsletter/shared/mailer.js"
 import { resultPage } from "../../workers/newsletter/shared/pages.js"
 import { renderConfirm } from "../../workers/newsletter/shared/render.js"
@@ -164,6 +164,9 @@ export async function onRequest(context) {
     })
     if (!sent.ok) {
       console.error(`[subscribe] 确认信发送失败 ${email}: ${sent.status} ${sent.error}`)
+      // 冷却戳是发信前盖的,这里必须退回去,否则这个人 5 分钟内重试会被
+      // 当成「刚发过」,前端显示"确认信已发出"但其实一封没发
+      await clearConfirmCooldown(env.DB, email).catch(() => {})
       return respond(request, lang, 502, { ok: false, reason: "mail_failed" }, "err")
     }
   }

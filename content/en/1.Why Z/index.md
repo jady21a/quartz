@@ -26,7 +26,7 @@ Going it alone, it's easy to lose to procrastination and forgetting. Putting the
 
 Video tutorials go up on three platforms in sync, and I read every comment:
 
-[YouTube](https://www.youtube.com/@jzzxcvbnm) · [Bilibili](https://space.bilibili.com/627566838) ·  [Xiaohongshu](https://www.xiaohongshu.com/user/profile/6056c994000000000101d876)
+[YouTube](https://www.youtube.com/@whyz-21) · [Bilibili](https://space.bilibili.com/627566838) ·  [Xiaohongshu](https://www.xiaohongshu.com/user/profile/6056c994000000000101d876)
 
 You can also subscribe by email to get new posts the moment they go live:
 

@@ -1,0 +1,41 @@
+# Cloudflare Pages 项目 jz-quartz 的配置。
+#
+# 只有这个文件存在,Pages 的 D1 绑定和环境变量就以它为准(后台里手填的会被忽略)。
+# 之前后台里什么都没配,所以直接把配置搬进仓库 —— 比在面板上点更不容易漏。
+#
+# secret(不进仓库,用命令行设):
+#   npx wrangler pages secret put NEWSLETTER_SECRET --project-name=jz-quartz
+#   npx wrangler pages secret put SES_WEBHOOK_TOKEN --project-name=jz-quartz
+#   npx wrangler pages secret put AWS_ACCESS_KEY_ID --project-name=jz-quartz
+#   npx wrangler pages secret put AWS_SECRET_ACCESS_KEY --project-name=jz-quartz
+#
+# 注意:Pages 的 [env.preview] 不继承顶层配置,绑定和变量必须重复写一遍。
+name = "jz-quartz"
+pages_build_output_dir = "public"
+compatibility_date = "2025-11-19"
+
+[vars]
+SITE_URL = "https://jz21.eu.org"
+AWS_REGION = "ap-southeast-1"
+SES_CONFIGURATION_SET = "newsletter"
+NEWSLETTER_FROM = "hi@news.jz21.eu.org"
+NEWSLETTER_FROM_NAME = "Why Z"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "newsletter"
+database_id = "8ccbff33-c715-4f41-9384-703fdafccfe8"
+
+# 预览环境用同一个库:subscribe.js 的 ALLOWED_HOSTS 放行了 *.jz-quartz.pages.dev,
+# 就是为了上线前能在预览域名上把订阅→确认→退订点一遍真流程。
+[env.preview.vars]
+SITE_URL = "https://jz21.eu.org"
+AWS_REGION = "ap-southeast-1"
+SES_CONFIGURATION_SET = "newsletter"
+NEWSLETTER_FROM = "hi@news.jz21.eu.org"
+NEWSLETTER_FROM_NAME = "Why Z"
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "newsletter"
+database_id = "8ccbff33-c715-4f41-9384-703fdafccfe8"
