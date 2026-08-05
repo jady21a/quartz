@@ -14,6 +14,13 @@
     return decoded.replace(/\.html$/, '').replace(/\/index$/, '');
   }
 
+  // video-index.json 只按中文原文的路径建索引(/videos/...),英文镜像页的 URL 多一层 /en
+  // 前缀 → 直接比对匹配不上 → 容器拿不到 data-youtube/data-bilibili → 英文页「没有视频」。
+  // 查索引前先把 /en 前缀剥掉,中英两边共用同一条索引记录。
+  function stripLangPrefix(pathname) {
+    return pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  }
+
   function loadVideoIndex() {
     if (!videoIndexPromise) {
       videoIndexPromise = fetch('/video-index.json')
@@ -48,12 +55,12 @@
   }
 
   async function enrichContainerFromIndex(container) {
-    var currentPath = normalizePathname(window.location.pathname);
+    var currentPath = stripLangPrefix(normalizePathname(window.location.pathname));
     if (!currentPath) return;
 
     var videos = await loadVideoIndex();
     var currentVideo = videos.find(function(video) {
-      return normalizePathname(video.file) === currentPath;
+      return stripLangPrefix(normalizePathname(video.file)) === currentPath;
     });
 
     applyMetadataToContainer(container, currentVideo);

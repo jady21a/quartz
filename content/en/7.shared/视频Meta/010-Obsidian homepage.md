@@ -4,7 +4,7 @@ title:
 tags:
   - video
   - obsidian
-videoid: VIDEO_ID
+videoid: NG5vwZffKlY
 bilibiliid: 【我的 Obsidian 首页搭建：5 个模块 + 动态显示】 https://www.bilibili.com/video/BV1btEi6vEtz/?share_source=copy_web&vd_source=0301e644f5fde063fd132a7c560992cb
 cover: https://i2.hdslb.com/bfs/archive/f94d58f9ffdeb62548a2741ccd77d3c59bc8b662.jpg
 defaultSource: youtube

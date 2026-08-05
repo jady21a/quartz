@@ -78,6 +78,7 @@ export default {
       if (url.pathname === "/stats") return handleStatsPage()
       if (url.pathname === "/stats.json") return handleStatsData(request, env)
       if (url.pathname === "/stats/snapshot") return handleSnapshot(request, env)
+      if (url.pathname === "/stats/platforms") return handlePlatforms(request, env)
       return await handleCount(request, env)
     } catch (e) {
       console.error("busuanzi error:", e && e.stack ? e.stack : String(e))
@@ -237,9 +238,19 @@ async function handleStatsData(request, env) {
   // CF 边缘「日趋势」改读定时快照攒下来的全部历史(不受套餐保留期限制)。
   const cfDaily = await readCfDaily(kv)
 
+  // 平台账号数据:本机推上来的最新一份,没推过就是 null。
+  let platforms = null
+  try {
+    const raw = await kv.get("plat:latest")
+    if (raw) platforms = JSON.parse(raw)
+  } catch {
+    platforms = null
+  }
+
   return new Response(
     JSON.stringify({
       generatedAt: new Date().toISOString(),
+      platforms,
       site: { pv: site_pv, uv: site_uv },
       pages,
       daily,
@@ -270,6 +281,50 @@ async function handleSnapshot(request, env) {
       headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
     })
   }
+}
+
+// ───────────────────────── 平台账号数据(本机推送) ─────────────────────────
+// B站/YouTube/小红书的数字由本机 ~/info-digest 定时 POST 上来,Worker 只存不抓:
+// 创作中心要 SESSDATA,那种长期有效的登录态不该躺在一个公网 Worker 的 secret 里。
+// 只收数字,不收标题/封面/bvid —— 面板的平台区是死胡同,不给任何点进内容的出口。
+async function handlePlatforms(request, env) {
+  if (!checkToken(request, env)) {
+    return new Response(JSON.stringify({ error: "unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+  if (request.method !== "POST") {
+    return new Response(JSON.stringify({ error: "method not allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+  let body
+  try {
+    body = await request.json()
+  } catch {
+    return new Response(JSON.stringify({ error: "bad json" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+  if (!body || !Array.isArray(body.platforms)) {
+    return new Response(JSON.stringify({ error: "expected {fetchedAt, platforms:[]}" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+  // receivedAt 由服务端盖章:本机时钟错了(或推送卡在半路)时,新鲜度判断不该跟着错。
+  const rec = {
+    fetchedAt: body.fetchedAt || null,
+    receivedAt: new Date().toISOString(),
+    platforms: body.platforms,
+  }
+  await env.COUNTER.put("plat:latest", JSON.stringify(rec))
+  return new Response(JSON.stringify({ ok: true, platforms: body.platforms.length }), {
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+  })
 }
 
 // ───────────────────────── Cloudflare zone GraphQL ─────────────────────────
@@ -505,6 +560,29 @@ const STATS_HTML = `<!DOCTYPE html>
     border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer}
   button.refresh:hover{border-color:var(--acc)}
   .err{color:#f7768e}
+  /* 平台账号区 */
+  .sect{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
+  .sect h3{font-size:15px;margin:0;font-weight:700}
+  .sect .hint{font-size:12px;color:var(--mut)}
+  .sect .rule{flex:1;height:1px;background:var(--line)}
+  .plat-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .plat-name{font-size:15px;font-weight:700}
+  .badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);
+    color:var(--mut);white-space:nowrap}
+  .badge.ok{color:var(--acc2);border-color:rgba(158,206,106,.4);background:rgba(158,206,106,.08)}
+  .badge.stale{color:var(--warn);border-color:rgba(224,175,104,.45);background:rgba(224,175,104,.1)}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:12px 10px}
+  .m .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+  .m .k{font-size:11.5px;color:var(--mut);margin-top:1px}
+  .m .d{font-size:11px;color:var(--acc2);margin-top:2px;font-variant-numeric:tabular-nums}
+  .m .d.zero{color:var(--mut)}
+  .today{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
+    display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+  .today .t{color:var(--mut);font-size:12px;margin-right:2px}
+  .today b{font-variant-numeric:tabular-nums}
+  .stale .metrics,.stale .today{opacity:.45}
+  .offcard{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .offcard .why{font-size:12.5px;color:var(--mut);max-width:70ch}
 </style></head>
 <body><div class="wrap">
   <header>
@@ -558,6 +636,87 @@ function barTable(rows, valFmt){
   ).map(x=>'<tr>'+x+'</tr>').join('')+'</tbody></table>';
 }
 
+// ───────── 平台账号区 ─────────
+// 数据由本机 info-digest 推来。超过这个小时数没有新数据就判定「推送挂了」。
+// 本机一天推两次(08:30 / 18:30),最长间隔是晚班到早班的 14 小时 —— 阈值必须大于它,
+// 否则每天早上 06:30-08:30 都会误报一次。假警报报几次人就开始无视它,真挂的那次也一起无视。
+const STALE_HOURS = 15;
+
+function ago(ms){
+  const m=Math.round(ms/6e4);
+  if(m<60) return m+' 分钟前';
+  const h=m/60; if(h<48) return (h<10?h.toFixed(1):Math.round(h))+' 小时前';
+  return Math.round(h/24)+' 天前';
+}
+
+function platCard(p, fetchedAt, now){
+  if(!p.enabled || !p.ok){
+    return '<div class="card offcard">'+
+      '<div><div class="plat-name">'+esc(p.name||'')+'</div>'+
+      '<div class="why">'+esc(p.why||'未接入')+'</div></div>'+
+      '<span class="badge">未接入</span></div>';
+  }
+  const age=now-new Date(fetchedAt).getTime();
+  const stale=!(age>=0) || age>STALE_HOURS*3600e3;
+  const badge=stale? '<span class="badge stale">数据可能已停更 · '+ago(age)+'</span>'
+                   : '<span class="badge ok">'+ago(age)+'</span>';
+  let h='<div class="card'+(stale?' stale':'')+'">';
+  h+='<div class="plat-head"><span class="plat-name">'+esc(p.name||'')+'</span>'+badge+'</div>';
+  h+='<div class="metrics">'+(p.totals||[]).map(function(m){
+      const d=m.delta;
+      return '<div class="m"><div class="v">'+fmt(m.value)+'</div><div class="k">'+esc(m.label)+'</div>'+
+        (d==null?'':'<div class="d'+(d?'':' zero')+'">'+(d>0?'+':'')+d+' 较昨日</div>')+'</div>';
+    }).join('')+'</div>';
+  if(p.today&&p.today.length){
+    // 标签用平台自己的日期,不写「今日」:B站的 incr_* 实测是 T-1(当天早上甚至还是 T-2),
+    // 写成「今日」等于每天骗自己一次,也是我们自算 delta 和它对不上的原因。
+    const dl=p.officialDate? p.officialDate.slice(5).replace('-','/') : '平台口径';
+    h+='<div class="today"><span class="t">'+esc(dl)+' 平台口径:</span>'+
+      p.today.map(function(m){
+        return '<span><span class="t">'+esc(m.label)+'</span> <b>'+fmt(m.value)+'</b></span>';
+      }).join('')+'</div>';
+  }
+  h+='</div>';
+  return h;
+}
+
+function platformSection(pd, now){
+  let h='<div class="sect"><h3>平台账号</h3>'+
+    '<span class="hint">只有数字,没有出口 —— 看完就关</span><span class="rule"></span></div>';
+  if(!pd){
+    h+='<div class="card muted">本机还没推过数据。跑 <b>~/info-digest/run.sh</b>,'+
+       '并在 config/secrets.env 里填 <b>STATS_TOKEN</b>。</div>';
+    return h;
+  }
+  const stamp=pd.fetchedAt||pd.receivedAt;
+  const age=now-new Date(stamp).getTime();
+  const on=(pd.platforms||[]).filter(function(p){return p.enabled&&p.ok});
+  if(on.length && (!(age>=0) || age>STALE_HOURS*3600e3)){
+    h+='<div class="note">本机已 '+ago(age)+' 没推新数据(阈值 '+STALE_HOURS+' 小时)。'+
+       '下面是旧数字,别当今天的看 —— 多半是 <b>com.jz.info-digest</b> 没跑成:'+
+       '机器休眠挂起、或 SESSDATA 过期。</div>';
+  }
+  h+='<div class="grid" style="grid-template-columns:1fr;margin-bottom:14px">'+
+     (pd.platforms||[]).map(function(p){return platCard(p,stamp,now)}).join('')+'</div>';
+
+  // 平台趋势:每个平台各画一张,序列不够长就不画(两个点的折线只会误导)
+  const cards=[];
+  (pd.platforms||[]).forEach(function(p){
+    (p.series||[]).forEach(function(s){
+      const pts=s.points||[];
+      if(pts.length<3) return;
+      cards.push('<div class="card"><h2>'+esc(p.name)+' · '+esc(s.label)+
+        ' <span class="muted" style="font-weight:400">('+pts.length+' 天)</span></h2>'+
+        lineChart([{values:pts.map(function(x){return x.value})}],['var(--acc)'],
+          pts.map(function(x){return x.date.slice(5)}))+'</div>');
+    });
+  });
+  if(cards.length){
+    h+='<div class="grid two" style="margin-bottom:22px">'+cards.join('')+'</div>';
+  }
+  return h;
+}
+
 async function load(){
   const app=document.getElementById('app');
   app.innerHTML='<div class="card muted">加载中…</div>';
@@ -574,6 +733,13 @@ async function load(){
 
   document.getElementById('sub').textContent='更新于 '+new Date(d.generatedAt).toLocaleString('zh-CN');
   let h='';
+
+  // ① 平台账号:放最前。10 秒瞄一眼要看的是粉丝和评论,不是博客 PV。
+  h+=platformSection(d.platforms, Date.now());
+
+  // ② 站点流量:两类口径必须分区,不然平台播放量和站点 PV 会看串。
+  h+='<div class="sect"><h3>站点流量</h3><span class="hint">jz21.eu.org</span>'+
+     '<span class="rule"></span></div>';
 
   // KPIs
   const cf=d.cf;
