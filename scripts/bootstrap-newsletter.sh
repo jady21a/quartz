@@ -286,5 +286,6 @@ cat <<EOF
   Worker 侧不用管 —— 写 secret 本身就会生成新版本。
 
 部署完验一遍:
-  curl -sS -X POST $SITE_URL/api/subscribe -d 'email=你的邮箱@example.com'
+  # Origin 头不能省:subscribe.js 只接受本站页面的提交,没有它一律 403 forbidden
+  curl -sS -X POST $SITE_URL/api/subscribe -H "Origin: $SITE_URL" -d 'email=你的邮箱@example.com'
 EOF
