@@ -64,16 +64,24 @@ Pages Functions 和 Worker 共用 `shared/` 下的代码,所以 `functions/` 里
 - 首次接管(上线步骤 6)**已经做完**:定时任务跑到 bootstrap 分支,20 篇存量文章全标记为已见、一封没发。
   当时名单是 0 人,是做这件事最安全的时刻。
 - 运维入口改成了自有域 `https://newsletter.jz21.eu.org`,`?action=status` 实测通(返回 0 人、待发队列空)。
+- **退信/投诉回调整条链已通**。SNS topic `newsletter-events` 下有一条 HTTPS 订阅指向 `/api/ses-webhook`,
+  状态 **Confirmed**、Raw message delivery **Disabled**。Confirmed 是端点自己回访 SubscribeURL 换来的,
+  所以它同时证明了三件事:Pages 里的 `SES_WEBHOOK_TOKEN` 是对的、`ses-webhook.js` 的自动确认分支能跑、SNS 能送达本站。
 
 **未完成 —— 按这个顺序做**
 
 装配密钥一律走 `scripts/bootstrap-newsletter.sh`(见下方「一条命令装配密钥」),别再手工复制粘贴。
 
 1. **点掉 `jadyzhang21@gmail.com` 的 SES 验证链接**(identity 已建,状态还是 Verification pending)。不点掉,沙箱期连自测都做不了。
-2. **重建 SNS 的 HTTPS 订阅**。8-6 轮换 `SES_WEBHOOK_TOKEN` 时把旧订阅删了(它的 endpoint 里是旧 token,已经对不上),新的还没建。
-   endpoint 取法见「日常运维」;`Enable raw message delivery` 不要勾。建完状态应几秒内自动变 `Confirmed`。
-   顺序上必须在「新 token 已随 Pages 新部署生效」之后 —— 否则 SNS 的确认请求撞 403、卡在 Pending。这条已经满足了。
-3. **SES 还在沙箱里,这是「读者订阅不了」的最后一道关**。沙箱只允许发给已验证的地址,所以哪怕上面全做完,陌生读者提交后那封确认信照样发不出去、他看到的还是报错页。
+   点完就能跑端到端自测。注意 **`Origin` 头不能省**,而且**别用首页表单测** —— 它现在指向 Buttondown,碰不到自建链路:
+
+   ```bash
+   curl -sS -X POST https://jz21.eu.org/api/subscribe \
+     -H "Origin: https://jz21.eu.org" -d 'email=jadyzhang21@gmail.com'
+   ```
+
+   然后去邮箱点确认链接,`?action=status` 应看到 `confirmed: 1`;再点邮件里的退订链接,应变 `unsubscribed`。
+2. **SES 还在沙箱里,这是「读者订阅不了」的最后一道关**。沙箱只允许发给已验证的地址,所以哪怕上面全做完,陌生读者提交后那封确认信照样发不出去、他看到的还是报错页。
    生产放行申请已提交,AWS 回了「需要补充信息」并开了支持工单 `178585586500019`,待回复。回复前最好先让退信回调真正跑通,这样材料能写成完成时。
    在放行之前想验证整条链路:把自己的 QQ/163/Gmail 各加一个 verified identity,用这些地址走一遍订阅→确认→群发→退订。
 
