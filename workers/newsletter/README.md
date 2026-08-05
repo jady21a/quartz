@@ -17,7 +17,27 @@
 
 Pages Functions 和 Worker 共用 `shared/` 下的代码,所以 `functions/` 里是 `import ../../workers/newsletter/shared/x.js`。改动只需落在一处。
 
-## 当前进度(2026-08-05)
+## 当前进度(2026-08-06)
+
+> **站上的订阅入口现在回到 Buttondown**,自建这套是「建好但没接线」的状态,不承接真实读者。
+>
+> 起因:`quartz/static/subscribe.js` 原来只按 class 认表单、无视 action,四个订阅表单(含
+> 「1.Why Z」页那个 action 还写着 Buttondown 的)全被劫持到 `/api/subscribe`。而自建链路
+> 缺 AWS 凭证 + SES 沙箱,发不出确认信 —— 读者一律看到「提交失败」。等于 Buttondown 已经
+> 下线、自建又没接通,是最坏的中间态。8-6 把 `subscribe.js` 改成只接管同源 action,两个
+> index.md 的 action 改回 Buttondown embed。
+>
+> **切回自建的条件**(全部满足再动,别提前):
+> 1. 下面「未完成」1–4 项做完,SES 拿到生产放行;
+> 2. 用自己的邮箱把「订阅 → 确认 → 群发 → 退订」完整走通一遍;
+> 3. 从 Buttondown 导出订阅者 CSV 灌进 D1,存量按 `confirmed` 导入(他们本来就是主动订阅的,
+>    不该再要求二次确认);
+> 4. 最后才把 `content/index.md`、`content/en/index.md`、`content/1.Why Z/index.md` 及其
+>    英文版这**四个**表单的 action 一起改成 `/api/subscribe` —— 上次就是漏了后两个才发现
+>    劫持问题的。
+>
+> D1 里那行 `jad***@gmail.com` 是 8-5 的自测,`last_confirm_sent_at` 为 null(说明发信失败
+> 时的冷却回滚生效了)。切换前顺手删掉即可。
 
 **已完成**
 

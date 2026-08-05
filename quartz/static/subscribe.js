@@ -1,7 +1,12 @@
 // 首页订阅表单(content/index.md 与 content/en/index.md 里的 form.home-subscribe)的前端逻辑。
 //
-// 表单的 action 就是 /api/subscribe(见 functions/api/subscribe.js):禁用 JS 时直接 POST 过去,
+// 表单的 action 指向 /api/subscribe(见 functions/api/subscribe.js):禁用 JS 时直接 POST 过去,
 // 服务端会回一个落地页;本脚本接管后改成 fetch 同一个地址,页面不跳转、原地出提示。
+//
+// **只接管 action 指向本站的表单。** 站内还有指向第三方(Buttondown)的同 class 表单,
+// 那种必须原样交给浏览器原生提交。这个判断是 2026-08-06 补的:在那之前脚本只认 class、
+// 把 action 完全无视掉,结果自建链路还没通(SES 沙箱 + 缺 AWS 凭证)的那几天里,
+// 连本该走 Buttondown 的表单也被劫持到发不出信的自建端点上,读者一律看到「提交失败」。
 //
 // 名单自建之后走的是**双重确认**:提交只是发出确认信,读者点了邮件里的链接才算订阅成功。
 // (为什么必须这么做,见 functions/api/subscribe.js 顶部的说明。)
@@ -11,8 +16,6 @@
 // 不需要在每次 nav 后重新绑定,也不会重复绑定。
 ;(function () {
   "use strict"
-
-  var ENDPOINT = "/api/subscribe"
 
   var TEXT = {
     zh: {
@@ -58,9 +61,23 @@
     el.dataset.state = state
   }
 
+  // form.action 是解析过的绝对地址(相对路径按当前文档解析),所以同源判断对两种写法都成立。
+  // 地址非法时当作外站处理 —— 宁可交给浏览器原生提交,也不要 fetch 到一个错的地方。
+  function localEndpoint(form) {
+    try {
+      var url = new URL(form.action, window.location.href)
+      return url.origin === window.location.origin ? url.pathname + url.search : null
+    } catch (e) {
+      return null
+    }
+  }
+
   document.addEventListener("submit", function (event) {
     var form = event.target
     if (!(form instanceof HTMLFormElement) || !form.classList.contains("home-subscribe")) return
+
+    var endpoint = localEndpoint(form)
+    if (!endpoint) return // 指向第三方(如 Buttondown),走原生提交
 
     event.preventDefault()
 
@@ -73,7 +90,7 @@
     if (button) button.disabled = true
     say(form, t.sending, "pending")
 
-    fetch(ENDPOINT, {
+    fetch(endpoint, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ email: email }),

@@ -43,8 +43,9 @@ enableToc: false
 
   免费订阅获取最新推送
 
-<form class="home-subscribe" action="/api/subscribe" method="post">
+<form class="home-subscribe" action="https://buttondown.com/api/emails/embed-subscribe/WhyZ" method="post" target="_blank">
   <input type="email" name="email" placeholder="你的邮箱" required>
+  <input type="hidden" name="embed" value="1">
   <button type="submit">订阅</button>
 </form>
 
