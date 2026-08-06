@@ -75,7 +75,9 @@ async function fetchCover(bv) {
   const pic = data?.data?.pic
   if (!pic) throw new Error("no pic in response")
   // 一律升级为 https,避免 https 站点上的 mixed-content 拦截。
-  return String(pic).trim().replace(/^http:\/\//i, "https://")
+  return String(pic)
+    .trim()
+    .replace(/^http:\/\//i, "https://")
 }
 
 async function run() {
@@ -112,7 +114,9 @@ async function run() {
         console.log(`✓ ${path.basename(file)} ← ${cover}`)
       } catch (e) {
         failed++
-        console.warn(`✗ ${path.basename(file)} (${bv}): ${e.message} — 跳过,构建回退 YouTube 缩略图`)
+        console.warn(
+          `✗ ${path.basename(file)} (${bv}): ${e.message} — 跳过,构建回退 YouTube 缩略图`,
+        )
       }
       // 礼貌节流,避免连打 B站接口触发风控
       await new Promise((r) => setTimeout(r, 400))

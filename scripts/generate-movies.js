@@ -21,9 +21,9 @@ import { sluggify as sluggifyPath, slugifyAssetPath } from "./slug-map-util.js"
 // slug 映射成站点真实资产路径(/read/...)并转根绝对——客户端不做映射,
 // 原样输出会 404。旧的 image-mapping.json 按标题映射逻辑早已错位移除。
 function processImagePath(originalPath) {
-  const p = typeof originalPath === 'string' ? originalPath.trim() : ''
+  const p = typeof originalPath === "string" ? originalPath.trim() : ""
   if (!p || /^https?:\/\//i.test(p)) return p
-  return '/' + slugifyAssetPath(p.replace(/^\.?\//, ''))
+  return "/" + slugifyAssetPath(p.replace(/^\.?\//, ""))
 }
 
 // ===== 递归读取所有 Markdown 文件 =====
@@ -54,14 +54,14 @@ function normalizeField(field) {
 
 // 改进版：支持字符串和 Date 对象
 function cleanDate(value) {
-  if (!value) return '';
+  if (!value) return ""
   if (value instanceof Date) {
-    return value.toISOString().split('T')[0];
+    return value.toISOString().split("T")[0]
   }
-  if (typeof value === 'string') {
-    return value.split('T')[0];
+  if (typeof value === "string") {
+    return value.split("T")[0]
   }
-  return value;
+  return value
 }
 
 // ===== 解析影片数据 =====
@@ -81,16 +81,11 @@ function parseMovieData(filePath) {
       String(tag)
         .toLowerCase()
         .split("/")
-        .some((seg) =>
-          ["movies", "movie", "teleplay", "tv", "电影", "电视剧"].includes(seg)
-        )
+        .some((seg) => ["movies", "movie", "teleplay", "tv", "电影", "电视剧"].includes(seg)),
   )
   if (!isMovie) return null
 
-  const relativePath = path
-    .relative(CONTENT_DIR, filePath)
-    .replace(/\\/g, "/")
-    .replace(/\.md$/, "")
+  const relativePath = path.relative(CONTENT_DIR, filePath).replace(/\\/g, "/").replace(/\.md$/, "")
 
   let title = normalizeField(frontmatter.title)
   if (!title) title = path.basename(filePath, ".md")
@@ -103,7 +98,7 @@ function parseMovieData(filePath) {
     score: normalizeField(frontmatter.score),
     scoreStar: normalizeField(frontmatter.scoreStar),
     myRate: normalizeField(frontmatter.myRating),
-    封面: processImagePath(normalizeField(frontmatter.封面), title),  // ⭐ 使用图片映射
+    封面: processImagePath(normalizeField(frontmatter.封面), title), // ⭐ 使用图片映射
     originalTitle: normalizeField(frontmatter.originalTitle),
     aliases: normalizeField(frontmatter.aliases),
     genre: normalizeField(frontmatter.genre),
@@ -112,11 +107,11 @@ function parseMovieData(filePath) {
     actor: normalizeField(frontmatter.actor),
     author: normalizeField(frontmatter.author),
     datePublished: cleanDate(frontmatter.datePublished),
-    添加时间: cleanDate(frontmatter.添加时间 || ''),
-    开始时间: cleanDate(frontmatter.开始时间 || ''),
-    结束时间: cleanDate(frontmatter.结束时间 || ''),
+    添加时间: cleanDate(frontmatter.添加时间 || ""),
+    开始时间: cleanDate(frontmatter.开始时间 || ""),
+    结束时间: cleanDate(frontmatter.结束时间 || ""),
     createTime: cleanDate(frontmatter.createTime),
-    status: frontmatter.state || frontmatter.status || '',
+    status: frontmatter.state || frontmatter.status || "",
     desc: normalizeField(frontmatter.desc),
   }
 }
@@ -147,9 +142,7 @@ function generateMovieIndex() {
         String(tag)
           .toLowerCase()
           .split("/")
-          .some((seg) =>
-            ["movies", "movie", "teleplay", "tv", "电影", "电视剧"].includes(seg)
-          )
+          .some((seg) => ["movies", "movie", "teleplay", "tv", "电影", "电视剧"].includes(seg)),
     )
     return !isMovie
   })
@@ -186,10 +179,10 @@ function generateMovieIndex() {
 
   // 显示示例影片
   if (movies.length > 0) {
-    console.log("\n🎬 示例影片:");
-    const sample = movies[0];
-    console.log(`   标题: ${sample.title}`);
-    console.log(`   封面: ${sample.封面}`);
+    console.log("\n🎬 示例影片:")
+    const sample = movies[0]
+    console.log(`   标题: ${sample.title}`)
+    console.log(`   封面: ${sample.封面}`)
   }
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(allData, null, 2), "utf-8")

@@ -108,7 +108,10 @@ function getThumbnailUrl(videoid) {
 // http 一律升级为 https,避免 https 站点上的 mixed-content 拦截。
 function getCoverUrl(cover, videoid) {
   const raw = normalizeField(cover)
-  if (raw) return String(raw).trim().replace(/^http:\/\//i, "https://")
+  if (raw)
+    return String(raw)
+      .trim()
+      .replace(/^http:\/\//i, "https://")
   return getThumbnailUrl(videoid)
 }
 
@@ -159,15 +162,11 @@ function parseVideoData(filePath) {
 
   const tags = frontmatter.tags || []
   const isVideo = tags.some(
-    (tag) =>
-      tag && ["video", "视频", "youtube", "教程"].includes(String(tag).toLowerCase()),
+    (tag) => tag && ["video", "视频", "youtube", "教程"].includes(String(tag).toLowerCase()),
   )
   if (!isVideo) return null
 
-  const relativePath = path
-    .relative(CONTENT_DIR, filePath)
-    .replace(/\\/g, "/")
-    .replace(/\.md$/, "")
+  const relativePath = path.relative(CONTENT_DIR, filePath).replace(/\\/g, "/").replace(/\.md$/, "")
 
   let title = normalizeField(frontmatter.title)
   if (!title) title = path.basename(filePath, ".md")

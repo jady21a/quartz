@@ -105,7 +105,8 @@ export default ((opts?: Partial<FolderContentOptions>) => {
 
     // frontmatter 加 hideFolderList: true 可去掉文件夹页自带的子条目列表(如英文首页 en/index)
     const hideFolderList =
-      fileData.frontmatter?.hideFolderList === true || fileData.frontmatter?.hideFolderList === "true"
+      fileData.frontmatter?.hideFolderList === true ||
+      fileData.frontmatter?.hideFolderList === "true"
 
     return (
       <div class="popover-hint">

@@ -17,7 +17,16 @@ const SCAN_DIR = path.join(CONTENT_DIR, "7.shared")
 const OUTPUT_FILE = path.join(__dirname, "../quartz/static/image-index.json")
 
 // 命中这些 tag(忽略大小写)的笔记视为"图文"
-const IMAGE_TAGS = ["topic", "专题", "图文", "imagetext", "graphic", "deepdive", "专题教程", "图文教程"]
+const IMAGE_TAGS = [
+  "topic",
+  "专题",
+  "图文",
+  "imagetext",
+  "graphic",
+  "deepdive",
+  "专题教程",
+  "图文教程",
+]
 
 // ===== 递归读取所有 Markdown 文件 =====
 function getAllMarkdownFiles(dir, fileList = []) {
@@ -92,9 +101,7 @@ function parseImageData(filePath) {
   const { data: fm, content: body } = matter(content)
 
   const tags = fm.tags || []
-  const isImage = tags.some(
-    (t) => t && IMAGE_TAGS.includes(String(t).toLowerCase()),
-  )
+  const isImage = tags.some((t) => t && IMAGE_TAGS.includes(String(t).toLowerCase()))
   if (!isImage) return null
 
   // draft 页不进索引：Quartz 构建时会整页排除(RemoveDrafts)，索引若收录会指向 404
@@ -176,7 +183,9 @@ function generateImageIndex() {
 
   console.log("🖼️  找到", items.length, "篇图文")
   for (const it of items.slice(0, 5)) {
-    console.log(`   ${it.title}  | 日期: ${it.date} | 分类: ${it.category} | 封面: ${it.thumbnail || "无"}`)
+    console.log(
+      `   ${it.title}  | 日期: ${it.date} | 分类: ${it.category} | 封面: ${it.thumbnail || "无"}`,
+    )
   }
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(items, null, 2), "utf-8")

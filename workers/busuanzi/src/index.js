@@ -276,10 +276,13 @@ async function handleSnapshot(request, env) {
       headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
     })
   } catch (e) {
-    return new Response(JSON.stringify({ ok: false, error: String(e && e.message ? e.message : e) }), {
-      status: 500,
-      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
-    })
+    return new Response(
+      JSON.stringify({ ok: false, error: String(e && e.message ? e.message : e) }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+      },
+    )
   }
 }
 

@@ -1,136 +1,138 @@
 .random-notes {
-    background: var(--light);
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+  background: var(--light);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
 
-    .random-notes-tabs {
-      display: flex;
-      gap: 0;
-      border-bottom: 2px solid var(--lightgray);
-      margin-bottom: 1rem;
+  .random-notes-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--lightgray);
+    margin-bottom: 1rem;
 
-      .tab-btn {
-        background: none;
-        border: none;
-        padding: 0.4rem 0.8rem;
-        font-size: 1.05rem;
-        font-weight: 500;
-        color: var(--gray);
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -2px;
-        transition: color 0.2s, border-color 0.2s;
-
-        &:hover {
-          color: var(--dark);
-        }
-
-        &.active {
-          color: var(--dark);
-          border-bottom-color: var(--secondary);
-        }
-      }
-    }
-
-    .tab-panel.hidden {
-      display: none;
-    }
-
-    // 「最新」条目:标题+日期在色块内纵向排布;flex 让日期成为原子项,
-    // 既能精确控间距,hover 下划线也不会传播到日期上
-    .tab-panel[data-panel="recent"] .random-notes-list li a {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.4;
-    }
-
-    .recent-date {
-      align-self: flex-end;
-      line-height: 1;
-      font-size: 0.75rem;
-      font-weight: normal;
-      // 底色加深后纯 --gray 日期对比不够,往 darkgray 方向压半档
-      color: color-mix(in srgb, var(--gray) 50%, var(--darkgray));
-    }
-
-    h3 {
-      margin: 0 0 1rem 0;
-      font-size: 1.1rem;
-      color: var(--dark);
-      border-bottom: 2px solid var(--secondary);
-      padding-bottom: 0.5rem;
-    }
-  
-    .random-notes-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1rem 0;
-  
-      // 条目本身是灰色块,块间留白已足够分隔,不再画分隔线
-      li {
-        margin-bottom: 0.8rem;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-  
-        a {
-          font-weight: 500;
-          color: var(--secondary);
-          text-decoration: none;
-          display: block;
-          margin-bottom: 0.3rem;
-          // base 给 a.internal 的 --highlight 底色只有 15% 透明度,删掉分隔线后
-          // 全靠它撑块的轮廓太淡;这里加深底色并补描边,让块自己立得住。
-          // 用 --gray 混色而非写死色值,明暗主题都自适配。
-          background-color: color-mix(in srgb, var(--gray) 20%, transparent);
-          border: 1px solid color-mix(in srgb, var(--gray) 45%, transparent);
-          border-radius: 6px;
-          padding: 0.45rem 0.6rem;
-          transition: color 0.2s ease;
-  
-          &:hover {
-            color: var(--tertiary);
-            text-decoration: underline;
-          }
-        }
-  
-        .random-note-tags {
-          display: flex;
-          gap: 0.4rem;
-          flex-wrap: wrap;
-          margin-top: 0.4rem;
-  
-          .tag {
-            font-size: 0.75rem;
-            color: var(--gray);
-            background: var(--lightgray);
-            padding: 0.15rem 0.5rem;
-            border-radius: 4px;
-          }
-        }
-      }
-    }
-  
-    .refresh-button {
-      width: 100%;
-      padding: 0.5rem;
-      background: var(--secondary);
-      color: white;
+    .tab-btn {
+      background: none;
       border: none;
-      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--gray);
       cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-  
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition:
+        color 0.2s,
+        border-color 0.2s;
+
       &:hover {
-        background: var(--tertiary);
-        transform: translateY(-1px);
+        color: var(--dark);
       }
-  
-      &:active {
-        transform: translateY(0);
+
+      &.active {
+        color: var(--dark);
+        border-bottom-color: var(--secondary);
       }
     }
   }
+
+  .tab-panel.hidden {
+    display: none;
+  }
+
+  // 「最新」条目:标题+日期在色块内纵向排布;flex 让日期成为原子项,
+  // 既能精确控间距,hover 下划线也不会传播到日期上
+  .tab-panel[data-panel="recent"] .random-notes-list li a {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.4;
+  }
+
+  .recent-date {
+    align-self: flex-end;
+    line-height: 1;
+    font-size: 0.75rem;
+    font-weight: normal;
+    // 底色加深后纯 --gray 日期对比不够,往 darkgray 方向压半档
+    color: color-mix(in srgb, var(--gray) 50%, var(--darkgray));
+  }
+
+  h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    color: var(--dark);
+    border-bottom: 2px solid var(--secondary);
+    padding-bottom: 0.5rem;
+  }
+
+  .random-notes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+
+    // 条目本身是灰色块,块间留白已足够分隔,不再画分隔线
+    li {
+      margin-bottom: 0.8rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        font-weight: 500;
+        color: var(--secondary);
+        text-decoration: none;
+        display: block;
+        margin-bottom: 0.3rem;
+        // base 给 a.internal 的 --highlight 底色只有 15% 透明度,删掉分隔线后
+        // 全靠它撑块的轮廓太淡;这里加深底色并补描边,让块自己立得住。
+        // 用 --gray 混色而非写死色值,明暗主题都自适配。
+        background-color: color-mix(in srgb, var(--gray) 20%, transparent);
+        border: 1px solid color-mix(in srgb, var(--gray) 45%, transparent);
+        border-radius: 6px;
+        padding: 0.45rem 0.6rem;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: var(--tertiary);
+          text-decoration: underline;
+        }
+      }
+
+      .random-note-tags {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-top: 0.4rem;
+
+        .tag {
+          font-size: 0.75rem;
+          color: var(--gray);
+          background: var(--lightgray);
+          padding: 0.15rem 0.5rem;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+
+  .refresh-button {
+    width: 100%;
+    padding: 0.5rem;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: var(--tertiary);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}

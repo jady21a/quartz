@@ -1,3 +1,18 @@
 public
 node_modules
 .quartz-cache
+
+# 笔记正文不交给 prettier 管:content/ 下是在 Obsidian 里写的内容,不是代码。
+# prettier 会重排表格和换行,而 callout、dataview 代码块对空行敏感,重排有真实的坏页面
+# 风险;.trash 更是 Obsidian 回收站,压根不该进检查。这一条排掉了 227 个告警里的 197 个。
+content
+
+# 脚本生成的索引:每次 push 由 scripts/generate-* 整个重写,
+# 格式化了下次生成又变回去,永远消不掉。
+quartz/static/*-index.json
+quartz/static/created-dates.json
+
+# 第三方代码 / 格式由外部约定、不能动的文件
+quartz/static/lite-yt-embed.js
+quartz/static/lite-yt-embed.css
+quartz/static/googlebb4488cf87b645f4.html

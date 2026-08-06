@@ -22,7 +22,15 @@ const HIDDEN_DIRS = ["6.about", "8.主题阅读"]
 // MISSING 扫描排除的中文目录(相对 content/)。前四个对齐 quartz.config.ts 的 ignorePatterns
 // (根本不发布);2.Read、3.Template 是本 skill 约定不翻:读书笔记、模板(存量英文模板页
 // 仍参与 STALE 盯过期)。隐藏目录(.obsidian/.trash)另行跳过。
-const EXCLUDE_DIRS = ["private", "templates", ".obsidian", ".trash", "2.Read", "3.Template", ...HIDDEN_DIRS]
+const EXCLUDE_DIRS = [
+  "private",
+  "templates",
+  ".obsidian",
+  ".trash",
+  "2.Read",
+  "3.Template",
+  ...HIDDEN_DIRS,
+]
 // 策展页:手写精简落地页,非逐篇镜像翻译,不参与 STALE(相对 en/)。
 const CURATED = ["index.md"]
 

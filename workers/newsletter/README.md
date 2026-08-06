@@ -4,16 +4,16 @@
 
 ## 组成
 
-| 位置 | 作用 |
-|------|------|
+| 位置                                        | 作用                                                   |
+| ------------------------------------------- | ------------------------------------------------------ |
 | `quartz/plugins/emitters/newsletterFeed.ts` | 生成 `/newsletter.xml`:全文 + 所有 `src`/`href` 绝对化 |
-| `functions/api/subscribe.js`                | 收订阅、写 D1、发确认信 |
-| `functions/api/confirm.js`                  | 双重确认落地页 |
-| `functions/api/unsubscribe.js`              | 退订(GET 落地页 + POST 一键退订) |
-| `functions/api/ses-webhook.js`              | SES 退信/投诉回调 → 停发 |
-| `workers/newsletter/src/index.js`           | 定时任务:feed 差分 → 群发 |
-| `workers/newsletter/shared/`                | Pages Functions 和 Worker 共用的模块 |
-| `workers/newsletter/schema.sql`             | D1 表结构 |
+| `functions/api/subscribe.js`                | 收订阅、写 D1、发确认信                                |
+| `functions/api/confirm.js`                  | 双重确认落地页                                         |
+| `functions/api/unsubscribe.js`              | 退订(GET 落地页 + POST 一键退订)                       |
+| `functions/api/ses-webhook.js`              | SES 退信/投诉回调 → 停发                               |
+| `workers/newsletter/src/index.js`           | 定时任务:feed 差分 → 群发                              |
+| `workers/newsletter/shared/`                | Pages Functions 和 Worker 共用的模块                   |
+| `workers/newsletter/schema.sql`             | D1 表结构                                              |
 
 Pages Functions 和 Worker 共用 `shared/` 下的代码,所以 `functions/` 里是 `import ../../workers/newsletter/shared/x.js`。改动只需落在一处。
 
@@ -28,6 +28,7 @@ Pages Functions 和 Worker 共用 `shared/` 下的代码,所以 `functions/` 里
 > index.md 的 action 改回 Buttondown embed。
 >
 > **切回自建的条件**(全部满足再动,别提前):
+>
 > 1. 下面「未完成」1–4 项做完,SES 拿到生产放行;
 > 2. 用自己的邮箱把「订阅 → 确认 → 群发 → 退订」完整走通一遍;
 > 3. 从 Buttondown 导出订阅者 CSV 灌进 D1,存量按 `confirmed` 导入(他们本来就是主动订阅的,
@@ -192,6 +193,7 @@ npx wrangler deploy
 ### 5. 退信/投诉回调
 
 SES 控制台 → Configuration sets → 建一个(比如 `newsletter`),加 Event destination：
+
 - 事件类型勾 **Bounce** 和 **Complaint**
 - 目的地选 SNS topic(新建一个)
 - 给该 SNS topic 加 HTTPS 订阅,端点填：
@@ -227,14 +229,14 @@ curl "https://newsletter.jz21.eu.org/?token=$T&action=status"
 
 **别改回 workers.dev** —— `*.jadyzhang21.workers.dev` 整个返回 1101,见坑那一节。`workers_dev` 已经在 `wrangler.toml` 里设成 `false`,就是为了不让 deploy 再打印那个骗人的地址。
 
-| 目的 | 命令 |
-|------|------|
-| 看订阅者分布和待发队列 | `?action=status` |
-| 演练(不写库不发信) | `?action=dry-run` |
-| 立刻跑一次真实群发 | `?action=run` |
-| 把当前 feed 全标记为已见(不发信) | `?action=bootstrap` |
-| 看日志 | `npx wrangler tail newsletter` |
-| 绕开入口看名单 | `npx wrangler d1 execute newsletter --remote --command "SELECT status, COUNT(*) FROM subscribers GROUP BY status"` |
+| 目的                             | 命令                                                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 看订阅者分布和待发队列           | `?action=status`                                                                                                   |
+| 演练(不写库不发信)               | `?action=dry-run`                                                                                                  |
+| 立刻跑一次真实群发               | `?action=run`                                                                                                      |
+| 把当前 feed 全标记为已见(不发信) | `?action=bootstrap`                                                                                                |
+| 看日志                           | `npx wrangler tail newsletter`                                                                                     |
+| 绕开入口看名单                   | `npx wrangler d1 execute newsletter --remote --command "SELECT status, COUNT(*) FROM subscribers GROUP BY status"` |
 
 ## 几个已经踩过的坑,别再踩回去
 
@@ -247,6 +249,7 @@ curl "https://newsletter.jz21.eu.org/?token=$T&action=status"
 **改了旧文章会不会重发** — 不会。feed 的排序和 guid 都用创建时间与 slug,改内容不影响;而且 `sent` 表按 (人, 文章) 建了主键。
 
 **控制台里几个一点就错的地方** — 都实际踩过:
+
 - SES 的 **MAIL FROM 输入框只要子域前缀**(填 `bounce`,界面自动补 `.news.jz21.eu.org`),填全名会变成 `bounce.news.jz21.eu.org.news.jz21.eu.org`。
 - 建 SNS topic 时**类型默认是 FIFO,必须改成 Standard** —— FIFO 只支持 SQS 订阅,给不了 HTTPS。
 - 建 SNS 订阅时 **`Enable raw message delivery` 不能勾**。勾了会剥掉 SNS 信封,`ses-webhook.js` 靠 `body.Type === "SubscriptionConfirmation"` 自动确认订阅,信封没了这步直接失效。
