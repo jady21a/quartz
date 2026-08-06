@@ -67,23 +67,30 @@ Pages Functions 和 Worker 共用 `shared/` 下的代码,所以 `functions/` 里
 - **退信/投诉回调整条链已通**。SNS topic `newsletter-events` 下有一条 HTTPS 订阅指向 `/api/ses-webhook`,
   状态 **Confirmed**、Raw message delivery **Disabled**。Confirmed 是端点自己回访 SubscribeURL 换来的,
   所以它同时证明了三件事:Pages 里的 `SES_WEBHOOK_TOKEN` 是对的、`ses-webhook.js` 的自动确认分支能跑、SNS 能送达本站。
+- **整条链已在沙箱期实测跑通(2026-08-06)**,用已验证的 `jadyzhang21@gmail.com`:
+  - 订阅 → SES 真发出确认信 → 点确认 → `status=confirmed`。
+    `confirmed_at` 有值本身就是铁证:要变 confirmed 必须带一个用 `NEWSLETTER_SECRET` 签出的有效 token,
+    而那 token 只存在于那封信里。
+  - 群发:临时从 `seen_entries` 删掉一篇让它变「新」,`?action=run` 报 `sent:1 failed:0`,
+    `sent` 表落了一行,`seen_entries` 回到 20/20 完成;再 `dry-run` 是空的 —— **不会重发**这条也一并验了。
+  - 退订四条路径全验:GET 只给确认页(库不变)、确认页表单 POST 回 HTML「已退订」、
+    一键退订 POST 回纯文本 `unsubscribed`、坏签名回「链接无效」。
+- **退订的 GET 不再改状态**(见 `unsubscribe.js` 顶部注释)。原来 GET 也会直接退订,
+  而邮件里的链接会被 Gmail 代理 / Outlook Safe Links / 邮件网关 / 杀毒扫描预取 ——
+  读者没点过就被静默退掉,从后台看跟自己退的一样、查不出来。已实测:拿真实地址的退订链接
+  GET 一次,状态仍是 `confirmed`。
 
 **未完成 —— 按这个顺序做**
 
 装配密钥一律走 `scripts/bootstrap-newsletter.sh`(见下方「一条命令装配密钥」),别再手工复制粘贴。
 
-1. **点掉 `jadyzhang21@gmail.com` 的 SES 验证链接**(identity 已建,状态还是 Verification pending)。不点掉,沙箱期连自测都做不了。
-   点完就能跑端到端自测。注意 **`Origin` 头不能省**,而且**别用首页表单测** —— 它现在指向 Buttondown,碰不到自建链路:
-
-   ```bash
-   curl -sS -X POST https://jz21.eu.org/api/subscribe \
-     -H "Origin: https://jz21.eu.org" -d 'email=jadyzhang21@gmail.com'
-   ```
-
-   然后去邮箱点确认链接,`?action=status` 应看到 `confirmed: 1`;再点邮件里的退订链接,应变 `unsubscribed`。
-2. **SES 还在沙箱里,这是「读者订阅不了」的最后一道关**。沙箱只允许发给已验证的地址,所以哪怕上面全做完,陌生读者提交后那封确认信照样发不出去、他看到的还是报错页。
-   生产放行申请已提交,AWS 回了「需要补充信息」并开了支持工单 `178585586500019`,待回复。回复前最好先让退信回调真正跑通,这样材料能写成完成时。
-   在放行之前想验证整条链路:把自己的 QQ/163/Gmail 各加一个 verified identity,用这些地址走一遍订阅→确认→群发→退订。
+1. **SES 还在沙箱里,这是「读者订阅不了」唯一剩下的关**。沙箱只允许发给已验证的地址 ——
+   自测能通正是因为 `jadyzhang21@gmail.com` 是 verified identity;陌生读者提交后那封确认信发不出去,他看到的还是报错页。
+   生产放行申请已提交,AWS 回了「需要补充信息」并开了支持工单 `178585586500019`,**待回复**。
+   现在回工单的材料齐了:退信/投诉回调有 Confirmed 的 SNS 订阅、双重确认和一键退订都实测可用,都能写成完成时。
+2. 从 Buttondown 导出订阅者 CSV 灌进 D1,存量按 `confirmed` 导入(他们本来就是主动订阅的,不该再要求二次确认)。
+3. **最后**才把四个表单的 action 改成 `/api/subscribe`(`content/index.md`、`content/en/index.md`、
+   `content/1.Why Z/index.md` 及其英文版)。上次就是漏了后两个才出的劫持事故。
 
 ## 一条命令装配密钥
 
