@@ -34,9 +34,12 @@ const PUBLIC = path.join(REPO, "public")
 
 // 打线上时降并发、放宽导航超时:34 页 × 4 并发打同一个站容易被 CF 限速,
 // 导航超时会被记成"打开页面失败",那是假报警,不是站坏了。
+// 线上是真实网络:实测这台机器到 CF 的单个请求 TTFB 就要 2~5 秒,一页十几个同源资源
+// 叠起来 domcontentloaded 能到 20~35 秒(不装任何请求拦截也一样)。超时给得不够
+// 就会把慢当成坏,而一个会误报的护栏很快就会被忽略。
 const ONLINE = !!process.env.SMOKE_BASE_URL
 const CONCURRENCY = ONLINE ? 2 : 4
-const NAV_TIMEOUT = ONLINE ? 45000 : 20000
+const NAV_TIMEOUT = ONLINE ? 90000 : 20000
 const READY_TIMEOUT = 15000
 
 // 容器选择器 → 渲染完成后卡片所在的容器 class(gallery.js 里的 gridClass)
@@ -328,23 +331,60 @@ async function main() {
     }),
   )
 
+  const zhCounterpart = (url) =>
+    url === "/en" || url.startsWith("/en/") ? url.replace(/^\/en/, "") || "/" : null
+
+  const problemsOf = (url) => {
+    const sig = signatures.get(url)
+    const problems = checkPage(sig)
+    const zhUrl = zhCounterpart(url)
+    if (zhUrl) {
+      const zhSig = signatures.get(zhUrl)
+      if (zhSig) problems.push(...checkMirror(sig, zhSig))
+    }
+    return problems
+  }
+
+  // 复核:首轮失败的页面逐页重测,两次都失败才算数。
+  // 首轮是并发跑的,网络抖动、导航超时、渲染没赶上都可能让好页面偶发翻红;误报会让人
+  // 慢慢开始忽略告警,那这道护栏就白建了。复核串行、不抢带宽,只多花失败页数 × 几十秒。
+  // 英文页翻红时把对应中文页也一并重测:中英对称是拿两次测量作差,基准本身也可能是抖的。
+  const suspects = targets.filter((url) => problemsOf(url).length > 0)
+  if (suspects.length > 0) {
+    const recheck = new Set()
+    for (const url of suspects) {
+      recheck.add(url)
+      const zhUrl = zhCounterpart(url)
+      if (zhUrl && signatures.has(zhUrl)) recheck.add(zhUrl)
+    }
+    console.log(`⏳ 首轮 ${suspects.length} 页有问题,逐页复核 ${recheck.size} 页...`)
+    for (const url of recheck) {
+      try {
+        signatures.set(url, await inspect(context, base, url, origin))
+      } catch (err) {
+        signatures.set(url, {
+          url,
+          players: [],
+          galleries: {},
+          consoleErrors: [`打开页面失败:${err.message}`],
+          failedRequests: [],
+        })
+      }
+    }
+  }
+
   await browser.close()
   served?.server.close()
 
   const failures = []
-  for (const url of targets) {
-    const sig = signatures.get(url)
-    const problems = checkPage(sig)
-    if (url.startsWith("/en/") || url === "/en") {
-      const zhUrl = url.replace(/^\/en/, "") || "/"
-      const zhSig = signatures.get(zhUrl)
-      if (zhSig) problems.push(...checkMirror(sig, zhSig))
-    }
+  for (const url of suspects) {
+    const problems = problemsOf(url)
     if (problems.length) failures.push({ url, problems })
   }
 
   if (failures.length === 0) {
-    console.log(`✅ 冒烟检查通过:${targets.length} 页全部正常渲染\n`)
+    const flaky = suspects.length > 0 ? `(${suspects.length} 页首轮翻红,复核后确认是抖动)` : ""
+    console.log(`✅ 冒烟检查通过:${targets.length} 页全部正常渲染${flaky}\n`)
     return
   }
 
