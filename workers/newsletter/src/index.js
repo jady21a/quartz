@@ -22,12 +22,14 @@ import {
   countByStatus,
   countRecipientsFor,
   deleteSent,
+  getMeta,
   getSeenGuids,
   markBroadcastDone,
   markSeen,
   pendingBroadcasts,
   recipientsFor,
   recordSentBatch,
+  setMeta,
 } from "../shared/db.js"
 
 // 一轮最多发多少封。免费版 subrequest 上限 50,留出 feed 拉取和几次 D1 查询的余量。
@@ -56,6 +58,62 @@ async function alertAdmin(env, subject, body) {
     html: `<pre style="white-space:pre-wrap;font-family:monospace;">${body}</pre>`,
     text: body,
   }).catch(() => {})
+}
+
+// 自测回调端点的间隔。一天一次够了:它要抓的是「配置被改坏」这种不会自己恢复的故障,
+// 不是瞬时抖动。查太勤只是白烧 subrequest。
+const WEBHOOK_PROBE_INTERVAL_MS = 24 * 3600 * 1000
+
+/**
+ * 自测退信回调端点还通不通,不通就告警。
+ *
+ * 为什么需要它:回调链是整套里唯一能**静默**失效的一环 —— 断了之后信照发、站点照常,
+ * 你只是不再知道哪些地址死了。而死地址留在名单里反复投递会把退信率一路推高,
+ * 等 SES 找上门已经是警告或停用。真踩过一次:轮换 SES_WEBHOOK_TOKEN 之后忘了重建
+ * SNS 订阅,退信事件全撞 403,而外部看不出任何症状。
+ *
+ * 探针发一个 Type 非 Notification 的载荷,端点会走「ignored」分支回 200,不碰名单。
+ * 覆盖范围:端点活着 + 两侧 token 还对得上。**不覆盖** SNS → 端点这一跳
+ * (要验那个得给 IAM 用户加 sns:GetSubscriptionAttributes,为监控扩大发信 key 的权限不划算)。
+ */
+async function probeWebhook(env, db, { force = false } = {}) {
+  if (!env.SES_WEBHOOK_TOKEN) return { skipped: "没有配 SES_WEBHOOK_TOKEN" }
+
+  const last = await getMeta(db, "last_webhook_probe_at")
+  if (!force && last && Date.now() - Date.parse(last) < WEBHOOK_PROBE_INTERVAL_MS) {
+    return { skipped: `距上次自测不到 24 小时(${last})` }
+  }
+
+  const url = `${siteBase(env)}/api/ses-webhook?token=${encodeURIComponent(env.SES_WEBHOOK_TOKEN)}`
+  let ok = false
+  let detail = ""
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ Type: "HealthCheck" }),
+    })
+    ok = res.status === 200
+    detail = `HTTP ${res.status}`
+  } catch (err) {
+    detail = String(err)
+  }
+
+  // 先记时间再判断结果:探针失败时也要推进这个戳,否则每 15 分钟一轮全都会重试并告警
+  await setMeta(db, "last_webhook_probe_at", new Date().toISOString())
+
+  if (!ok) {
+    await alertAdmin(
+      env,
+      "退信回调端点自测失败",
+      `${siteBase(env)}/api/ses-webhook 没有回 200(${detail})。\n\n` +
+        `退信/投诉事件很可能正在被丢弃 —— 这个故障从外部看不出症状,但退信率会一路走高。\n` +
+        `最常见的成因:SES_WEBHOOK_TOKEN 只在一侧换了(Pages 和 SNS 订阅地址里的那份不一致),\n` +
+        `或者 SNS 订阅被删/掉出 Confirmed。\n` +
+        `排查顺序:先直接 curl 这个地址看回什么,再去 SNS 看订阅还在不在、状态是不是 Confirmed。`,
+    )
+  }
+  return { ok, detail }
 }
 
 /**
@@ -215,14 +273,28 @@ async function run(env, { dryRun = false, bootstrap = false } = {}) {
 export default {
   // 定时触发:真正的群发入口
   async scheduled(_event, env, ctx) {
-    ctx.waitUntil(run(env).then((r) => console.log("[newsletter]", JSON.stringify(r))))
+    ctx.waitUntil(
+      (async () => {
+        const r = await run(env)
+        console.log("[newsletter]", JSON.stringify(r))
+        // 自测放在群发之后:群发是正事,别让它占掉发信的 subrequest 预算。
+        // 自测本身出错也不能影响群发的结论,所以单独 catch。
+        try {
+          const probe = await probeWebhook(env, env.DB)
+          if (probe && !probe.skipped) console.log("[newsletter] 回调自测", JSON.stringify(probe))
+        } catch (err) {
+          console.error("[newsletter] 回调自测本身出错", err)
+        }
+      })(),
+    )
   },
 
   // 手动运维入口。全部要 ADMIN_TOKEN,否则任何人都能触发群发。
-  //   ?action=status     看订阅者分布和待发队列
-  //   ?action=dry-run    演练:只报告会发给谁,不写库不发信
-  //   ?action=bootstrap  把当前 feed 里的文章全标记为已见(不发信)
-  //   ?action=run        立刻跑一次真实群发
+  //   ?action=status         看订阅者分布、待发队列、回调仪表
+  //   ?action=dry-run        演练:只报告会发给谁,不写库不发信
+  //   ?action=bootstrap      把当前 feed 里的文章全标记为已见(不发信)
+  //   ?action=run            立刻跑一次真实群发
+  //   ?action=probe-webhook  立刻自测一次退信回调端点(无视 24 小时间隔)
   async fetch(request, env) {
     const url = new URL(request.url)
     const token = url.searchParams.get("token") || ""
@@ -241,7 +313,15 @@ export default {
         return json({
           subscribers: await countByStatus(env.DB),
           pending: await pendingBroadcasts(env.DB),
+          // 回调那条链唯一的仪表。lastEventAt 长期为 null 在小名单上是正常的
+          // (真没人退信),所以它是给人看的参考,不是告警条件 —— 告警靠 probe。
+          webhook: {
+            lastEventAt: await getMeta(env.DB, "last_webhook_event_at"),
+            lastProbeAt: await getMeta(env.DB, "last_webhook_probe_at"),
+          },
         })
+      case "probe-webhook":
+        return json(await probeWebhook(env, env.DB, { force: true }))
       case "dry-run":
         return json(await run(env, { dryRun: true }))
       case "bootstrap":

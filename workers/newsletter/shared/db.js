@@ -235,3 +235,34 @@ export async function deleteSent(db, subscriberId, guid) {
     .bind(subscriberId, guid)
     .run()
 }
+
+// ---------- meta:杂项状态 ----------
+
+/** 读一个 meta 值,没有就返回 null */
+export async function getMeta(db, key) {
+  const row = await db.prepare("SELECT value FROM meta WHERE key = ?").bind(key).first()
+  return row?.value ?? null
+}
+
+export async function setMeta(db, key, value) {
+  await db
+    .prepare(
+      "INSERT INTO meta (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+    )
+    .bind(key, value)
+    .run()
+}
+
+/**
+ * 盖一下「回调还活着」的时间戳。
+ *
+ * 刻意吞掉异常:这只是仪表,写失败绝不能让回调本身回非 2xx ——
+ * 那会让 SNS 反复重投同一条退信事件。
+ */
+export async function touchWebhookEvent(db) {
+  try {
+    await setMeta(db, "last_webhook_event_at", new Date().toISOString())
+  } catch (err) {
+    console.error("[meta] 记录回调时间失败(忽略)", err)
+  }
+}

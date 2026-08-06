@@ -10,7 +10,7 @@
 // ?token=<SES_WEBHOOK_TOKEN> 写进端点地址,只有我们和 AWS 知道这个地址。
 // 对一个个人博客的退信回调,这个强度是够的;想升级成完整验签的话,
 // 换掉下面 authorized() 即可,其余逻辑不用动。
-import { markStatus } from "../../workers/newsletter/shared/db.js"
+import { markStatus, touchWebhookEvent } from "../../workers/newsletter/shared/db.js"
 
 function authorized(url, env) {
   const token = url.searchParams.get("token") || ""
@@ -94,6 +94,10 @@ export async function onRequest(context) {
       return new Response("unparseable message", { status: 400 })
     }
   }
+
+  // 盖一下「回调还活着」的时间戳。放在处理动作之前:哪怕这条事件不需要动名单
+  // (Delivery / Send 之类),它也证明了 SNS → 本站这一跳还是通的。
+  await touchWebhookEvent(env.DB)
 
   const actions = extractActions(event)
   for (const { email, status } of actions) {
