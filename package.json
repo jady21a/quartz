@@ -18,8 +18,6 @@
     "format": "npx prettier . --write",
     "test": "tsx --test",
     "profile": "0x -D prof ./quartz/bootstrap-cli.mjs build --concurrency=1",
-   
-  
     "prebuild": "npm run generate-all",
     "preserve": "npm run generate-all",
     "generate-books": "node scripts/generate-book-index.js",
@@ -31,15 +29,14 @@
     "generate-all": "npm run generate-books && npm run generate-movies && npm run generate-videos && npm run generate-images && npm run generate-created-dates",
     "verify-index": "node scripts/verify-index.mjs",
     "check-en": "node scripts/check-en-staleness.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "doctor": "npm run build && npm run verify-index && npm run smoke && npm run check-en",
     "build": "npx quartz build && cp quartz/static/googlebb4488cf87b645f4.html public/",
     "serve": "npx quartz build --serve",
     "serve:en": "SHOW_EN=1 npx quartz build --serve",
-
     "sync:no-pull": "npx quartz sync --no-pull",
     "sync:all": "npx quartz sync",
     "local-sync": "quartz sync-only"
-
-
   },
   "engines": {
     "npm": ">=10.9.2",
@@ -129,6 +126,7 @@
     "@types/ws": "^8.18.1",
     "@types/yargs": "^17.0.34",
     "esbuild": "^0.25.11",
+    "playwright": "^1.62.1",
     "prettier": "^3.6.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"

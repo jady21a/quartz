@@ -2,7 +2,7 @@
 // Unified renderer for the book / movie / video gallery queries.
 // Replaces book-query.js, movie-query.js and video-query.js — the three used to
 // duplicate almost all of their plumbing (fetch, filter, sort, render, init).
-(function () {
+;(function () {
   "use strict"
 
   // ==================== shared helpers ====================
@@ -29,8 +29,8 @@
     if (filePath.startsWith("http://") || filePath.startsWith("https://")) return filePath
     let path = filePath.replace(/^\.?\//, "")
     if (!path.startsWith("/")) path = "/" + path
-    if (hasEn && (location.pathname === "/en" || location.pathname.startsWith("/en/"))) {
-      path = "/en" + path
+    if (hasEn && window.QuartzLang.isEnPage()) {
+      path = window.QuartzLang.withLangPrefix(path)
     }
     if (!path.match(/\.\w+$/) || path.endsWith(".md")) {
       path = path.replace(/\.md$/, "") + ".html"
@@ -302,7 +302,7 @@
         const all = await fetchIndex(cfg.indexUrl)
         // 英文页优先展示条目的英文标题/描述(索引对象跨页缓存,须拷贝后改)
         let source = all
-        if (location.pathname === "/en" || location.pathname.startsWith("/en/")) {
+        if (window.QuartzLang.isEnPage()) {
           source = all.map(function (it) {
             if (!it || (!it.enTitle && !it.enDescription)) return it
             const copy = Object.assign({}, it)
@@ -362,15 +362,16 @@
     loadingClass: "book-query-loading",
     loadingText: "📚 加载书籍中...",
     errorClass: "book-query-error",
+    // 没有 emptyClass 时「查不到条目」会退回 errorClass:合法的空分组被渲染成红底红字的
+    // 报错样式(藏书馆的空分组一直是这副样子)。空不是错,给它一份中性样式。
+    emptyClass: "book-query-empty",
     defaultSort: "添加时间",
     placeholder: "📚",
     coverAlt: "书籍封面",
     withProgress: true,
     infoItems: function (book) {
       // 没有结束时间（还没读完）不显示用时；起点缺开始时间时退回添加时间
-      const days = book.结束阅读
-        ? calculateDays(book.开始时间, book.结束阅读, book.添加时间)
-        : 0
+      const days = book.结束阅读 ? calculateDays(book.开始时间, book.结束阅读, book.添加时间) : 0
       return [
         { label: "原名", value: book.originalTitle },
         { label: "作者", value: book.author },
@@ -429,6 +430,7 @@
     loadingClass: "movie-query-loading",
     loadingText: "🎬 加载影片中...",
     errorClass: "movie-query-error",
+    emptyClass: "movie-query-empty", // 同 book:空分组不该套错误样式
     defaultSort: "添加时间",
     placeholder: "🎬",
     coverAlt: "影片海报",

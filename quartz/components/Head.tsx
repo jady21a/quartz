@@ -170,6 +170,9 @@ export default (() => {
           对应容器时会直接返回、按需抓取 index.json；lite-youtube CDN 也由
           video-player.js 在检测到播放器时动态注入，因此普通页面不会加载它。
         */}
+        {/* lang-util 必须排在两个渲染脚本之前:defer 按文档顺序执行,
+            保证它们运行时 window.QuartzLang 已就位(/en 前缀的唯一真相)。 */}
+        <script src="/lang-util.js" defer></script>
         <script src="/gallery.js" defer></script>
         <script src="/video-player.js" defer></script>
         {/* 访问量计数:全站常驻,绑定 nav 事件后驱动每次页面/导航的计数上报与显示。

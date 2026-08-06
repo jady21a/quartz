@@ -1,4 +1,4 @@
-import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { QuartzComponent, QuartzComponentProps } from "./types"
 import { resolveCoverUrl } from "../util/coverImage"
 
 // Shared implementation for the book / movie detail-page info cards. The two
@@ -103,7 +103,13 @@ const Rows = ({ rows }: { rows: Row[] }) => (
   </>
 )
 
-export default function mediaInfo(kind: MediaKind): QuartzComponentConstructor {
+// 返回类型写成 `() => QuartzComponent` 而不是 `QuartzComponentConstructor`:
+// 后者展开是 `(opts: Options) => QuartzComponent`,Options 默认 undefined 时那个参数
+// 仍然是**必填**的(类型为 undefined 的必填参数),于是 layout 里 `Component.BookInfo()`
+// 会报 TS2554「Expected 1 arguments, but got 0」。
+// 其他组件没事是因为它们用的是 `satisfies QuartzComponentConstructor` —— satisfies 只做
+// 可赋值性检查,函数自身推断出的类型仍是零参数。这里是显式返回类型标注,直接把签名锁死了。
+export default function mediaInfo(kind: MediaKind): () => QuartzComponent {
   const cfg = configs[kind]
 
   return () => {

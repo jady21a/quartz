@@ -37,9 +37,9 @@
   }
 
   function lang() {
-    // 中英是同一棵树、按 /en 前缀分语言(与 languageswitch 的判断保持一致)
-    var p = window.location.pathname
-    return p === "/en" || p.indexOf("/en/") === 0 ? TEXT.en : TEXT.zh
+    // 中英是同一棵树、按 /en 前缀分语言(与 languageswitch 的判断保持一致);
+    // 前缀判断统一走 lang-util.js,别再就地写 startsWith("/en/")。
+    return window.QuartzLang.isEnPage() ? TEXT.en : TEXT.zh
   }
 
   // 状态行由脚本插到表单后面,这样两份 index.md 都不用改。

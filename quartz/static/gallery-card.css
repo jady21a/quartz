@@ -238,6 +238,17 @@
   font-size: 1.2rem;
 }
 
+/* 空态:分组没有条目是正常情况(某个阅读状态暂时一本都没有),用中性灰,
+   跟 video-styles.css 的 .video-query-empty 保持一致。 */
+.book-query-empty,
+.movie-query-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--darkgray);
+  font-size: 0.95rem;
+}
+
+/* 错误态:真的加载失败才用红底告警 */
 .book-query-error,
 .movie-query-error {
   text-align: center;

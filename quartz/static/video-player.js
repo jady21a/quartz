@@ -16,9 +16,9 @@
 
   // video-index.json 只按中文原文的路径建索引(/videos/...),英文镜像页的 URL 多一层 /en
   // 前缀 → 直接比对匹配不上 → 容器拿不到 data-youtube/data-bilibili → 英文页「没有视频」。
-  // 查索引前先把 /en 前缀剥掉,中英两边共用同一条索引记录。
+  // 查索引前先把 /en 前缀剥掉,中英两边共用同一条索引记录。实现见 lang-util.js。
   function stripLangPrefix(pathname) {
-    return pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+    return window.QuartzLang.stripLangPrefix(pathname);
   }
 
   function loadVideoIndex() {
