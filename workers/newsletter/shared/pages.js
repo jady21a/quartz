@@ -13,11 +13,8 @@ function escapeHtml(text) {
     .replace(/"/g, "&quot;")
 }
 
-/**
- * @param {{title:string, message:string, lang?:string, status?:number}} opts
- */
-export function resultPage({ title, message, lang = "zh", status = 200 }) {
-  const backLabel = lang === "en" ? "Back to the site" : "回到站点"
+// 两个页面共用的外壳。抽出来只为一件事:CSS 别写两份,免得改了配色只改到一处。
+function shell({ title, lang, inner, status }) {
   const html = `<!doctype html>
 <html lang="${lang === "en" ? "en" : "zh-CN"}">
 <head>
@@ -44,14 +41,16 @@ export function resultPage({ title, message, lang = "zh", status = 200 }) {
   p { margin:0 0 18px; color:var(--muted); font-size:15px; }
   a.back { display:inline-block; color:var(--accent); font-size:14px; text-decoration:none;
     border-bottom:1px solid currentColor; padding-bottom:1px; }
+  button { font: inherit; cursor:pointer; background:var(--accent); color:#fff; border:0;
+    border-radius:6px; padding:11px 20px; margin:0 0 18px; }
+  button:hover { opacity:.9; }
 </style>
 </head>
 <body>
   <div class="card">
     <a class="brand" href="${SITE_URL}">Why Z</a>
     <h1>${escapeHtml(title)}</h1>
-    <p>${escapeHtml(message)}</p>
-    <a class="back" href="${SITE_URL}">${backLabel} →</a>
+${inner}
   </div>
 </body>
 </html>`
@@ -62,5 +61,48 @@ export function resultPage({ title, message, lang = "zh", status = 200 }) {
       "cache-control": "no-store",
       "x-robots-tag": "noindex",
     },
+  })
+}
+
+/**
+ * @param {{title:string, message:string, lang?:string, status?:number}} opts
+ */
+export function resultPage({ title, message, lang = "zh", status = 200 }) {
+  const backLabel = lang === "en" ? "Back to the site" : "回到站点"
+  return shell({
+    title,
+    lang,
+    status,
+    inner:
+      `    <p>${escapeHtml(message)}</p>\n` +
+      `    <a class="back" href="${SITE_URL}">${backLabel} →</a>`,
+  })
+}
+
+/**
+ * 退订前的确认页:**只渲染,不改任何状态**,真正的退订发生在这个表单 POST 之后。
+ *
+ * 为什么非要多这一步 —— 邮件里的链接会被预取。Gmail 的代理、Outlook Safe Links、
+ * 公司邮件网关、杀毒扫描都会主动 GET 邮件正文里的 URL。如果 GET 本身就退订,
+ * 读者根本没点过就被静默退掉了,而且从后台看跟「他自己退的」一模一样,查不出来。
+ *
+ * 邮件客户端的一键退订(RFC 8058)不受影响:那本来就是 POST,不经过这个页面。
+ *
+ * @param {{title:string, message:string, buttonLabel:string, action:string, lang?:string}} opts
+ */
+export function confirmPage({ title, message, buttonLabel, action, lang = "zh" }) {
+  const backLabel = lang === "en" ? "Never mind, keep me subscribed" : "算了,继续订阅"
+  return shell({
+    title,
+    lang,
+    status: 200,
+    inner:
+      `    <p>${escapeHtml(message)}</p>\n` +
+      `    <form method="post" action="${escapeHtml(action)}">\n` +
+      // source=web 用来和一键退订区分开:一键退订要的是纯 200,人点的要一个页面
+      `      <input type="hidden" name="source" value="web">\n` +
+      `      <button type="submit">${escapeHtml(buttonLabel)}</button>\n` +
+      `    </form>\n` +
+      `    <a class="back" href="${SITE_URL}">${backLabel} →</a>`,
   })
 }
