@@ -229,9 +229,21 @@ curl "https://newsletter.jz21.eu.org/?token=$T&action=status"
 
 **别改回 workers.dev** —— `*.jadyzhang21.workers.dev` 整个返回 1101,见坑那一节。`workers_dev` 已经在 `wrangler.toml` 里设成 `false`,就是为了不让 deploy 再打印那个骗人的地址。
 
+### 回调有没有还活着
+
+`?action=status` 里多了一段 `webhook`:
+
+- `lastProbeAt` —— Worker 每天自测端点一次的时间。**不是 200 就往 `ADMIN_EMAIL` 发告警**,所以这条正常情况下不用你盯。
+- `lastEventAt` —— 最后一次真收到 SES 退信/投诉事件的时间。**小名单上长期是 `null` 属于正常**(真没人退信),所以它是给人看的参考、不是告警条件。
+
+自测覆盖的是「端点活着 + Pages 和 Worker 两侧的 `SES_WEBHOOK_TOKEN` 还对得上」。它**不覆盖 SNS → 端点**这一跳 —— 验那个要给 IAM 用户加 `sns:GetSubscriptionAttributes`,为了监控去扩大发信 key 的权限不划算。所以**动过 SES 配置集或 SNS 订阅之后,还是得自己去控制台确认订阅是 `Confirmed`**。
+
+另外每隔一段时间去 SES 的 Reputation metrics 看一眼退信率和投诉率 —— 那是唯一能真正体检信誉的地方。参考线:退信 5% 进审查、10% 可能停用;投诉 0.1% 进审查、0.5% 可能停用;Gmail 另有一条投诉率 <0.3% 的要求。**名单越小,一次投诉占的比率越难看**,所以别拿"人少所以没事"安慰自己。
+
 | 目的                             | 命令                                                                                                               |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| 看订阅者分布和待发队列           | `?action=status`                                                                                                   |
+| 看订阅者分布、待发队列、回调仪表 | `?action=status`                                                                                                   |
+| 立刻自测退信回调端点             | `?action=probe-webhook`                                                                                            |
 | 演练(不写库不发信)               | `?action=dry-run`                                                                                                  |
 | 立刻跑一次真实群发               | `?action=run`                                                                                                      |
 | 把当前 feed 全标记为已见(不发信) | `?action=bootstrap`                                                                                                |
