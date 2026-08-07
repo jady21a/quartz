@@ -20,6 +20,15 @@ export interface D3Config {
   showTags: boolean
   focusOnHover?: boolean
   enableRadial?: boolean
+  // 不进图谱的页面(只影响图谱渲染,页面照常构建、搜索和站内链接不受影响):
+  // excludeFolders 按 slug 前缀整棵排除,excludeSlugs 排除单页。
+  // 匹配前会先剥掉 en/ 前缀,所以一条规则同时管中英两棵树(同 explorerFilterFn 的思路)。
+  // 当前正在看的页面即使命中规则也保留,否则它自己的局部图会是空的。
+  excludeFolders: string[]
+  excludeSlugs: string[]
+  // 中英分图:中文页的图谱只放中文节点,英文页只放英文节点。
+  // 语言按 slug 的 en/ 前缀判断,和侧栏 Explorer 切根的口径一致。
+  sameLanguageOnly: boolean
 }
 
 interface GraphOptions {
@@ -42,6 +51,9 @@ const defaultOptions: GraphOptions = {
     removeTags: [],
     focusOnHover: false,
     enableRadial: false,
+    excludeFolders: [],
+    excludeSlugs: [],
+    sameLanguageOnly: false,
   },
   globalGraph: {
     drag: true,
@@ -57,6 +69,9 @@ const defaultOptions: GraphOptions = {
     removeTags: [],
     focusOnHover: true,
     enableRadial: true,
+    excludeFolders: [],
+    excludeSlugs: [],
+    sameLanguageOnly: false,
   },
 }
 

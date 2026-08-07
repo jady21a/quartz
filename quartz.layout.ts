@@ -63,6 +63,32 @@ const explorerSortFn = (a: FileTrieNode, b: FileTrieNode) => {
   return !a.isFolder && b.isFolder ? 1 : -1
 }
 
+// 关系图谱的排除名单:只把「站内没有真入口」的页挡在图谱外,页面本身照常构建,
+// 搜索、站内链接、popover 都不受影响(过滤发生在浏览器端的图谱数据副本上)。
+// 名单按剥掉 en/ 前缀后的 slug 匹配,中英两棵树一条规则通杀。
+// - read/dataview、read/media-db、read/add-book:Obsidian 自用的 dataview / 数据 / 模板页
+// - about(智囊团)、topic-reading(主题阅读):与侧栏 explorerFilterFn 的隐藏口径保持一致
+// 注意 read/douban 故意保留:那 100 来页是藏书馆/观影库卡片的落地页,是真内容。
+const graphExcludeFolders = [
+  "read/dataview",
+  "read/media-db",
+  "read/add-book",
+  "about",
+  "topic-reading",
+]
+
+// 中英分图:中文页只显示中文节点,英文页只显示英文节点
+const graphOptions = {
+  localGraph: {
+    excludeFolders: graphExcludeFolders,
+    sameLanguageOnly: true,
+  },
+  globalGraph: {
+    excludeFolders: graphExcludeFolders,
+    sameLanguageOnly: true,
+  },
+}
+
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
@@ -128,11 +154,11 @@ export const defaultContentPageLayout: PageLayout = {
       filterFn: explorerFilterFn,
     }),
 
-    //Component.Graph(),
+    //Component.Graph(graphOptions),
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.Graph(),
+    Component.Graph(graphOptions),
 
     Component.RandomNotes({
       title: "漫步笔记", // 可自定义标题
@@ -184,7 +210,7 @@ export const defaultListPageLayout: PageLayout = {
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.Graph(),
+    Component.Graph(graphOptions),
     Component.RandomNotes({
       title: "漫步笔记",
       limit: 3,

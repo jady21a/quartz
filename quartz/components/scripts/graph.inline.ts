@@ -87,6 +87,9 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     showTags,
     focusOnHover,
     enableRadial,
+    excludeFolders,
+    excludeSlugs,
+    sameLanguageOnly,
   } = JSON.parse(graph.dataset["cfg"]!) as D3Config
 
   const data: Map<SimpleSlug, ContentDetails> = new Map(
@@ -95,6 +98,37 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       v,
     ]),
   )
+
+  // 按配置剔除不进图谱的页面。这里只动图谱自己的数据副本,contentIndex 本身不变,
+  // 所以搜索、站内链接、popover 照常。被剔除页作为链接终点时会被下面的
+  // validLinks 判断自动滤掉,不会留下悬空的边。
+  const excludedFolders = excludeFolders ?? []
+  const excludedSlugs = new Set(excludeSlugs ?? [])
+  const isEnglish = (s: SimpleSlug) => s === "en" || s.startsWith("en/")
+  // 剥掉语言前缀后再匹配,一条规则同时管中英两棵树
+  const withoutLang = (s: SimpleSlug) => (isEnglish(s) ? s.slice(3) : s) as SimpleSlug
+
+  if (excludedFolders.length > 0 || excludedSlugs.size > 0 || sameLanguageOnly) {
+    const currentIsEnglish = isEnglish(slug)
+    const isExcluded = (s: SimpleSlug) => {
+      if (sameLanguageOnly && isEnglish(s) !== currentIsEnglish) return true
+      const bare = withoutLang(s)
+      return (
+        excludedSlugs.has(bare) ||
+        excludedFolders.some((folder) => {
+          const prefix = folder.endsWith("/") ? folder : folder + "/"
+          return bare === folder || bare.startsWith(prefix)
+        })
+      )
+    }
+
+    for (const key of [...data.keys()]) {
+      // 当前页始终保留,免得站在被排除页上时局部图整个空掉
+      if (key !== slug && isExcluded(key)) {
+        data.delete(key)
+      }
+    }
+  }
   const links: SimpleLinkData[] = []
   const tags: SimpleSlug[] = []
   const validLinks = new Set(data.keys())
