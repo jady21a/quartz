@@ -132,15 +132,13 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.Backlinks(),
+    Component.Graph(),
 
     Component.RandomNotes({
       title: "漫步笔记", // 可自定义标题
       limit: 3, // 显示数量
       showTags: false, // 是否显示标签
     }),
-
-    // Component.Graph(),
   ],
 }
 
@@ -186,7 +184,7 @@ export const defaultListPageLayout: PageLayout = {
   ],
   right: [
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.Backlinks(),
+    Component.Graph(),
     Component.RandomNotes({
       title: "漫步笔记",
       limit: 3,
