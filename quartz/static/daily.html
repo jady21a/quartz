@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>今日更新</title>
+<title>本周更新</title>
 <style>
 *{box-sizing:border-box}
 :root{--bg:#faf9f7;--card:#fff;--fg:#1c1b19;--dim:#6b6862;--line:#e6e3dd;--up:#2f7d4f;--down:#a8443c;--accent:#8a6d3b}
@@ -31,8 +31,23 @@ a{color:var(--fg);text-decoration:none;font-weight:500}
 a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 .meta{color:var(--dim);font-size:.75rem;margin-top:.25rem}
 .empty{text-align:center;color:var(--dim);padding:3rem 0;font-size:.9rem}
+
+/* 日期分隔。一周的列表不分天就是一堵墙,但它不是条目,不参与编号。 */
+li.day{border-bottom:none;padding:1.6rem 0 .35rem;
+ font-size:.72rem;color:var(--dim);letter-spacing:.08em}
+li.day:before{content:none}   /* 伪元素不生成,里面的 counter-increment 也就不执行 */
+li.day:first-child{padding-top:0}
+
+/* 已读/未读:点开过的由浏览器自己的 :visited 压暗。不写 JS、不存状态,
+   这页保持是个哑静态文件。拿不到「N 条未读」是故意的 —— 那是未读徽章和
+   清零按钮的开头,这个工具当初就是为了躲开它。
+   试过更明显的做法:给未读加个小圆点(a:before),已读时用 :visited 涂成透明。
+   Chrome 不把 :visited 应用到链接的伪元素上,圆点擦不掉,读过的条目照样带点。
+   所以区分只剩标题颜色这一种 —— 别再试圆点/加粗了,:visited 只认颜色类属性。 */
+li.item a:visited{color:var(--dim)}
+li.item a:hover{color:var(--accent)}   /* 放在 :visited 之后,否则读过的条目 hover 不变色 */
 </style></head>
-<body data-generated="2026-08-09T08:41:44+08:00"><div class="wrap"><h1>今日更新</h1><div class="sub">1 条 · 近 36 小时 · 7 个订阅源 · 更新于 2026-08-09 08:41</div><ol><li><a href="https://simonwillison.net/2026/Aug/7/openai-timeline/#atom-entries" target="_blank" rel="noopener">Now we have a timeline of the OpenAI accidental attack against Hugging Face</a><div class="meta">Simon Willison&#x27;s Weblog: Entries · 08-08 07:55</div></li></ol><div class="end">读完了 — 今天没有更多了。</div></div>
+<body data-generated="2026-08-09T12:45:31+08:00"><div class="wrap"><h1>本周更新</h1><div class="sub">5 条 · 近 7 天 · 7 个订阅源 · 更新于 2026-08-09 12:45</div><ol><li class="day">08-08 周六</li><li class="item"><a href="https://simonwillison.net/2026/Aug/7/openai-timeline/#atom-entries" target="_blank" rel="noopener">Now we have a timeline of the OpenAI accidental attack against Hugging Face</a><div class="meta">Simon Willison&#x27;s Weblog: Entries · 07:55</div></li><li class="day">08-07 周五</li><li class="item"><a href="http://www.ruanyifeng.com/blog/2026/08/weekly-issue-407.html" target="_blank" rel="noopener">科技爱好者周刊（第 407 期）：国家为什么需要开源软件？</a><div class="meta">阮一峰的网络日志 · 08:08</div></li><li class="item"><a href="https://www.learningscientists.org/blog/2026/8/6/digest-185" target="_blank" rel="noopener">Digest #185: Executive Functioning</a><div class="meta">Learning Scientists Blog - The Learning Scientists · 03:47</div></li><li class="day">08-06 周四</li><li class="item"><a href="https://simonwillison.net/2026/Aug/5/raccoon-heist/#atom-entries" target="_blank" rel="noopener">One-shotting a Raccoon Heist game using Claude Fable 5</a><div class="meta">Simon Willison&#x27;s Weblog: Entries · 03:42</div></li><li class="day">08-05 周三</li><li class="item"><a href="https://simonwillison.net/2026/Aug/4/new-release-of-llm/#atom-entries" target="_blank" rel="noopener">New release of LLM adds support for reasoning traces, OpenAI Responses, server-side tools, and smarter logging</a><div class="meta">Simon Willison&#x27;s Weblog: Entries · 07:58</div></li></ol><div class="end">到底了 — 这一周就这些。</div></div>
 <script>
 (function(){
   var iso = document.body.dataset.generated;
@@ -43,7 +58,7 @@ a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
   var el = document.createElement('div');
   el.className = 'alert hard';
   el.innerHTML = '<strong>这份内容已经 ' + age + '没有更新了</strong>'
-    + '取数或同步很可能中断了。别把它当成「今天没有内容」。';
+    + '取数或同步很可能中断了。别把它当成「没有内容」。';
   var w = document.querySelector('.wrap');
   w.insertBefore(el, w.firstChild);
 })();
