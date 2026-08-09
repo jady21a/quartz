@@ -608,15 +608,40 @@ const bytes = n => { if(n==null) return '—'; const u=['B','KB','MB','GB','TB']
   while(v>=1024&&i<u.length-1){v/=1024;i++} return v.toFixed(i?1:0)+' '+u[i]; };
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function lineChart(series, colors, labels){
+// 两张图共用画布尺寸,但 x 映射不同:折线的点落在两端边界上(xAt),柱子必须
+// 各占一个槽、居中画(xBand),否则首尾两根柱子会有一半被 viewBox 切掉。
+const CW=680, CH=150, CP=24;
+const xAt=(i,n)=> CP + (n===1? (CW-2*CP)/2 : i*(CW-2*CP)/(n-1));
+const xBand=(i,n)=> CP + (i+0.5)*(CW-2*CP)/n;
+
+// 发布日竖线。marks 是点位下标(由渲染侧按日期匹配算好,见 markIdx),
+// x 用所在图自己的映射传进来 —— 竖线必须和它那张图的柱子/拐点对齐。
+// 画在数据之前 = 压在折线/柱子底下,是背景参照物,不该抢视线。
+function markLines(marks, x){
+  return (marks||[]).map(i=>'<line x1="'+x(i).toFixed(1)+'" y1="10" x2="'+x(i).toFixed(1)+
+    '" y2="'+(CH-CP)+'" stroke="var(--warn)" stroke-width="1" stroke-dasharray="4 4" opacity=".65"/>').join('');
+}
+
+// 日期数组里哪些天发了片。只认精确相等 —— 序列是逐日连续的,发布日要么在窗口里
+// 要么在窗口外,不做插值猜位置。
+function markIdx(dates, releases){
+  if(!releases||!releases.length) return [];
+  const set=new Set(releases), out=[];
+  dates.forEach((d,i)=>{ if(set.has(d)) out.push(i) });
+  return out;
+}
+
+function lineChart(series, colors, labels, opts){
   // series: array of {values:[...]} aligned to same x; simple SVG line chart
-  const W=680,H=150,P=24, n=series[0].values.length;
+  const W=CW,H=CH,P=CP, n=series[0].values.length;
   if(n===0) return '<div class="muted">暂无数据</div>';
   let max=0; series.forEach(s=>s.values.forEach(v=>{if(v>max)max=v}));
-  max=max||1;
-  const x=i=> P + (n===1? (W-2*P)/2 : i*(W-2*P)/(n-1));
-  const y=v=> H-P - v/max*(H-2*P);
-  let paths='';
+  // 这里只画流量类(PV/请求/每日播放),0 基线本身有意义,不做 y 轴收窄。
+  // 累计量(粉丝/订阅)不走这条路 —— 从 0 起画必然压成直线,改由 barChart 画日增。
+  const lo=0, hi=max||1;
+  const x=i=> xAt(i,n);
+  const y=v=> H-P - (v-lo)/(hi-lo)*(H-2*P);
+  let paths=markLines(opts&&opts.marks, x);
   series.forEach((s,si)=>{
     const d=s.values.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
     paths+='<path d="'+d+'" fill="none" stroke="'+colors[si]+'" stroke-width="2" stroke-linejoin="round"/>';
@@ -625,8 +650,97 @@ function lineChart(series, colors, labels){
   // x labels: first & last
   const lab='<text x="'+P+'" y="'+(H-4)+'" fill="var(--mut)" font-size="10">'+labels[0]+'</text>'+
     '<text x="'+(W-P)+'" y="'+(H-4)+'" fill="var(--mut)" font-size="10" text-anchor="end">'+labels[n-1]+'</text>'+
-    '<text x="2" y="12" fill="var(--mut)" font-size="10">'+fmt(max)+'</text>';
+    '<text x="2" y="12" fill="var(--mut)" font-size="10">'+fmt(hi)+'</text>';
   return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+paths+lab+'</svg>';
+}
+
+// 日增用柱状而不是折线:0 基线在这里有实义(那天一个粉没涨),而且日增会是负数,
+// 掉粉那天必须看得出来是往下扎的 —— 累计折线永远单调上升,把掉粉藏没了。
+function barChart(values, color, labels, opts){
+  const n=values.length;
+  if(n===0) return '<div class="muted">暂无数据</div>';
+  let max=0,min=0;                        // 从 0 起夹,保证零线一定落在画布内
+  values.forEach(v=>{ if(v>max)max=v; if(v<min)min=v });
+  if(max===min) max=min+1;                // 整段全 0:零线贴底、柱子全是零高,如实显示「一个没涨」
+  const y=v=> CH-CP - (v-min)/(max-min)*(CH-2*CP);
+  const x=i=> xBand(i,n);
+  const zero=y(0), bw=Math.max(2,(CW-2*CP)/n*0.55);
+  let bars='';
+  values.forEach((v,i)=>{
+    const yy=y(v), top=Math.min(yy,zero), h=Math.abs(yy-zero);
+    bars+='<rect x="'+(x(i)-bw/2).toFixed(1)+'" y="'+top.toFixed(1)+'" width="'+bw.toFixed(1)+
+      '" height="'+h.toFixed(1)+'" fill="'+(v<0?'var(--warn)':color)+'" rx="1"/>';
+    // 日增本来就是个位数,看刻度不如直接看数字。有均线时不写,免得挤成一团。
+    if(n<=14 && !(opts&&opts.avg)) bars+='<text x="'+x(i).toFixed(1)+'" y="'+(top-3).toFixed(1)+
+      '" fill="var(--mut)" font-size="10" text-anchor="middle">'+v+'</text>';
+  });
+  const axis='<line x1="'+CP+'" y1="'+zero.toFixed(1)+'" x2="'+(CW-CP)+'" y2="'+zero.toFixed(1)+
+    '" stroke="var(--line)" stroke-width="1"/>';
+  // 均线画在柱子之上:柱子答「哪天真涨了」,均线答「这阵子整体在往哪走」
+  const ad=(opts&&opts.avg)? brokenPath(opts.avg,x,y) : '';
+  const avg=ad?'<path d="'+ad+'" fill="none" stroke="var(--acc2)" stroke-width="2" stroke-linejoin="round"/>':'';
+  const lab='<text x="'+CP+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10">'+labels[0]+'</text>'+
+    '<text x="'+(CW-CP)+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10" text-anchor="end">'+labels[n-1]+'</text>';
+  return '<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
+    markLines(opts&&opts.marks,x)+axis+bars+avg+lab+'</svg>';
+}
+
+// 折线穿过缺口:两条序列的时间窗口不一样长(播放攒了 30 天,涨粉才 5 天),
+// 并到同一条时间轴上就必然有半截没数据。null 处断笔,不要把缺口连成一条假线。
+function brokenPath(values, x, y){
+  let d='', pen=false;
+  values.forEach((v,i)=>{
+    if(v==null){ pen=false; return }
+    d+=(pen?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)+' ';
+    pen=true;
+  });
+  return d.trim();
+}
+
+// 双 y 轴:左轴每日播放(折线),右轴日增粉(柱子),共用一条时间轴。
+//
+// 这类图有个绕不开的毛病:两侧刻度各定各的,「柱子比折线高」什么都不说明 ——
+// 把任一侧刻度改一改就能编出相反的故事。所以两侧最大值都标出来、并按序列配色。
+// 它只能用来看「同一天两边各自怎么动」,不能用来看「谁比谁多」。
+function comboChart(dates, line, bars, labels, opts){
+  const n=dates.length;
+  if(!n) return '<div class="muted">暂无数据</div>';
+  const x=i=> xBand(i,n);            // 有柱子就统一用槽坐标,折线也落在槽中心
+  let lmax=0; line.values.forEach(v=>{ if(v!=null&&v>lmax)lmax=v }); lmax=lmax||1;
+  let rmax=0,rmin=0;                 // 右轴从 0 起夹,容得下掉粉的负值
+  bars.values.forEach(v=>{ if(v==null)return; if(v>rmax)rmax=v; if(v<rmin)rmin=v });
+  if(rmax===rmin) rmax=rmin+1;
+  // 两条轴必须共用同一条零线,否则画面里会出现两条不同高度的「0」,没法看。
+  // 先按右轴定零线的相对高度 f,再把左轴的下界挪到同一位置。
+  const f=(0-rmin)/(rmax-rmin);
+  const llo=(f>0&&f<0.99)? -f*lmax/(1-f) : 0;
+  const ly=v=> CH-CP - (v-llo)/(lmax-llo)*(CH-2*CP);
+  const ry=v=> CH-CP - (v-rmin)/(rmax-rmin)*(CH-2*CP);
+  const zero=ry(0), bw=Math.max(2,(CW-2*CP)/n*0.55);
+  let rects='';
+  bars.values.forEach((v,i)=>{
+    if(v==null) return;
+    const yy=ry(v), top=Math.min(yy,zero), h=Math.abs(yy-zero);
+    rects+='<rect x="'+(x(i)-bw/2).toFixed(1)+'" y="'+top.toFixed(1)+'" width="'+bw.toFixed(1)+
+      '" height="'+h.toFixed(1)+'" fill="'+(v<0?'var(--warn)':'var(--acc2)')+'" rx="1" opacity=".75"/>';
+  });
+  const d=brokenPath(line.values, x, ly);
+  const path=d?'<path d="'+d+'" fill="none" stroke="var(--acc)" stroke-width="2" stroke-linejoin="round"/>':'';
+  // 日增均线走右轴,所以颜色跟柱子一致(绑定轴归属),再用虚线跟左轴那条实线折线区分开。
+  const ad=bars.avg? brokenPath(bars.avg, x, ry) : '';
+  const avg=ad?'<path d="'+ad+'" fill="none" stroke="var(--acc2)" stroke-width="1.5" '+
+    'stroke-dasharray="5 3" stroke-linejoin="round"/>':'';
+  const axis='<line x1="'+CP+'" y1="'+zero.toFixed(1)+'" x2="'+(CW-CP)+'" y2="'+zero.toFixed(1)+
+    '" stroke="var(--line)" stroke-width="1"/>';
+  // 左上=左轴上限,右上=右轴上限,颜色跟各自的序列走 —— 双轴图不标死刻度就是在骗人
+  const lab='<text x="2" y="12" fill="var(--acc)" font-size="10">'+fmt(lmax)+'</text>'+
+    '<text x="'+(CW-2)+'" y="12" fill="var(--acc2)" font-size="10" text-anchor="end">'+fmt(rmax)+'</text>'+
+    (rmin<0?'<text x="'+(CW-2)+'" y="'+(CH-CP)+'" fill="var(--acc2)" font-size="10" text-anchor="end">'+
+      fmt(rmin)+'</text>':'')+
+    '<text x="'+CP+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10">'+labels[0]+'</text>'+
+    '<text x="'+(CW-CP)+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10" text-anchor="end">'+labels[n-1]+'</text>';
+  return '<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
+    markLines(opts&&opts.marks,x)+axis+rects+avg+path+lab+'</svg>';
 }
 
 function barTable(rows, valFmt){
@@ -704,14 +818,87 @@ function platformSection(pd, now){
 
   // 平台趋势:每个平台各画一张,序列不够长就不画(两个点的折线只会误导)
   const cards=[];
+  const card=function(title,n,svg){
+    return '<div class="card"><h2>'+esc(title)+
+      ' <span class="muted" style="font-weight:400">('+n+' 天)</span></h2>'+svg+'</div>';
+  };
+  // 粉丝/订阅推上来的是累计值,但累计曲线只会单调上升,看不出哪天发力。
+  // 就地差分成日增,才和「每日播放」同为流量口径、能跟发布日竖线对上。
+  const dailyGain=function(s){
+    const pts=s.points||[], out=[];
+    for(let i=1;i<pts.length;i++) out.push({date:pts[i].date, value:pts[i].value-pts[i-1].value});
+    return {label:'日增'+s.label, points:out};
+  };
+  // 并成一条时间轴。注意只并「出现过的日期」,不补日历空洞 —— 真断了几天的话
+  // x 轴会把那段压掉,不会假装那几天存在。
+  const unionDates=function(lists){
+    const set={};
+    lists.forEach(function(pts){ pts.forEach(function(x){ set[x.date]=1 }) });
+    return Object.keys(set).sort();
+  };
+  const alignTo=function(dates,pts){
+    const m={}; pts.forEach(function(x){ m[x.date]=x.value });
+    return dates.map(function(d){ return (d in m)? m[d] : null });
+  };
+  // 日增天然是 0,0,3,0,1 这种噪声,攒长了就是一排锯齿、读不出趋势。
+  // 7 日均线专管趋势,柱子继续管「哪天真涨了」。窗口比数据还长时没有意义,
+  // 所以卡在 14 个点(两个完整窗口)才开始画 —— 现在不显示,攒够了自己亮出来。
+  const AVG_W=7, AVG_MIN=14;
+  const movingAvg=function(pts){
+    if(pts.length<AVG_MIN) return null;
+    const out=[];
+    for(let i=AVG_W-1;i<pts.length;i++){
+      let s=0; for(let j=i-AVG_W+1;j<=i;j++) s+=pts[j].value;
+      out.push({date:pts[i].date, value:Math.round(s/AVG_W*10)/10});
+    }
+    return out;
+  };
+  const legend=function(a,b,hasAvg){
+    return '<div class="legend"><span><span class="dot" style="background:var(--acc)"></span>'+esc(a)+
+      '(左轴)</span><span><span class="dot" style="background:var(--acc2)"></span>'+esc(b)+
+      '(右轴)</span>'+(hasAvg?'<span style="color:var(--acc2)">┄ 7 日均</span>':'')+
+      '<span style="color:var(--warn)">┆ 发布日</span></div>';
+  };
   (pd.platforms||[]).forEach(function(p){
-    (p.series||[]).forEach(function(s){
+    const rel=p.releases||[], ser=p.series||[];
+    const pick=function(fn){ return ser.filter(fn)[0] };
+    const plays=pick(function(s){return s.label==='每日播放'});
+    const fansSrc=pick(function(s){return s.label==='粉丝'||s.label==='订阅'});
+    const gain=fansSrc? dailyGain(fansSrc) : null;
+    const gainAvg=gain? movingAvg(gain.points) : null;
+    const done=[];
+    // 两条都够长才叠成双轴:一条流量一条日增,同一时间轴上才看得出
+    // 「发片 → 播放起来 → 涨粉」这条链子哪一环断了。
+    if(plays&&(plays.points||[]).length>=3&&gain&&gain.points.length>=3){
+      const dates=unionDates([plays.points,gain.points]);
+      const labs=dates.map(function(x){return x.slice(5)});
+      cards.push(card(p.name+' · 播放 × '+gain.label, dates.length,
+        comboChart(dates,
+          {values:alignTo(dates,plays.points)},
+          {values:alignTo(dates,gain.points), avg:gainAvg?alignTo(dates,gainAvg):null},
+          labs, {marks:markIdx(dates,rel)})+legend(plays.label,gain.label,!!gainAvg)));
+      done.push(plays.label, fansSrc.label);
+    }
+    ser.forEach(function(s){
+      if(done.indexOf(s.label)>=0) return;   // 已经并进双轴图了,不再单画一张
       const pts=s.points||[];
       if(pts.length<3) return;
-      cards.push('<div class="card"><h2>'+esc(p.name)+' · '+esc(s.label)+
-        ' <span class="muted" style="font-weight:400">('+pts.length+' 天)</span></h2>'+
-        lineChart([{values:pts.map(function(x){return x.value})}],['var(--acc)'],
-          pts.map(function(x){return x.date.slice(5)}))+'</div>');
+      const dates=pts.map(function(x){return x.date});
+      const labs=dates.map(function(x){return x.slice(5)});
+      if(s===fansSrc){
+        const g=gain.points;
+        if(g.length<3) return;   // 差分少一个点,四天历史才够画三根柱子
+        const gd=g.map(function(x){return x.date});
+        cards.push(card(p.name+' · '+gain.label, g.length,
+          barChart(g.map(function(x){return x.value}),'var(--acc)',
+            gd.map(function(x){return x.slice(5)}),
+            {marks:markIdx(gd,rel), avg:gainAvg?alignTo(gd,gainAvg):null})+
+          (gainAvg?'<div class="legend"><span style="color:var(--acc2)">— 7 日均</span></div>':'')));
+      } else {
+        cards.push(card(p.name+' · '+s.label, pts.length,
+          lineChart([{values:pts.map(function(x){return x.value})}],['var(--acc)'],labs,
+            {marks:markIdx(dates,rel)})));
+      }
     });
   });
   if(cards.length){
