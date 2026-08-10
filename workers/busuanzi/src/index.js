@@ -669,16 +669,18 @@ function barChart(values, color, labels, opts){
   values.forEach((v,i)=>{
     const yy=y(v), top=Math.min(yy,zero), h=Math.abs(yy-zero);
     bars+='<rect x="'+(x(i)-bw/2).toFixed(1)+'" y="'+top.toFixed(1)+'" width="'+bw.toFixed(1)+
-      '" height="'+h.toFixed(1)+'" fill="'+(v<0?'var(--warn)':color)+'" rx="1"/>';
+      '" height="'+h.toFixed(1)+'" fill="'+(v<0?'var(--warn)':color)+'" rx="1" opacity=".75"/>';
     // 日增本来就是个位数,看刻度不如直接看数字。有均线时不写,免得挤成一团。
     if(n<=14 && !(opts&&opts.avg)) bars+='<text x="'+x(i).toFixed(1)+'" y="'+(top-3).toFixed(1)+
       '" fill="var(--mut)" font-size="10" text-anchor="middle">'+v+'</text>';
   });
   const axis='<line x1="'+CP+'" y1="'+zero.toFixed(1)+'" x2="'+(CW-CP)+'" y2="'+zero.toFixed(1)+
     '" stroke="var(--line)" stroke-width="1"/>';
-  // 均线画在柱子之上:柱子答「哪天真涨了」,均线答「这阵子整体在往哪走」
+  // 均线画在柱子之上:柱子答「哪天真涨了」,均线答「这阵子整体在往哪走」。
+  // 虚线 + 与柱子同色 —— 和双轴图那条日增均线一套画法,两张图之间不用重新认。
   const ad=(opts&&opts.avg)? brokenPath(opts.avg,x,y) : '';
-  const avg=ad?'<path d="'+ad+'" fill="none" stroke="var(--acc2)" stroke-width="2" stroke-linejoin="round"/>':'';
+  const avg=ad?'<path d="'+ad+'" fill="none" stroke="var(--acc2)" stroke-width="1.5" '+
+    'stroke-dasharray="5 3" stroke-linejoin="round"/>':'';
   const lab='<text x="'+CP+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10">'+labels[0]+'</text>'+
     '<text x="'+(CW-CP)+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10" text-anchor="end">'+labels[n-1]+'</text>';
   return '<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
@@ -853,11 +855,25 @@ function platformSection(pd, now){
     }
     return out;
   };
-  const legend=function(a,b,hasAvg){
-    return '<div class="legend"><span><span class="dot" style="background:var(--acc)"></span>'+esc(a)+
-      '(左轴)</span><span><span class="dot" style="background:var(--acc2)"></span>'+esc(b)+
-      '(右轴)</span>'+(hasAvg?'<span style="color:var(--acc2)">┄ 7 日均</span>':'')+
-      '<span style="color:var(--warn)">┆ 发布日</span></div>';
+  // 图例三平台共用一套写法:同一个视觉元素(绿柱=日增、虚线=均线、竖线=发布日)
+  // 在哪张图上都是同一个意思,换个平台不用重新认。
+  // 发布日按窗口里有没有真的画出竖线来决定标不标 —— 图例里出现画面上没有的东西,
+  // 会让人以为「这几天一条片都没发」和「这张图不画发布日」是同一件事。
+  const legendItems=function(items){
+    return '<div class="legend">'+items.filter(Boolean).join('')+'</div>';
+  };
+  const dotItem=function(color,text){
+    return '<span><span class="dot" style="background:'+color+'"></span>'+esc(text)+'</span>';
+  };
+  const avgItem=function(hasAvg){
+    return hasAvg? '<span style="color:var(--acc2)">┄ 7 日均</span>' : '';
+  };
+  const markItem=function(hasMarks){
+    return hasMarks? '<span style="color:var(--warn)">┆ 发布日</span>' : '';
+  };
+  const legend=function(a,b,hasAvg,hasMarks){
+    return legendItems([dotItem('var(--acc)',a+'(左轴)'), dotItem('var(--acc2)',b+'(右轴)'),
+      avgItem(hasAvg), markItem(hasMarks)]);
   };
   (pd.platforms||[]).forEach(function(p){
     const rel=p.releases||[], ser=p.series||[];
@@ -876,7 +892,8 @@ function platformSection(pd, now){
         comboChart(dates,
           {values:alignTo(dates,plays.points)},
           {values:alignTo(dates,gain.points), avg:gainAvg?alignTo(dates,gainAvg):null},
-          labs, {marks:markIdx(dates,rel)})+legend(plays.label,gain.label,!!gainAvg)));
+          labs, {marks:markIdx(dates,rel)})+
+        legend(plays.label,gain.label,!!gainAvg,!!markIdx(dates,rel).length)));
       done.push(plays.label, fansSrc.label);
     }
     ser.forEach(function(s){
@@ -888,16 +905,20 @@ function platformSection(pd, now){
       if(s===fansSrc){
         const g=gain.points;
         if(g.length<3) return;   // 差分少一个点,四天历史才够画三根柱子
-        const gd=g.map(function(x){return x.date});
+        const gd=g.map(function(x){return x.date}), gm=markIdx(gd,rel);
+        // 柱子用 --acc2:和双轴图里那排日增柱同色。这张图只是「双轴图缺了播放那半」,
+        // 不是另一种图,颜色跟着含义走、不跟着图种走。
         cards.push(card(p.name+' · '+gain.label, g.length,
-          barChart(g.map(function(x){return x.value}),'var(--acc)',
+          barChart(g.map(function(x){return x.value}),'var(--acc2)',
             gd.map(function(x){return x.slice(5)}),
-            {marks:markIdx(gd,rel), avg:gainAvg?alignTo(gd,gainAvg):null})+
-          (gainAvg?'<div class="legend"><span style="color:var(--acc2)">— 7 日均</span></div>':'')));
+            {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null})+
+          legendItems([dotItem('var(--acc2)',gain.label), avgItem(!!gainAvg), markItem(!!gm.length)])));
       } else {
+        const lm=markIdx(dates,rel);
         cards.push(card(p.name+' · '+s.label, pts.length,
           lineChart([{values:pts.map(function(x){return x.value})}],['var(--acc)'],labs,
-            {marks:markIdx(dates,rel)})));
+            {marks:lm})+
+          legendItems([dotItem('var(--acc)',s.label), markItem(!!lm.length)])));
       }
     });
   });
