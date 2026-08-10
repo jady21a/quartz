@@ -880,9 +880,16 @@ function platformSection(pd, now){
     const pick=function(fn){ return ser.filter(fn)[0] };
     const plays=pick(function(s){return s.label==='每日播放'});
     const fansSrc=pick(function(s){return s.label==='粉丝'||s.label==='订阅'});
-    const gain=fansSrc? dailyGain(fansSrc) : null;
+    // 日增有两个来源,平台口径优先:YouTube Analytics 直接按天给
+    // subscribersGained/Lost;拿不到的平台才退回「本地累计快照就地差分」——
+    // 后者漏抓一天就会把两天并成一根柱子,能不用就不用。
+    const gainDirect=pick(function(s){return s.label.indexOf('日增')===0});
+    const gain=gainDirect || (fansSrc? dailyGain(fansSrc) : null);
     const gainAvg=gain? movingAvg(gain.points) : null;
+    // 累计粉丝/订阅永远不单独画:单调上升的线看不出哪天发力,它的位置由日增图顶替。
     const done=[];
+    if(fansSrc) done.push(fansSrc.label);
+    if(gainDirect) done.push(gainDirect.label);
     // 两条都够长才叠成双轴:一条流量一条日增,同一时间轴上才看得出
     // 「发片 → 播放起来 → 涨粉」这条链子哪一环断了。
     if(plays&&(plays.points||[]).length>=3&&gain&&gain.points.length>=3){
@@ -894,32 +901,27 @@ function platformSection(pd, now){
           {values:alignTo(dates,gain.points), avg:gainAvg?alignTo(dates,gainAvg):null},
           labs, {marks:markIdx(dates,rel)})+
         legend(plays.label,gain.label,!!gainAvg,!!markIdx(dates,rel).length)));
-      done.push(plays.label, fansSrc.label);
+      done.push(plays.label);
+    } else if(gain && gain.points.length>=3){
+      // 只有日增、没有播放(或播放太短):单画一张柱图。四天历史才够三根柱子。
+      const g=gain.points, gd=g.map(function(x){return x.date}), gm=markIdx(gd,rel);
+      // 柱子用 --acc2:和双轴图里那排日增柱同色。这张图只是「双轴图缺了播放那半」,
+      // 不是另一种图,颜色跟着含义走、不跟着图种走。
+      cards.push(card(p.name+' · '+gain.label, g.length,
+        barChart(g.map(function(x){return x.value}),'var(--acc2)',
+          gd.map(function(x){return x.slice(5)}),
+          {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null})+
+        legendItems([dotItem('var(--acc2)',gain.label), avgItem(!!gainAvg), markItem(!!gm.length)])));
     }
     ser.forEach(function(s){
-      if(done.indexOf(s.label)>=0) return;   // 已经并进双轴图了,不再单画一张
+      if(done.indexOf(s.label)>=0) return;   // 已经画过了(并进双轴图,或被日增图顶替)
       const pts=s.points||[];
       if(pts.length<3) return;
-      const dates=pts.map(function(x){return x.date});
-      const labs=dates.map(function(x){return x.slice(5)});
-      if(s===fansSrc){
-        const g=gain.points;
-        if(g.length<3) return;   // 差分少一个点,四天历史才够画三根柱子
-        const gd=g.map(function(x){return x.date}), gm=markIdx(gd,rel);
-        // 柱子用 --acc2:和双轴图里那排日增柱同色。这张图只是「双轴图缺了播放那半」,
-        // 不是另一种图,颜色跟着含义走、不跟着图种走。
-        cards.push(card(p.name+' · '+gain.label, g.length,
-          barChart(g.map(function(x){return x.value}),'var(--acc2)',
-            gd.map(function(x){return x.slice(5)}),
-            {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null})+
-          legendItems([dotItem('var(--acc2)',gain.label), avgItem(!!gainAvg), markItem(!!gm.length)])));
-      } else {
-        const lm=markIdx(dates,rel);
-        cards.push(card(p.name+' · '+s.label, pts.length,
-          lineChart([{values:pts.map(function(x){return x.value})}],['var(--acc)'],labs,
-            {marks:lm})+
-          legendItems([dotItem('var(--acc)',s.label), markItem(!!lm.length)])));
-      }
+      const dates=pts.map(function(x){return x.date}), lm=markIdx(dates,rel);
+      cards.push(card(p.name+' · '+s.label, pts.length,
+        lineChart([{values:pts.map(function(x){return x.value})}],['var(--acc)'],
+          dates.map(function(x){return x.slice(5)}),{marks:lm})+
+        legendItems([dotItem('var(--acc)',s.label), markItem(!!lm.length)])));
     });
   });
   if(cards.length){
