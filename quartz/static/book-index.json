@@ -106,6 +106,28 @@
     ]
   },
   {
+    "file": "/read/add-book/books/This-is-Marketing-You-Can't-Be-Seen-Until-You-Learn-To-See",
+    "title": "This is Marketing You Can't Be Seen Until You Learn To See",
+    "封面": "/read/add-book/covers/This-is-Marketing-You-Can't-Be-Seen-Until-You-Learn-To-See-—-Seth-Godin.jpg",
+    "originalTitle": "",
+    "author": "Seth Godin",
+    "scoreStar": "",
+    "score": "",
+    "publishDate": "2018/11/13",
+    "myRate": "",
+    "阅读状态": [
+      "正在阅读"
+    ],
+    "totalPage": "271",
+    "currentPage": "",
+    "添加时间": "2026-08-11",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
     "file": "/read/add-book/books/Unwinding-Anxiety",
     "title": "Unwinding Anxiety",
     "封面": "/read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg",
@@ -128,19 +150,19 @@
     ]
   },
   {
-    "file": "/read/add-book/books/秀出你的工作",
-    "title": "秀出你的工作",
-    "封面": "/read/add-book/covers/秀出你的工作-—-美-奥斯丁·克莱恩.jpg",
-    "originalTitle": "Show Your Work!: 10 Ways to Share Your Creativity and Get Discovered",
-    "author": "[美] 奥斯丁·克莱恩",
+    "file": "/read/add-book/books/positioning",
+    "title": "定位",
+    "封面": "/read/add-book/covers/定位-—-美-艾·里斯-杰克·特劳特.jpg",
+    "originalTitle": "Positioning: The Battle for Your Mind",
+    "author": "[美] 艾·里斯 / 杰克·特劳特",
     "scoreStar": "",
-    "score": "7.5",
-    "publishDate": "2023/01/01",
+    "score": "",
+    "publishDate": "2002/02/01",
     "myRate": "",
     "阅读状态": [
       "正在阅读"
     ],
-    "totalPage": "230",
+    "totalPage": "268",
     "currentPage": "",
     "添加时间": "2026-08-11",
     "开始时间": "",
