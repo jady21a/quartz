@@ -254,6 +254,20 @@
   background: #000;
 }
 
+/* 视频还没发时的占位:保持 16/9 的位置感,别让文字贴在纯黑上显得像加载失败 */
+.video-source-stage-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lightgray);
+  box-shadow: none;
+}
+
+.video-source-placeholder {
+  font-size: 0.95rem;
+  color: var(--darkgray);
+}
+
 .video-detail-page lite-youtube,
 .video-source-iframe {
   display: block;

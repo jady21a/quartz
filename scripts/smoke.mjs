@@ -186,6 +186,7 @@ async function inspect(context, base, url, origin) {
     const signature = await page.evaluate((kinds) => {
       const players = [...document.querySelectorAll(".video-player-container")].map((c) => ({
         ready: c.getAttribute("data-player-ready") === "true",
+        placeholder: c.getAttribute("data-player-placeholder") === "true",
         youtube: c.getAttribute("data-youtube") || "",
         bilibili: c.getAttribute("data-bilibili") || "",
         hasFrame: !!c.querySelector("iframe, lite-youtube"),
@@ -219,6 +220,12 @@ function checkPage(sig) {
   sig.players.forEach((p, i) => {
     const at = sig.players.length > 1 ? ` #${i + 1}` : ""
     if (!p.ready) problems.push(`播放器${at}没初始化(data-player-ready 不是 true)`)
+    // 占位态仍算失败:它只该出现在本地 QUARTZ_KEEP_DRAFTS=1 的草稿预览里,
+    // 进了 public/ 就说明一篇没有播放源的页面正要上线
+    else if (p.placeholder)
+      problems.push(
+        `播放器${at}停在「视频即将发布」占位:没有任何视频源 ID。视频已发就补 videoid/bilibiliid,没发就把 draft 改回 "true"`,
+      )
     else if (!p.hasFrame) problems.push(`播放器${at}初始化了但没渲染出播放元素`)
     else if (!p.youtube && !p.bilibili) problems.push(`播放器${at}没拿到任何视频源 ID`)
   })

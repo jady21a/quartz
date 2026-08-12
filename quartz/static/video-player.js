@@ -265,6 +265,51 @@
     ]
   }
 
+  // 播放源切换条骨架(「播放源:」标签 + 空的 tabs 容器)。按钮由调用方填,
+  // 占位态和真播放器共用同一副骨架,保证两种状态的版式一致。
+  function createSourceBar() {
+    var bar = document.createElement("div")
+    bar.className = "video-source-bar"
+
+    var label = document.createElement("span")
+    label.className = "video-source-label"
+    label.textContent = "播放源:"
+    bar.appendChild(label)
+
+    var tabs = document.createElement("div")
+    tabs.className = "video-source-tabs"
+    bar.appendChild(tabs)
+
+    return { bar: bar, tabs: tabs }
+  }
+
+  // 「文章写好了、视频还没发」这个中间态的样子:两个源都没 ID 时不再留一个空 div,
+  // 而是渲染置灰的切换条 + 一块占位。这样本地预览草稿页(QUARTZ_KEEP_DRAFTS=1)去录屏,
+  // 页面是有意为之的形态而不是半坏的空白;ID 填进来后同一页自动变成真播放器。
+  // 单独打 data-player-placeholder:冒烟检查靠它把「占位」和「真播放器」分开报——
+  // 占位页出现在 public/ 里仍算失败(草稿页本不该进构建),只是报错能说清是哪种坏。
+  function renderPlaceholder(container, sources) {
+    container.innerHTML = ""
+    container.classList.add("video-player-enhanced")
+
+    var sourceBar = createSourceBar()
+    sources.forEach(function (source) {
+      sourceBar.tabs.appendChild(createSourceButton(source.label, false, false, null))
+    })
+    container.appendChild(sourceBar.bar)
+
+    var stage = document.createElement("div")
+    stage.className = "video-source-stage video-source-stage-empty"
+    var note = document.createElement("div")
+    note.className = "video-source-placeholder"
+    note.textContent = "视频即将发布"
+    stage.appendChild(note)
+    container.appendChild(stage)
+
+    container.setAttribute("data-player-placeholder", "true")
+    container.setAttribute("data-player-ready", "true")
+  }
+
   async function enhancePlayer(container) {
     if (container.getAttribute("data-player-ready") === "true") return
 
@@ -274,7 +319,10 @@
     var availableSources = sources.filter(function (source) {
       return source.available
     })
-    if (availableSources.length === 0) return
+    if (availableSources.length === 0) {
+      renderPlaceholder(container, sources)
+      return
+    }
 
     var existingLite = container.querySelector("lite-youtube")
     var playLabel = existingLite ? existingLite.getAttribute("playlabel") : ""
@@ -295,19 +343,9 @@
     container.classList.add("video-player-enhanced")
 
     // 播放源切换条始终显示（两个按钮都在；无视频的源不可点）
-    var sourceBar = document.createElement("div")
-    sourceBar.className = "video-source-bar"
-
-    var sourceLabel = document.createElement("span")
-    sourceLabel.className = "video-source-label"
-    sourceLabel.textContent = "播放源:"
-    sourceBar.appendChild(sourceLabel)
-
-    var tabs = document.createElement("div")
-    tabs.className = "video-source-tabs"
-    sourceBar.appendChild(tabs)
-
-    container.appendChild(sourceBar)
+    var sourceBar = createSourceBar()
+    var tabs = sourceBar.tabs
+    container.appendChild(sourceBar.bar)
 
     var stage = document.createElement("div")
     stage.className = "video-source-stage"

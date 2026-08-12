@@ -26,6 +26,7 @@
   "008-项目管理": "008-project-management",
   "009-一个指令，让AI 自动生成周复盘": "009-ai-weekly-review-one-command",
   "011-obsidian开箱即用模板库": "011-obsidian-template-vault",
+  "012-关掉Mac升级弹窗和红色角标": "012-macos-update-nag-and-badge",
   "001-obsidian工作流总结": "001-obsidian-workflow-summary",
 
   "01.个人博客-obsidian+quartz": "01-personal-blog-obsidian-quartz",
@@ -41,6 +42,7 @@
 
   "智囊团": "mastermind",
   "选择": "choice",
+  "服务": "services",
   "0_怎么读书": "how-to-read",
   "阅读统计": "reading-stats",
   "media-DB": "media-db",

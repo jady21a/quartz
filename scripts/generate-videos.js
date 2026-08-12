@@ -16,6 +16,9 @@ const VIDEO_DIR_NAME = "7.shared"
 const CONTENT_DIR = path.join(__dirname, "../content/" + VIDEO_DIR_NAME)
 const OUTPUT_FILE = path.join(__dirname, "../quartz/static/video-index.json")
 
+// 本地预览草稿的开关，与 quartz/plugins/filters/draft.ts 共用同一个变量
+const KEEP_DRAFTS = process.env.QUARTZ_KEEP_DRAFTS === "1"
+
 // ===== 递归读取所有 Markdown 文件 =====
 function getAllMarkdownFiles(dir, fileList = []) {
   if (!fs.existsSync(dir)) {
@@ -158,7 +161,9 @@ function parseVideoData(filePath) {
   const { data: frontmatter, content: bodyContent } = matter(content)
 
   // draft 页不进索引：Quartz 构建时会整页排除(RemoveDrafts)，索引若收录会指向 404
-  if (frontmatter.draft === true || frontmatter.draft === "true") return null
+  // QUARTZ_KEEP_DRAFTS=1 是本地预览草稿的开关，必须和 RemoveDrafts 认同一个变量，
+  // 否则「构建收录了页面但索引没有」会让播放器/画廊查不到数据
+  if (!KEEP_DRAFTS && (frontmatter.draft === true || frontmatter.draft === "true")) return null
 
   const tags = frontmatter.tags || []
   const isVideo = tags.some(

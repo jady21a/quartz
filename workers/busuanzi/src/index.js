@@ -579,6 +579,10 @@ const STATS_HTML = `<!DOCTYPE html>
   .m .k{font-size:11.5px;color:var(--mut);margin-top:1px}
   .m .d{font-size:11px;color:var(--acc2);margin-top:2px;font-variant-numeric:tabular-nums}
   .m .d.zero{color:var(--mut)}
+  /* 面板上唯一可点的数字。下划线是虚的、颜色跟着 --warn:它要看起来像个待办,
+     不像导航 —— 这页其余部分一个出口都没有,这一个必须自己解释自己。 */
+  .m .v a{color:var(--warn);text-decoration:underline dotted;text-underline-offset:3px}
+  .m .v a:hover{text-decoration-style:solid}
   .today{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
     display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
   .today .t{color:var(--mut);font-size:12px;margin-right:2px}
@@ -783,7 +787,13 @@ function platCard(p, fetchedAt, now){
   h+='<div class="plat-head"><span class="plat-name">'+esc(p.name||'')+'</span>'+badge+'</div>';
   h+='<div class="metrics">'+(p.totals||[]).map(function(m){
       const d=m.delta;
-      return '<div class="m"><div class="v">'+fmt(m.value)+'</div><div class="k">'+esc(m.label)+'</div>'+
+      // 平台区是死胡同 —— 唯一的例外是队列型指标(「待回 issue」),而且只在它不为 0 时:
+      // 看到 1 之后该做的事就是点进去回掉它,拦在这里等于逼人去 App 里翻,反而更糟。
+      // 0 的时候不给链接:没事干的时候更不该有出口。取数侧只给「待办清单」类 URL
+      // (筛选后的列表),不给具体内容页,所以这里放心直接渲染。
+      const v=(m.url&&m.value)? '<a href="'+esc(m.url)+'" target="_blank" rel="noopener">'+fmt(m.value)+'</a>'
+                              : fmt(m.value);
+      return '<div class="m"><div class="v">'+v+'</div><div class="k">'+esc(m.label)+'</div>'+
         (d==null?'':'<div class="d'+(d?'':' zero')+'">'+(d>0?'+':'')+d+' 较昨日</div>')+'</div>';
     }).join('')+'</div>';
   if(p.today&&p.today.length){
