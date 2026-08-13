@@ -548,6 +548,15 @@ const STATS_HTML = `<!DOCTYPE html>
   td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   tr:last-child td{border-bottom:none}
   .path{max-width:520px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* PV 排行的长尾:默认藏起来,展开只切 class,不重画表 —— 单表才能保证展开前后列宽一致 */
+  .pvrank .more{display:none}
+  .pvrank.open .more{display:table-row}
+  .rank-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin-top:10px;font-size:12.5px}
+  .more-btn{background:none;border:none;color:var(--acc);font-size:12.5px;
+    cursor:pointer;padding:2px 0;font-family:inherit}
+  .more-btn:hover{text-decoration:underline}
+  .trunc{margin-top:8px;font-size:12px;color:var(--mut)}
   a{color:var(--acc);text-decoration:none}
   a:hover{text-decoration:underline}
   .bar{height:6px;border-radius:3px;background:var(--acc);opacity:.85}
@@ -568,21 +577,35 @@ const STATS_HTML = `<!DOCTYPE html>
   .sect h3{font-size:15px;margin:0;font-weight:700}
   .sect .hint{font-size:12px;color:var(--mut)}
   .sect .rule{flex:1;height:1px;background:var(--line)}
+  /* 整区一个时间戳。四张卡来自同一次推送,四个一样的「1 小时前」只是把右上角占满。 */
+  .sect .stamp{font-size:11.5px;color:var(--mut);white-space:nowrap}
+  .sect .stamp.stale{color:var(--warn)}
   .plat-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px}
   .plat-name{font-size:15px;font-weight:700}
+  .plat-head .right{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;justify-content:flex-end}
   .badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);
     color:var(--mut);white-space:nowrap}
-  .badge.ok{color:var(--acc2);border-color:rgba(158,206,106,.4);background:rgba(158,206,106,.08)}
   .badge.stale{color:var(--warn);border-color:rgba(224,175,104,.45);background:rgba(224,175,104,.1)}
-  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:12px 10px}
+  /* 队列型指标(还剩多少没处理)不进累计网格:它们是这页唯一需要动手的数,
+     混在「下载 767」旁边就等于藏起来。为 0 时压成灰底噪音,非 0 才亮。 */
+  .queue{font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);
+    color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .queue b{font-weight:600;margin-left:3px}
+  .queue.hot{color:var(--warn);border-color:rgba(224,175,104,.45);background:rgba(224,175,104,.1)}
+  /* 面板上唯一可点的数字。下划线是虚的、跟着 --warn:它要看起来像个待办,
+     不像导航 —— 这页其余部分一个出口都没有,这一个必须自己解释自己。 */
+  .queue a{color:inherit;text-decoration:underline dotted;text-underline-offset:3px}
+  .queue a:hover{text-decoration-style:solid}
+  /* 固定 6 列(窄屏 3 列),不用 auto-fit:各平台指标数不同(B站 8、小红书 2),
+     自适应会让每张卡的列宽都不一样,数字左边缘跨卡对不齐,没法竖着扫。 */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:12px 10px}
+  @media(max-width:720px){.metrics{grid-template-columns:repeat(3,1fr)}}
   .m .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.3px}
   .m .k{font-size:11.5px;color:var(--mut);margin-top:1px}
   .m .d{font-size:11px;color:var(--acc2);margin-top:2px;font-variant-numeric:tabular-nums}
   .m .d.zero{color:var(--mut)}
-  /* 面板上唯一可点的数字。下划线是虚的、颜色跟着 --warn:它要看起来像个待办,
-     不像导航 —— 这页其余部分一个出口都没有,这一个必须自己解释自己。 */
-  .m .v a{color:var(--warn);text-decoration:underline dotted;text-underline-offset:3px}
-  .m .v a:hover{text-decoration-style:solid}
+  /* 掉粉必须一眼看出来。跟日增柱图里 v<0 那根同色 —— 同一件事在这页只有一种颜色。 */
+  .m .d.neg{color:var(--warn)}
   .today{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
     display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
   .today .t{color:var(--mut);font-size:12px;margin-right:2px}
@@ -772,6 +795,11 @@ function ago(ms){
   return Math.round(h/24)+' 天前';
 }
 
+// 队列型指标:「还剩多少没处理」,不是累计量。取数侧同名常量见
+// ~/info-digest/scripts/fetch_stats.py 的 QUEUE_LABELS —— 那边据此不给它算 delta
+// (「较昨日 -3」对待办数只是噪音),这边据此把它们从累计网格里拎出来。
+const QUEUE_LABELS = new Set(['未读回复','待回评论','待回 issue']);
+
 function platCard(p, fetchedAt, now){
   if(!p.enabled || !p.ok){
     return '<div class="card offcard">'+
@@ -781,20 +809,27 @@ function platCard(p, fetchedAt, now){
   }
   const age=now-new Date(fetchedAt).getTime();
   const stale=!(age>=0) || age>STALE_HOURS*3600e3;
-  const badge=stale? '<span class="badge stale">数据可能已停更 · '+ago(age)+'</span>'
-                   : '<span class="badge ok">'+ago(age)+'</span>';
+  // 正常时卡上不挂时间戳(整区一个,见 platformSection);只有这张卡的数可能过期了才说话。
+  const badge=stale? '<span class="badge stale">数据可能已停更 · '+ago(age)+'</span>' : '';
+  const rows=p.totals||[];
+  const queue=rows.filter(function(m){return QUEUE_LABELS.has(m.label)});
+  const totals=rows.filter(function(m){return !QUEUE_LABELS.has(m.label)});
+  // 平台区是死胡同 —— 唯一的例外是队列型指标,而且只在它不为 0 时:看到 1 之后该做的事
+  // 就是点进去回掉它,拦在这里等于逼人去 App 里翻,反而更糟。0 的时候不给链接:没事干的
+  // 时候更不该有出口。取数侧只给「待办清单」类 URL(筛选后的列表),不给具体内容页。
+  const pills=queue.map(function(m){
+    const hot=!!m.value;
+    const n=(m.url&&hot)? '<a href="'+esc(m.url)+'" target="_blank" rel="noopener">'+fmt(m.value)+'</a>'
+                        : fmt(m.value);
+    return '<span class="queue'+(hot?' hot':'')+'">'+esc(m.label)+'<b>'+n+'</b></span>';
+  }).join('');
   let h='<div class="card'+(stale?' stale':'')+'">';
-  h+='<div class="plat-head"><span class="plat-name">'+esc(p.name||'')+'</span>'+badge+'</div>';
-  h+='<div class="metrics">'+(p.totals||[]).map(function(m){
+  h+='<div class="plat-head"><span class="plat-name">'+esc(p.name||'')+'</span>'+
+     '<span class="right">'+pills+badge+'</span></div>';
+  h+='<div class="metrics">'+totals.map(function(m){
       const d=m.delta;
-      // 平台区是死胡同 —— 唯一的例外是队列型指标(「待回 issue」),而且只在它不为 0 时:
-      // 看到 1 之后该做的事就是点进去回掉它,拦在这里等于逼人去 App 里翻,反而更糟。
-      // 0 的时候不给链接:没事干的时候更不该有出口。取数侧只给「待办清单」类 URL
-      // (筛选后的列表),不给具体内容页,所以这里放心直接渲染。
-      const v=(m.url&&m.value)? '<a href="'+esc(m.url)+'" target="_blank" rel="noopener">'+fmt(m.value)+'</a>'
-                              : fmt(m.value);
-      return '<div class="m"><div class="v">'+v+'</div><div class="k">'+esc(m.label)+'</div>'+
-        (d==null?'':'<div class="d'+(d?'':' zero')+'">'+(d>0?'+':'')+d+' 较昨日</div>')+'</div>';
+      return '<div class="m"><div class="v">'+fmt(m.value)+'</div><div class="k">'+esc(m.label)+'</div>'+
+        (d==null?'':'<div class="d'+(d?(d<0?' neg':''):' zero')+'">'+(d>0?'+':'')+d+' 较昨日</div>')+'</div>';
     }).join('')+'</div>';
   if(p.today&&p.today.length){
     // 标签用平台自己的日期,不写「今日」:B站的 incr_* 实测是 T-1(当天早上甚至还是 T-2),
@@ -810,17 +845,20 @@ function platCard(p, fetchedAt, now){
 }
 
 function platformSection(pd, now){
+  const stamp=pd&&(pd.fetchedAt||pd.receivedAt);
+  const age=stamp? now-new Date(stamp).getTime() : NaN;
+  const stale=!(age>=0) || age>STALE_HOURS*3600e3;
+  // 时间戳收在区标题这一处:全区共用同一次推送,写四遍不会让它更新得更勤。
+  const st=(age>=0)? '<span class="stamp'+(stale?' stale':'')+'">'+ago(age)+'</span>' : '';
   let h='<div class="sect"><h3>平台账号</h3>'+
-    '<span class="hint">只有数字,没有出口 —— 看完就关</span><span class="rule"></span></div>';
+    '<span class="hint">只有数字,没有出口 —— 看完就关</span><span class="rule"></span>'+st+'</div>';
   if(!pd){
     h+='<div class="card muted">本机还没推过数据。跑 <b>~/info-digest/run.sh</b>,'+
        '并在 config/secrets.env 里填 <b>STATS_TOKEN</b>。</div>';
     return h;
   }
-  const stamp=pd.fetchedAt||pd.receivedAt;
-  const age=now-new Date(stamp).getTime();
   const on=(pd.platforms||[]).filter(function(p){return p.enabled&&p.ok});
-  if(on.length && (!(age>=0) || age>STALE_HOURS*3600e3)){
+  if(on.length && stale){
     h+='<div class="note">本机已 '+ago(age)+' 没推新数据(阈值 '+STALE_HOURS+' 小时)。'+
        '下面是旧数字,别当今天的看 —— 多半是 <b>com.jz.info-digest</b> 没跑成:'+
        '机器休眠挂起、或 SESSDATA 过期。</div>';
@@ -1025,18 +1063,41 @@ async function load(){
   h+='</div>';
   h+='</div>';
 
-  // 每页 PV 排行
-  h+='<div class="card" style="margin-bottom:14px"><h2>页面 PV 排行(busuanzi)</h2>';
+  // 每页 PV 排行。默认只摊开前 HEAD 条:这张表要回答的是「哪几页在扛流量」,
+  // 第 11 名往后是一水儿几个 PV 的长尾,平时纯占屏。剩下的收进折叠,展开就给全部 ——
+  // 上一版停在 50 条且一声不吭,和上面 KPI「被访问页面数」当面对不上。
+  const HEAD=10, CAP=200;
+  h+='<div class="card pvrank" style="margin-bottom:14px"><h2>页面 PV 排行(busuanzi)'+
+     (d.pages.length?' <span class="muted" style="font-weight:400">(共 '+fmt(d.pages.length)+' 页)</span>':'')+
+     '</h2>';
   if(d.pages.length){
     const max=d.pages[0].pv||1;
+    const shown=d.pages.slice(0,CAP), rest=d.pages.slice(CAP);
+    const sum=function(a){ return a.reduce(function(s,p){return s+(p.pv||0)},0) };
+    const total=sum(d.pages)||1;
     h+='<table><thead><tr><th>页面</th><th></th><th class="num">PV</th></tr></thead><tbody>';
-    h+=d.pages.slice(0,50).map(p=>{
+    h+=shown.map(function(p,i){
       const url='https://jz21.eu.org'+(p.path==='/'?'':p.path);
-      return '<tr><td class="path"><a href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(p.path)+'</a></td>'+
+      return '<tr'+(i>=HEAD?' class="more"':'')+'>'+
+        '<td class="path"><a href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(p.path)+'</a></td>'+
         '<td style="width:35%"><div class="bar" style="width:'+Math.max(4,p.pv/max*100).toFixed(1)+'%"></div></td>'+
         '<td class="num">'+fmt(p.pv)+'</td></tr>';
     }).join('');
     h+='</tbody></table>';
+    // 头尾比例是这张表唯一的结论性信息(流量到底是集中还是摊平),省得自己按计算器。
+    const n=Math.min(HEAD,d.pages.length);
+    h+='<div class="rank-foot"><span class="muted">前 '+n+' 页占 '+
+       Math.round(sum(d.pages.slice(0,HEAD))/total*100)+'% 的 PV</span>';
+    if(shown.length>HEAD){
+      h+='<button class="more-btn" onclick="toggleRank(this)" data-n="'+(shown.length-HEAD)+'">'+
+         '展开剩余 '+(shown.length-HEAD)+' 条 ▾</button>';
+    }
+    h+='</div>';
+    if(rest.length){
+      // 真超过 CAP 才截断,而且明说 —— 静默丢掉是上一版的毛病,别换个数字重犯一遍。
+      h+='<div class="trunc">另有 '+fmt(rest.length)+' 页未列出(每页 PV ≤ '+fmt(rest[0].pv)+
+         ',合计 '+fmt(sum(rest))+')。</div>';
+    }
   } else h+='<div class="muted">暂无页面记录。</div>';
   h+='</div>';
 
@@ -1050,6 +1111,11 @@ async function load(){
   }
 
   app.innerHTML=h;
+}
+// 折叠状态不记忆,刷新回到收起 —— 这页的立场是「看完就关」,不该帮人把长尾摊着。
+function toggleRank(btn){
+  const open=btn.closest('.card').classList.toggle('open');
+  btn.textContent = open? '收起 ▴' : '展开剩余 '+btn.dataset.n+' 条 ▾';
 }
 function kpi(n,l,hint){
   return '<div class="card kpi"><div class="n">'+n+'</div><div class="l">'+l+'</div>'+
