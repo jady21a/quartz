@@ -551,8 +551,12 @@ const STATS_HTML = `<!DOCTYPE html>
   /* PV 排行的长尾:默认藏起来,展开只切 class,不重画表 —— 单表才能保证展开前后列宽一致 */
   .pvrank .more{display:none}
   .pvrank.open .more{display:table-row}
+  /* 表尾吸底:展开 130 行之后,「收起」不能只长在表的最下面 —— 那等于逼人滑到底
+     才能关掉。sticky 的作用域天然限在这张卡内,滚出 PV 排行就自己松开,不会变成
+     一条永远赖在屏幕底下的横条。 */
   .rank-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;
-    margin-top:10px;font-size:12.5px}
+    font-size:12.5px;position:sticky;bottom:0;background:var(--card);
+    border-top:1px solid var(--line);padding:9px 0 1px}
   .more-btn{background:none;border:none;color:var(--acc);font-size:12.5px;
     cursor:pointer;padding:2px 0;font-family:inherit}
   .more-btn:hover{text-decoration:underline}
@@ -566,6 +570,17 @@ const STATS_HTML = `<!DOCTYPE html>
   .note{font-size:12.5px;color:var(--warn);background:rgba(224,175,104,.08);
     border:1px solid rgba(224,175,104,.3);border-radius:10px;padding:10px 12px;margin-bottom:14px}
   .chart{width:100%;height:150px;display:block}
+  /* 悬停读数。竖线吸附到最近的数据点上,不跟着光标像素走 —— 图上只有那些点是真的,
+     停在两点之间读出来的数会是编的。 */
+  .chartbox{position:relative}
+  .chartbox .cursor{position:absolute;top:6px;bottom:24px;width:1px;background:var(--fg);
+    opacity:.35;display:none;pointer-events:none}
+  .chartbox .tip{position:absolute;top:2px;display:none;pointer-events:none;z-index:3;
+    background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 9px;
+    font-size:12px;line-height:1.55;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+  .chartbox .tip .dt{color:var(--mut);font-size:11px;margin-bottom:1px}
+  .chartbox .tip .r{display:flex;align-items:center;gap:6px}
+  .chartbox .tip .r b{margin-left:14px;font-variant-numeric:tabular-nums}
   .legend{display:flex;gap:14px;font-size:12px;color:var(--mut);margin-top:6px}
   .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
   button.refresh{background:var(--card);color:var(--fg);border:1px solid var(--line);
@@ -582,35 +597,43 @@ const STATS_HTML = `<!DOCTYPE html>
   .sect .stamp.stale{color:var(--warn)}
   .plat-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px}
   .plat-name{font-size:15px;font-weight:700}
-  .plat-head .right{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;justify-content:flex-end}
   .badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);
     color:var(--mut);white-space:nowrap}
   .badge.stale{color:var(--warn);border-color:rgba(224,175,104,.45);background:rgba(224,175,104,.1)}
-  /* 队列型指标(还剩多少没处理)不进累计网格:它们是这页唯一需要动手的数,
-     混在「下载 767」旁边就等于藏起来。为 0 时压成灰底噪音,非 0 才亮。 */
-  .queue{font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);
-    color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
-  .queue b{font-weight:600;margin-left:3px}
-  .queue.hot{color:var(--warn);border-color:rgba(224,175,104,.45);background:rgba(224,175,104,.1)}
-  /* 面板上唯一可点的数字。下划线是虚的、跟着 --warn:它要看起来像个待办,
-     不像导航 —— 这页其余部分一个出口都没有,这一个必须自己解释自己。 */
-  .queue a{color:inherit;text-decoration:underline dotted;text-underline-offset:3px}
-  .queue a:hover{text-decoration-style:solid}
-  /* 固定 6 列(窄屏 3 列),不用 auto-fit:各平台指标数不同(B站 8、小红书 2),
-     自适应会让每张卡的列宽都不一样,数字左边缘跨卡对不齐,没法竖着扫。 */
-  .metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:12px 10px}
-  @media(max-width:720px){.metrics{grid-template-columns:repeat(3,1fr)}}
+  /* 固定 4 列 = MAX_MAJOR,主区正好占满整行。不用 auto-fit:各平台主指标数不同
+     (小红书只有 2 个),自适应会让每张卡的列宽都不一样,数字左边缘跨卡对不齐、
+     没法竖着扫 —— 竖着扫正是这四张卡并排的意义(第 4 列固定是待回复)。 */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 10px}
+  /* 窄屏 2 列:四个数排成 2×2 方阵;3 列会变成 3+1,末行孤零零挂一个。 */
+  @media(max-width:720px){.metrics{grid-template-columns:repeat(2,1fr)}}
+  /* 数值、标签、日增在各自那一格里居中,三者对同一条中轴 —— 左对齐时数字长度不一
+     (483 / 35,177),下面的标签跟着左边缘走,整行看着像没对齐。 */
+  .m{text-align:center}
   .m .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.3px}
   .m .k{font-size:11.5px;color:var(--mut);margin-top:1px}
   .m .d{font-size:11px;color:var(--acc2);margin-top:2px;font-variant-numeric:tabular-nums}
   .m .d.zero{color:var(--mut)}
+  .m .d.ph{visibility:hidden}
   /* 掉粉必须一眼看出来。跟日增柱图里 v<0 那根同色 —— 同一件事在这页只有一种颜色。 */
   .m .d.neg{color:var(--warn)}
+  /* 队列型指标(还剩多少没处理)攒下东西了就染橙:它是这页唯一需要动手的数,
+     但没事干的时候不该有任何视觉重量,所以为 0 时和别的指标长得一模一样。 */
+  .m .v.hot{color:var(--warn)}
+  /* 面板上唯一可点的数字。下划线是虚的:它要看起来像个待办,不像导航 ——
+     这页其余部分一个出口都没有,这一个必须自己解释自己。 */
+  .m .v a{color:inherit;text-decoration:underline dotted;text-underline-offset:3px}
+  .m .v a:hover{text-decoration-style:solid}
+  /* 次区:不动的累计数压成一行小字。和「平台口径」那行长得像但没有虚线分隔 ——
+     它和上面的大数字同属「累计」这一块,虚线之后才是「当日」。 */
+  .minor{margin-top:12px;display:flex;gap:8px 14px;flex-wrap:wrap;font-size:12.5px}
+  .minor .t{color:var(--mut);margin-right:2px}
+  .minor b{font-variant-numeric:tabular-nums;font-weight:600}
   .today{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
-    display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+    display:flex;gap:8px 18px;flex-wrap:wrap;font-size:13px}
   .today .t{color:var(--mut);font-size:12px;margin-right:2px}
   .today b{font-variant-numeric:tabular-nums}
-  .stale .metrics,.stale .today{opacity:.45}
+  @media(max-width:720px){.today{gap:6px 12px}.minor{gap:6px 12px}}
+  .stale .metrics,.stale .minor,.stale .today{opacity:.45}
   .offcard{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .offcard .why{font-size:12.5px;color:var(--mut);max-width:70ch}
 </style></head>
@@ -658,6 +681,14 @@ function markIdx(dates, releases){
   return out;
 }
 
+// 图是 SVG 字符串拼出来的,没有可以挂事件的数据点对象。所以把「这张图画的是什么」
+// 原样挂在容器的 data-tip 上,交互时再解析 —— 读数和线条共用同一份数字,不会各说各的。
+// band=true 表示 x 用槽坐标(柱子),false 是端点坐标(折线),反查下标要按各自的映射来。
+function chartBox(svg, tip){
+  return '<div class="chartbox" data-tip="'+esc(JSON.stringify(tip))+'">'+svg+
+    '<div class="cursor"></div><div class="tip"></div></div>';
+}
+
 function lineChart(series, colors, labels, opts){
   // series: array of {values:[...]} aligned to same x; simple SVG line chart
   const W=CW,H=CH,P=CP, n=series[0].values.length;
@@ -678,7 +709,9 @@ function lineChart(series, colors, labels, opts){
   const lab='<text x="'+P+'" y="'+(H-4)+'" fill="var(--mut)" font-size="10">'+labels[0]+'</text>'+
     '<text x="'+(W-P)+'" y="'+(H-4)+'" fill="var(--mut)" font-size="10" text-anchor="end">'+labels[n-1]+'</text>'+
     '<text x="2" y="12" fill="var(--mut)" font-size="10">'+fmt(hi)+'</text>';
-  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+paths+lab+'</svg>';
+  return chartBox('<svg class="chart" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+paths+lab+'</svg>',
+    {band:false, dates:labels, series:series.map(function(s,i){
+      return {name:s.name||'', values:s.values, color:colors[i]} })});
 }
 
 // 日增用柱状而不是折线:0 基线在这里有实义(那天一个粉没涨),而且日增会是负数,
@@ -710,8 +743,11 @@ function barChart(values, color, labels, opts){
     'stroke-dasharray="5 3" stroke-linejoin="round"/>':'';
   const lab='<text x="'+CP+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10">'+labels[0]+'</text>'+
     '<text x="'+(CW-CP)+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10" text-anchor="end">'+labels[n-1]+'</text>';
-  return '<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
-    markLines(opts&&opts.marks,x)+axis+bars+avg+lab+'</svg>';
+  const tipSeries=[{name:(opts&&opts.name)||'', values:values, color:color}];
+  if(opts&&opts.avg) tipSeries.push({name:'7 日均', values:opts.avg, color:'var(--acc2)'});
+  return chartBox('<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
+    markLines(opts&&opts.marks,x)+axis+bars+avg+lab+'</svg>',
+    {band:true, dates:labels, series:tipSeries});
 }
 
 // 折线穿过缺口:两条序列的时间窗口不一样长(播放攒了 30 天,涨粉才 5 天),
@@ -768,8 +804,12 @@ function comboChart(dates, line, bars, labels, opts){
       fmt(rmin)+'</text>':'')+
     '<text x="'+CP+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10">'+labels[0]+'</text>'+
     '<text x="'+(CW-CP)+'" y="'+(CH-4)+'" fill="var(--mut)" font-size="10" text-anchor="end">'+labels[n-1]+'</text>';
-  return '<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
-    markLines(opts&&opts.marks,x)+axis+rects+avg+path+lab+'</svg>';
+  const tipSeries=[{name:line.name||'', values:line.values, color:'var(--acc)'},
+                   {name:bars.name||'', values:bars.values, color:'var(--acc2)'}];
+  if(bars.avg) tipSeries.push({name:'7 日均', values:bars.avg, color:'var(--acc2)'});
+  return chartBox('<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
+    markLines(opts&&opts.marks,x)+axis+rects+avg+path+lab+'</svg>',
+    {band:true, dates:dates.map(function(d){ return d.slice(5) }), series:tipSeries});
 }
 
 function barTable(rows, valFmt){
@@ -797,8 +837,18 @@ function ago(ms){
 
 // 队列型指标:「还剩多少没处理」,不是累计量。取数侧同名常量见
 // ~/info-digest/scripts/fetch_stats.py 的 QUEUE_LABELS —— 那边据此不给它算 delta
-// (「较昨日 -3」对待办数只是噪音),这边据此把它们从累计网格里拎出来。
-const QUEUE_LABELS = new Set(['未读回复','待回评论','待回 issue']);
+// (「较昨日 -3」对待办数只是噪音),这边据此决定它排主区还是次区。
+const QUEUE_LABELS = new Set(['未读回复','待回评论','待回 issue'])
+
+// 主指标:每天真的会变、真的会看的那几个。其余(硬币/评论/分享/弹幕/仓库数…)
+// 是几乎不动的累计数,同样 22px 粗体只是在稀释真正要看的东西 —— B站一张卡九个
+// 大数字,眼睛落哪儿全凭运气,手机上更是挤成三行。
+const PRIMARY_LABELS = new Set([
+  '粉丝','订阅','播放','获赞与收藏','Star','下载',   // 涨没涨、有没有人看
+  '点赞','收藏','视频','Fork',                       // 凑够四个:内容反馈 / 产出量
+])
+// 主区最多四个。多了就等于没分主次,而且四个正好在手机上排成 2×2。
+const MAX_MAJOR = 4
 
 function platCard(p, fetchedAt, now){
   if(!p.enabled || !p.ok){
@@ -811,26 +861,45 @@ function platCard(p, fetchedAt, now){
   const stale=!(age>=0) || age>STALE_HOURS*3600e3;
   // 正常时卡上不挂时间戳(整区一个,见 platformSection);只有这张卡的数可能过期了才说话。
   const badge=stale? '<span class="badge stale">数据可能已停更 · '+ago(age)+'</span>' : '';
+  // 待办常驻主区,不按有没有事浮动:0 也要占着那一格,它说的是「查过了,没有」——
+  // 一个会消失的指标,不在的时候人分不清是没事还是没取到数。
+  // 但「占位」和「抢眼」是两回事:染橙、给链接仍然只在非零时(见下面的 hot)。
+  const isQueue=function(m){ return QUEUE_LABELS.has(m.label) };
+  const hot=function(m){ return isQueue(m) && !!m.value };
   const rows=p.totals||[];
-  const queue=rows.filter(function(m){return QUEUE_LABELS.has(m.label)});
-  const totals=rows.filter(function(m){return !QUEUE_LABELS.has(m.label)});
-  // 平台区是死胡同 —— 唯一的例外是队列型指标,而且只在它不为 0 时:看到 1 之后该做的事
-  // 就是点进去回掉它,拦在这里等于逼人去 App 里翻,反而更糟。0 的时候不给链接:没事干的
-  // 时候更不该有出口。取数侧只给「待办清单」类 URL(筛选后的列表),不给具体内容页。
-  const pills=queue.map(function(m){
-    const hot=!!m.value;
-    const n=(m.url&&hot)? '<a href="'+esc(m.url)+'" target="_blank" rel="noopener">'+fmt(m.value)+'</a>'
-                        : fmt(m.value);
-    return '<span class="queue'+(hot?' hot':'')+'">'+esc(m.label)+'<b>'+n+'</b></span>';
-  }).join('');
+  // 名额有限时待办先占位,剩下的按取数侧给的原顺序填 —— 主区读起来还是平台自己的排法。
+  const queue=rows.filter(isQueue);
+  const prim=rows.filter(function(m){ return PRIMARY_LABELS.has(m.label) && !isQueue(m) });
+  let major=prim.slice(0, Math.max(0, MAX_MAJOR-queue.length)).concat(queue);
+  // 兜底:将来接的平台如果一个主指标都没命中(比如换了叫法),别把整张卡压成小字。
+  if(!major.length) major=rows.slice(0, MAX_MAJOR);
+  const inMajor=new Set(major);
+  const minor=rows.filter(function(m){ return !inMajor.has(m) });
+  // 这张卡只要有一个格子带日增,没日增的格子就补一条等高的空行 —— 否则「粉丝」那格
+  // 多出一行,同排其他格子被顶得参差不齐,手机上尤其明显。
+  const pad=major.some(function(m){ return m.delta!=null })? '<div class="d ph">&nbsp;</div>' : '';
+
   let h='<div class="card'+(stale?' stale':'')+'">';
-  h+='<div class="plat-head"><span class="plat-name">'+esc(p.name||'')+'</span>'+
-     '<span class="right">'+pills+badge+'</span></div>';
-  h+='<div class="metrics">'+totals.map(function(m){
+  h+='<div class="plat-head"><span class="plat-name">'+esc(p.name||'')+'</span>'+badge+'</div>';
+  h+='<div class="metrics">'+major.map(function(m){
       const d=m.delta;
-      return '<div class="m"><div class="v">'+fmt(m.value)+'</div><div class="k">'+esc(m.label)+'</div>'+
-        (d==null?'':'<div class="d'+(d?(d<0?' neg':''):' zero')+'">'+(d>0?'+':'')+d+' 较昨日</div>')+'</div>';
+      // 平台区是死胡同 —— 唯一的例外是队列型指标,而且只在它不为 0 时:看到 1 之后该做的事
+      // 就是点进去回掉它,拦在这里等于逼人去 App 里翻,反而更糟。0 的时候不给链接、也不染色:
+      // 没事干的时候更不该有出口。取数侧只给「待办清单」类 URL(筛选后的列表),不给具体内容页。
+      const q=hot(m);
+      const v=(q&&m.url)? '<a href="'+esc(m.url)+'" target="_blank" rel="noopener">'+fmt(m.value)+'</a>'
+                        : fmt(m.value);
+      return '<div class="m"><div class="v'+(q?' hot':'')+'">'+v+'</div>'+
+        '<div class="k">'+esc(m.label)+'</div>'+
+        (d==null? pad : '<div class="d'+(d?(d<0?' neg':''):' zero')+'">'+(d>0?'+':'')+d+' 较昨日</div>')+
+        '</div>';
     }).join('')+'</div>';
+  // 次区:一行小字带过。不显示日增 —— 会看日增的指标本来就该在主区。
+  if(minor.length){
+    h+='<div class="minor">'+minor.map(function(m){
+      return '<span><span class="t">'+esc(m.label)+'</span> <b>'+fmt(m.value)+'</b></span>';
+    }).join('')+'</div>';
+  }
   if(p.today&&p.today.length){
     // 标签用平台自己的日期,不写「今日」:B站的 incr_* 实测是 T-1(当天早上甚至还是 T-2),
     // 写成「今日」等于每天骗自己一次,也是我们自算 delta 和它对不上的原因。
@@ -945,8 +1014,8 @@ function platformSection(pd, now){
       const labs=dates.map(function(x){return x.slice(5)});
       cards.push(card(p.name+' · 播放 × '+gain.label, dates.length,
         comboChart(dates,
-          {values:alignTo(dates,plays.points)},
-          {values:alignTo(dates,gain.points), avg:gainAvg?alignTo(dates,gainAvg):null},
+          {name:plays.label, values:alignTo(dates,plays.points)},
+          {name:gain.label, values:alignTo(dates,gain.points), avg:gainAvg?alignTo(dates,gainAvg):null},
           labs, {marks:markIdx(dates,rel)})+
         legend(plays.label,gain.label,!!gainAvg,!!markIdx(dates,rel).length)));
       done.push(plays.label);
@@ -958,7 +1027,7 @@ function platformSection(pd, now){
       cards.push(card(p.name+' · '+gain.label, g.length,
         barChart(g.map(function(x){return x.value}),'var(--acc2)',
           gd.map(function(x){return x.slice(5)}),
-          {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null})+
+          {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null, name:gain.label})+
         legendItems([dotItem('var(--acc2)',gain.label), avgItem(!!gainAvg), markItem(!!gm.length)])));
     }
     ser.forEach(function(s){
@@ -967,7 +1036,7 @@ function platformSection(pd, now){
       if(pts.length<3) return;
       const dates=pts.map(function(x){return x.date}), lm=markIdx(dates,rel);
       cards.push(card(p.name+' · '+s.label, pts.length,
-        lineChart([{values:pts.map(function(x){return x.value})}],['var(--acc)'],
+        lineChart([{name:s.label, values:pts.map(function(x){return x.value})}],['var(--acc)'],
           dates.map(function(x){return x.slice(5)}),{marks:lm})+
         legendItems([dotItem('var(--acc)',s.label), markItem(!!lm.length)])));
     });
@@ -1040,7 +1109,7 @@ async function load(){
   h+='<div class="card"><h2>每日趋势 · busuanzi(真人)</h2>';
   if(bd.length){
     h+=lineChart(
-      [{values:bd.map(x=>x.pv)},{values:bd.map(x=>x.uv)}],
+      [{name:'PV',values:bd.map(x=>x.pv)},{name:'UV',values:bd.map(x=>x.uv)}],
       ['var(--acc)','var(--acc2)'],
       bd.map(x=>x.date.slice(5)));
     h+='<div class="legend"><span><span class="dot" style="background:var(--acc)"></span>PV</span>'+
@@ -1053,7 +1122,9 @@ async function load(){
      (cfd.length?' <span class="muted" style="font-weight:400">('+cfd.length+' 天)</span>':'')+'</h2>';
   if(cfd.length){
     h+=lineChart(
-      [{values:cfd.map(x=>x.requests||0)},{values:cfd.map(x=>x.pageViews||0)},{values:cfd.map(x=>x.uniques||0)}],
+      [{name:'请求',values:cfd.map(x=>x.requests||0)},
+       {name:'页面浏览',values:cfd.map(x=>x.pageViews||0)},
+       {name:'独立 IP',values:cfd.map(x=>x.uniques||0)}],
       ['var(--acc)','var(--warn)','var(--acc2)'],
       cfd.map(x=>x.date.slice(5)));
     h+='<div class="legend"><span><span class="dot" style="background:var(--acc)"></span>请求</span>'+
@@ -1111,11 +1182,48 @@ async function load(){
   }
 
   app.innerHTML=h;
+  initTips();   // 图是刚写进 DOM 的,事件只能在这之后挂
 }
+// 悬停读数。SVG 是 preserveAspectRatio="none" 横向拉满的,所以像素 → viewBox 是线性的:
+// 按容器宽度折算回 viewBox 坐标,再按各图自己的 x 映射反查最近的下标。
+// 只在有鼠标的设备上生效(触屏不触发 mousemove),手机上图还是图,不假装能点。
+function initTips(){
+  document.querySelectorAll('.chartbox').forEach(function(box){
+    let tip;
+    try{ tip=JSON.parse(box.dataset.tip||'') }catch(e){ return }
+    if(!tip||!tip.dates||!tip.dates.length) return;
+    const cur=box.querySelector('.cursor'), el=box.querySelector('.tip'), n=tip.dates.length;
+    box.addEventListener('mousemove', function(ev){
+      const r=box.getBoundingClientRect();
+      if(!r.width) return;
+      // 反解 xAt / xBand:先去掉两侧留白,归一化到 0..1,再按点位或槽位取整
+      const u=((ev.clientX-r.left)/r.width*CW - CP)/(CW-2*CP);
+      let i=tip.band? Math.floor(u*n) : Math.round(u*(n-1));
+      i=Math.max(0, Math.min(n-1, i));
+      const x=(tip.band? xBand(i,n) : xAt(i,n))/CW*r.width;
+      cur.style.left=x.toFixed(1)+'px'; cur.style.display='block';
+      el.innerHTML='<div class="dt">'+esc(tip.dates[i])+'</div>'+tip.series.map(function(s){
+        const v=s.values? s.values[i] : null;
+        return '<div class="r"><span class="dot" style="background:'+s.color+'"></span>'+
+          esc(s.name||'')+'<b>'+(v==null?'—':fmt(v))+'</b></div>';
+      }).join('');
+      el.style.display='block';
+      // 贴着竖线放,但不许越出图框 —— 越出去的那半截会被卡片裁掉,读不到数
+      el.style.left=Math.max(0, Math.min(r.width-el.offsetWidth, x+12)).toFixed(1)+'px';
+    });
+    box.addEventListener('mouseleave', function(){
+      cur.style.display='none'; el.style.display='none';
+    });
+  });
+}
+
 // 折叠状态不记忆,刷新回到收起 —— 这页的立场是「看完就关」,不该帮人把长尾摊着。
 function toggleRank(btn){
-  const open=btn.closest('.card').classList.toggle('open');
+  const card=btn.closest('.card'), open=card.classList.toggle('open');
   btn.textContent = open? '收起 ▴' : '展开剩余 '+btn.dataset.n+' 条 ▾';
+  // 在第 100 行点「收起」时,表一下子缩掉一百多行,滚动位置原地不动 = 人被甩到卡片下面
+  // 的空白里。收起后把这张卡拉回视野,点完还站在原地。
+  if(!open) card.scrollIntoView({block:'nearest'});
 }
 function kpi(n,l,hint){
   return '<div class="card kpi"><div class="n">'+n+'</div><div class="l">'+l+'</div>'+
