@@ -1030,6 +1030,28 @@ function platformSection(pd, now){
           {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null, name:gain.label})+
         legendItems([dotItem('var(--acc2)',gain.label), avgItem(!!gainAvg), markItem(!!gm.length)])));
     }
+    // 访问 × 克隆:同一时间轴上分辨「有人来」和「被爬」。
+    //
+    // GitHub 的 traffic 接口只给每天的次数和来源数,没有 UA、没有 IP,单次克隆是谁
+    // 它不说 —— 所以「这些克隆里几次是爬虫」在数据层面拆不出来,拆了就是编。
+    // 但爬虫不看网页:2026-08-13 jady21a/quartz 被克隆 338 次、284 个不同来源,
+    // 同一天仓库页浏览量是 0。所以不去替读数的人下结论,只把两条线并到一起,
+    // 让读法自己浮出来:一起动 = 真有人克隆;克隆冲天而访问贴地 = 爬虫扫过去了。
+    // 双轴图「谁比谁高」本来就不可比(见 comboChart 的注释),而这里要看的恰好是
+    // 「同一天两边各自怎么动」—— 正好是它唯一能回答的问题。
+    const views=pick(function(s){return s.label==='每日访问'});
+    const clones=pick(function(s){return s.label==='每日克隆'});
+    if(views&&clones&&(views.points||[]).length>=3&&(clones.points||[]).length>=3){
+      const vdates=unionDates([views.points,clones.points]);
+      const vmarks=markIdx(vdates,rel);
+      cards.push(card(p.name+' · 访问 × 克隆', vdates.length,
+        comboChart(vdates,
+          {name:views.label, values:alignTo(vdates,views.points)},
+          {name:clones.label, values:alignTo(vdates,clones.points)},
+          vdates.map(function(x){return x.slice(5)}), {marks:vmarks})+
+        legend(views.label,clones.label,false,!!vmarks.length)));
+      done.push(views.label, clones.label);
+    }
     ser.forEach(function(s){
       if(done.indexOf(s.label)>=0) return;   // 已经画过了(并进双轴图,或被日增图顶替)
       const pts=s.points||[];
