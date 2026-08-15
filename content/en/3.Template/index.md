@@ -8,7 +8,9 @@ cssclasses:
 Here are all the Obsidian templates I use daily, in full. Copy them one by one, or download the whole vault and open it directly (plugins included). For the walkthrough, see [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|011 Ready-to-use template vault]].
 
 > [!tip] Download the whole vault
-> 👉 [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault) — click **Code → Download ZIP**, unzip, then open with Obsidian's "Open folder as vault".
+> 👉 **[Download the vault (ZIP)](https://count.jz21.eu.org/dl/vault)** — unzip, then open with Obsidian's "Open folder as vault".
+>
+> Want to look before you download? Browse the [GitHub repo](https://github.com/jady21a/obsidian-workflow-vault) file by file.
 
 > [!note] Language note
 > The template code is kept identical to the downloadable vault, so some field names and comments inside it are in Chinese — it works as-is in any vault.

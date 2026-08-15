@@ -22,7 +22,7 @@ category: obsidian
 04:04 My own plugins
 05:34 Wrap-up
 
-Code: 👉 [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault) (GitHub repo — Code → Download ZIP)
+Code: 👉 [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault) (GitHub repo) · [Download the vault (ZIP)](https://count.jz21.eu.org/dl/vault)
 Related videos: [[en/7.shared/视频Meta/010-Obsidian homepage|Homepage setup]] · [[en/7.shared/视频Meta/008-项目管理|Project management]] · [[en/7.shared/视频Meta/009-一个指令，让AI 自动生成周复盘|AI weekly review]] · [[en/7.shared/视频Meta/001-自动继承昨日任务|Daily task rollover]] · [[en/7.shared/视频Meta/007-自建个人专属图书馆,douban图片链接失效怎么办|Personal library]]
 
 ---
@@ -41,10 +41,10 @@ In earlier videos I covered [[en/7.shared/视频Meta/008-项目管理|task manag
 
 ### 1. Download
 
-> [!tip] Repo
-> 👉 https://github.com/jady21a/obsidian-workflow-vault
+> [!tip] Download the whole vault
+> 👉 **[Download the vault (ZIP)](https://count.jz21.eu.org/dl/vault)**
 >
-> Click **Code → Download ZIP**, unzip it, then use Obsidian's "Open folder as vault" to open it as a vault.
+> Unzip it, then use Obsidian's "Open folder as vault" to open it as a vault. To look around first, browse the [GitHub repo](https://github.com/jady21a/obsidian-workflow-vault).
 
 ---
 

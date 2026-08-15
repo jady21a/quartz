@@ -79,6 +79,7 @@ export default {
       if (url.pathname === "/stats.json") return handleStatsData(request, env)
       if (url.pathname === "/stats/snapshot") return handleSnapshot(request, env)
       if (url.pathname === "/stats/platforms") return handlePlatforms(request, env)
+      if (url.pathname.startsWith("/dl/")) return await handleDownload(request, env)
       return await handleCount(request, env)
     } catch (e) {
       console.error("busuanzi error:", e && e.stack ? e.stack : String(e))
@@ -101,6 +102,58 @@ export default {
       console.error("cf snapshot error:", e && e.stack ? e.stack : String(e))
     }
   },
+}
+
+// ───────────────────────── 下载计数跳转(公开) ─────────────────────────
+// 为什么要这一层:GitHub 的「Code → Download ZIP」下载量**任何 API 都拿不到**
+// (releases 只给手动上传的附件计数,traffic 的 views/clones/paths 里也没有
+// archive 路径 —— 2026-08 逐条查过)。想知道有多少人把东西拿走了,只能让下载
+// 走一条自己数得着的链接。
+//
+// 代价说明白:它只数**从我的链接来的人**。有人自己逛到 GitHub 点绿按钮,这里看不见。
+// 但那部分本来就不在我的漏斗里 —— 这个数量的是「我的内容带来了多少下载」。
+//
+// 目标写死在下面这张表里,**绝不接受 ?url= 之类的参数**:那就成了开放跳转,
+// 谁都能拿 count.jz21.eu.org 当跳板去钓鱼,域名迟早被标黑,而它还挂着博客的计数。
+const DOWNLOADS = {
+  vault: "https://github.com/jady21a/obsidian-workflow-vault/archive/refs/heads/main.zip",
+}
+
+async function handleDownload(request, env) {
+  const url = new URL(request.url)
+  const slug = url.pathname.slice("/dl/".length).replace(/\/$/, "")
+  const target = DOWNLOADS[slug]
+  if (!target) return new Response("not found", { status: 404 })
+
+  const kv = env.COUNTER
+  const day = todayUTC()
+  const ip = request.headers.get("CF-Connecting-IP") || ""
+  const ua = request.headers.get("User-Agent") || ""
+  // 爬虫会跟着链接走,不拦的话这个数会和「克隆」一样变成爬虫强度计。
+  // 只挡自报家门的那些 —— 装成浏览器的挡不住,但那种也不会去点下载按钮。
+  const isBot = /bot|crawler|spider|crawling|preview|fetch|curl|wget|python-requests/i.test(ua)
+
+  if (!isBot) {
+    await incr(kv, "dl:" + slug) // 总次数
+    await incr(kv, "dl_day:" + slug + ":" + day) // 日别桶,永久保存
+    if (ip) {
+      // 独立下载:同一个 IP 当天只算一次。刷新页面、下载器分段请求都会重复打这条,
+      // 不去重的话一个人能把数字顶上去。总次数照常记,两个数一起看才知道有没有异常。
+      const seen = "dl_ip:" + slug + ":" + day + ":" + (await sha256(ip + "|" + (env.SALT || "bsz")))
+      if (!(await kv.get(seen))) {
+        await kv.put(seen, "1", { expirationTtl: 60 * 60 * 48 })
+        await incr(kv, "dl_uniq:" + slug)
+        await incr(kv, "dl_uniq_day:" + slug + ":" + day)
+      }
+    }
+  }
+
+  // 302 而不是 301:301 会被浏览器**永久缓存**,那人第二次下载就不再经过这里,
+  // 计数从此少一个人。跳转层要的恰恰是每次都经过。
+  return new Response(null, {
+    status: 302,
+    headers: { Location: target, "Cache-Control": "no-store" },
+  })
 }
 
 // ───────────────────────── 计数(公开) ─────────────────────────
@@ -238,6 +291,30 @@ async function handleStatsData(request, env) {
   // CF 边缘「日趋势」改读定时快照攒下来的全部历史(不受套餐保留期限制)。
   const cfDaily = await readCfDaily(kv)
 
+  // 下载跳转的计数(见 handleDownload)。日别桶永久保存,和站点 PV 一个规矩。
+  const downloads = await Promise.all(
+    Object.keys(DOWNLOADS).map(async (slug) => {
+      const dayKeys = await listPrefix(kv, "dl_day:" + slug + ":")
+      const uniqDayKeys = await listPrefix(kv, "dl_uniq_day:" + slug + ":")
+      const byDay = {}
+      for (const k of dayKeys) {
+        byDay[k.slice(("dl_day:" + slug + ":").length)] = { n: await read(kv, k), u: 0 }
+      }
+      for (const k of uniqDayKeys) {
+        const d = k.slice(("dl_uniq_day:" + slug + ":").length)
+        ;(byDay[d] ||= { n: 0, u: 0 }).u = await read(kv, k)
+      }
+      return {
+        slug,
+        total: await read(kv, "dl:" + slug),
+        uniques: await read(kv, "dl_uniq:" + slug),
+        daily: Object.entries(byDay)
+          .map(([date, v]) => ({ date, n: v.n, u: v.u }))
+          .sort((a, b) => (a.date < b.date ? -1 : 1)),
+      }
+    }),
+  )
+
   // 平台账号数据:本机推上来的最新一份,没推过就是 null。
   let platforms = null
   try {
@@ -251,6 +328,7 @@ async function handleStatsData(request, env) {
     JSON.stringify({
       generatedAt: new Date().toISOString(),
       platforms,
+      downloads,
       site: { pv: site_pv, uv: site_uv },
       pages,
       daily,
@@ -844,7 +922,9 @@ const QUEUE_LABELS = new Set(['未读回复','待回评论','待回 issue'])
 // 是几乎不动的累计数,同样 22px 粗体只是在稀释真正要看的东西 —— B站一张卡九个
 // 大数字,眼睛落哪儿全凭运气,手机上更是挤成三行。
 const PRIMARY_LABELS = new Set([
-  '粉丝','订阅','播放','获赞与收藏','Star','下载',   // 涨没涨、有没有人看
+  // 「插件安装」是社区商店的官方口径(一次安装算一次);「下载」只剩非插件仓库的
+  // release 附件次数。两个都留着:插件和普通仓库的「被用了多少」不是同一件事。
+  '粉丝','订阅','播放','获赞与收藏','Star','插件安装','下载',   // 涨没涨、有没有人看
   '点赞','收藏','视频','Fork',                       // 凑够四个:内容反馈 / 产出量
 ])
 // 主区最多四个。多了就等于没分主次,而且四个正好在手机上排成 2×2。
@@ -1110,6 +1190,31 @@ async function load(){
     h+=kpi(bytes(cf.totals.bytes),'流量 30d','Cloudflare');
   }
   h+='</div>';
+
+  // 下载跳转:放在站点流量区而不是 GitHub 卡里 —— 它量的是「我的内容带来了多少下载」,
+  // 是站点漏斗的末端,和 GitHub 上那些随机路过的人不是一回事。
+  const dls=(d.downloads||[]).filter(function(x){ return x.total||x.uniques });
+  if(dls.length){
+    h+='<div class="grid kpis" style="margin-bottom:14px">';
+    dls.forEach(function(x){
+      h+=kpi(fmt(x.uniques),'下载 · '+esc(x.slug),fmt(x.total)+' 次 · IP 当天去重');
+    });
+    h+='</div>';
+    dls.forEach(function(x){
+      const pts=(x.daily||[]);
+      if(pts.length<3) return;   // 三个点才成一条线,和平台曲线一个门槛
+      const dates=pts.map(function(p){return p.date});
+      // 卡片和图例在这里内联写:card/legendItems 是 platformSection 的局部函数,
+      // 这一段跑在站点流量区,拿不到它们。为这两行去动那边的作用域不划算。
+      h+='<div class="grid two" style="margin-bottom:14px"><div class="card">'+
+        '<h2>下载 · '+esc(x.slug)+' <span class="muted" style="font-weight:400">('+
+        dates.length+' 天)</span></h2>'+
+        lineChart([{name:'独立下载', values:pts.map(function(p){return p.u})}],
+          ['var(--acc)'],dates.map(function(s){return s.slice(5)}),{})+
+        '<div class="legend"><span><span class="dot" style="background:var(--acc)"></span>'+
+        '独立下载</span></div></div></div>';
+    });
+  }
 
   // busuanzi 零上报提示(区分「没人看」和「压根没在计数」)
   if(bszEmpty){

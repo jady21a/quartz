@@ -111,10 +111,10 @@ draft:
 
 以上全部,已经打包成一个**下载即用的模板库**——我日常主仓库的复刻版,删掉私人内容,每个功能区留 1 篇示例 + 配套模板,插件、CSS 片段、快捷键都内置配好。
 
-> [!tip] 仓库地址
-> 👉 https://github.com/jady21a/obsidian-workflow-vault
+> [!tip] 整库下载
+> 👉 **[下载整库 ZIP](https://count.jz21.eu.org/dl/vault)**([GitHub 仓库](https://github.com/jady21a/obsidian-workflow-vault))
 >
-> Code → Download ZIP 下载,解压后用 Obsidian「Open folder as vault」打开;上手只需三件小事:建第一篇日记、建第一个项目、导入第一本书。详见 [[7.shared/视频Meta/011-obsidian开箱即用模板库|011 期]]。
+> 解压后用 Obsidian「Open folder as vault」打开;上手只需三件小事:建第一篇日记、建第一个项目、导入第一本书。详见 [[7.shared/视频Meta/011-obsidian开箱即用模板库|011 期]]。
 
 如果照着视频手动搭遇到「代码复制过去不生效」,排查方法见 [[7.shared/视频Meta/003-代码复制无效的排查|003 期]]。
 

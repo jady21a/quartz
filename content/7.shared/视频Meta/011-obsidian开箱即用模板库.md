@@ -22,7 +22,7 @@ category: obsidian
 04:04 自制插件
 05:34 结语
 
-相关代码: 👉 [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault)（GitHub 仓库，Code → Download ZIP 下载）
+相关代码: 👉 [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault)（GitHub 仓库）· [下载整库 ZIP](https://count.jz21.eu.org/dl/vault)
 相关视频: [[7.shared/视频Meta/010-Obsidian homepage|主页搭建]] 、[[7.shared/视频Meta/008-项目管理|项目管理]] 、[[7.shared/视频Meta/009-一个指令，让AI 自动生成周复盘|AI 周复盘]] 、[[7.shared/视频Meta/001-自动继承昨日任务|日记任务继承]] 、[[7.shared/视频Meta/007-自建个人专属图书馆,douban图片链接失效怎么办|个人图书馆]]
 
 ---
@@ -41,10 +41,10 @@ category: obsidian
 
 ### 一、下载
 
-> [!tip] 仓库地址
-> 👉 https://github.com/jady21a/obsidian-workflow-vault
+> [!tip] 整库下载
+> 👉 **[下载整库 ZIP](https://count.jz21.eu.org/dl/vault)**
 >
-> 点 **Code → Download ZIP** 下载压缩包，解压后用 Obsidian 的「Open folder as vault」当作仓库打开即可。
+> 解压后用 Obsidian 的「Open folder as vault」当作仓库打开即可。想先翻翻内容,去 [GitHub 仓库](https://github.com/jady21a/obsidian-workflow-vault)。
 
 ---
 

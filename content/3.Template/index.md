@@ -8,7 +8,9 @@ cssclasses:
 这里收录我日常在用的全部 Obsidian 模板原文,可单篇复制,也可整库下载直接当仓库打开(插件已内置)。配套讲解见 [[7.shared/视频Meta/011-obsidian开箱即用模板库|011 开箱即用模板库]]。
 
 > [!tip] 整库下载
-> 👉 [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault) — 点 **Code → Download ZIP**,解压后用 Obsidian「Open folder as vault」打开即用。
+> 👉 **[下载整库 ZIP](https://count.jz21.eu.org/dl/vault)** — 解压后用 Obsidian「Open folder as vault」打开即用。
+>
+> 想先看看里面有什么,去 [GitHub 仓库](https://github.com/jady21a/obsidian-workflow-vault) 逐个文件翻。
 
 ## 书影音
 

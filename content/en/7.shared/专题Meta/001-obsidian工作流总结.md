@@ -112,9 +112,9 @@ Notes shouldn't end their lives sitting in the vault. **Obsidian + Quartz + Clou
 All of the above is packaged into a **download-and-go template vault** — a replica of my daily main vault with private content removed, one sample note plus matching templates per area, and plugins, CSS snippets, and hotkeys pre-configured.
 
 > [!tip] Repo
-> 👉 https://github.com/jady21a/obsidian-workflow-vault
+> 👉 **[Download the vault (ZIP)](https://count.jz21.eu.org/dl/vault)** ([GitHub repo](https://github.com/jady21a/obsidian-workflow-vault))
 >
-> Code → Download ZIP, unzip, then open with Obsidian's "Open folder as vault". Getting started takes three small things: create your first daily note, create your first project, import your first book. Details in [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]].
+> Unzip, then open with Obsidian's "Open folder as vault". Getting started takes three small things: create your first daily note, create your first project, import your first book. Details in [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]].
 
 If you're building it by hand from the videos and hit "I copied the code but nothing happens", the troubleshooting method is in [[en/7.shared/视频Meta/003-代码复制无效的排查|episode 003]].
 
