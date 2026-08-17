@@ -276,6 +276,7 @@ async function handleStatsData(request, env) {
   const daily = Object.entries(byDay)
     .map(([date, v]) => ({ date, pv: v.pv, uv: v.uv }))
     .sort((a, b) => (a.date < b.date ? -1 : 1))
+  const yday = new Date(Date.now() - 864e5).toISOString().slice(0, 10)
 
   // Cloudflare 边缘 zone 数据(可选,需 CF_API_TOKEN):KPI/维度分解用实时 30 天查询。
   let cf = null
@@ -289,7 +290,17 @@ async function handleStatsData(request, env) {
   }
 
   // CF 边缘「日趋势」改读定时快照攒下来的全部历史(不受套餐保留期限制)。
-  const cfDaily = await readCfDaily(kv)
+  const cfRows = await readCfDaily(kv)
+  const cfHist = aggregateCfHistory(cfRows)
+  // 日别分布只在 worker 里汇总,不往前端发:N 天 × 上百个国家,发过去也没人一天天看。
+  const cfDaily = cfRows.map((r) => ({
+    date: r.date,
+    requests: r.requests,
+    pageViews: r.pageViews,
+    uniques: r.uniques,
+    bytes: r.bytes,
+    threats: r.threats,
+  }))
 
   // 下载跳转的计数(见 handleDownload)。日别桶永久保存,和站点 PV 一个规矩。
   const downloads = await Promise.all(
@@ -334,6 +345,17 @@ async function handleStatsData(request, env) {
       daily,
       cf,
       cfDaily,
+      cfHist,
+      // 「昨日」= UTC 上一整天,面板的日增全看它。不用今天:今天这天还没走完,拿它当
+      // 日增等于每天早上都看见一次「掉了」。站点这边日期是自己按 UTC 桶算的,所以敢
+      // 标「昨日」—— 平台那边是平台自己的 T-1/T-2 口径,不敢,见 platCard 的注释。
+      // 下载的昨日增量前端自己从 downloads[].daily 里按这个日期找,不再单独传一份。
+      yesterday: {
+        date: yday,
+        pv: byDay[yday] ? byDay[yday].pv : 0,
+        uv: byDay[yday] ? byDay[yday].uv : 0,
+        cf: cfDaily.find((r) => r.date === yday) || null,
+      },
       cfError,
     }),
     { headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } },
@@ -500,7 +522,9 @@ async function fetchCloudflare(env) {
   }
 }
 
-// 轻量:只取 CF 边缘日别数字(requests/pageViews/uniques/bytes/threats),给定时快照用。
+// 给定时快照用:CF 边缘的日别数字,外加国家 / 浏览器 / 状态码三张分布表。
+// 分布表本来只在实时查询里用(fetchCloudflare),但它和数字一样只在 CF 那儿留 ~30 天 ——
+// 不快照下来,超过保留期就是永久丢失。既然要「不能长期保留的都保留」,就一起存。
 async function fetchCfDaily(env, zoneTag, since, until) {
   const query = `
     query ($zoneTag: String!, $since: String!, $until: String!) {
@@ -513,7 +537,15 @@ async function fetchCfDaily(env, zoneTag, since, until) {
           ) {
             dimensions { date }
             uniq { uniques }
-            sum { requests pageViews bytes threats }
+            sum {
+              requests
+              pageViews
+              bytes
+              threats
+              countryMap { clientCountryName requests }
+              browserMap { uaBrowserFamily pageViews }
+              responseStatusMap { edgeResponseStatus requests }
+            }
           }
         }
       }
@@ -529,6 +561,12 @@ async function fetchCfDaily(env, zoneTag, since, until) {
   const j = await r.json()
   if (j.errors && j.errors.length) throw new Error(JSON.stringify(j.errors))
   const groups = j?.data?.viewer?.zones?.[0]?.httpRequests1dGroups || []
+  // 分布表压成 {名字: 数} 存,比原样的对象数组省一半体积 —— 这东西要存到天荒地老。
+  const pack = (arr, k, v) => {
+    const o = {}
+    for (const row of arr || []) o[row[k]] = (o[row[k]] || 0) + row[v]
+    return o
+  }
   return groups.map((g) => ({
     date: g.dimensions.date,
     requests: g.sum.requests,
@@ -536,6 +574,9 @@ async function fetchCfDaily(env, zoneTag, since, until) {
     uniques: g.uniq.uniques,
     bytes: g.sum.bytes,
     threats: g.sum.threats,
+    countries: pack(g.sum.countryMap, "clientCountryName", "requests"),
+    browsers: pack(g.sum.browserMap, "uaBrowserFamily", "pageViews"),
+    status: pack(g.sum.responseStatusMap, "edgeResponseStatus", "requests"),
   }))
 }
 
@@ -557,10 +598,61 @@ async function snapshotCloudflareDaily(env) {
         uniques: d.uniques,
         bytes: d.bytes,
         threats: d.threats,
+        // 回查 30 天会顺手给这些天补上分布;比 30 天更早的那些永远补不上了 ——
+        // 快照是 2026-08-17 才开始存分布的,在那之前的日子 CF 已经不认了。
+        countries: d.countries,
+        browsers: d.browsers,
+        status: d.status,
       }),
     ) // 无 expirationTtl = 永久保存
   }
   return daily.length
+}
+
+// 把快照攒下的全部历史汇成一份。可加的量(请求 / 浏览 / 流量 / 威胁)直接相加就是真的累计;
+// uniques 是**当日**去重,相加只是「IP 人次」,同一个人天天来会被数很多次 —— 所以它单独
+// 叫 uniqSum,谁也别把它当独立访客用。真正的独立访客看 busuanzi 的 UV。
+// 分布只有开始存分布之后的那些天才有,所以单独记 mapDays:不能把「N 天的流量」和
+// 「M 天的国家分布」当成同一个口径写在页面上。
+function aggregateCfHistory(rows) {
+  if (!rows.length) return null
+  const t = { requests: 0, pageViews: 0, bytes: 0, threats: 0, uniqSum: 0 }
+  const cm = {}, bm = {}, sm = {}
+  let mapDays = 0
+  let mapSince = null
+  const add = (dst, src) => {
+    for (const k in src || {}) dst[k] = (dst[k] || 0) + src[k]
+  }
+  for (const r of rows) {
+    t.requests += r.requests || 0
+    t.pageViews += r.pageViews || 0
+    t.bytes += r.bytes || 0
+    t.threats += r.threats || 0
+    t.uniqSum += r.uniques || 0
+    if (r.countries || r.browsers || r.status) {
+      mapDays++
+      if (!mapSince) mapSince = r.date
+      add(cm, r.countries)
+      add(bm, r.browsers)
+      add(sm, r.status)
+    }
+  }
+  const top = (m, n) =>
+    Object.entries(m)
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, n)
+  return {
+    days: rows.length,
+    since: rows[0].date,
+    until: rows[rows.length - 1].date,
+    totals: t,
+    mapDays,
+    mapSince,
+    countries: top(cm, 12),
+    browsers: top(bm, 8),
+    status: top(sm, 8),
+  }
 }
 
 // 读回累积的 CF 边缘日趋势(全部历史,按日期升序)。
@@ -614,11 +706,7 @@ const STATS_HTML = `<!DOCTYPE html>
   h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.2px}
   .sub{color:var(--mut);font-size:13px}
   .grid{display:grid;gap:14px}
-  .kpis{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-  .kpi .n{font-size:30px;font-weight:700;letter-spacing:.5px}
-  .kpi .l{color:var(--mut);font-size:12px;margin-top:2px}
-  .kpi .h{color:var(--mut);font-size:11px;margin-top:6px}
   h2{font-size:14px;margin:0 0 12px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
   table{width:100%;border-collapse:collapse;font-size:13.5px}
   th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}
@@ -697,6 +785,8 @@ const STATS_HTML = `<!DOCTYPE html>
   .m .d{font-size:11px;color:var(--acc2);margin-top:2px;font-variant-numeric:tabular-nums}
   .m .d.zero{color:var(--mut)}
   .m .d.ph{visibility:hidden}
+  /* 站点卡借这一行写口径(busuanzi 真人 / Cloudflare 含爬虫),不是日增,所以不能是绿的 */
+  .m .d.src{color:var(--mut)}
   /* 掉粉必须一眼看出来。跟日增柱图里 v<0 那根同色 —— 同一件事在这页只有一种颜色。 */
   .m .d.neg{color:var(--warn)}
   /* 队列型指标(还剩多少没处理)攒下东西了就染橙:它是这页唯一需要动手的数,
@@ -942,15 +1032,25 @@ const QUEUE_LABELS = new Set(['未读回复','待回评论','待回 issue'])
 // 是几乎不动的累计数,同样 22px 粗体只是在稀释真正要看的东西 —— B站一张卡九个
 // 大数字,眼睛落哪儿全凭运气,手机上更是挤成三行。
 const PRIMARY_LABELS = new Set([
-  // 「插件安装」是社区商店的官方口径(一次安装算一次);「下载」只剩非插件仓库的
-  // release 附件次数。两个都留着:插件和普通仓库的「被用了多少」不是同一件事。
-  '粉丝','订阅','播放','获赞与收藏','Star','插件安装','下载',   // 涨没涨、有没有人看
-  '点赞','收藏','视频','Fork',                       // 凑够四个:内容反馈 / 产出量
+  '粉丝','订阅','播放','获赞与收藏','Star','Fork','累计克隆(归档)',   // 涨没涨、有没有人看
+  '点赞','收藏','视频',                              // 凑够四个:内容反馈 / 产出量
 ])
+// GitHub 卡的主区排法是 2026-08-17 用户点名定的:Star / Fork / 累计克隆(归档) / 待回 issue。
+// 三个「被用了多少」的指标(插件安装 222、Release 下载 6、ZIP 下载 12)都压进次区小字,
+// 主区留给仓库本身的体量。这不是默认排法推出来的结果,是指定的 —— 别看着「下载数被
+// 埋在小字里」就顺手改回去。
+//
+// 代价记在这儿:主区那个累计克隆有一多半是爬虫(618 次里 344 次来自 2026-08-13 扫
+// quartz 的那一波,同日仓库页浏览量是 0),而次区的插件安装是社区商店口径、一次
+// 安装算一次,反倒是全卡最干净的数。所以主区读的是「仓库大盘」,不是「有多少人真的
+// 装了我的东西」—— 后者要看次区。
+//
+// 名额只有四个,major 按取数侧给的原顺序填(见 fetch_stats.py 里 metrics 的插入顺序),
+// 所以排进这张表不等于一定进主区。
 // 主区最多四个。多了就等于没分主次,而且四个正好在手机上排成 2×2。
 const MAX_MAJOR = 4
 
-function platCard(p, fetchedAt, now){
+function platCard(p, fetchedAt, now, downloads){
   if(!p.enabled || !p.ok){
     return '<div class="card offcard">'+
       '<div><div class="plat-name">'+esc(p.name||'')+'</div>'+
@@ -966,7 +1066,19 @@ function platCard(p, fetchedAt, now){
   // 但「占位」和「抢眼」是两回事:染橙、给链接仍然只在非零时(见下面的 hot)。
   const isQueue=function(m){ return QUEUE_LABELS.has(m.label) };
   const hot=function(m){ return isQueue(m) && !!m.value };
-  const rows=p.totals||[];
+  // GitHub 卡上镜像一份 ZIP 下载(/dl 跳转,见 handleDownload)。它的主场在站点流量区
+  // ——那里量的是「我的内容带来了多少下载」,是站点漏斗的末端。这里再放一份小字,是因为
+  // 这张卡回答的是「我的东西被用了多少」:插件安装 / Release 下载 / ZIP 下载 / 克隆
+  // 得凑齐才看得出全貌,少一条就得在两个区之间来回对。同一个数字放两处不会看串,
+  // 两个不同的数字才会 —— 所以标签写死 slug,和「Release 下载」区分开。
+  const rows=(p.totals||[]).slice();
+  if(p.key==='github' && Array.isArray(downloads)){
+    downloads.forEach(function(x){
+      if(x.total||x.uniques){
+        rows.push({label:'ZIP 下载 · '+x.slug, value:x.uniques, delta:null});
+      }
+    });
+  }
   // 名额有限时待办先占位,剩下的按取数侧给的原顺序填 —— 主区读起来还是平台自己的排法。
   const queue=rows.filter(isQueue);
   const prim=rows.filter(function(m){ return PRIMARY_LABELS.has(m.label) && !isQueue(m) });
@@ -1013,7 +1125,7 @@ function platCard(p, fetchedAt, now){
   return h;
 }
 
-function platformSection(pd, now){
+function platformSection(pd, now, downloads){
   const stamp=pd&&(pd.fetchedAt||pd.receivedAt);
   const age=stamp? now-new Date(stamp).getTime() : NaN;
   const stale=!(age>=0) || age>STALE_HOURS*3600e3;
@@ -1033,7 +1145,7 @@ function platformSection(pd, now){
        '机器休眠挂起、或 SESSDATA 过期。</div>';
   }
   h+='<div class="grid" style="grid-template-columns:1fr;margin-bottom:14px">'+
-     (pd.platforms||[]).map(function(p){return platCard(p,stamp,now)}).join('')+'</div>';
+     (pd.platforms||[]).map(function(p){return platCard(p,stamp,now,downloads)}).join('')+'</div>';
 
   // 平台趋势:每个平台各画一张,序列不够长就不画(两个点的折线只会误导)
   const cards=[];
@@ -1192,39 +1304,84 @@ async function load(){
   let h='';
 
   // ① 平台账号:放最前。10 秒瞄一眼要看的是粉丝和评论,不是博客 PV。
-  h+=platformSection(d.platforms, Date.now());
+  h+=platformSection(d.platforms, Date.now(), d.downloads);
 
   // ② 站点流量:两类口径必须分区,不然平台播放量和站点 PV 会看串。
   h+='<div class="sect"><h3>站点流量</h3><span class="hint">jz21.eu.org</span>'+
      '<span class="rule"></span></div>';
 
-  // KPIs
+  // 站点这一块和上面的平台卡长一个样:一张卡 + 卡内四列数字 + 一行次要小字(见 platCard)。
+  // 为什么不是一排各自独立的 KPI 卡:卡内网格的空格没有边框和底色,少一个数根本看不出来;
+  // 独立卡片的空位是实打实的窟窿 —— 下载数孤零零挂在第二行就是这么来的,调宽度治不好。
+  // 顺带整页只剩一种「一堆数字」的长相,站点不再是个例外。
   const cf=d.cf;
-  // busuanzi 一个上报都没有时,别拿三个干巴巴的 0 冒充「真的没人看」——多半是前端没在上报。
+  // busuanzi 一个上报都没有时,别拿几个干巴巴的 0 冒充「真的没人看」——多半是前端没在上报。
   const bszEmpty = !d.site.pv && !d.site.uv;
   const bszHint = t => bszEmpty ? '尚未收到上报' : t;
-  h+='<div class="grid kpis" style="margin-bottom:14px">';
-  h+=kpi(fmt(d.site.pv),'累计浏览 PV',bszHint('busuanzi · 真人'));
-  h+=kpi(fmt(d.site.uv),'累计访客 UV',bszHint('IP 去重'));
-  h+=kpi(fmt(d.pages.length),'被访问页面数',bszHint('有 PV 记录'));
-  if(cf){
-    // 「边缘请求」不做 KPI:它主要由每页挂多少静态资源决定(换字体/加图就涨),对「有多少人看」
-    // 几乎无信息量,还容易被误读成访问量。基础设施压力看「流量」卡;异常扫描看趋势图里的请求线。
-    h+=kpi(fmt(cf.totals.pageViews),'边缘页面浏览 30d','Cloudflare · 含爬虫');
-    h+=kpi(fmt(cf.totals.uniques),'边缘独立 IP 30d','Cloudflare');
-    h+=kpi(bytes(cf.totals.bytes),'流量 30d','Cloudflare');
-  }
-  h+='</div>';
-
   // 下载跳转:放在站点流量区而不是 GitHub 卡里 —— 它量的是「我的内容带来了多少下载」,
   // 是站点漏斗的末端,和 GitHub 上那些随机路过的人不是一回事。
+  // GitHub 卡上另有一个「Release 下载」,量的是 release 页那份手动上传的 zip 被拉走多少次。
+  // 两个数各自成立、**不能相加**:这条 302 去的是 main 分支的即时归档,连文件都不是同一个。
   const dls=(d.downloads||[]).filter(function(x){ return x.total||x.uniques });
+  // 第三行和平台卡一样放日增(涨了绿、零则灰)。口径挪进标签后缀了:一格只有一行小字,
+  // 而口径统共就两种(自有真人计数 / CF 含爬虫),不值得每格重复一遍完整说明。
+  // note 只在没有日增可显示时兜底(比如 busuanzi 压根没上报),那种情况用中性色。
+  const y=d.yesterday;
+  const gain=function(v,f){
+    if(v==null) return null;
+    return {txt:'昨日 '+(v>0?'+':'')+(f?f(v):fmt(v)), zero:!v};
+  };
+  // 昨日下载:日别桶在 downloads[].daily 里,按 yesterday.date 对一下就是。
+  const ydl=function(x){
+    if(!y) return null;
+    const p=(x.daily||[]).find(function(p){ return p.date===y.date });
+    return p? p.u : 0;
+  };
+  const sm=function(v,k,g,note){
+    const third = g ? '<div class="d'+(g.zero?' zero':'')+'">'+g.txt+'</div>'
+                : note ? '<div class="d src">'+note+'</div>'
+                : '<div class="d ph">·</div>';
+    return '<div class="m"><div class="v">'+v+'</div><div class="k">'+k+'</div>'+third+'</div>';
+  };
+  // 边缘那几个数优先读快照汇总(hist):可加的量攒了多少天就是多少天,不再被 CF 的
+  // ~30 天保留期卡住。span 是这些数真正覆盖的区间,写进小字里 —— 页面上不能出现
+  // 一个没标注区间的「累计」,那是在让人自己脑补口径。
+  const hist=d.cfHist;
+  // 主区还是四格(和平台卡同一个 MAX_MAJOR):两个自有计数 + 边缘大盘 + 漏斗末端。
+  // 「边缘请求」不进主区:它主要由每页挂多少静态资源决定(换字体/加图就涨),对「有多少人看」
+  // 几乎无信息量,还容易被误读成访问量。异常扫描看趋势图里的请求线。
+  const major=[
+    sm(fmt(d.site.pv),'累计浏览 PV · 真人',y&&!bszEmpty?gain(y.pv):null,bszHint(null)),
+    sm(fmt(d.site.uv),'累计访客 UV · 去重',y&&!bszEmpty?gain(y.uv):null,bszHint(null)),
+  ];
+  if(hist) major.push(sm(bytes(hist.totals.bytes),'流量 · 自 '+hist.since.slice(5),
+    y&&y.cf?gain(y.cf.bytes,bytes):null));
+  else if(cf) major.push(sm(bytes(cf.totals.bytes),'流量 30d',null,'Cloudflare'));
+  // 下载只把第一个 slug 抬进主区(眼下也只有一个),再多的落到小字里:四个名额被同一类数
+  // 占满的话,PV 反而被挤下去 —— 主区是「四种不同的问题」,不是「最大的四个数」。
+  if(dls.length) major.push(sm(fmt(dls[0].uniques),'独立下载 · '+esc(dls[0].slug),
+    gain(ydl(dls[0]))));
+  const minor=[['被访问页面数',fmt(d.pages.length)]];
+  // 「边缘 IP 人次」不叫「独立 IP」:这个数是把每天各自去重的 IP 数直接相加(见
+  // aggregateCfHistory),同一个人天天来会被数很多天。真正的独立访客是上面那个 UV。
+  if(hist) minor.push(['边缘页面浏览',fmt(hist.totals.pageViews)],
+                      ['边缘 IP 人次',fmt(hist.totals.uniqSum)]);
+  else if(cf) minor.push(['边缘页面浏览 30d',fmt(cf.totals.pageViews)],
+                         ['边缘 IP 人次 30d',fmt(cf.totals.uniques)]);
+  dls.slice(1).forEach(function(x){ minor.push(['下载 · '+esc(x.slug),fmt(x.uniques)]) });
+  if(dls.length) minor.push(['下载合计',fmt(dls[0].total)+' 次']);
+  h+='<div class="card" style="margin-bottom:14px">'+
+     '<div class="metrics">'+major.join('')+'</div>'+
+     '<div class="minor">'+minor.map(function(r){
+       return '<span><span class="t">'+r[0]+'</span> <b>'+r[1]+'</b></span>';
+     }).join('')+
+     // 口径注脚:标签里塞不下的话在这儿说一次。边缘那两个数的起算日也在这里 ——
+     // 主区「流量」标了自哪天起,小字这两个跟它同一段区间,不必每个都标。
+     (hist? '<span class="t">边缘数据自 '+hist.since.slice(5)+' 累计('+hist.days+' 天)</span>' : '')+
+     (dls.length? '<span class="t">下载按 IP 当天去重</span>' : '')+
+     '</div></div>';
+
   if(dls.length){
-    h+='<div class="grid kpis" style="margin-bottom:14px">';
-    dls.forEach(function(x){
-      h+=kpi(fmt(x.uniques),'下载 · '+esc(x.slug),fmt(x.total)+' 次 · IP 当天去重');
-    });
-    h+='</div>';
     dls.forEach(function(x){
       const pts=(x.daily||[]);
       if(pts.length<3) return;   // 三个点才成一条线,和平台曲线一个门槛
@@ -1324,13 +1481,19 @@ async function load(){
   } else h+='<div class="muted">暂无页面记录。</div>';
   h+='</div>';
 
-  // CF 维度分解
-  if(cf){
-    h+='<div class="grid two">';
-    h+='<div class="card"><h2>访客国家 / 地区 30d</h2>'+barTable(cf.countries)+'</div>';
-    h+='<div class="card"><h2>浏览器 30d</h2>'+barTable(cf.browsers)+'</div>';
-    h+='</div>';
-    h+='<div class="card" style="margin-top:14px"><h2>响应状态码 30d</h2>'+barTable(cf.status)+'</div>';
+  // CF 维度分解:有快照分布就用快照(能超出 CF 的保留期),否则退回实时 30 天查询。
+  // 区间单独标 —— 分布是 2026-08-17 才开始存的,比上面那些数字覆盖的天数短,
+  // 两个口径混在一张页面上,不写清楚就会被当成同一段时间。
+  const dim=(hist&&hist.mapDays)? hist : cf;
+  if(dim){
+    const dspan=(dim===hist)? '自 '+hist.mapSince.slice(5)+'('+hist.mapDays+' 天)' : '30d';
+    const dcard=function(t,rows){
+      return '<div class="card"><h2>'+t+' <span class="muted" style="font-weight:400;'+
+        'text-transform:none;letter-spacing:0">'+dspan+'</span></h2>'+barTable(rows)+'</div>';
+    };
+    h+='<div class="grid two">'+dcard('访客国家 / 地区',dim.countries)+
+       dcard('浏览器',dim.browsers)+'</div>';
+    h+='<div style="margin-top:14px">'+dcard('响应状态码',dim.status)+'</div>';
   }
 
   app.innerHTML=h;
@@ -1380,10 +1543,6 @@ function toggleRank(btn){
   // 在第 100 行点「收起」时,表一下子缩掉一百多行,滚动位置原地不动 = 人被甩到卡片下面
   // 的空白里。收起后把这张卡拉回视野,点完还站在原地。
   if(!open) card.scrollIntoView({block:'nearest'});
-}
-function kpi(n,l,hint){
-  return '<div class="card kpi"><div class="n">'+n+'</div><div class="l">'+l+'</div>'+
-    (hint?'<div class="h">'+hint+'</div>':'')+'</div>';
 }
 load();
 </script>

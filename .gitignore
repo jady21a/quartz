@@ -15,3 +15,8 @@ content/.obsidian/
 # Cloudflare Worker local state
 .wrangler/
 workers/**/.wrangler/
+
+# wrangler dev 的本地 secret(STATS_TOKEN / CF_API_TOKEN / AWS 凭证)。
+# 这是公开仓库,一次 `git add -A` 就够把它们推上公网。
+.dev.vars
+.dev.vars.*
