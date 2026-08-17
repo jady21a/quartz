@@ -1,10 +1,10 @@
 ---
 originalTitle: ""
-CNTitle: ""
-author: "Seth Godin"
-genre: "Business, Nonfiction, Audiobook, Entrepreneurship, Buisness, Self Help, Leadership, Psychology, Professional Development, Personal Development"
-publisher: "Penguin"
-publishDate: "2018/11/13"
+CNTitle: 这才是营销
+author: Seth Godin
+genre: Business, Nonfiction, Audiobook, Entrepreneurship, Buisness, Self Help, Leadership, Psychology, Professional Development, Personal Development
+publisher: Penguin
+publishDate: 2018/11/13
 yearPublished: ""
 isbn: ""
 totalPage: "271"
@@ -12,13 +12,16 @@ totalPage: "271"
 章节: ""
 score: ""
 scoreStar: ""
-封面: "2.Read/add-book/covers/This is Marketing You Can't Be Seen Until You Learn To See — Seth Godin.jpg"
-链接: "https://www.goodreads.com/book/show/40549476"
-tags: [book]
-阅读状态: [正在阅读]
+封面: 2.Read/add-book/covers/This is Marketing You Can't Be Seen Until You Learn To See — Seth Godin.jpg
+链接: https://www.goodreads.com/book/show/40549476
+目录链接: https://books.google.com/books/about/This_Is_Marketing.html?id=B8JyDwAAQBAJ
+tags:
+  - book
+阅读状态:
+  - 正在阅读
 阅读进度: ""
 阅读方式: ""
-添加时间: "2026-08-11"
+添加时间: 2026-08-11
 开始阅读: ""
 结束阅读: ""
 myRate: ""

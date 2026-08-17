@@ -16,6 +16,7 @@ score:
 scoreStar:
 封面: "2.Read/add-book/covers/Show Your Work! 10 Ways to Share Your Creativity and Get Discovered — Austin Kleon.jpg"
 链接: https://www.goodreads.com/book/show/18290401
+目录链接: https://austinkleon.com/show-your-work/
 tags:
   - book
 阅读状态:
