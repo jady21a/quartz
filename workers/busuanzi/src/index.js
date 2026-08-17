@@ -659,6 +659,11 @@ const STATS_HTML = `<!DOCTYPE html>
   .chartbox .tip .dt{color:var(--mut);font-size:11px;margin-bottom:1px}
   .chartbox .tip .r{display:flex;align-items:center;gap:6px}
   .chartbox .tip .r b{margin-left:14px;font-variant-numeric:tabular-nums}
+  /* 发布日那一格多一行片名:竖线只说「这天发了」,片名说「发的是哪条」——
+     否则「哪天发的哪条片」还是得靠回忆去对。纯文本、不可点,平台区照旧是死胡同。
+     标题会长,这一行允许折行(外面 tip 是 nowrap 的),但夹一个宽度上限免得撑成一张纸。 */
+  .chartbox .tip .rel{margin-top:4px;padding-top:4px;border-top:1px dashed var(--line);
+    color:var(--warn);font-size:11px;white-space:normal;max-width:26ch}
   .legend{display:flex;gap:14px;font-size:12px;color:var(--mut);margin-top:6px}
   .dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:middle}
   button.refresh{background:var(--card);color:var(--fg);border:1px solid var(--line);
@@ -759,6 +764,20 @@ function markIdx(dates, releases){
   return out;
 }
 
+// 发布日那天发的片名,按图自己的时间轴摊平成一条和 dates 等长的数组(没发片的天是 null)。
+// 悬停时按下标直接取,不用在交互里再做一次日期匹配 —— tip 里的 dates 已经切成 MM-DD,
+// 拿它反查全日期会错。整段一条都没有就返回 null,免得给每张图的 data-tip 塞一串空值。
+function relTips(dates, titles){
+  if(!titles) return null;
+  let any=false;
+  const out=dates.map(function(d){
+    const t=titles[d];
+    if(t&&t.length){ any=true; return t }
+    return null;
+  });
+  return any? out : null;
+}
+
 // 图是 SVG 字符串拼出来的,没有可以挂事件的数据点对象。所以把「这张图画的是什么」
 // 原样挂在容器的 data-tip 上,交互时再解析 —— 读数和线条共用同一份数字,不会各说各的。
 // band=true 表示 x 用槽坐标(柱子),false 是端点坐标(折线),反查下标要按各自的映射来。
@@ -788,7 +807,7 @@ function lineChart(series, colors, labels, opts){
     '<text x="'+(W-P)+'" y="'+(H-4)+'" fill="var(--mut)" font-size="10" text-anchor="end">'+labels[n-1]+'</text>'+
     '<text x="2" y="12" fill="var(--mut)" font-size="10">'+fmt(hi)+'</text>';
   return chartBox('<svg class="chart" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+paths+lab+'</svg>',
-    {band:false, dates:labels, series:series.map(function(s,i){
+    {band:false, dates:labels, rel:(opts&&opts.relTips)||null, series:series.map(function(s,i){
       return {name:s.name||'', values:s.values, color:colors[i]} })});
 }
 
@@ -825,7 +844,7 @@ function barChart(values, color, labels, opts){
   if(opts&&opts.avg) tipSeries.push({name:'7 日均', values:opts.avg, color:'var(--acc2)'});
   return chartBox('<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
     markLines(opts&&opts.marks,x)+axis+bars+avg+lab+'</svg>',
-    {band:true, dates:labels, series:tipSeries});
+    {band:true, dates:labels, rel:(opts&&opts.relTips)||null, series:tipSeries});
 }
 
 // 折线穿过缺口:两条序列的时间窗口不一样长(播放攒了 30 天,涨粉才 5 天),
@@ -887,7 +906,8 @@ function comboChart(dates, line, bars, labels, opts){
   if(bars.avg) tipSeries.push({name:'7 日均', values:bars.avg, color:'var(--acc2)'});
   return chartBox('<svg class="chart" viewBox="0 0 '+CW+' '+CH+'" preserveAspectRatio="none">'+
     markLines(opts&&opts.marks,x)+axis+rects+avg+path+lab+'</svg>',
-    {band:true, dates:dates.map(function(d){ return d.slice(5) }), series:tipSeries});
+    {band:true, dates:dates.map(function(d){ return d.slice(5) }),
+     rel:(opts&&opts.relTips)||null, series:tipSeries});
 }
 
 function barTable(rows, valFmt){
@@ -1073,7 +1093,9 @@ function platformSection(pd, now){
       avgItem(hasAvg), markItem(hasMarks)]);
   };
   (pd.platforms||[]).forEach(function(p){
-    const rel=p.releases||[], ser=p.series||[];
+    // releases 是发布日,releaseTitles 是「那天发的片名」(推送侧可能没有 —— 旧数据、
+    // 或者索引里那条没标题),缺了就退回只有竖线的老样子,不影响画图。
+    const rel=p.releases||[], relT=p.releaseTitles||null, ser=p.series||[];
     const pick=function(fn){ return ser.filter(fn)[0] };
     const plays=pick(function(s){return s.label==='每日播放'});
     const fansSrc=pick(function(s){return s.label==='粉丝'||s.label==='订阅'});
@@ -1096,7 +1118,7 @@ function platformSection(pd, now){
         comboChart(dates,
           {name:plays.label, values:alignTo(dates,plays.points)},
           {name:gain.label, values:alignTo(dates,gain.points), avg:gainAvg?alignTo(dates,gainAvg):null},
-          labs, {marks:markIdx(dates,rel)})+
+          labs, {marks:markIdx(dates,rel), relTips:relTips(dates,relT)})+
         legend(plays.label,gain.label,!!gainAvg,!!markIdx(dates,rel).length)));
       done.push(plays.label);
     } else if(gain && gain.points.length>=3){
@@ -1107,7 +1129,8 @@ function platformSection(pd, now){
       cards.push(card(p.name+' · '+gain.label, g.length,
         barChart(g.map(function(x){return x.value}),'var(--acc2)',
           gd.map(function(x){return x.slice(5)}),
-          {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null, name:gain.label})+
+          {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null, name:gain.label,
+           relTips:relTips(gd,relT)})+
         legendItems([dotItem('var(--acc2)',gain.label), avgItem(!!gainAvg), markItem(!!gm.length)])));
     }
     // 访问 × 克隆:同一时间轴上分辨「有人来」和「被爬」。
@@ -1128,7 +1151,8 @@ function platformSection(pd, now){
         comboChart(vdates,
           {name:views.label, values:alignTo(vdates,views.points)},
           {name:clones.label, values:alignTo(vdates,clones.points)},
-          vdates.map(function(x){return x.slice(5)}), {marks:vmarks})+
+          vdates.map(function(x){return x.slice(5)}),
+          {marks:vmarks, relTips:relTips(vdates,relT)})+
         legend(views.label,clones.label,false,!!vmarks.length)));
       done.push(views.label, clones.label);
     }
@@ -1139,7 +1163,8 @@ function platformSection(pd, now){
       const dates=pts.map(function(x){return x.date}), lm=markIdx(dates,rel);
       cards.push(card(p.name+' · '+s.label, pts.length,
         lineChart([{name:s.label, values:pts.map(function(x){return x.value})}],['var(--acc)'],
-          dates.map(function(x){return x.slice(5)}),{marks:lm})+
+          dates.map(function(x){return x.slice(5)}),
+          {marks:lm, relTips:relTips(dates,relT)})+
         legendItems([dotItem('var(--acc)',s.label), markItem(!!lm.length)])));
     });
   });
@@ -1329,11 +1354,15 @@ function initTips(){
       i=Math.max(0, Math.min(n-1, i));
       const x=(tip.band? xBand(i,n) : xAt(i,n))/CW*r.width;
       cur.style.left=x.toFixed(1)+'px'; cur.style.display='block';
+      // 片名跟在读数下面,不在最上面顶掉日期:先答「这天多少」,再答「这天发了什么」。
+      // 一天发两条就两行 —— 合并成「2 条」等于又要去别处查是哪两条。
+      const rel=(tip.rel&&tip.rel[i])||null;
       el.innerHTML='<div class="dt">'+esc(tip.dates[i])+'</div>'+tip.series.map(function(s){
         const v=s.values? s.values[i] : null;
         return '<div class="r"><span class="dot" style="background:'+s.color+'"></span>'+
           esc(s.name||'')+'<b>'+(v==null?'—':fmt(v))+'</b></div>';
-      }).join('');
+      }).join('')+(rel? '<div class="rel">'+rel.map(function(t){
+        return '┆ 发布 · '+esc(t) }).join('<br>')+'</div>' : '');
       el.style.display='block';
       // 贴着竖线放,但不许越出图框 —— 越出去的那半截会被卡片裁掉,读不到数
       el.style.left=Math.max(0, Math.min(r.width-el.offsetWidth, x+12)).toFixed(1)+'px';
