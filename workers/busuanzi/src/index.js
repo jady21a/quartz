@@ -766,8 +766,28 @@ const STATS_HTML = `<!DOCTYPE html>
   /* 整区一个时间戳。四张卡来自同一次推送,四个一样的「1 小时前」只是把右上角占满。 */
   .sect .stamp{font-size:11.5px;color:var(--mut);white-space:nowrap}
   .sect .stamp.stale{color:var(--warn)}
-  .plat-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .plat-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
   .plat-name{font-size:15px;font-weight:700}
+  /* 平台身份色。四张卡的结构完全一样(名字 + 四个大数字 + 两行小字),滑到一半停下来
+     常常要回头看标题才知道读的是哪家。给每张卡一条色轨 + 一个字标:颜色只承担「这是哪个
+     平台」,不承担任何状态 —— 状态色仍然只有 warn(橙,要动手/已停更)和 neg,不多一种。
+     两个红(YouTube / 小红书)刻意拉开明度,而且它们相邻,字标是真正的区分手段。 */
+  .plat{--pa:var(--mut)}
+  .plat-id{display:flex;align-items:center;gap:8px;min-width:0}
+  .mark{flex:none;width:20px;height:20px;border-radius:6px;background:var(--pa);
+    color:#fff;font:700 11px/1 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
+    font-style:normal;display:flex;align-items:center;justify-content:center}
+  /* 色轨用 inset 阴影而不是 border-left:卡片有 14px 圆角,border 会把左上/左下两个角
+     切成直角缺口,inset 阴影自己跟着圆角走。也不占布局,四张卡的内容左边缘照旧对齐。 */
+  .card.plat{box-shadow:inset 3px 0 0 var(--pa)}
+  .p-bilibili{--pa:#fb7299}
+  .p-youtube{--pa:#ff4136}
+  .p-xiaohongshu{--pa:#c9203f}
+  .p-github{--pa:#8b95a5}
+  @media (prefers-color-scheme: light){
+    .p-xiaohongshu{--pa:#e0173d}
+    .p-github{--pa:#57606a}
+  }
   .badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);
     color:var(--mut);white-space:nowrap}
   .badge.stale{color:var(--warn);border-color:rgba(224,175,104,.45);background:rgba(224,175,104,.1)}
@@ -1050,10 +1070,22 @@ const PRIMARY_LABELS = new Set([
 // 主区最多四个。多了就等于没分主次,而且四个正好在手机上排成 2×2。
 const MAX_MAJOR = 4
 
+// 字标:每张卡左上角那个 20px 方块里的字。key 走白名单,顺带保证拼进 class 的
+// 只可能是这四个已知值(数据是本机推的,但 class 名不该由数据自由决定)。
+const PLAT_MARK = {bilibili:'B', youtube:'▶', xiaohongshu:'小', github:'GH'}
+
+function platId(p){
+  const g=PLAT_MARK[p.key];
+  return '<span class="plat-id">'+
+    (g? '<i class="mark">'+esc(g)+'</i>' : '')+
+    '<span class="plat-name">'+esc(p.name||'')+'</span></span>';
+}
+function platClass(p){ return PLAT_MARK[p.key]? ' plat p-'+p.key : ' plat' }
+
 function platCard(p, fetchedAt, now, downloads){
   if(!p.enabled || !p.ok){
-    return '<div class="card offcard">'+
-      '<div><div class="plat-name">'+esc(p.name||'')+'</div>'+
+    return '<div class="card offcard'+platClass(p)+'">'+
+      '<div>'+platId(p)+
       '<div class="why">'+esc(p.why||'未接入')+'</div></div>'+
       '<span class="badge">未接入</span></div>';
   }
@@ -1091,8 +1123,8 @@ function platCard(p, fetchedAt, now, downloads){
   // 多出一行,同排其他格子被顶得参差不齐,手机上尤其明显。
   const pad=major.some(function(m){ return m.delta!=null })? '<div class="d ph">&nbsp;</div>' : '';
 
-  let h='<div class="card'+(stale?' stale':'')+'">';
-  h+='<div class="plat-head"><span class="plat-name">'+esc(p.name||'')+'</span>'+badge+'</div>';
+  let h='<div class="card'+platClass(p)+(stale?' stale':'')+'">';
+  h+='<div class="plat-head">'+platId(p)+badge+'</div>';
   h+='<div class="metrics">'+major.map(function(m){
       const d=m.delta;
       // 平台区是死胡同 —— 唯一的例外是队列型指标,而且只在它不为 0 时:看到 1 之后该做的事
@@ -1149,8 +1181,10 @@ function platformSection(pd, now, downloads){
 
   // 平台趋势:每个平台各画一张,序列不够长就不画(两个点的折线只会误导)
   const cards=[];
-  const card=function(title,n,svg){
-    return '<div class="card"><h2>'+esc(title)+
+  // 趋势图也挂平台色轨:标题里虽然写了平台名,但它是全大写小字、和图例挤在一起,
+  // 四张图并排时认起来比上面的卡还慢。色轨让每张图和它上面那张卡是同一条视觉线索。
+  const card=function(p,title,n,svg){
+    return '<div class="card'+platClass(p)+'"><h2>'+esc(title)+
       ' <span class="muted" style="font-weight:400">('+n+' 天)</span></h2>'+svg+'</div>';
   };
   // 粉丝/订阅推上来的是累计值,但累计曲线只会单调上升,看不出哪天发力。
@@ -1226,7 +1260,7 @@ function platformSection(pd, now, downloads){
     if(plays&&(plays.points||[]).length>=3&&gain&&gain.points.length>=3){
       const dates=unionDates([plays.points,gain.points]);
       const labs=dates.map(function(x){return x.slice(5)});
-      cards.push(card(p.name+' · 播放 × '+gain.label, dates.length,
+      cards.push(card(p, p.name+' · 播放 × '+gain.label, dates.length,
         comboChart(dates,
           {name:plays.label, values:alignTo(dates,plays.points)},
           {name:gain.label, values:alignTo(dates,gain.points), avg:gainAvg?alignTo(dates,gainAvg):null},
@@ -1238,7 +1272,7 @@ function platformSection(pd, now, downloads){
       const g=gain.points, gd=g.map(function(x){return x.date}), gm=markIdx(gd,rel);
       // 柱子用 --acc2:和双轴图里那排日增柱同色。这张图只是「双轴图缺了播放那半」,
       // 不是另一种图,颜色跟着含义走、不跟着图种走。
-      cards.push(card(p.name+' · '+gain.label, g.length,
+      cards.push(card(p, p.name+' · '+gain.label, g.length,
         barChart(g.map(function(x){return x.value}),'var(--acc2)',
           gd.map(function(x){return x.slice(5)}),
           {marks:gm, avg:gainAvg?alignTo(gd,gainAvg):null, name:gain.label,
@@ -1259,7 +1293,7 @@ function platformSection(pd, now, downloads){
     if(views&&clones&&(views.points||[]).length>=3&&(clones.points||[]).length>=3){
       const vdates=unionDates([views.points,clones.points]);
       const vmarks=markIdx(vdates,rel);
-      cards.push(card(p.name+' · 访问 × 克隆', vdates.length,
+      cards.push(card(p, p.name+' · 访问 × 克隆', vdates.length,
         comboChart(vdates,
           {name:views.label, values:alignTo(vdates,views.points)},
           {name:clones.label, values:alignTo(vdates,clones.points)},
@@ -1273,7 +1307,7 @@ function platformSection(pd, now, downloads){
       const pts=s.points||[];
       if(pts.length<3) return;
       const dates=pts.map(function(x){return x.date}), lm=markIdx(dates,rel);
-      cards.push(card(p.name+' · '+s.label, pts.length,
+      cards.push(card(p, p.name+' · '+s.label, pts.length,
         lineChart([{name:s.label, values:pts.map(function(x){return x.value})}],['var(--acc)'],
           dates.map(function(x){return x.slice(5)}),
           {marks:lm, relTips:relTips(dates,relT)})+
