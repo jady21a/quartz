@@ -46,7 +46,9 @@ desc: "In his New York Times bestseller Steal Like an Artist, Austin Kleon showe
 
 二、阅读疑问
 **读前疑问**
-
+- 为什么要把工作当作永无止境的过程
+- 分享怎么变得有趣
+- 怎么应对发布后的起伏
 
 **读时疑问**
 
