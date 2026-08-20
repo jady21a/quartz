@@ -1298,6 +1298,23 @@ function platformSection(pd, now, downloads){
         legendItems([dotItem('var(--acc)',s.label), markItem(!!lm.length)])));
     });
   });
+  // 下载趋势并进这排图,而不是自己单开一行。
+  //
+  // 平台趋势眼下只有 GitHub 一张,grid two 的右半是空的;下载图单开一行 grid two,
+  // 右半也是空的 —— 两个窟窿并成一行正好填平。并得起来是因为它俩问的是同一件事的
+  // 两端:访问 × 克隆量「有多少人来」,下载量「有多少人真把东西拿走了」。
+  // 口径没有跟着搬:累计下载数仍留在站点流量卡里(那是站点漏斗的末端),这里挪的
+  // 只是这张按天的曲线。
+  (downloads||[]).forEach(function(x){
+    if(!(x.total||x.uniques)) return;
+    const pts=x.daily||[];
+    if(pts.length<3) return;   // 三个点才成一条线,和平台曲线一个门槛
+    const dates=pts.map(function(p){return p.date});
+    cards.push(card('下载 · '+x.slug, dates.length,
+      lineChart([{name:'独立下载', values:pts.map(function(p){return p.u})}],['var(--acc)'],
+        dates.map(function(s){return s.slice(5)}),{})+
+      legendItems([dotItem('var(--acc)','独立下载')])));
+  });
   if(cards.length){
     h+='<div class="grid two" style="margin-bottom:22px">'+cards.join('')+'</div>';
   }
@@ -1399,22 +1416,8 @@ async function load(){
      (dls.length? '<span class="t">下载按 IP 当天去重</span>' : '')+
      '</div></div>';
 
-  if(dls.length){
-    dls.forEach(function(x){
-      const pts=(x.daily||[]);
-      if(pts.length<3) return;   // 三个点才成一条线,和平台曲线一个门槛
-      const dates=pts.map(function(p){return p.date});
-      // 卡片和图例在这里内联写:card/legendItems 是 platformSection 的局部函数,
-      // 这一段跑在站点流量区,拿不到它们。为这两行去动那边的作用域不划算。
-      h+='<div class="grid two" style="margin-bottom:14px"><div class="card">'+
-        '<h2>下载 · '+esc(x.slug)+' <span class="muted" style="font-weight:400">('+
-        dates.length+' 天)</span></h2>'+
-        lineChart([{name:'独立下载', values:pts.map(function(p){return p.u})}],
-          ['var(--acc)'],dates.map(function(s){return s.slice(5)}),{})+
-        '<div class="legend"><span><span class="dot" style="background:var(--acc)"></span>'+
-        '独立下载</span></div></div></div>';
-    });
-  }
+  // 下载曲线不画在这儿 —— 它跟着平台趋势那排图走了(见 platformSection 末尾),
+  // 填掉「访问 × 克隆」右边那个空位。这一区留数字。
 
   // busuanzi 零上报提示(区分「没人看」和「压根没在计数」)
   if(bszEmpty){
