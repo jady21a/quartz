@@ -34,6 +34,7 @@
     "build": "npx quartz build && cp quartz/static/googlebb4488cf87b645f4.html public/ && (cp quartz/static/daily.html public/ || true)",
     "serve": "npx quartz build --serve",
     "serve:en": "SHOW_EN=1 npx quartz build --serve",
+    "serve:drafts": "QUARTZ_KEEP_DRAFTS=1 npx quartz build --serve",
     "sync:no-pull": "npx quartz sync --no-pull",
     "sync:all": "npx quartz sync",
     "local-sync": "quartz sync-only"

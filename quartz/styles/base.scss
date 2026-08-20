@@ -305,6 +305,42 @@ a {
         & > .toc {
           display: none;
         }
+
+        // 横排下「关系图谱」和「最新 / 漫步笔记」并列成两列,但两边的标题栏原本高矮不一
+        // (h3 vs 带上下内边距的 tab 条),导致图谱盒和笔记卡片的顶部错位。
+        // 这里把两侧标题栏压成同一行高 + 同一条 2px 下边框,标题文字和下面的内容就都对齐了。
+        $sidebar-heading-line: 1.5rem;
+        $sidebar-heading-gap: 0.5rem;
+
+        & > .graph > h3 {
+          font-size: 1rem;
+          line-height: $sidebar-heading-line;
+          padding: 0;
+          // 图谱标题不画线,用透明边框占位,和 tab 条的下边框等高
+          border-bottom: 2px solid transparent;
+        }
+        & > .graph > .graph-outer {
+          margin-top: $sidebar-heading-gap;
+        }
+
+        & > .random-notes {
+          // 顶部内边距会把 tab 条整体压下去,横排时去掉,左右两列从同一条线起排
+          padding-top: 0;
+
+          & .random-notes-tabs {
+            margin-bottom: $sidebar-heading-gap;
+          }
+
+          & .tab-btn {
+            font-size: 1rem;
+            line-height: $sidebar-heading-line;
+            padding: 0 0.6rem;
+
+            &:first-child {
+              padding-left: 0;
+            }
+          }
+        }
       }
     }
     & .page-header,
