@@ -8,6 +8,7 @@ import { toHtml } from "hast-util-to-html"
 import { write } from "./helpers"
 import { i18n } from "../../i18n"
 import { noteTimestamp } from "../../util/noteCreated"
+import { isBookStub } from "../transformers/noteSubstance"
 
 export type ContentIndexMap = Map<FullSlug, ContentDetails>
 export type ContentDetails = {
@@ -20,6 +21,8 @@ export type ContentDetails = {
   richContent?: string
   date?: Date
   description?: string
+  // 剔掉模板骨架后的实质字数,浏览器端「漫步笔记」换一批时用它挡掉空壳书页
+  substanceLength?: number
 }
 
 interface Options {
@@ -107,8 +110,11 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
       const linkIndex: ContentIndexMap = new Map()
       // slug -> 创建时间(frontmatter date → git 新增清单),供 RSS 使用
       const createdDates = new Map<FullSlug, Date>()
+      // 只有模板骨架的空壳书页,只挡 RSS —— 搜索/图谱/sitemap 照常收录
+      const bookStubs = new Set<FullSlug>()
       for (const [tree, file] of content) {
         const slug = file.data.slug!
+        if (isBookStub(file.data)) bookStubs.add(slug)
         const date = getDate(ctx.cfg.configuration, file.data) ?? new Date()
         const createdTs = noteTimestamp({
           frontmatter: file.data.frontmatter,
@@ -128,6 +134,7 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
               : undefined,
             date: date,
             description: file.data.description ?? "",
+            substanceLength: file.data.substanceLength ?? 0,
           })
         }
       }
@@ -143,11 +150,13 @@ export const ContentIndex: QuartzEmitterPlugin<Partial<Options>> = (opts) => {
 
       if (opts?.enableRSS) {
         // feed 只收正文笔记:index 页(含首页)和排除目录/slug 不进 RSS,
-        // 否则 3.Template 镜像每次重新生成日期都最新,会长期霸占 feed 头部
+        // 否则 3.Template 镜像每次重新生成日期都最新,会长期霸占 feed 头部;
+        // 刚加进来还没写笔记的书同理,等 Overview/读书笔记写起来了再进 feed
         const rssIndex: ContentIndexMap = new Map(
           Array.from(linkIndex).filter(
             ([slug]) =>
               !slug.endsWith("index") &&
+              !bookStubs.has(slug) &&
               !opts.rssExcludeSlugs!.includes(slug) &&
               !opts.rssExcludeFolders!.some((prefix) => slug.startsWith(prefix)),
           ),

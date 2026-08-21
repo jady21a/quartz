@@ -1,5 +1,6 @@
 export { FrontMatter } from "./frontmatter"
 export { GalleryAssets } from "./galleryAssets"
+export { NoteSubstance } from "./noteSubstance"
 export { GitHubFlavoredMarkdown } from "./gfm"
 export { Citations } from "./citations"
 export { CreatedModifiedDate } from "./lastmod"

@@ -1,5 +1,6 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { noteTimestamp } from "../util/noteCreated"
+import { bookFolders, bookMinSubstance, isBookStub } from "../plugins/transformers/noteSubstance"
 import style from "./styles/randomNotes.scss"
 
 // “最新”列表里每条笔记后面的日期,统一 YYYY-MM-DD;时间戳为 0(查不到日期)时返回空串不显示
@@ -20,6 +21,7 @@ interface Options {
   recentLimit?: number
   excludeFolders?: string[]
   excludeSlugs?: string[]
+  bookMinSubstance?: number
 }
 
 const defaultOptions: Options = {
@@ -41,6 +43,8 @@ const defaultOptions: Options = {
     "topic-reading",
   ],
   excludeSlugs: ["library", "watch-list"],
+  // 「最新」里书籍笔记的门槛:剔掉模板骨架后至少要有这么多字,才算真读过写过
+  bookMinSubstance,
 }
 
 export default ((userOpts?: Partial<Options>) => {
@@ -64,6 +68,8 @@ export default ((userOpts?: Partial<Options>) => {
         file.frontmatter?.title &&
         !(file.frontmatter?.tags || []).includes("movies") &&
         !opts.excludeFolders.some((prefix) => (file.slug ?? "").startsWith(prefix)) &&
+        // 空壳书页(只有模板骨架)在「漫步」里同样没意思,和「最新」一个口径
+        !isBookStub(file, opts.bookMinSubstance) &&
         file.text &&
         file.text.trim().length > 121,
     )
@@ -86,6 +92,8 @@ export default ((userOpts?: Partial<Options>) => {
         if ((file.frontmatter?.tags || []).includes("movies")) return false
         const slug = file.slug
         if (opts.excludeSlugs.includes(slug)) return false
+        // 刚加进来、Overview 还空着也没写读书笔记的书:只有一副模板骨架,不进「最新」
+        if (isBookStub(file, opts.bookMinSubstance)) return false
         return !opts.excludeFolders.some((prefix) => slug.startsWith(prefix))
       })
       .map((file) => ({
@@ -103,6 +111,8 @@ export default ((userOpts?: Partial<Options>) => {
         data-limit={String(opts.limit)}
         data-show-tags={String(opts.showTags)}
         data-exclude-folders={JSON.stringify(opts.excludeFolders)}
+        data-book-folders={JSON.stringify(bookFolders)}
+        data-book-min-substance={String(opts.bookMinSubstance)}
       >
         <div class="random-notes-tabs">
           <button class="tab-btn active" data-tab="recent">
@@ -177,6 +187,17 @@ export default ((userOpts?: Partial<Options>) => {
       const showTags = container.getAttribute("data-show-tags") === "true"
       const currentSlug = container.getAttribute("data-slug") || ""
       const excludeFolders = JSON.parse(container.getAttribute("data-exclude-folders") || "[]")
+      const bookFolders = JSON.parse(container.getAttribute("data-book-folders") || "[]")
+      const bookMinSubstance = parseInt(container.getAttribute("data-book-min-substance") || "0", 10)
+
+      // 和服务端 isBookStub 同一口径:只有模板骨架的书页不进「换一批」
+      function isBookStub(d) {
+        var slug = String(d.slug).replace(/^en\\//, "")
+        var isBook =
+          bookFolders.some(function (prefix) { return slug.indexOf(prefix) === 0 }) ||
+          (d.tags || []).includes("book")
+        return isBook && (d.substanceLength || 0) < bookMinSubstance
+      }
 
       // Tab switching
       const tabBtns = container.querySelectorAll(".tab-btn")
@@ -203,6 +224,7 @@ export default ((userOpts?: Partial<Options>) => {
             d.title &&
             !(d.tags || []).includes("movies") &&
             !excludeFolders.some(function (prefix) { return slug.indexOf(prefix) === 0 }) &&
+            !isBookStub(d) &&
             String(d.content || "").trim().length > 121
           )
         })

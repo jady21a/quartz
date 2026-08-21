@@ -6,6 +6,7 @@ import { QuartzEmitterPlugin } from "../types"
 import { toHtml } from "hast-util-to-html"
 import { write } from "./helpers"
 import { noteTimestamp } from "../../util/noteCreated"
+import { isBookStub } from "../transformers/noteSubstance"
 
 // 给邮件通讯(newsletter)用的**全文** feed,输出 /newsletter.xml。
 //
@@ -157,6 +158,9 @@ export const NewsletterFeed: QuartzEmitterPlugin<Partial<Options>> = (userOpts) 
         if (slug.endsWith("index")) continue
         if (opts.excludeSlugs.includes(slug)) continue
         if (opts.excludeFolders.some((prefix) => slug.startsWith(prefix))) continue
+        // 刚加进来、Overview 还空着也没写读书笔记的书:只有一副模板骨架,不该群发给订阅者。
+        // 等笔记写起来了它才会进 feed —— 那时才算一篇真内容(与侧栏「最新」同一口径)
+        if (isBookStub(file.data)) continue
 
         // 用创建时间,与 index.xml 同口径:改一下旧文不该重新顶上来、更不该重发邮件
         const createdTs = noteTimestamp({
