@@ -4,10 +4,10 @@
 <title>本周更新</title>
 <style>
 *{box-sizing:border-box}
-:root{--bg:#faf9f7;--card:#fff;--fg:#1c1b19;--dim:#6b6862;--line:#e6e3dd;--up:#2f7d4f;--down:#a8443c;--accent:#8a6d3b}
-@media (prefers-color-scheme:dark){:root{--bg:#161513;--card:#1f1e1b;--fg:#eae7e0;--dim:#94908a;--line:#302e2a;--up:#6bbf8a;--down:#d98a80;--accent:#c9a56a}}
-:root[data-theme=dark]{--bg:#161513;--card:#1f1e1b;--fg:#eae7e0;--dim:#94908a;--line:#302e2a;--up:#6bbf8a;--down:#d98a80;--accent:#c9a56a}
-:root[data-theme=light]{--bg:#faf9f7;--card:#fff;--fg:#1c1b19;--dim:#6b6862;--line:#e6e3dd;--up:#2f7d4f;--down:#a8443c;--accent:#8a6d3b}
+:root{--bg:#faf9f7;--card:#fff;--fg:#1c1b19;--dim:#6b6862;--line:#e6e3dd;--up:#2f7d4f;--down:#a8443c;--accent:#8a6d3b;--read:#aaa49b}
+@media (prefers-color-scheme:dark){:root{--bg:#161513;--card:#1f1e1b;--fg:#eae7e0;--dim:#94908a;--line:#302e2a;--up:#6bbf8a;--down:#d98a80;--accent:#c9a56a;--read:#5f5b55}}
+:root[data-theme=dark]{--bg:#161513;--card:#1f1e1b;--fg:#eae7e0;--dim:#94908a;--line:#302e2a;--up:#6bbf8a;--down:#d98a80;--accent:#c9a56a;--read:#5f5b55}
+:root[data-theme=light]{--bg:#faf9f7;--card:#fff;--fg:#1c1b19;--dim:#6b6862;--line:#e6e3dd;--up:#2f7d4f;--down:#a8443c;--accent:#8a6d3b;--read:#aaa49b}
 body{margin:0;padding:2.2rem 1.2rem 4rem;background:var(--bg);color:var(--fg);
  font:16px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
  -webkit-font-smoothing:antialiased}
@@ -41,13 +41,23 @@ li.day:first-child{padding-top:0}
 /* 已读/未读:点开过的由浏览器自己的 :visited 压暗。不写 JS、不存状态,
    这页保持是个哑静态文件。拿不到「N 条未读」是故意的 —— 那是未读徽章和
    清零按钮的开头,这个工具当初就是为了躲开它。
-   试过更明显的做法:给未读加个小圆点(a:before),已读时用 :visited 涂成透明。
-   Chrome 不把 :visited 应用到链接的伪元素上,圆点擦不掉,读过的条目照样带点。
-   所以区分只剩标题颜色这一种 —— 别再试圆点/加粗了,:visited 只认颜色类属性。 */
-li.item a:visited{color:var(--dim)}
+
+   :visited 只认颜色类属性(color / background-color / border-*-color),
+   且只作用在 <a> 自己身上 —— 早先「未读加个小圆点(a:before)、已读涂掉」
+   的做法失败,就是因为 Chrome 不把 :visited 应用到伪元素上,点擦不掉。
+   换成 <a> 自己的 border-left 就成立:标记条不是已读时才画出来的,它一直都在,
+   已读只是把它涂成背景色。这是「圆点」那个想法唯一能落地的形状,别改回伪元素。
+   注意 :visited 里的 alpha 会被浏览器丢掉(取未访问态的 alpha),所以「隐形」
+   必须写成不透明的 var(--bg),写 transparent 会变成一条黑杠。
+
+   光靠标题颜色一种信号不够看(--dim 和 --fg 都是深色,扫一眼分不出),
+   所以现在是两个信号叠加:左边的条 + 标题褪到 --read(比 --dim 淡得多)。 */
+li.item a{display:block;border-left:3px solid var(--accent);
+ margin-left:-.9rem;padding-left:calc(.9rem - 3px)}  /* 负 margin 把条挪进左边空白,等量 padding 让标题仍和 .meta 对齐 */
+li.item a:visited{color:var(--read);border-left-color:var(--bg)}
 li.item a:hover{color:var(--accent)}   /* 放在 :visited 之后,否则读过的条目 hover 不变色 */
 </style></head>
-<body data-generated="2026-08-20T21:17:26+08:00"><div class="wrap"><h1>本周更新</h1><div class="sub">4 条 · 近 7 天 · 7 个订阅源 · 更新于 2026-08-20 21:17</div><ol><li class="day">08-20 周四</li><li class="item"><a href="https://simonwillison.net/2026/Aug/19/conceptual-integrity-and-counting-lines-of-code/" target="_blank" rel="noopener">Conceptual integrity and counting lines of code</a><div class="meta">Simon Willison&#x27;s Weblog: Entries · 06:46</div></li><li class="day">08-17 周一</li><li class="item"><a href="https://simonwillison.net/2026/Aug/16/qwen-38-27b/" target="_blank" rel="noopener">Qwen 3.8 27B is excellent, but it defaults to wildly overthinking things</a><div class="meta">Simon Willison&#x27;s Weblog: Entries · 06:00</div></li><li class="day">08-14 周五</li><li class="item"><a href="https://www.learningscientists.org/blog/2026/8/14-1" target="_blank" rel="noopener">Call for Sharing Teaching Practice and Repost of Student Ability, Self-Regulated Spaced Practice, and Performance In Online Learning</a><div class="meta">Learning Scientists Blog - The Learning Scientists · 18:57</div></li><li class="item"><a href="http://www.ruanyifeng.com/blog/2026/08/weekly-issue-408.html" target="_blank" rel="noopener">科技爱好者周刊（第 408 期）：你需要知道的 AI 缓存知识</a><div class="meta">阮一峰的网络日志 · 07:54</div></li></ol><div class="end">到底了 — 这一周就这些。</div></div>
+<body data-generated="2026-08-21T18:41:28+08:00"><div class="wrap"><h1>本周更新</h1><div class="sub">4 条 · 近 7 天 · 7 个订阅源 · 更新于 2026-08-21 18:41</div><ol><li class="day">08-21 周五</li><li class="item"><a href="http://www.ruanyifeng.com/blog/2026/08/weekly-issue-409.html" target="_blank" rel="noopener">科技爱好者周刊（第 409 期）：程序员的职业未来</a><div class="meta">阮一峰的网络日志 · 07:53</div></li><li class="day">08-20 周四</li><li class="item"><a href="https://simonwillison.net/2026/Aug/19/conceptual-integrity-and-counting-lines-of-code/" target="_blank" rel="noopener">Conceptual integrity and counting lines of code</a><div class="meta">Simon Willison&#x27;s Weblog: Entries · 06:46</div></li><li class="day">08-17 周一</li><li class="item"><a href="https://simonwillison.net/2026/Aug/16/qwen-38-27b/" target="_blank" rel="noopener">Qwen 3.8 27B is excellent, but it defaults to wildly overthinking things</a><div class="meta">Simon Willison&#x27;s Weblog: Entries · 06:00</div></li><li class="day">08-14 周五</li><li class="item"><a href="https://www.learningscientists.org/blog/2026/8/14-1" target="_blank" rel="noopener">Call for Sharing Teaching Practice and Repost of Student Ability, Self-Regulated Spaced Practice, and Performance In Online Learning</a><div class="meta">Learning Scientists Blog - The Learning Scientists · 18:57</div></li></ol><div class="end">到底了 — 这一周就这些。</div></div>
 <script>
 (function(){
   var iso = document.body.dataset.generated;
