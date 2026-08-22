@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // scripts/preview-server.mjs
-// 本地 HTTPS 静态服务,把 public/ 用真域名(jz21.eu.org)托出来,专供录屏演示。
+// 本地 HTTPS 静态服务,把带草稿的构建用真域名(jz21.eu.org)托出来,专供录屏演示。
 //
 // 为什么要它:录视频时地址栏出现 localhost:8080,会把「我的博客」演成「我电脑上的一个
 // 网页」,而且暴露了这页当时还没上线。配合 /etc/hosts 把 jz21.eu.org 指到 127.0.0.1 +
@@ -14,6 +14,7 @@
 // 少一步就会留下「hosts 没删」或「带草稿的索引被推上线」的坑。
 //
 // 环境变量:
+//   PREVIEW_DIR    托哪个构建目录(相对仓库根,默认 public-drafts)
 //   PREVIEW_PORT   监听端口(默认 443;443 需要 sudo)
 //   PREVIEW_CERT   证书路径   PREVIEW_KEY 私钥路径(默认 ~/.blog-preview-certs/)
 
@@ -24,7 +25,11 @@ import os from "node:os"
 import { fileURLToPath } from "node:url"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PUBLIC = path.join(__dirname, "../public")
+// 默认托 public-drafts/ 而不是 public/:带草稿的构建绝不能落进 public/。public/ 是
+// 「线上应该有哪些页」的唯一凭据——线上巡检(~/quartz-smoke.sh)从它枚举页面清单去打
+// 线上,混进一个草稿页就会报一条永远修不好的 404(2026-08-22 报过一次)。
+const PREVIEW_DIR = process.env.PREVIEW_DIR || "public-drafts"
+const PUBLIC = path.resolve(__dirname, "..", PREVIEW_DIR)
 const PORT = Number(process.env.PREVIEW_PORT || 443)
 const CERT_DIR = path.join(os.homedir(), ".blog-preview-certs")
 const CERT = process.env.PREVIEW_CERT || path.join(CERT_DIR, "jz21.eu.org.pem")
@@ -40,7 +45,9 @@ for (const [label, file] of [
   }
 }
 if (!fs.existsSync(path.join(PUBLIC, "index.html"))) {
-  console.error(`❌ public/ 里没有构建产物,先跑一次构建(~/blog-preview.sh on 会自动构建)`)
+  console.error(
+    `❌ ${PREVIEW_DIR}/ 里没有构建产物,先跑一次构建(~/blog-preview.sh on 会自动构建)`,
+  )
   process.exit(1)
 }
 

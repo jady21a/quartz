@@ -32,9 +32,9 @@
     "smoke": "node scripts/smoke.mjs",
     "doctor": "npm run build && npm run verify-index && npm run smoke && npm run check-en",
     "build": "npx quartz build && cp quartz/static/googlebb4488cf87b645f4.html public/ && (cp quartz/static/daily.html public/ || true)",
-    "serve": "npx quartz build --serve",
-    "serve:en": "SHOW_EN=1 npx quartz build --serve",
-    "serve:drafts": "QUARTZ_KEEP_DRAFTS=1 npx quartz build --serve",
+    "serve": "QUARTZ_KEEP_DRAFTS=1 npx quartz build --serve -o public-drafts",
+    "serve:en": "SHOW_EN=1 QUARTZ_KEEP_DRAFTS=1 npx quartz build --serve -o public-drafts",
+    "serve:drafts": "QUARTZ_KEEP_DRAFTS=1 npx quartz build --serve -o public-drafts",
     "sync:no-pull": "npx quartz sync --no-pull",
     "sync:all": "npx quartz sync",
     "local-sync": "quartz sync-only"

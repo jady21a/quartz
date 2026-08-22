@@ -224,7 +224,7 @@ function checkPage(sig) {
     // 进了 public/ 就说明一篇没有播放源的页面正要上线
     else if (p.placeholder)
       problems.push(
-        `播放器${at}停在「视频即将发布」占位:没有任何视频源 ID。视频已发就补 videoid/bilibiliid,没发就把 draft 改回 "true"`,
+        `播放器${at}停在「视频即将发布」占位:没有任何视频源 ID。视频已发就补 videoid/bilibiliid,没发就把 draft 改回 "true"(只是想在本地看这页就跑 npm run serve:drafts,别摘 draft)`,
       )
     else if (!p.hasFrame) problems.push(`播放器${at}初始化了但没渲染出播放元素`)
     else if (!p.youtube && !p.bilibili) problems.push(`播放器${at}没拿到任何视频源 ID`)
