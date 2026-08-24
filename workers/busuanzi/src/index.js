@@ -127,7 +127,28 @@ export default {
     } catch (e) {
       console.error("cf snapshot error:", e && e.stack ? e.stack : String(e))
     }
+    try {
+      const n = await pruneExpired(env)
+      console.log("prune ok:", n, "rows")
+    } catch (e) {
+      console.error("prune error:", e && e.stack ? e.stack : String(e))
+    }
   },
+}
+
+// ───────────────────────── 过期清理(定时) ─────────────────────────
+// KV 时代这两件事是 expirationTtl 自动做的,换到 D1 就得自己来。跑在每天的 cron 里。
+// 只删「去重标记」这类本来就有寿命的行 —— pages / daily / downloads / cf_daily 是
+// 历史数据,一行都不删。
+async function pruneExpired(env) {
+  const res = await env.DB.batch([
+    // 访客哈希留一年(对应旧的 uv_ip TTL)。删掉之后那个人再来会重新算一个 UV,
+    // 这正是原来的语义,不是 bug。
+    env.DB.prepare("DELETE FROM visitors WHERE first_day < ?1").bind(daysAgoUTC(365)),
+    // 下载去重标记只用来判断「当天是否重复」,留两天足够跨过 UTC 边界。
+    env.DB.prepare("DELETE FROM download_ips WHERE date < ?1").bind(daysAgoUTC(2)),
+  ])
+  return res.reduce((s, r) => s + (r.meta ? r.meta.changes : 0), 0)
 }
 
 // ───────────────────────── 下载计数跳转(公开) ─────────────────────────
@@ -209,7 +230,8 @@ async function handleCount(request, env) {
   } catch {}
   path = path.split("?")[0].split("#")[0]
   if (path.length > 1) path = path.replace(/\/$/, "")
-  const pageKey = "page_pv:" + path.slice(0, 512)
+  // 截断和 KV 时代一样:别让构造出来的超长路径在 pages 表里种垃圾行。
+  path = path.slice(0, 512)
 
   const db = env.DB
   const day = todayUTC()
@@ -319,18 +341,6 @@ function checkToken(request, env) {
   return !!env.STATS_TOKEN && safeEqual(token, env.STATS_TOKEN)
 }
 
-// 列出某前缀下所有 key(小站量级,单页 1000 足够)
-async function listPrefix(kv, prefix) {
-  const out = []
-  let cursor
-  do {
-    const res = await kv.list({ prefix, limit: 1000, cursor })
-    out.push(...res.keys.map((k) => k.name))
-    cursor = res.list_complete ? undefined : res.cursor
-  } while (cursor)
-  return out
-}
-
 async function handleStatsData(request, env) {
   if (!checkToken(request, env)) {
     return new Response(JSON.stringify({ error: "unauthorized" }), {
@@ -338,33 +348,29 @@ async function handleStatsData(request, env) {
       headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
     })
   }
-  const kv = env.COUNTER
+  const db = env.DB
 
-  const site_pv = await read(kv, "site_pv")
-  const site_uv = await read(kv, "site_uv")
+  // 面板要的四张表一个 batch 取回。KV 时代这里是 6 次 list + 逐个 get(178 个页面
+  // 就是 178 次读),现在是四条 SELECT、一次往返。
+  const [cntRes, pageRes, dailyRes, dlRes] = await db.batch([
+    db.prepare("SELECT key, n FROM counters"),
+    db.prepare("SELECT path, pv FROM pages ORDER BY pv DESC"),
+    db.prepare("SELECT date, pv, uv FROM daily ORDER BY date"),
+    db.prepare("SELECT slug, date, n, u FROM downloads ORDER BY date"),
+  ])
 
-  // 每页 PV 排行
-  const pageKeys = await listPrefix(kv, "page_pv:")
-  const pages = await Promise.all(
-    pageKeys.map(async (k) => ({
-      path: k.slice("page_pv:".length),
-      pv: await read(kv, k),
-    })),
-  )
-  pages.sort((a, b) => b.pv - a.pv)
+  const counters = {}
+  for (const r of cntRes.results) counters[r.key] = r.n
+  const site_pv = counters["site_pv"] || 0
+  const site_uv = counters["site_uv"] || 0
+
+  // 每页 PV 排行(SQL 已经排好序)
+  const pages = pageRes.results.map((r) => ({ path: r.path, pv: r.pv }))
 
   // 日趋势(自有桶,从加桶那天起累积)
-  const pvKeys = await listPrefix(kv, "d_pv:")
-  const uvKeys = await listPrefix(kv, "d_uv:")
+  const daily = dailyRes.results.map((r) => ({ date: r.date, pv: r.pv, uv: r.uv }))
   const byDay = {}
-  for (const k of pvKeys) byDay[k.slice("d_pv:".length)] = { pv: await read(kv, k), uv: 0 }
-  for (const k of uvKeys) {
-    const d = k.slice("d_uv:".length)
-    ;(byDay[d] ||= { pv: 0, uv: 0 }).uv = await read(kv, k)
-  }
-  const daily = Object.entries(byDay)
-    .map(([date, v]) => ({ date, pv: v.pv, uv: v.uv }))
-    .sort((a, b) => (a.date < b.date ? -1 : 1))
+  for (const r of daily) byDay[r.date] = { pv: r.pv, uv: r.uv }
   const yday = new Date(Date.now() - 864e5).toISOString().slice(0, 10)
 
   // Cloudflare 边缘 zone 数据(可选,需 CF_API_TOKEN):KPI/维度分解用实时 30 天查询。
@@ -379,7 +385,7 @@ async function handleStatsData(request, env) {
   }
 
   // CF 边缘「日趋势」改读定时快照攒下来的全部历史(不受套餐保留期限制)。
-  const cfRows = await readCfDaily(kv)
+  const cfRows = await readCfDaily(db)
   const cfHist = aggregateCfHistory(cfRows)
   // 日别分布只在 worker 里汇总,不往前端发:N 天 × 上百个国家,发过去也没人一天天看。
   const cfDaily = cfRows.map((r) => ({
@@ -392,34 +398,23 @@ async function handleStatsData(request, env) {
   }))
 
   // 下载跳转的计数(见 handleDownload)。日别桶永久保存,和站点 PV 一个规矩。
-  const downloads = await Promise.all(
-    Object.keys(DOWNLOADS).map(async (slug) => {
-      const dayKeys = await listPrefix(kv, "dl_day:" + slug + ":")
-      const uniqDayKeys = await listPrefix(kv, "dl_uniq_day:" + slug + ":")
-      const byDay = {}
-      for (const k of dayKeys) {
-        byDay[k.slice(("dl_day:" + slug + ":").length)] = { n: await read(kv, k), u: 0 }
-      }
-      for (const k of uniqDayKeys) {
-        const d = k.slice(("dl_uniq_day:" + slug + ":").length)
-        ;(byDay[d] ||= { n: 0, u: 0 }).u = await read(kv, k)
-      }
-      return {
-        slug,
-        total: await read(kv, "dl:" + slug),
-        uniques: await read(kv, "dl_uniq:" + slug),
-        daily: Object.entries(byDay)
-          .map(([date, v]) => ({ date, n: v.n, u: v.u }))
-          .sort((a, b) => (a.date < b.date ? -1 : 1)),
-      }
-    }),
-  )
+  // 行已经在上面那个 batch 里一次取回,这里只按 slug 分组。
+  const dlByDay = {}
+  for (const r of dlRes.results) {
+    ;(dlByDay[r.slug] ||= []).push({ date: r.date, n: r.n, u: r.u })
+  }
+  const downloads = Object.keys(DOWNLOADS).map((slug) => ({
+    slug,
+    total: counters["dl:" + slug] || 0,
+    uniques: counters["dl_uniq:" + slug] || 0,
+    daily: dlByDay[slug] || [],
+  }))
 
   // 平台账号数据:本机推上来的最新一份,没推过就是 null。
   let platforms = null
   try {
-    const raw = await kv.get("plat:latest")
-    if (raw) platforms = JSON.parse(raw)
+    const row = await db.prepare("SELECT value FROM meta WHERE key = 'plat:latest'").first()
+    if (row && row.value) platforms = JSON.parse(row.value)
   } catch {
     platforms = null
   }
@@ -513,7 +508,12 @@ async function handlePlatforms(request, env) {
     receivedAt: new Date().toISOString(),
     platforms: body.platforms,
   }
-  await env.COUNTER.put("plat:latest", JSON.stringify(rec))
+  await env.DB.prepare(
+    "INSERT INTO meta(key, value) VALUES('plat:latest', ?1) " +
+      "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+  )
+    .bind(JSON.stringify(rec))
+    .run()
   return new Response(JSON.stringify({ ok: true, platforms: body.platforms.length }), {
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
   })
@@ -678,23 +678,29 @@ async function snapshotCloudflareDaily(env) {
   const since = new Date(Date.now() - 29 * 864e5).toISOString().slice(0, 10)
   const until = todayUTC()
   const daily = await fetchCfDaily(env, zoneTag, since, until)
-  for (const d of daily) {
-    await env.COUNTER.put(
-      "cfd:" + d.date,
-      JSON.stringify({
-        requests: d.requests,
-        pageViews: d.pageViews,
-        uniques: d.uniques,
-        bytes: d.bytes,
-        threats: d.threats,
-        // 回查 30 天会顺手给这些天补上分布;比 30 天更早的那些永远补不上了 ——
-        // 快照是 2026-08-17 才开始存分布的,在那之前的日子 CF 已经不认了。
-        countries: d.countries,
-        browsers: d.browsers,
-        status: d.status,
-      }),
-    ) // 无 expirationTtl = 永久保存
-  }
+  const stmt = env.DB.prepare(
+    "INSERT INTO cf_daily(date, json) VALUES(?1, ?2) " +
+      "ON CONFLICT(date) DO UPDATE SET json = excluded.json",
+  )
+  await env.DB.batch(
+    daily.map((d) =>
+      stmt.bind(
+        d.date,
+        JSON.stringify({
+          requests: d.requests,
+          pageViews: d.pageViews,
+          uniques: d.uniques,
+          bytes: d.bytes,
+          threats: d.threats,
+          // 回查 30 天会顺手给这些天补上分布;比 30 天更早的那些永远补不上了 ——
+          // 快照是 2026-08-17 才开始存分布的,在那之前的日子 CF 已经不认了。
+          countries: d.countries,
+          browsers: d.browsers,
+          status: d.status,
+        }),
+      ),
+    ),
+  ) // 不清理 = 永久保存
   return daily.length
 }
 
@@ -745,18 +751,15 @@ function aggregateCfHistory(rows) {
 }
 
 // 读回累积的 CF 边缘日趋势(全部历史,按日期升序)。
-async function readCfDaily(kv) {
-  const keys = await listPrefix(kv, "cfd:")
-  const rows = await Promise.all(
-    keys.map(async (k) => {
-      let o = {}
-      try {
-        o = JSON.parse((await kv.get(k)) || "{}") || {}
-      } catch {}
-      return { date: k.slice("cfd:".length), ...o }
-    }),
-  )
-  return rows.sort((a, b) => (a.date < b.date ? -1 : 1))
+async function readCfDaily(db) {
+  const res = await db.prepare("SELECT date, json FROM cf_daily ORDER BY date").all()
+  return res.results.map((r) => {
+    let o = {}
+    try {
+      o = JSON.parse(r.json) || {}
+    } catch {}
+    return { date: r.date, ...o }
+  })
 }
 
 // ───────────────────────── 面板 HTML(公开壳页,数据靠 token) ─────────────────────────
