@@ -1,4 +1,4 @@
-// 自托管的「不蒜子式」访问量计数 Worker(Cloudflare Worker + KV)+ 私密统计面板。
+// 自托管的「不蒜子式」访问量计数 Worker(Cloudflare Worker + D1)+ 私密统计面板。
 //
 // 计数(公开,给博客用):
 //   提供三个计数:site_pv(全站总浏览)、site_uv(全站独立访客)、page_pv(本页浏览)。
@@ -13,14 +13,24 @@
 //                           Cloudflare 边缘 zone 数据)。鉴权:Bearer 头(或兼容 ?token=)。
 //   token 与 env.STATS_TOKEN 常数时间比对,不匹配 → 401。面板不被搜索引擎收录。
 //
-// 绑定:KV = COUNTER;Secret = SALT(哈希访客 IP);Secret = STATS_TOKEN(面板口令)。
+// 绑定:D1 = DB(表结构见 ../schema.sql);Secret = SALT(哈希访客 IP);
+//   Secret = STATS_TOKEN(面板口令)。
 // 可选(接 Cloudflare 边缘数据):Secret = CF_API_TOKEN(带 Account/Zone Analytics 读),
 //   Var = CF_ZONE_TAG(jz21.eu.org 的 zone id,不填则用 CF_ZONE_NAME 自动发现)。
 //
+// 存储history:2026-08-24 之前这些数存在 KV 里。KV 免费档一天只有 1000 次写,而一次
+//   PV 要写 3~7 次(site_pv / page_pv / d_pv,新访客再加 uv 那几条),天花板约 300 PV/天,
+//   日常已经用掉 45%~70%,发一条视频引流就会打满、当天的计数直接丢。换成 D1 后
+//   免费额度是 10 万行写/天,同样的写法天花板变成两万 PV/天。旧的 KV namespace 还
+//   绑在 wrangler.toml 里但代码已不再读写它,留作回滚依据。
+//
 // 计数说明 / 取舍:
-// - UV 用「加盐后的 IP 哈希」去重(存哈希、不存明文 IP,1 年 TTL),规避第三方 cookie
-//   被浏览器拦截的问题(本 Worker 与博客不同源,cookie 方案不可靠)。
-// - KV 非原子:高并发下 read-modify-write 可能少记几次。个人博客量级可接受。
+// - UV 用「加盐后的 IP 哈希」去重(存哈希、不存明文 IP,满一年重新算新访客),规避第三方
+//   cookie 被浏览器拦截的问题(本 Worker 与博客不同源,cookie 方案不可靠)。
+// - 所有累加都是 `SET n = n + 1` 的原子 UPSERT,不会丢。KV 时代那种「读出来、加一、
+//   写回去」在并发下会丢:迁移当天对账,site_pv 计数器 3529 而 178 个 page_pv 相加是
+//   3624 —— 最热的那个 key 丢了 2.7%。计数器的值按旧值原样搬过来了,所以这段历史
+//   偏差还留在数字里,只是从此不再增加。
 // - CORS 只放行博客自己的源。面板端点不参与 CORS(同源直接浏览器打开)。
 // - 只有 Origin 在白名单里的请求才计数(浏览器跨域 fetch 必带 Origin);裸 GET
 //   (扫描器/curl)只回读数不累加——count.* 域名会进证书透明度日志,扫描流量不小。
@@ -44,15 +54,31 @@ async function sha256(str) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("")
 }
 
-async function incr(kv, key, ttl) {
-  const cur = parseInt((await kv.get(key)) || "0", 10) || 0
-  const next = cur + 1
-  await kv.put(key, String(next), ttl ? { expirationTtl: ttl } : undefined)
-  return next
+// counters 表里那几个全站累计数(site_pv / site_uv / dl:<slug> / dl_uniq:<slug>)。
+// 一条语句读改写,RETURNING 直接把新值带回来 —— 不需要先 SELECT 再 UPDATE,
+// 也就没有两个请求撞在中间的窗口。
+function bumpStmt(db, key) {
+  return db
+    .prepare(
+      "INSERT INTO counters(key, n) VALUES(?1, 1) " +
+        "ON CONFLICT(key) DO UPDATE SET n = n + 1 RETURNING n",
+    )
+    .bind(key)
 }
 
-async function read(kv, key) {
-  return parseInt((await kv.get(key)) || "0", 10) || 0
+async function counter(db, key) {
+  const row = await db.prepare("SELECT n FROM counters WHERE key = ?").bind(key).first()
+  return row ? row.n : 0
+}
+
+// batch() 的结果按语句顺序回来;取第 i 条的第一行第一列。
+function firstVal(res, i, field, fallback = 0) {
+  const rows = res[i] && res[i].results
+  return rows && rows[0] && rows[0][field] != null ? rows[0][field] : fallback
+}
+
+function daysAgoUTC(n) {
+  return new Date(Date.now() - n * 864e5).toISOString().slice(0, 10)
 }
 
 // 常数时间字符串比对,避免口令被计时攻击猜出来。
@@ -125,7 +151,7 @@ async function handleDownload(request, env) {
   const target = DOWNLOADS[slug]
   if (!target) return new Response("not found", { status: 404 })
 
-  const kv = env.COUNTER
+  const db = env.DB
   const day = todayUTC()
   const ip = request.headers.get("CF-Connecting-IP") || ""
   const ua = request.headers.get("User-Agent") || ""
@@ -134,18 +160,31 @@ async function handleDownload(request, env) {
   const isBot = /bot|crawler|spider|crawling|preview|fetch|curl|wget|python-requests/i.test(ua)
 
   if (!isBot) {
-    await incr(kv, "dl:" + slug) // 总次数
-    await incr(kv, "dl_day:" + slug + ":" + day) // 日别桶,永久保存
+    // 独立下载:同一个 IP 当天只算一次。刷新页面、下载器分段请求都会重复打这条,
+    // 不去重的话一个人能把数字顶上去。总次数照常记,两个数一起看才知道有没有异常。
+    // 「今天是不是头一回」交给主键冲突判断:INSERT OR IGNORE 之后 changes 为 0 就是重复,
+    // 不用先查一次再写。
+    let firstToday = false
     if (ip) {
-      // 独立下载:同一个 IP 当天只算一次。刷新页面、下载器分段请求都会重复打这条,
-      // 不去重的话一个人能把数字顶上去。总次数照常记,两个数一起看才知道有没有异常。
-      const seen = "dl_ip:" + slug + ":" + day + ":" + (await sha256(ip + "|" + (env.SALT || "bsz")))
-      if (!(await kv.get(seen))) {
-        await kv.put(seen, "1", { expirationTtl: 60 * 60 * 48 })
-        await incr(kv, "dl_uniq:" + slug)
-        await incr(kv, "dl_uniq_day:" + slug + ":" + day)
-      }
+      const h = await sha256(ip + "|" + (env.SALT || "bsz"))
+      const r = await db
+        .prepare("INSERT OR IGNORE INTO download_ips(slug, date, hash) VALUES(?1, ?2, ?3)")
+        .bind(slug, day, h)
+        .run()
+      firstToday = r.meta.changes > 0
     }
+    const u = firstToday ? 1 : 0
+    const stmts = [
+      db
+        .prepare(
+          "INSERT INTO downloads(slug, date, n, u) VALUES(?1, ?2, 1, ?3) " +
+            "ON CONFLICT(slug, date) DO UPDATE SET n = n + 1, u = u + ?3",
+        )
+        .bind(slug, day, u),
+      bumpStmt(db, "dl:" + slug),
+    ]
+    if (firstToday) stmts.push(bumpStmt(db, "dl_uniq:" + slug))
+    await db.batch(stmts)
   }
 
   // 302 而不是 301:301 会被浏览器**永久缓存**,那人第二次下载就不再经过这里,
@@ -172,52 +211,102 @@ async function handleCount(request, env) {
   if (path.length > 1) path = path.replace(/\/$/, "")
   const pageKey = "page_pv:" + path.slice(0, 512)
 
-  const kv = env.COUNTER
+  const db = env.DB
   const day = todayUTC()
-  // 日别桶(d_pv/d_uv)永久保存,不设 TTL —— 保留全部历史趋势。
+  // 日别桶(daily 表)永久保存,不清理 —— 保留全部历史趋势。
 
-  // Origin 不在白名单 → 只读不计数(见文件头注释)。
+  // Origin 不在白名单 → 只读不计数(见文件头注释)。三个数一条语句取回。
   if (!ALLOWED_ORIGINS.includes(origin)) {
+    const row = await db
+      .prepare(
+        "SELECT (SELECT n FROM counters WHERE key = 'site_uv') AS site_uv, " +
+          "(SELECT n FROM counters WHERE key = 'site_pv') AS site_pv, " +
+          "(SELECT pv FROM pages WHERE path = ?1) AS page_pv",
+      )
+      .bind(path)
+      .first()
     return new Response(
       JSON.stringify({
-        site_uv: await read(kv, "site_uv"),
-        site_pv: await read(kv, "site_pv"),
-        page_pv: await read(kv, pageKey),
+        site_uv: (row && row.site_uv) || 0,
+        site_pv: (row && row.site_pv) || 0,
+        page_pv: (row && row.page_pv) || 0,
       }),
       { headers: { ...corsHeaders(origin), "Content-Type": "application/json" } },
     )
   }
 
   // UV:按加盐 IP 哈希做全站去重(首见才 +1);同时记「当天首见」做日 UV。
-  let site_uv
+  // 一次访问 = 一条 SELECT + 一个 batch,batch 里是 4~5 条 UPSERT,全在一个事务里。
   const ip = request.headers.get("CF-Connecting-IP") || ""
+  const yearAgo = daysAgoUTC(365)
   let ipHash = ""
+  let isNewVisitor = false
+  let isNewToday = false
+  let knownUv = 0
+
   if (ip) {
     ipHash = await sha256(ip + "|" + (env.SALT || "bsz"))
-    const uvKey = "uv_ip:" + ipHash
-    if (await kv.get(uvKey)) {
-      site_uv = await read(kv, "site_uv")
-    } else {
-      await kv.put(uvKey, "1", { expirationTtl: 31536000 })
-      site_uv = await incr(kv, "site_uv")
-    }
-    // 日 UV:当天该 IP 首见才 +1(短 TTL 的当天去重标记)
-    const uvDayKey = "uvd:" + day + ":" + ipHash
-    if (!(await kv.get(uvDayKey))) {
-      await kv.put(uvDayKey, "1", { expirationTtl: 60 * 60 * 48 })
-      await incr(kv, "d_uv:" + day) // 永久桶,不设 TTL
-    }
+    const pre = await db
+      .prepare(
+        "SELECT (SELECT first_day FROM visitors WHERE hash = ?1) AS first_day, " +
+          "(SELECT last_day FROM visitors WHERE hash = ?1) AS last_day, " +
+          "(SELECT n FROM counters WHERE key = 'site_uv') AS site_uv",
+      )
+      .bind(ipHash)
+      .first()
+    knownUv = (pre && pre.site_uv) || 0
+    const firstDay = pre && pre.first_day
+    // 首见满一年的当新访客重新计一次 —— 照搬 KV 时代 uv_ip 一年 TTL 的效果。
+    isNewVisitor = !firstDay || firstDay < yearAgo
+    isNewToday = !pre || !pre.last_day || pre.last_day < day
   } else {
-    site_uv = await read(kv, "site_uv")
+    knownUv = await counter(db, "site_uv")
   }
 
-  const site_pv = await incr(kv, "site_pv")
-  const page_pv = await incr(kv, pageKey)
-  await incr(kv, "d_pv:" + day) // 日 PV 桶(永久,不设 TTL)
+  const stmts = []
+  if (ipHash) {
+    stmts.push(
+      db
+        .prepare(
+          "INSERT INTO visitors(hash, first_day, last_day) VALUES(?1, ?2, ?2) " +
+            "ON CONFLICT(hash) DO UPDATE SET last_day = ?2, " +
+            // 满一年的那种要把 first_day 也推到今天,否则下次访问又会被当成新访客。
+            "first_day = CASE WHEN first_day < ?3 THEN ?2 ELSE first_day END",
+        )
+        .bind(ipHash, day, yearAgo),
+    )
+  }
+  const uvIdx = isNewVisitor ? stmts.push(bumpStmt(db, "site_uv")) - 1 : -1
+  const pvIdx = stmts.push(bumpStmt(db, "site_pv")) - 1
+  const pageIdx =
+    stmts.push(
+      db
+        .prepare(
+          "INSERT INTO pages(path, pv) VALUES(?1, 1) " +
+            "ON CONFLICT(path) DO UPDATE SET pv = pv + 1 RETURNING pv",
+        )
+        .bind(path),
+    ) - 1
+  // 日 PV / 日 UV 合在一条:uv 的增量是 0 或 1,不用为它单开一次写。
+  stmts.push(
+    db
+      .prepare(
+        "INSERT INTO daily(date, pv, uv) VALUES(?1, 1, ?2) " +
+          "ON CONFLICT(date) DO UPDATE SET pv = pv + 1, uv = uv + ?2",
+      )
+      .bind(day, isNewToday ? 1 : 0),
+  )
 
-  return new Response(JSON.stringify({ site_uv, site_pv, page_pv }), {
-    headers: { ...corsHeaders(origin), "Content-Type": "application/json" },
-  })
+  const res = await db.batch(stmts)
+
+  return new Response(
+    JSON.stringify({
+      site_uv: uvIdx >= 0 ? firstVal(res, uvIdx, "n", knownUv + 1) : knownUv,
+      site_pv: firstVal(res, pvIdx, "n"),
+      page_pv: firstVal(res, pageIdx, "pv"),
+    }),
+    { headers: { ...corsHeaders(origin), "Content-Type": "application/json" } },
+  )
 }
 
 // ───────────────────────── 统计数据(私密) ─────────────────────────
@@ -688,6 +777,10 @@ const STATS_HTML = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <meta name="robots" content="noindex, nofollow"/>
 <title>Why Z · 数据面板</title>
+<!-- 内联 SVG favicon:这一页由 Worker 直接吐 HTML,没有静态资源目录可放 .ico。
+     深底 + 浅柱是刻意的:标签栏里一排都是白底站点图标,深色块在 16px 下一眼能认出来,
+     也和面板自己的深色主题(--bg #0f1115)对得上。换图标改这一行即可。 -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%2316181d'/><g fill='%23e8eaed'><rect x='13' y='36' width='10' height='16' rx='2'/><rect x='27' y='26' width='10' height='26' rx='2'/><rect x='41' y='14' width='10' height='38' rx='2'/></g></svg>"/>
 <style>
   :root{
     --bg:#0f1115; --card:#191c23; --line:#272b34; --fg:#e8eaed; --mut:#9aa3b2;

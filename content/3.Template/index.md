@@ -10,7 +10,7 @@ cssclasses:
 > [!tip] 整库下载
 > 👉 **[下载整库 ZIP](https://count.jz21.eu.org/dl/vault)** — 解压后用 Obsidian「Open folder as vault」打开即用。
 >
-> 想先看看里面有什么,去 [GitHub 仓库](https://github.com/jady21a/obsidian-workflow-vault) 逐个文件翻。
+> 如果想先预览页面结构和内容,可以在 [GitHub 仓库](https://github.com/jady21a/obsidian-workflow-vault) 查看。
 
 ## 书影音
 

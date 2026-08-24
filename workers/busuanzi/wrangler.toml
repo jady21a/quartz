@@ -12,6 +12,15 @@ workers_dev = false
 pattern = "count.jz21.eu.org"
 custom_domain = true
 
+# 计数数据在 D1(表结构见 schema.sql)。2026-08-24 从 KV 迁过来:KV 免费档
+# 1000 次写/天,一次 PV 要写 3~7 次,天花板 ~300 PV/天,日常已经用掉一半以上。
+[[d1_databases]]
+binding = "DB"
+database_name = "busuanzi"
+database_id = "7c3a7e37-9d77-40f5-984f-a1fca16d6c34"
+
+# 旧的 KV namespace。迁移后 worker 不再读写它,但**先别删**:里面是切换前的
+# 全部原始数据,真出问题时是唯一的回滚依据。确认 D1 稳了再考虑清理。
 [[kv_namespaces]]
 binding = "COUNTER"
 id = "c7212c424dae43509e0a4c61659a6003"
