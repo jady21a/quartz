@@ -1,5 +1,4 @@
 ---
-
 title: The Big Bang Theory
 originalTitle: The Big Bang Theory
 type: series
@@ -10,7 +9,6 @@ genre: Comedy,Romance
 datePublished: "{{ INVALID TEMPLATE TAG - object undefined }}"
 director: "{{ INVALID TEMPLATE TAG - object undefined }}"
 state:
-  - 待看
   - 正在观看
 aliases:
 country:
