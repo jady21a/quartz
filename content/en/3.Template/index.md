@@ -10,7 +10,7 @@ Here are all the Obsidian templates I use daily, in full. Copy them one by one, 
 > [!tip] Download the whole vault
 > 👉 **[Download the vault (ZIP)](https://count.jz21.eu.org/dl/vault)** — unzip, then open with Obsidian's "Open folder as vault".
 >
-> Want to look before you download? Browse the [GitHub repo](https://github.com/jady21a/obsidian-workflow-vault) file by file.
+> Want to see the structure and content first? You can preview it all in the [GitHub repo](https://github.com/jady21a/obsidian-workflow-vault).
 
 > [!note] Language note
 > The template code is kept identical to the downloadable vault, so some field names and comments inside it are in Chinese — it works as-is in any vault.
