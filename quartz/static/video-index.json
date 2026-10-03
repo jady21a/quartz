@@ -1,5 +1,34 @@
 [
   {
+    "title": "012-关掉Mac升级弹窗和红色角标",
+    "videoid": "jGJ1dnA4_Z0",
+    "bilibiliid": "BV16mHe69E5Y",
+    "sources": {
+      "youtube": "jGJ1dnA4_Z0",
+      "bilibili": "BV16mHe69E5Y"
+    },
+    "defaultSource": "bilibili",
+    "file": "/videos/video-notes/012-macos-update-nag-and-badge",
+    "hasEn": true,
+    "enTitle": "012 - Turning off the macOS upgrade nag and its red badge",
+    "enDescription": "",
+    "tags": [
+      "video",
+      "mac"
+    ],
+    "date": "2026-08-01",
+    "description": "",
+    "category": "mac",
+    "thumbnail": "https://i0.hdslb.com/bfs/archive/6a024e9920407f9af0a95a32618aa01638f09e40.jpg",
+    "related_notes": [
+      {
+        "target": "#补充",
+        "label": "补充章节"
+      }
+    ],
+    "createTime": ""
+  },
+  {
     "title": "011-obsidian开箱即用模板库",
     "videoid": "ocwFtT9Vs70",
     "bilibiliid": "BV1cNTC65EQF",
