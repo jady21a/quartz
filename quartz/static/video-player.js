@@ -86,8 +86,124 @@
     var player = document.createElement("lite-youtube")
     player.setAttribute("videoid", videoId)
     player.setAttribute("playlabel", playLabel || "播放视频")
+    // enablejsapi:让 iframe 接受 postMessage 的播放/暂停命令,供下面的空格键快捷键用
+    player.setAttribute(
+      "params",
+      "enablejsapi=1&origin=" + encodeURIComponent(window.location.origin),
+    )
+    watchYoutubeIframe(player)
     return player
   }
+
+  // ---- 空格键播放/暂停 ----
+  // 焦点在 iframe 里时 YouTube 自己处理空格;但只要点过页面别处(正文、播放源按钮、滚动条),
+  // 焦点就回到父页面,空格变成「整页下翻」,播放器毫无反应。这里在父页面接管:播放器至少
+  // 一半在视口内时,空格 → 未激活的 lite-youtube 直接激活播放,已激活的走 IFrame API
+  // (postMessage)切换。B站 iframe 跨域且没有公开的控制接口,不接管(空格照旧翻页)。
+  var YOUTUBE_ORIGIN = "https://www.youtube.com"
+  var youtubeStates = new WeakMap() // iframe.contentWindow → playerState(1 播放 / 2 暂停 / 3 缓冲 …)
+
+  function postYoutubeMessage(iframe, payload) {
+    if (!iframe.contentWindow) return
+    iframe.contentWindow.postMessage(JSON.stringify(payload), YOUTUBE_ORIGIN)
+  }
+
+  // 播放器默认不往外报状态,得先发 listening 握手;它 JS 就绪的时机不定,所以重试到收到状态为止
+  function subscribeYoutubeState(iframe) {
+    var tries = 0
+    var timer = setInterval(function () {
+      if (++tries > 20 || youtubeStates.has(iframe.contentWindow)) {
+        clearInterval(timer)
+        return
+      }
+      postYoutubeMessage(iframe, { event: "listening", id: 1, channel: "widget" })
+    }, 250)
+  }
+
+  // lite-youtube 点击后才插入真 iframe(Safari/移动端走 YT.Player,插入还是异步的),盯着它
+  function watchYoutubeIframe(player) {
+    var observer = new MutationObserver(function () {
+      var iframe = player.querySelector("iframe")
+      if (!iframe) return
+      observer.disconnect()
+      iframe.addEventListener("load", function () {
+        subscribeYoutubeState(iframe)
+      })
+    })
+    observer.observe(player, { childList: true, subtree: true })
+  }
+
+  window.addEventListener("message", function (event) {
+    if (event.origin !== YOUTUBE_ORIGIN || !event.source) return
+    var data
+    try {
+      data = typeof event.data === "string" ? JSON.parse(event.data) : event.data
+    } catch (e) {
+      return
+    }
+    if (!data) return
+    if (
+      (data.event === "infoDelivery" || data.event === "initialDelivery") &&
+      data.info &&
+      typeof data.info.playerState === "number"
+    ) {
+      youtubeStates.set(event.source, data.info.playerState)
+    } else if (data.event === "onStateChange" && typeof data.info === "number") {
+      youtubeStates.set(event.source, data.info)
+    }
+  })
+
+  function isTypingTarget(el) {
+    if (!el || !el.tagName) return false
+    if (el.isContentEditable) return true
+    return el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT"
+  }
+
+  function findVisibleStage() {
+    var stages = document.querySelectorAll(".video-source-stage")
+    for (var i = 0; i < stages.length; i++) {
+      var rect = stages[i].getBoundingClientRect()
+      if (rect.height === 0) continue
+      var visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0)
+      if (visible >= rect.height / 2) return stages[i]
+    }
+    return null
+  }
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== " " || event.defaultPrevented) return
+    if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return
+    var target = event.target
+    if (isTypingTarget(target)) return
+    // 页面上别处的按钮/链接:空格本该「按下」它。播放器区域里的(播放源按钮、大播放键)照样接管
+    if (
+      target.closest &&
+      target.closest("button, a, summary, [role=button]") &&
+      !target.closest(".video-player-container")
+    ) {
+      return
+    }
+
+    var stage = findVisibleStage()
+    var lite = stage && stage.querySelector("lite-youtube")
+    if (!lite) return
+
+    event.preventDefault()
+    if (event.repeat) return
+    if (!lite.classList.contains("lyt-activated")) {
+      lite.click()
+      return
+    }
+    var iframe = lite.querySelector("iframe")
+    if (!iframe) return
+    var state = youtubeStates.get(iframe.contentWindow)
+    var playing = state === 1 || state === 3
+    postYoutubeMessage(iframe, {
+      event: "command",
+      func: playing ? "pauseVideo" : "playVideo",
+      args: [],
+    })
+  })
 
   function createBilibiliPlayer(bvid, title) {
     var iframe = document.createElement("iframe")
