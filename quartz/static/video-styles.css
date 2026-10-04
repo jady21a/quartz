@@ -54,6 +54,10 @@
 }
 
 .video-cover-img {
+  /* 抵消 base.scss 全局 img 的 margin:1rem 0 和圆角:否则图被下推 16px,顶部露黑边、底部被裁 */
+  display: block;
+  margin: 0;
+  border-radius: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
