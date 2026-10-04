@@ -13,7 +13,8 @@
 //                           Cloudflare 边缘 zone 数据)。鉴权:Bearer 头(或兼容 ?token=)。
 //   token 与 env.STATS_TOKEN 常数时间比对,不匹配 → 401。面板不被搜索引擎收录。
 //
-// 绑定:D1 = DB(表结构见 ../schema.sql);Secret = SALT(哈希访客 IP);
+// 绑定:D1 = DB(表结构见 ../schema.sql);D1 = NEWSLETTER_DB(邮件订阅库,**只读**,
+//   面板拿订阅数用,写入只归 workers/newsletter);Secret = SALT(哈希访客 IP);
 //   Secret = STATS_TOKEN(面板口令)。
 // 可选(接 Cloudflare 边缘数据):Secret = CF_API_TOKEN(带 Account/Zone Analytics 读),
 //   Var = CF_ZONE_TAG(jz21.eu.org 的 zone id,不填则用 CF_ZONE_NAME 自动发现)。
@@ -419,11 +420,24 @@ async function handleStatsData(request, env) {
     platforms = null
   }
 
+  // 邮件订阅(只读 newsletter 那个库)。绑定没配上 / 库没建时是 null,面板照常出。
+  let newsletter = null
+  let newsletterError = null
+  if (env.NEWSLETTER_DB) {
+    try {
+      newsletter = await fetchNewsletter(env.NEWSLETTER_DB)
+    } catch (e) {
+      newsletterError = String(e && e.message ? e.message : e)
+    }
+  }
+
   return new Response(
     JSON.stringify({
       generatedAt: new Date().toISOString(),
       platforms,
       downloads,
+      newsletter,
+      newsletterError,
       site: { pv: site_pv, uv: site_uv },
       pages,
       daily,
@@ -444,6 +458,70 @@ async function handleStatsData(request, env) {
     }),
     { headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } },
   )
+}
+
+// ───────────────────────── 邮件订阅(只读 newsletter 库) ─────────────────────────
+// 只 SELECT,不写:名单的唯一真相源是 workers/newsletter,那边负责确认/退订/退信落库。
+// 口径注意:confirmed_at 在退订后**不清空**(退订只改 status 和 unsubscribed_at),
+// 所以按日聚合出来的是「当天有多少人完成确认」这个毛数,不是净增。用它看拉新节奏,
+// 别拿它累加去对 confirmed 那个人数——那两个数天生对不上,标签里写清了是「新确认」。
+//
+// 推送口径(**这条最容易看错,别省**):seen_entries.broadcast_at 的意思是「这篇的群发
+// 环节结束了」,不是「这篇发出去过信」。首次接管(bootstrap)会把 feed 里的存货全部
+// 标成已完成却一封不发 —— 库里现在 25 篇全是 done,而 sent 表统共只有 1 行。所以
+// 「上次推送」只能看 sent(真发出的信),broadcast_at 只配当「处理到哪儿了」的游标,
+// 推送列表里 0 收件的那些行必须明写「仅标记」,否则面板会显示成推送过 25 次。
+async function fetchNewsletter(ndb) {
+  const [statusRes, dailyRes, entryRes, sentRes, bcRes] = await ndb.batch([
+    ndb.prepare("SELECT status, COUNT(*) AS n FROM subscribers GROUP BY status"),
+    ndb.prepare(
+      "SELECT substr(confirmed_at, 1, 10) AS date, COUNT(*) AS n FROM subscribers " +
+        "WHERE confirmed_at IS NOT NULL GROUP BY date ORDER BY date",
+    ),
+    // 群发流水线的游标:处理到哪儿了,以及有没有卡着没发完的。
+    ndb.prepare(
+      "SELECT MAX(broadcast_at) AS last_at, " +
+        "SUM(CASE WHEN broadcast_at IS NULL THEN 1 ELSE 0 END) AS pending, " +
+        "SUM(CASE WHEN broadcast_at IS NOT NULL THEN 1 ELSE 0 END) AS done " +
+        "FROM seen_entries",
+    ),
+    // 真发出去的信:sent 每行 = 一个人收到一篇,是唯一能证明「信出去了」的表。
+    ndb.prepare("SELECT COUNT(*) AS n, MAX(sent_at) AS last_at FROM sent"),
+    // 最近处理过的文章 + 各自的收件人数。面板默认只摊开头几行、其余折叠,所以这里
+    // 多取一些(60)让「展开」有东西可展;超过 60 的老记录不发前端,面板会明说截断了。
+    ndb.prepare(
+      "SELECT e.title AS title, e.broadcast_at AS at, " +
+        "(SELECT COUNT(*) FROM sent s WHERE s.entry_guid = e.guid) AS n " +
+        "FROM seen_entries e WHERE e.broadcast_at IS NOT NULL " +
+        "ORDER BY e.broadcast_at DESC, e.first_seen_at DESC LIMIT 60",
+    ),
+  ])
+
+  const byStatus = {}
+  for (const r of statusRes.results) byStatus[r.status] = r.n
+  const total = Object.values(byStatus).reduce((s, n) => s + n, 0)
+  const entry = entryRes.results[0] || {}
+  const sent = sentRes.results[0] || {}
+
+  return {
+    // 面板只认这几个状态,库里冒出别的(schema 改了)会落进 byStatus 里不丢。
+    confirmed: byStatus.confirmed || 0,
+    pending: byStatus.pending || 0,
+    unsubscribed: byStatus.unsubscribed || 0,
+    bounced: byStatus.bounced || 0,
+    complained: byStatus.complained || 0,
+    total,
+    byStatus,
+    confirmDaily: dailyRes.results.map((r) => ({ date: r.date, n: r.n })),
+    // 真发信:封数 + 最后一封的时间。面板上的「上次推送」用的是这个。
+    sentTotal: sent.n || 0,
+    lastSentAt: sent.last_at || null,
+    // 处理游标:最后一次把某篇标成已完成(可能一封没发),以及待处理/已处理篇数。
+    lastMarkedAt: entry.last_at || null,
+    pendingEntries: entry.pending || 0,
+    markedEntries: entry.done || 0,
+    broadcasts: bcRes.results.map((r) => ({ title: r.title, at: r.at, n: r.n })),
+  }
 }
 
 // 手动触发一次快照(Bearer token 鉴权),用于部署后立刻回填初始历史 / 排障。
@@ -789,18 +867,21 @@ const STATS_HTML = `<!DOCTYPE html>
     --bg:#0f1115; --card:#191c23; --line:#272b34; --fg:#e8eaed; --mut:#9aa3b2;
     --acc:#7aa2f7; --acc2:#9ece6a; --warn:#e0af68; --dash:#3a4049;
   }
-  /* 浅色下页面底色压深(原 #f6f7f9),让纯白卡片自己浮起来。
-     原来卡片和底色只差一档灰,卡与卡的边界全靠那条 #e6e8ec 的细边撑着 —— 屏幕上勉强
-     看得见,一进截图(缩放 + 有损压缩先吃掉的就是这种低对比度细线)整条就没了。
-     底色压深是走「面」不走「线」:截图怎么压,两块颜色的分界都还在。
-     深度历史:2026-08-17 对着实样定到 #dcdcdc(中途试过 #e9edf2,判定不够深);
-     2026-08-22 回调到 #ededed。注意这比当初被否掉的 #e9edf2 还浅,截图下卡片边界
-     会比 #dcdcdc 弱 —— 若再遇到「截图里卡片糊成一片」,先怀疑这里。
+  /* ⚠ --bg 锁定 #dcdcdc,不许往浅调,也不许把这段警告改写成「历史记录」。
+     浅色下页面底色必须压深(原 #f6f7f9),纯白卡片才浮得起来。卡片和底色只差一档灰时,
+     卡与卡的边界全靠那条 #dbe0e7 的细边撑着 —— 屏幕上勉强看得见,一进截图(缩放 +
+     有损压缩先吃掉的就是这种低对比度细线)整条就没了。底色压深是走「面」不走「线」:
+     截图怎么压,两块颜色的分界都还在。
+     判定基准(2026-08-17 对着实样定的):参照物是截图工具选区外面那圈压暗,压到那个
+     程度卡片才真的浮起来;#e9edf2 试过,判定不够深。
+     翻车记录:2026-08-22 有人把它回调到 #ededed(比被否掉的 #e9edf2 还浅),同一笔改动
+     顺手把这条禁令改写成中性的「深度历史」,于是护栏没了;2026-09-05 用户再次报告
+     「背景色莫名其妙消失」,查出就是这次回调,复位 #dcdcdc。要改这个值先看这段。
      色相定成纯中性灰(不是带蓝的 #d6dce5):这页唯一该有色彩重量的是橙(要动手/已停更)
      和绿(日增),底色一旦有色相就在和它们抢。
      深色模式不用动 —— 那边卡片本来就比底色亮一档,分界靠的已经是面。 */
   @media (prefers-color-scheme: light){
-    :root{ --bg:#ededed; --card:#fff; --line:#dbe0e7; --fg:#1c2027; --mut:#69707d;
+    :root{ --bg:#dcdcdc; --card:#fff; --line:#dbe0e7; --fg:#1c2027; --mut:#69707d;
       --acc:#3b6fe0; --acc2:#3f9142; --warn:#b9820f; --dash:#bcc2ca; }
   }
   *{box-sizing:border-box}
@@ -820,9 +901,10 @@ const STATS_HTML = `<!DOCTYPE html>
   td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   tr:last-child td{border-bottom:none}
   .path{max-width:520px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  /* PV 排行的长尾:默认藏起来,展开只切 class,不重画表 —— 单表才能保证展开前后列宽一致 */
-  .pvrank .more{display:none}
-  .pvrank.open .more{display:table-row}
+  /* 长表的长尾:默认藏起来,展开只切 class,不重画表 —— 单表才能保证展开前后列宽一致。
+     两张表共用(页面 PV 排行 / 邮件推送记录),所以类名不叫 pvrank 了。 */
+  .foldrows .more{display:none}
+  .foldrows.open .more{display:table-row}
   /* 表尾吸底:展开 130 行之后,「收起」不能只长在表的最下面 —— 那等于逼人滑到底
      才能关掉。sticky 的作用域天然限在这张卡内,滚出 PV 排行就自己松开,不会变成
      一条永远赖在屏幕底下的横条。 */
@@ -945,6 +1027,13 @@ const fmt = n => (n==null?'—':n.toLocaleString('en-US'));
 const bytes = n => { if(n==null) return '—'; const u=['B','KB','MB','GB','TB']; let i=0,v=n;
   while(v>=1024&&i<u.length-1){v/=1024;i++} return v.toFixed(i?1:0)+' '+u[i]; };
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// 今天这天还没走完,它那个桶画进趋势线就是一条一头栽到底的尾巴 —— 每天早上看都像
+// 「昨天开始没人来了」。日增那边早就只认昨日(见 stats.json 的 yesterday 注释),
+// 趋势线跟着同一个口径:一律画到昨天为止。桶的日期是 UTC 的,这里也按 UTC 算今天。
+// 平台那几条曲线不走这里 —— 它们是平台自己的 T-1/T-2 口径,本来就没有今天。
+const TODAY_UTC = new Date().toISOString().slice(0,10);
+const dropToday = a => (a||[]).filter(x => x.date < TODAY_UTC);
 
 // 两张图共用画布尺寸,但 x 映射不同:折线的点落在两端边界上(xAt),柱子必须
 // 各占一个槽、居中画(xBand),否则首尾两根柱子会有一半被 viewBox 切掉。
@@ -1147,10 +1236,16 @@ const QUEUE_LABELS = new Set(['未读回复','待回评论','待回 issue'])
 // 是几乎不动的累计数,同样 22px 粗体只是在稀释真正要看的东西 —— B站一张卡九个
 // 大数字,眼睛落哪儿全凭运气,手机上更是挤成三行。
 const PRIMARY_LABELS = new Set([
-  '粉丝','订阅','播放','获赞与收藏','Star','Fork','累计克隆(归档)',   // 涨没涨、有没有人看
+  '粉丝','订阅','播放','获赞与收藏','关注者','Star','累计克隆(归档)', // 涨没涨、有没有人看
   '点赞','收藏','视频',                              // 凑够四个:内容反馈 / 产出量
 ])
-// GitHub 卡的主区排法是 2026-08-17 用户点名定的:Star / Fork / 累计克隆(归档) / 待回 issue。
+// 主区里再钉一次「谁排第一」。major 的名次本来完全跟取数侧的插入顺序走,而那边
+// 关注者排在 Star / Fork / 公开仓库 后面(见 fetch_stats.py)—— 取数顺序是按 API 调用
+// 先后写的,不是展示优先级,不该为了排版去动它。所以在这儿把它提上来,其余名次照旧。
+const LEAD_LABELS = new Set(['关注者'])
+// GitHub 卡的主区排法是用户点名定的:2026-08-17 定为 Star / Fork / 累计克隆(归档) /
+// 待回 issue,2026-09-01 改成 关注者 / Star / 累计克隆(归档) / 待回 issue —— 关注者提到
+// 第一格,Fork 落到次区小字(它半年才动一次,占着主区一格只是在稀释别的数)。
 // 三个「被用了多少」的指标(插件安装 222、Release 下载 6、ZIP 下载 12)都压进次区小字,
 // 主区留给仓库本身的体量。这不是默认排法推出来的结果,是指定的 —— 别看着「下载数被
 // 埋在小字里」就顺手改回去。
@@ -1197,6 +1292,8 @@ function platCard(p, fetchedAt, now, downloads){
   // 名额有限时待办先占位,剩下的按取数侧给的原顺序填 —— 主区读起来还是平台自己的排法。
   const queue=rows.filter(isQueue);
   const prim=rows.filter(function(m){ return PRIMARY_LABELS.has(m.label) && !isQueue(m) });
+  // 稳定排序,只把 LEAD_LABELS 里的提到最前;其余相对次序不动(取数侧原顺序)。
+  prim.sort(function(a,b){ return (LEAD_LABELS.has(b.label)?1:0)-(LEAD_LABELS.has(a.label)?1:0) });
   let major=prim.slice(0, Math.max(0, MAX_MAJOR-queue.length)).concat(queue);
   // 兜底:将来接的平台如果一个主指标都没命中(比如换了叫法),别把整张卡压成小字。
   if(!major.length) major=rows.slice(0, MAX_MAJOR);
@@ -1404,7 +1501,7 @@ function platformSection(pd, now, downloads){
   // 只是这张按天的曲线。
   (downloads||[]).forEach(function(x){
     if(!(x.total||x.uniques)) return;
-    const pts=x.daily||[];
+    const pts=dropToday(x.daily);   // 和上面两张趋势图同一个口径:今天没走完,不画
     if(pts.length<3) return;   // 三个点才成一条线,和平台曲线一个门槛
     const dates=pts.map(function(p){return p.date});
     cards.push(card('下载 · '+x.slug, dates.length,
@@ -1513,6 +1610,95 @@ async function load(){
      (dls.length? '<span class="t">下载按 IP 当天去重</span>' : '')+
      '</div></div>';
 
+  // 邮件订阅。单独一张卡而不是塞进上面那排四格:PV/UV 是「有多少人路过」,订阅是
+  // 「有多少人愿意留下地址」,后者还自带四个状态(待确认/在册/退订/退信),挤进去
+  // 只会把主区变成「最大的四个数」。四格正好一行,不留窟窿。
+  const nl=d.newsletter;
+  h+='<div class="card" style="margin-bottom:14px"><h2>邮件订阅 '+
+     '<span class="muted" style="font-weight:400;text-transform:none;letter-spacing:0">'+
+     'news.jz21.eu.org</span></h2>';
+  if(nl){
+    // 昨日新增用「昨日完成确认的人数」,和站点 PV 同一个 UTC 日口径。
+    const nyRow=(nl.confirmDaily||[]).find(function(x){ return y && x.date===y.date });
+    const bad=(nl.bounced||0)+(nl.complained||0);
+    const nmajor=[
+      sm(fmt(nl.confirmed),'确认订阅 · 在册',gain(nyRow?nyRow.n:0)),
+      sm(fmt(nl.pending),'待确认 · 未点确认信',null,nl.pending?'确认信可能进了垃圾箱':null),
+      sm(fmt(nl.unsubscribed),'已退订',null,null),
+      sm(fmt(bad),'退信 / 投诉',null,bad?'SES 回调标记,已停发':null),
+    ];
+    // 确认率的分母只算「表过态的人」(确认 + 退订 + 退信),不含还挂着的 pending ——
+    // 刚订阅还没点确认信的人被算成分母,率会随拉新节奏假跌。
+    const decided=nl.confirmed+nl.unsubscribed+bad;
+    const nminor=[['名单合计',fmt(nl.total)+' 人']];
+    if(decided) nminor.push(['确认率',Math.round(nl.confirmed/decided*100)+'%']);
+    // 近 30 天新确认:毛数(见 worker 里 fetchNewsletter 的口径注释)。
+    const d30=new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+    const n30=(nl.confirmDaily||[]).filter(function(x){ return x.date>=d30 })
+      .reduce(function(s,x){ return s+x.n },0);
+    nminor.push(['近 30 天新确认','+'+fmt(n30)]);
+    // 推送的活体证明:名单再涨,信没发出去也是白搭。这两个数都只认 sent 表 ——
+    // broadcast_at 证明不了发过信(见 worker 里 fetchNewsletter 的口径注释)。
+    nminor.push(['累计发信',fmt(nl.sentTotal||0)+' 封']);
+    nminor.push(['上次推送',nl.lastSentAt? nl.lastSentAt.slice(0,10) : '从未发过']);
+    if(nl.pendingEntries) nminor.push(['待发文章',fmt(nl.pendingEntries)+' 篇']);
+    h+='<div class="metrics">'+nmajor.join('')+'</div>'+
+       '<div class="minor">'+nminor.map(function(r){
+         return '<span><span class="t">'+r[0]+'</span> <b>'+r[1]+'</b></span>';
+       }).join('')+
+       '<span class="t">退订/退信的人留在名单里但不再发信</span></div>';
+  } else {
+    h+='<div class="muted">未接入订阅库'+(d.newsletterError?(':'+esc(d.newsletterError)):'')+
+       '。给 worker 加 <b>NEWSLETTER_DB</b> 这个 D1 绑定(database_name = newsletter)后重新部署即可。</div>';
+  }
+  h+='</div>';
+
+  // 推送记录另起一张卡,不塞在订阅卡里用分隔线分隔:名单人数和推送流水是两件事,
+  // 卡与卡之间那道底色缝隙是这一页现成的分区语言,卡内画线反而多发明了一种。
+  // 标题不做成链接:这一页整体是死胡同(见 platCard 的注释),不给点进内容的出口。
+  // 折叠和 PV 排行同一套(.foldrows + toggleRank):默认只摊开前 BHEAD 行 —— 一次
+  // bootstrap 就能糊上二十几行「仅标记」,全摊开等于把整页顶长,而那些行没人一行行看。
+  if(nl){
+    const bcs=nl.broadcasts||[];
+    const BHEAD=6;
+    h+='<div class="card foldrows" style="margin-bottom:14px"><h2>邮件推送记录 '+
+       '<span class="muted" style="font-weight:400;text-transform:none;letter-spacing:0">'+
+       '共处理 '+fmt(nl.markedEntries||0)+' 篇</span></h2>';
+    if(bcs.length){
+      h+='<table><thead><tr><th>处理时间</th><th>文章</th><th class="num">收件</th></tr></thead><tbody>';
+      h+=bcs.map(function(b,i){
+        // n=0 = 只在 seen_entries 里记了一笔、一封没发(bootstrap,或当时名单是空的)。
+        // 不标出来的话,这张表看着就像推送过 20 多次 —— 实际只有带数字的那几行发过信。
+        const cell=b.n? fmt(b.n)+' 人'
+                      : '<span class="muted">仅标记</span>';
+        return '<tr'+(i>=BHEAD?' class="more"':'')+'>'+
+          '<td class="num" style="text-align:left">'+esc((b.at||'').slice(0,16))+'</td>'+
+          '<td class="path">'+esc(b.title||'(无标题)')+'</td>'+
+          '<td class="num">'+cell+'</td></tr>';
+      }).join('');
+      h+='</tbody></table>';
+      // 表尾左边放结论(真发过信的有几篇),右边是展开按钮 —— 和 PV 排行一个长相。
+      const real=bcs.filter(function(b){ return b.n }).length;
+      h+='<div class="rank-foot"><span class="muted">列出的 '+fmt(bcs.length)+' 篇里 '+
+         fmt(real)+' 篇真发过信,其余仅标记</span>';
+      if(bcs.length>BHEAD){
+        h+='<button class="more-btn" onclick="toggleRank(this)" data-n="'+(bcs.length-BHEAD)+'">'+
+           '展开剩余 '+(bcs.length-BHEAD)+' 条 ▾</button>';
+      }
+      h+='</div>';
+      // 后端只取最近 60 篇。真超了就明说,别让「共处理」和表里行数对不上还一声不吭。
+      if((nl.markedEntries||0)>bcs.length){
+        h+='<div class="trunc">另有 '+fmt(nl.markedEntries-bcs.length)+
+           ' 篇更早的记录未列出(面板只取最近 '+fmt(bcs.length)+' 篇)。</div>';
+      }
+      h+='<div class="minor"><span class="t">「仅标记」= 只记进已见清单、没发信'+
+         '(首次接管的存货,或当时名单为空)</span></div>';
+    } else {
+      h+='<div class="muted">还没处理过任何文章 —— feed 里出现新文章后,定时任务才会记账。</div>';
+    }
+    h+='</div>';
+  }
+
   // 下载曲线不画在这儿 —— 它跟着平台趋势那排图走了(见 platformSection 末尾),
   // 填掉「访问 × 克隆」右边那个空位。这一区留数字。
 
@@ -1532,7 +1718,7 @@ async function load(){
   // 趋势图
   h+='<div class="grid two" style="margin-bottom:14px">';
   // busuanzi 日趋势
-  const bd=d.daily;
+  const bd=dropToday(d.daily);
   h+='<div class="card"><h2>每日趋势 · busuanzi(真人)</h2>';
   if(bd.length){
     h+=lineChart(
@@ -1544,7 +1730,7 @@ async function load(){
   } else h+='<div class="muted">日别桶从今天起累积,明天开始有趋势。</div>';
   h+='</div>';
   // CF 日趋势:优先用定时快照攒下的全部历史,回退到实时 30 天查询。
-  const cfd=(d.cfDaily&&d.cfDaily.length)?d.cfDaily:(cf?cf.daily:[]);
+  const cfd=dropToday((d.cfDaily&&d.cfDaily.length)?d.cfDaily:(cf?cf.daily:[]));
   h+='<div class="card"><h2>每日趋势 · Cloudflare 边缘'+
      (cfd.length?' <span class="muted" style="font-weight:400">('+cfd.length+' 天)</span>':'')+'</h2>';
   if(cfd.length){
@@ -1565,7 +1751,7 @@ async function load(){
   // 第 11 名往后是一水儿几个 PV 的长尾,平时纯占屏。剩下的收进折叠,展开就给全部 ——
   // 上一版停在 50 条且一声不吭,和上面 KPI「被访问页面数」当面对不上。
   const HEAD=10, CAP=200;
-  h+='<div class="card pvrank" style="margin-bottom:14px"><h2>页面 PV 排行(busuanzi)'+
+  h+='<div class="card foldrows" style="margin-bottom:14px"><h2>页面 PV 排行(busuanzi)'+
      (d.pages.length?' <span class="muted" style="font-weight:400">(共 '+fmt(d.pages.length)+' 页)</span>':'')+
      '</h2>';
   if(d.pages.length){

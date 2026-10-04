@@ -19,6 +19,16 @@ binding = "DB"
 database_name = "busuanzi"
 database_id = "7c3a7e37-9d77-40f5-984f-a1fca16d6c34"
 
+# 邮件订阅的库(workers/newsletter 那个 Worker 的库),面板**只读**它:订阅数是站点漏斗
+# 的末端,和 PV 放在一页才有意义。为什么直接绑库而不是去调 newsletter Worker 的接口:
+# 同账号跨 Worker 绑 D1 是原生支持的,一次 SELECT 就完事,省掉一条要自己鉴权、自己防超时
+# 的公网调用链。本 Worker 里出现 NEWSLETTER_DB 的地方只许 SELECT —— 名单是唯一真相源,
+# 写入只能由 newsletter Worker 做。
+[[d1_databases]]
+binding = "NEWSLETTER_DB"
+database_name = "newsletter"
+database_id = "8ccbff33-c715-4f41-9384-703fdafccfe8"
+
 # 旧的 KV namespace。迁移后 worker 不再读写它,但**先别删**:里面是切换前的
 # 全部原始数据,真出问题时是唯一的回滚依据。确认 D1 稳了再考虑清理。
 [[kv_namespaces]]

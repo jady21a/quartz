@@ -250,6 +250,14 @@ curl "https://newsletter.jz21.eu.org/?token=$T&action=status"
 | 看日志                           | `npx wrangler tail newsletter`                                                                                     |
 | 绕开入口看名单                   | `npx wrangler d1 execute newsletter --remote --command "SELECT status, COUNT(*) FROM subscribers GROUP BY status"` |
 
+### 订阅数也在数据面板上(2026-09-02 起)
+
+日常瞄一眼不用再敲 `?action=status`:`https://count.jz21.eu.org/stats#token=<STATS_TOKEN>` 的「站点流量」区里有一张**邮件订阅**卡 —— 在册 / 待确认 / 已退订 / 退信投诉四个数,外加昨日新增、确认率、近 30 天新确认、累计发信、上次推送;下面跟一张**邮件推送记录**表(处理时间 / 文章 / 收件人数)。放在 PV 旁边是有意的:订阅是站点漏斗的末端,单看名单人数看不出「涨的是流量还是留人」。
+
+**推送这两个口径别混**:`seen_entries.broadcast_at` 的意思是「这篇的群发环节处理完了」,**不等于发过信** —— bootstrap 会把 feed 里的存货全标成已完成却一封不发(眼下库里 25 篇全是 done,而 `sent` 表统共 1 行)。所以面板的「累计发信 / 上次推送」只认 `sent`,推送记录表里 0 收件的行明写「仅标记」。想知道「信到底出去过没有」,永远查 `sent`,别查 `broadcast_at`。
+
+实现是 **busuanzi 那个 Worker 直接绑了本库的 D1、只读**(`workers/busuanzi/wrangler.toml` 里的 `NEWSLETTER_DB`),不走本 Worker 的 `?action=status`(那条要 ADMIN_TOKEN,把发信 Worker 的运维口令塞进面板前端不划算)。**因此:本库要是重建/改名/换了 `database_id`,记得同步改 `workers/busuanzi/wrangler.toml` 并重新部署 busuanzi**,否则面板那张卡会静默变成「未接入订阅库」。名单的写入权仍然只在本 Worker 手里,面板只 SELECT。
+
 ## 几个已经踩过的坑,别再踩回去
 
 **首次跑会不会把存货全轰出去** — 不会,bootstrap 分支挡着。但如果你手动清空过 `seen_entries` 又不小心留了订阅者,下一轮就是真的群发。清库前先 `?action=dry-run`。
