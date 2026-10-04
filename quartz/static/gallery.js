@@ -86,6 +86,9 @@
     return url
   }
 
+  // 卡片上分类标签的显示名。category 原值是筛选键(视频合集页 data-category="ai"),不能改,只改显示。
+  const VIDEO_CATEGORY_LABELS = { ai: "AI workflow" }
+
   function getPreferredThumbnail(video) {
     if (video.thumbnail) return videoCoverSrc(video.thumbnail)
     if (video.videoid) return `https://i.ytimg.com/vi/${video.videoid}/hqdefault.jpg`
@@ -261,7 +264,7 @@
     if (video.category) {
       const cat = document.createElement("span")
       cat.className = "video-card-category"
-      cat.textContent = video.category
+      cat.textContent = VIDEO_CATEGORY_LABELS[video.category] || video.category
       card.appendChild(cat)
     }
     return card
