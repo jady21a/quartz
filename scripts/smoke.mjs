@@ -401,6 +401,10 @@ async function main() {
     for (const p of problems) console.error(`     · ${p}`)
   }
   console.error("")
+  if (slept) {
+    console.error("⏸ 本轮途中系统休眠过,页面超时/渲染没赶上都可能是休眠造成的,结果不作数(退出码 75,调用方会重跑)")
+    process.exit(EXIT_SLEPT)
+  }
   process.exit(1)
 }
 
@@ -408,16 +412,34 @@ async function main() {
 // browser.close 都没有——页面主线程卡住或浏览器失联时会永远等下去。2026-10-06 线上巡检、
 // 10-08 06:27 发布前冒烟各挂死一次(浏览器进程都在,node 停在某个 await 上),而 launchd
 // 见上一个实例没退出就静默跳过后续排期,两条任务就此停摆,所以必须由脚本自己兜底退出。
-// 计时不含睡眠(libuv 的单调时钟在 macOS 休眠时不走),DarkWake 里跑得慢不会被误杀。
+//
+// 只数「清醒时间」,不能用一个 setTimeout 了事:node 的定时器在 macOS 上把休眠也算进去。
+// 10-08 第一版就栽在这——10:00 巡检开跑 39 秒合盖,11:04 一醒「40 分钟超时」当场触发;
+// 12:00 发布全程在几秒一段的 DarkWake 里跑,13:15 醒来「15 分钟超时」触发,两次都是误报。
+// 所以每 5 秒打一拍,两拍间隔超 30 秒 = 进程被冻住过(休眠),这段不计时,只记下「休眠过」。
+// 休眠过的轮次,超时和页面失败都不作数,用退出码 75 告诉调用方重跑,而不是当成站点坏了。
 // 时限按最坏情况给:线上 35 页 × 90s 导航 / 2 并发 ≈ 26 分钟,本地 20s / 4 并发远低于此。
 // 退出前 Playwright 的 exit 钩子会顺手杀掉它拉起的浏览器。
 const OVERALL_TIMEOUT_MIN = ONLINE ? 40 : 15
-setTimeout(() => {
-  console.error(`❌ 冒烟检查整体超时(${OVERALL_TIMEOUT_MIN} 分钟未结束,疑似浏览器或页面卡死),强制退出`)
-  process.exit(1)
-}, OVERALL_TIMEOUT_MIN * 60 * 1000).unref()
+const EXIT_SLEPT = 75 // EX_TEMPFAIL:quartz-push.sh / quartz-smoke.sh 认这个码
+let slept = false
+{
+  const TICK_MS = 5000, SLEEP_GAP_MS = 30000
+  let awakeMs = 0, lastTick = Date.now()
+  setInterval(() => {
+    const now = Date.now(), gap = now - lastTick
+    lastTick = now
+    if (gap > SLEEP_GAP_MS) { slept = true; return }
+    awakeMs += gap
+    if (awakeMs < OVERALL_TIMEOUT_MIN * 60000) return
+    console.error(slept
+      ? `❌ 冒烟检查整体超时(清醒时间 ${OVERALL_TIMEOUT_MIN} 分钟未结束,途中系统休眠过,多半是休眠后浏览器失联),强制退出`
+      : `❌ 冒烟检查整体超时(清醒时间 ${OVERALL_TIMEOUT_MIN} 分钟未结束,疑似浏览器或页面卡死),强制退出`)
+    process.exit(slept ? EXIT_SLEPT : 1)
+  }, TICK_MS).unref()
+}
 
 main().catch((err) => {
   console.error("❌ 冒烟检查自身出错:", err)
-  process.exit(1)
+  process.exit(slept ? EXIT_SLEPT : 1)
 })
