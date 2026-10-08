@@ -1267,10 +1267,13 @@ function platCard(p, fetchedAt, now, downloads){
       '<div class="why">'+esc(p.why||'未接入')+'</div></div>'+
       '<span class="badge">未接入</span></div>';
   }
-  const age=now-new Date(fetchedAt).getTime();
+  // 逐卡时间优先:这次没取到的卡,本机会沿用上次的数字(carried),时间是那次的。
+  const age=now-new Date(p.fetchedAt||fetchedAt).getTime();
   const stale=!(age>=0) || age>STALE_HOURS*3600e3;
   // 正常时卡上不挂时间戳(整区一个,见 platformSection);只有这张卡的数可能过期了才说话。
-  const badge=stale? '<span class="badge stale">数据可能已停更 · '+ago(age)+'</span>' : '';
+  // 沿用的卡哪怕没过阈值也要说:同一屏里别的卡是刚取的,它不是。
+  const badge=stale? '<span class="badge stale">数据可能已停更 · '+ago(age)+'</span>'
+    : p.carried? '<span class="badge stale">这次没取到 · 沿用 '+ago(age)+'的数字</span>' : '';
   // 待办常驻主区,不按有没有事浮动:0 也要占着那一格,它说的是「查过了,没有」——
   // 一个会消失的指标,不在的时候人分不清是没事还是没取到数。
   // 但「占位」和「抢眼」是两回事:染橙、给链接仍然只在非零时(见下面的 hot)。
