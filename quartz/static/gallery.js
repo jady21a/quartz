@@ -188,6 +188,8 @@
     addInfoRows(info, cfg.infoItems(item))
     if (info.children.length > 0) card.appendChild(info)
 
+    if (!hasNote) addStubPeek(card, item, header)
+
     const footer = document.createElement("div")
     footer.className = p + "-footer"
     const statusText = cfg.statusText(item)
@@ -280,6 +282,80 @@
     return card
   }
 
+  // ==================== 空壳卡片:点开看简介 ====================
+
+  // 空壳卡片没有详情页,点了要是没反应,读者会以为网站坏了(手机上尤其像「没点中」)。
+  // 点一下在卡片下半截(封面和书名以下)盖一层简介 + 「还没写笔记」,再点收起——
+  // 死胡同变成一个小预览。封面书名留着,一眼知道是哪本;浮层盖住而不是撑高卡片,网格不跳。
+
+  // 豆瓣抓来的简介常带「※」开头、尾巴多出几个引号,顺手清掉
+  function cleanDesc(text) {
+    return String(text || "")
+      .replace(/\s+/g, " ")
+      .replace(/^["※\s]+|["\s]+$/g, "")
+  }
+
+  function setPeekOpen(card, open) {
+    // 浮层顶边对齐封面+书名区的底边。每次打开现量:标题折行数、窗口宽度都会变
+    const header = card.__peekHeader
+    const peek = card.querySelector(".stub-peek")
+    if (open && header && peek) peek.style.top = header.offsetTop + header.offsetHeight + "px"
+    card.classList.toggle("is-open", open)
+    card.setAttribute("aria-expanded", open ? "true" : "false")
+  }
+
+  function addStubPeek(card, item, header) {
+    const t = notesText()
+    card.__peekHeader = header
+    const peek = document.createElement("div")
+    peek.className = "stub-peek"
+    const desc = cleanDesc(item.desc)
+    if (desc) {
+      const p = document.createElement("p")
+      p.className = "stub-peek-desc"
+      p.textContent = desc
+      peek.appendChild(p)
+    }
+    const note = document.createElement("div")
+    note.className = "stub-peek-note"
+    // 有简介时注明来源(摘要据公开资料整理,不是我写的笔记)。分两行:窄的影视卡片上一行放不下
+    if (desc) {
+      const source = document.createElement("div")
+      source.className = "stub-peek-source"
+      source.textContent = t.source
+      note.appendChild(source)
+    }
+    const noNotes = document.createElement("div")
+    noNotes.textContent = t.noNotes
+    note.appendChild(noNotes)
+    peek.appendChild(note)
+    card.appendChild(peek)
+
+    card.tabIndex = 0
+    card.setAttribute("role", "button")
+    card.setAttribute("aria-expanded", "false")
+    card.setAttribute("aria-label", (item.title || "") + " · " + t.noNotes)
+    const toggle = function () {
+      const open = !card.classList.contains("is-open")
+      // 同时只开一张,免得满屏浮层
+      if (open) {
+        document.querySelectorAll(".is-stub.is-open").forEach(function (c) {
+          if (c !== card) setPeekOpen(c, false)
+        })
+      }
+      setPeekOpen(card, open)
+    }
+    card.addEventListener("click", toggle)
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault()
+        toggle()
+      } else if (e.key === "Escape") {
+        setPeekOpen(card, false)
+      }
+    })
+  }
+
   // ==================== 「只看有笔记的」开关 ====================
 
   const NOTES_ONLY_KEY = "gallery-notes-only"
@@ -288,11 +364,15 @@
     return window.QuartzLang.isEnPage()
       ? {
           badge: "Notes",
+          noNotes: "No notes yet",
+          source: "Summary from public sources",
           toggle: "Only with notes",
           count: (n, t) => n + " of " + t + " have notes",
         }
       : {
           badge: "笔记",
+          noNotes: "还没写笔记",
+          source: "简介据公开资料整理",
           toggle: "只看有笔记的",
           count: (n, t, unit) => t + " " + unit + "里 " + n + " " + unit + "写了笔记",
         }

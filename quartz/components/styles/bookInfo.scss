@@ -63,6 +63,12 @@
     }
   }
 
+  .desc-source {
+    margin-top: 0.3rem;
+    font-size: 0.75rem;
+    color: var(--gray);
+  }
+
   // 简介 - 使用 details/summary 实现展开收起
   .book-description {
     margin-top: 15px;

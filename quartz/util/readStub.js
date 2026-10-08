@@ -74,3 +74,39 @@ export function isReadStub(relativePath, frontmatter, substanceLength) {
   if (override !== undefined) return !override
   return substanceLength < READ_STUB_MIN
 }
+
+// ===== 书影简介摘要 =====
+// vault 里的 desc 已换成自己写的 120 字内总结(2026-10-08);新导入的书影还带着插件抓来的
+// 完整原文,等周期性地换成总结。在那之前,网站上(详情页 MediaInfo + 画廊空壳卡片)
+// 一律只放开头一小段,不把整篇别人的文案搬上站——这里是唯一的截短口径。
+export const DESC_MAX_WIDTH = 120
+
+// 按「汉字宽」计:汉字算 1,拉丁字母/数字/空格算 0.5,中英文摘要读起来差不多长
+function charWidth(c) {
+  return c.charCodeAt(0) < 256 ? 0.5 : 1
+}
+
+export function excerptDesc(text) {
+  // 豆瓣抓来的简介常带「※」分隔、尾巴多出几个引号,顺手清掉
+  const s = String(text || "")
+    .replace(/\s+/g, " ")
+    .replace(/^["※\s]+|["\s]+$/g, "")
+    .replace(/\s*※\s*/g, " ")
+  let width = 0
+  let cut = s.length
+  for (let i = 0; i < s.length; i++) {
+    width += charWidth(s[i])
+    if (width > DESC_MAX_WIDTH) {
+      cut = i
+      break
+    }
+  }
+  if (cut === s.length) return s
+  const head = s.slice(0, cut)
+  // 优先在句末断;没有合适的句末就退到分句处,别把人名切成两半;都太靠前才硬切
+  const sentence = [...head.matchAll(/[。！？!?]|\.(?=\s)/g)].pop()
+  if (sentence && sentence.index >= cut * 0.5) return head.slice(0, sentence.index + 1)
+  const clause = [...head.matchAll(/[，,；;]/g)].pop()
+  if (clause && clause.index >= cut * 0.5) return head.slice(0, clause.index) + "…"
+  return head.replace(/[，,、；;：:\s]+$/, "") + "…"
+}

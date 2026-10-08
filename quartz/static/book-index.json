@@ -2,6 +2,7 @@
   {
     "file": "/read/add-book/books/12-Months-to-$1-Million",
     "hasNote": false,
+    "desc": "",
     "title": "12 Months to $1 Million",
     "封面": "http://books.google.com/books/content?id=uwO5DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
     "originalTitle": "",
@@ -21,6 +22,7 @@
   {
     "file": "/read/add-book/books/How-to-Read-a-Book",
     "hasNote": true,
+    "desc": "",
     "title": "如何阅读一本书",
     "封面": "/read/douban/0_dimage/gbooks_Z5PpkQadm5EC.jpg",
     "originalTitle": "How to Read a Book",
@@ -44,6 +46,7 @@
   {
     "file": "/read/add-book/books/Logic-A-Very-Short-Introduction",
     "hasNote": true,
+    "desc": "",
     "title": "Logic A Very Short Introduction",
     "封面": "/read/douban/0_dimage/gbooks_1-4BLLgo0A8C.jpg",
     "originalTitle": "Logic: A Very Short Introduction",
@@ -67,6 +70,7 @@
   {
     "file": "/read/add-book/books/Show-Your-Work!-10-Ways-to-Share-Your-Creativity-and-Get-Discovered",
     "hasNote": false,
+    "desc": "《偷师学艺》作者奥斯汀·克莱恩的续作：创作者被看见不靠自我推销，而是大方分享过程。书中用插图、名言和案例给出十条做法，教你持续公开自己的工作、借助网络找到同好，让别人发现你。",
     "title": "Show Your Work!",
     "封面": "/read/add-book/covers/Show-Your-Work!-10-Ways-to-Share-Your-Creativity-and-Get-Discovered-—-Austin-Kleon.jpg",
     "originalTitle": "Show Your Work!: 10 Ways to Share Your Creativity and Get Discovered",
@@ -90,6 +94,7 @@
   {
     "file": "/read/add-book/books/Solving-the-Procrastination-Puzzle",
     "hasNote": true,
+    "desc": "",
     "title": "Solving the Procrastination Puzzle",
     "封面": "/read/douban/0_dimage/gbooks_1AAsyQ1wgaEC.jpg",
     "originalTitle": "Solving the Procrastination Puzzle",
@@ -111,8 +116,33 @@
     ]
   },
   {
+    "file": "/read/add-book/books/Thinking-Fast-and-Slow",
+    "hasNote": true,
+    "desc": "",
+    "title": "Thinking Fast and Slow",
+    "封面": "/read/douban/0_dimage/gbooks_TA7Q27RWlj0C.jpg",
+    "originalTitle": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "scoreStar": "",
+    "score": "",
+    "publishDate": "2011-11-01",
+    "myRate": "",
+    "阅读状态": [
+      "未读完"
+    ],
+    "totalPage": "619",
+    "currentPage": "",
+    "添加时间": "2026-03-17",
+    "开始时间": "",
+    "结束阅读": "",
+    "tags": [
+      "book"
+    ]
+  },
+  {
     "file": "/read/add-book/books/This-is-Marketing-You-Can't-Be-Seen-Until-You-Learn-To-See",
     "hasNote": false,
+    "desc": "赛斯·高汀把多年营销心得浓缩成一本书：营销不是喊得更大声，而是先看清你想服务的那一小群人，理解他们的需要和身份认同，再用产品和故事真诚地与他们建立连接。适合创业者、小老板和大公司员工。",
     "title": "This is Marketing You Can't Be Seen Until You Learn To See",
     "封面": "/read/add-book/covers/This-is-Marketing-You-Can't-Be-Seen-Until-You-Learn-To-See-—-Seth-Godin.jpg",
     "originalTitle": "",
@@ -136,6 +166,7 @@
   {
     "file": "/read/add-book/books/Unwinding-Anxiety",
     "hasNote": true,
+    "desc": "",
     "title": "Unwinding Anxiety",
     "封面": "/read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg",
     "originalTitle": "Unwinding Anxiety",
@@ -159,6 +190,7 @@
   {
     "file": "/read/add-book/books/positioning",
     "hasNote": true,
+    "desc": "",
     "title": "定位",
     "封面": "/read/add-book/covers/定位-—-美-艾·里斯-杰克·特劳特.jpg",
     "originalTitle": "Positioning: The Battle for Your Mind",
@@ -182,6 +214,7 @@
   {
     "file": "/read/douban/book/10xIsEasierThan2x",
     "hasNote": true,
+    "desc": "",
     "title": "10xIsEasierThan2x",
     "封面": "/read/douban/0_dimage/s34536381.jpg",
     "originalTitle": "",
@@ -205,6 +238,7 @@
   {
     "file": "/read/douban/book/12Monthsto$1Million",
     "hasNote": false,
+    "desc": "",
     "title": "12Monthsto$1Million",
     "封面": "/read/douban/0_dimage/gbooks_uwO5DwAAQBAJ.jpg",
     "originalTitle": "",
@@ -228,6 +262,7 @@
   {
     "file": "/read/douban/book/kim-ji-young-born-1982",
     "hasNote": true,
+    "desc": "",
     "title": "82年生的金智英",
     "封面": "/read/douban/0_dimage/s33463759.jpg",
     "originalTitle": "",
@@ -251,6 +286,7 @@
   {
     "file": "/read/douban/book/ExactlyWhattoSay",
     "hasNote": false,
+    "desc": "",
     "title": "ExactlyWhattoSay",
     "封面": "/read/douban/0_dimage/71LzPlsDcEL._SY522_.jpg",
     "originalTitle": "",
@@ -274,6 +310,7 @@
   {
     "file": "/read/douban/book/GiftsDiffering",
     "hasNote": true,
+    "desc": "",
     "title": "GiftsDiffering",
     "封面": "/read/douban/0_dimage/s3247795.jpg",
     "originalTitle": "",
@@ -297,6 +334,7 @@
   {
     "file": "/read/douban/book/MakeMoneyEasy",
     "hasNote": true,
+    "desc": "",
     "title": "MakeMoneyEasy",
     "封面": "/read/douban/0_dimage/s35158296.jpg",
     "originalTitle": "",
@@ -320,6 +358,7 @@
   {
     "file": "/read/douban/book/MillionDollarWeekend",
     "hasNote": true,
+    "desc": "",
     "title": "MillionDollarWeekend",
     "封面": "/read/douban/0_dimage/s34776686.jpg",
     "originalTitle": "",
@@ -343,6 +382,7 @@
   {
     "file": "/read/douban/book/NonviolentCommunication",
     "hasNote": false,
+    "desc": "马歇尔·卢森堡《非暴力沟通》英文版：通过观察、感受、需要、请求四个要素，学会不带评判地表达自己、同理倾听他人，用故事和对话示例化解家庭与职场中的冲突。",
     "title": "NonviolentCommunication",
     "封面": "/read/douban/0_dimage/s4584066.jpg",
     "originalTitle": "",
@@ -366,6 +406,7 @@
   {
     "file": "/read/douban/book/platform",
     "hasNote": true,
+    "desc": "",
     "title": "platform",
     "封面": "/read/douban/0_dimage/716ulwY6ycL._SY522_.jpg",
     "originalTitle": "",
@@ -389,6 +430,7 @@
   {
     "file": "/read/douban/book/UnderstandingNutrition",
     "hasNote": false,
+    "desc": "",
     "title": "UnderstandingNutrition",
     "封面": "/read/douban/0_dimage/s27117541.jpg",
     "originalTitle": "",
@@ -412,6 +454,7 @@
   {
     "file": "/read/douban/book/positive-thinking-of-a-pessimist",
     "hasNote": true,
+    "desc": "",
     "title": "一个悲观主义者的积极思考",
     "封面": "/read/douban/0_dimage/s26822759.jpg",
     "originalTitle": "",
@@ -435,6 +478,7 @@
   {
     "file": "/read/douban/book/sapiens",
     "hasNote": true,
+    "desc": "",
     "title": "人类简史",
     "封面": "/read/douban/0_dimage/s27814883.jpg",
     "originalTitle": "Sapiens: A brief history of humankind",
@@ -458,6 +502,7 @@
   {
     "file": "/read/douban/book/zero-to-one",
     "hasNote": true,
+    "desc": "",
     "title": "从0到1",
     "封面": "/read/douban/0_dimage/s28299265.jpg",
     "originalTitle": "",
@@ -481,6 +526,7 @@
   {
     "file": "/read/douban/book/how-do-you-live",
     "hasNote": false,
+    "desc": "吉野源三郎写给少年的经典小说，宫崎骏从小读到老，并用它的书名命名了自己的电影。少年小哥白尼在舅舅的陪伴下，从日常小事和挫折里思考人与社会的关系，以及怎样活才像一个真正的人。",
     "title": "你想活出怎样的人生",
     "封面": "/read/douban/0_dimage/s33439128.jpg",
     "originalTitle": "",
@@ -504,6 +550,7 @@
   {
     "file": "/read/douban/book/decisive",
     "hasNote": false,
+    "desc": "希思兄弟根据心理学研究，指出妨碍好决策的四个陷阱：思维狭隘、证实偏差、短期情绪和过度自信，并给出对应的「四步决断法」，帮助人在生活和工作中做出更好的选择。",
     "title": "决断力",
     "封面": "/read/douban/0_dimage/s27210878.jpg",
     "originalTitle": "",
@@ -527,6 +574,7 @@
   {
     "file": "/read/douban/book/carnegie-art-of-public-speaking",
     "hasNote": true,
+    "desc": "",
     "title": "卡耐基口才的艺术与人际关系",
     "封面": "/read/douban/0_dimage/amz_61g1WQHK8QL.jpg",
     "originalTitle": "",
@@ -550,6 +598,7 @@
   {
     "file": "/read/douban/book/principles",
     "hasNote": false,
+    "desc": "桥水基金创始人瑞·达利欧把四十多年的生活与工作原则公开成书，分生活、工作两大部分，讲个人如何直面现实、做好决定，以及桥水如何用这套原则管理公司。",
     "title": "原则",
     "封面": "/read/douban/0_dimage/s29643861.jpg",
     "originalTitle": "",
@@ -573,6 +622,7 @@
   {
     "file": "/read/douban/book/atomic-habits",
     "hasNote": true,
+    "desc": "",
     "title": "原子習慣",
     "封面": "/read/douban/0_dimage/s34937323.jpg",
     "originalTitle": "",
@@ -596,6 +646,7 @@
   {
     "file": "/read/douban/book/work-without-a-job",
     "hasNote": true,
+    "desc": "",
     "title": "只工作、不上班的自主人生",
     "封面": "/read/douban/0_dimage/BWL094.png",
     "originalTitle": "",
@@ -619,6 +670,7 @@
   {
     "file": "/read/douban/book/eat-that-frog",
     "hasNote": true,
+    "desc": "",
     "title": "吃掉那只青蛙",
     "封面": "/read/douban/0_dimage/s29841816.jpg",
     "originalTitle": "",
@@ -642,6 +694,7 @@
   {
     "file": "/read/douban/book/telling-true-stories",
     "hasNote": true,
+    "desc": "",
     "title": "哈佛非虚构写作课",
     "封面": "/read/douban/0_dimage/s28364301.jpg",
     "originalTitle": "",
@@ -665,6 +718,7 @@
   {
     "file": "/read/douban/book/grassroots-women",
     "hasNote": true,
+    "desc": "",
     "title": "基层女性",
     "封面": "/read/douban/0_dimage/s34001866.jpg",
     "originalTitle": "",
@@ -688,6 +742,7 @@
   {
     "file": "/read/douban/book/gifts-differing-zh",
     "hasNote": false,
+    "desc": "MBTI 创始人伊莎贝尔·迈尔斯与彼得·迈尔斯合著：基于荣格心理类型理论，解释外倾与内倾、感觉与直觉、思维与情感、判断与感知的偏好如何组合成十六种人格类型，以及它们在学习、工作和人际中的影响。",
     "title": "天生不同",
     "封面": "/read/douban/0_dimage/s29085860.jpg",
     "originalTitle": "",
@@ -711,6 +766,7 @@
   {
     "file": "/read/douban/book/japans-lost-decades",
     "hasNote": false,
+    "desc": "经济学家野口悠纪雄回顾日本平成时代（1989—2019）：从泡沫崩溃、制造业衰落到低欲望社会，历经次贷危机、东日本大地震与安倍经济学，分析日本经济为何长期停滞，以及未来该走向何方。",
     "title": "失去的三十年",
     "封面": "/read/douban/0_dimage/s34185604.jpg",
     "originalTitle": "",
@@ -734,6 +790,7 @@
   {
     "file": "/read/douban/book/how-to-talk-so-kids-will-listen",
     "hasNote": false,
+    "desc": "法伯与玛兹丽施的亲子沟通经典：用大量对话示例和漫画，教父母如何倾听孩子的感受、不靠吼骂就让孩子愿意合作，学会用描述代替指责、用选择代替命令。本书为 30 周年全新修订版。",
     "title": "如何说孩子才会听怎么听孩子才肯说（全新修订版）",
     "封面": "/read/douban/0_dimage/s10478956.jpg",
     "originalTitle": "",
@@ -757,6 +814,7 @@
   {
     "file": "/read/douban/book/build-mental-toughness",
     "hasNote": true,
+    "desc": "",
     "title": "如何迅速建立强大的心理素质",
     "封面": "/read/douban/0_dimage/s28425245.jpg",
     "originalTitle": "",
@@ -780,6 +838,7 @@
   {
     "file": "/read/douban/book/children-the-challenge",
     "hasNote": false,
+    "desc": "德雷克斯与索尔兹基于阿德勒心理学写的家庭教育代表作：在平等的现代家庭里，父母既不纵容也不严惩，而是做孩子的合作者，理解孩子行为背后的目的，引导他们尊重规则、承担责任、学会合作。",
     "title": "孩子：挑战",
     "封面": "/read/douban/0_dimage/s29049074.jpg",
     "originalTitle": "",
@@ -803,6 +862,7 @@
   {
     "file": "/read/douban/book/positioning",
     "hasNote": false,
+    "desc": "里斯与特劳特的营销经典：在信息过载的时代，品牌要赢，关键不在产品本身，而在顾客心智中占据一个独特的位置。「定位」思想最早发表于《广告时代》的系列文章，轰动业界，此为 20 周年纪念版译本。",
     "title": "定位",
     "封面": "/read/douban/0_dimage/s1081174.jpg",
     "originalTitle": "",
@@ -826,6 +886,7 @@
   {
     "file": "/read/douban/book/rich-dad-poor-dad",
     "hasNote": true,
+    "desc": "",
     "title": "富爸爸，穷爸爸",
     "封面": "/read/douban/0_dimage/s11229869.jpg",
     "originalTitle": "",
@@ -849,6 +910,7 @@
   {
     "file": "/read/douban/book/a-dog-called-money",
     "hasNote": true,
+    "desc": "",
     "title": "小狗钱钱",
     "封面": "/read/douban/0_dimage/s33789389.jpg",
     "originalTitle": "",
@@ -872,6 +934,7 @@
   {
     "file": "/read/douban/book/underlying-logic",
     "hasNote": false,
+    "desc": "商业顾问刘润总结《5分钟商学院》里的思考框架：在变化的世界里找到不变的规律。书中从是非对错、思考问题、个体进化、理解他人和社会协作五个方面讲底层逻辑，教你用「底层逻辑+环境变量」应对新问题。",
     "title": "底层逻辑",
     "封面": "/read/douban/0_dimage/s34076681.jpg",
     "originalTitle": "",
@@ -895,6 +958,7 @@
   {
     "file": "/read/douban/book/influence",
     "hasNote": true,
+    "desc": "",
     "title": "影响力",
     "封面": "/read/douban/0_dimage/s1657785.jpg",
     "originalTitle": "",
@@ -918,6 +982,7 @@
   {
     "file": "/read/douban/book/demian",
     "hasNote": false,
+    "desc": "黑塞的代表作之一。少年辛克莱生长在光明安稳的家庭，却意外窥见另一个纷乱黑暗的世界，在谎言与迷茫中挣扎时，神秘少年德米安出现并引导他，从此他踏上孤独而艰难的寻找自我之路。",
     "title": "德米安",
     "封面": "/read/douban/0_dimage/s5988251.jpg",
     "originalTitle": "",
@@ -941,6 +1006,7 @@
   {
     "file": "/read/douban/book/think-and-grow-rich",
     "hasNote": false,
+    "desc": "拿破仑·希尔访谈 500 多位成功人士后总结的致富经典：从强烈的欲望、信念、自我暗示到专业知识、想象力与周密计划，提出致富的 13 个步骤，核心是先改变思维再改变财富。此为希尔基金会修订注释版。",
     "title": "思考致富",
     "封面": "/read/douban/0_dimage/s28289884.jpg",
     "originalTitle": "",
@@ -964,6 +1030,7 @@
   {
     "file": "/read/douban/book/thinking-fast-and-slow",
     "hasNote": false,
+    "desc": "诺贝尔经济学奖得主卡尼曼一生研究的总结：人的思考由快速直觉的「系统 1」和缓慢审慎的「系统 2」驱动，书中通过大量实验揭示直觉的种种偏差，告诉我们什么时候可以相信直觉、什么时候不可以。",
     "title": "思考，快与慢",
     "封面": "/read/douban/0_dimage/s35129640.jpg",
     "originalTitle": "",
@@ -987,6 +1054,7 @@
   {
     "file": "/read/douban/book/getting-things-done",
     "hasNote": true,
+    "desc": "",
     "title": "搞定",
     "封面": "/read/douban/0_dimage/s33860665.jpg",
     "originalTitle": "",
@@ -1010,6 +1078,7 @@
   {
     "file": "/read/douban/book/life-changing-conversations",
     "hasNote": true,
+    "desc": "",
     "title": "改变人生的谈话",
     "封面": "/read/douban/0_dimage/s33838655.jpg",
     "originalTitle": "",
@@ -1033,6 +1102,7 @@
   {
     "file": "/read/douban/book/storytelling-class-1",
     "hasNote": false,
+    "desc": "华语故事教练许荣哲的说故事入门，罗振宇作序：故事是人类最古老、最有说服力的沟通工具。书中拆解好故事的结构公式，教你把观点、产品和经历讲成打动人的故事，用于说服、营销和自我介绍。",
     "title": "故事课1：说故事的人最有影响力",
     "封面": "/read/douban/0_dimage/s29824182.jpg",
     "originalTitle": "",
@@ -1056,6 +1126,7 @@
   {
     "file": "/read/douban/book/the-beginning-of-infinity",
     "hasNote": false,
+    "desc": "物理学家戴维·多伊奇的思想之作：好的解释是推动一切进步的根本力量，而它的潜力没有尽头。他由此讨论科学、创造力、自由意志、文化演化与人类的未来，坚定地站在理性与乐观一边。",
     "title": "无穷的开始",
     "封面": "/read/douban/0_dimage/s28775083.jpg",
     "originalTitle": "The Beginning of Infinity: Explanations That Transform the World",
@@ -1079,6 +1150,7 @@
   {
     "file": "/read/douban/book/financial-freedom-for-ordinary-people",
     "hasNote": true,
+    "desc": "",
     "title": "普通人的財富自由之道",
     "封面": "/read/douban/0_dimage/714FD0hNmfL._SY522_.jpg",
     "originalTitle": "",
@@ -1102,6 +1174,7 @@
   {
     "file": "/read/douban/book/guns-germs-and-steel",
     "hasNote": true,
+    "desc": "",
     "title": "枪炮、病菌与钢铁",
     "封面": "/read/douban/0_dimage/s1738643.jpg",
     "originalTitle": "Guns, Germs and Steel: The Fates of Human Societies",
@@ -1125,6 +1198,7 @@
   {
     "file": "/read/douban/book/empire-of-cotton",
     "hasNote": false,
+    "desc": "斯文·贝克特以棉花这一种商品串起四百年、横跨各大洲的历史，揭示资本主义全球化如何与殖民、奴隶贸易和国家暴力紧密相连，提出「战争资本主义」的概念，挑战自由市场的神话。获 2015 年班克罗夫特奖。",
     "title": "棉花帝国",
     "封面": "/read/douban/0_dimage/s32271479.jpg",
     "originalTitle": "",
@@ -1148,6 +1222,7 @@
   {
     "file": "/read/douban/book/jung-psychological-types",
     "hasNote": false,
+    "desc": "分析心理学创始人荣格的集大成之作，德文原典直译：他认为宗教、学术和世界观的种种争论背后，都有不同心理类型在起作用。书中梳理思想史后提出内倾与外倾两种态度和四种心理功能，为后来的 MBTI 奠定了基础。",
     "title": "榮格論心理類型",
     "封面": "/read/douban/0_dimage/s29703716.jpg",
     "originalTitle": "Psychologische Typen",
@@ -1171,6 +1246,7 @@
   {
     "file": "/read/douban/book/a-random-walk-down-wall-street",
     "hasNote": false,
+    "desc": "经济学家马尔基尔的投资经典：从「坚实基础」和「空中楼阁」两种理论讲到基本面与技术分析，回顾历史上的投机泡沫，主张普通人难以长期战胜市场，更适合低成本的指数投资，并给出按年龄配置资产的策略。",
     "title": "漫步华尔街(原书第12版)",
     "封面": "/read/douban/0_dimage/s34706866.jpg",
     "originalTitle": "",
@@ -1194,6 +1270,7 @@
   {
     "file": "/read/douban/book/the-rational-optimist",
     "hasNote": false,
+    "desc": "马特·里德利回应两百年来从未停止的悲观论调：食物、收入、寿命持续上升，疾病、贫困与暴力不断下降。他认为繁荣来自交换与专业分工，让人人为人人效力，并以此论证人类的未来值得乐观。",
     "title": "理性乐观派",
     "封面": "/read/douban/0_dimage/s6983402.jpg",
     "originalTitle": "The Rational Optimist:How Prosperity Evolves",
@@ -1217,6 +1294,7 @@
   {
     "file": "/read/douban/book/what-is-life",
     "hasNote": false,
+    "desc": "量子力学奠基人薛定谔用物理学的眼光追问生命的本质：遗传信息如何稳定地代代相传，生命又如何抵抗走向无序。这本小书启发了发现 DNA 双螺旋的沃森与克里克，是二十世纪最有影响的科学经典之一。",
     "title": "生命是什么",
     "封面": "/read/douban/0_dimage/s29967303.jpg",
     "originalTitle": "",
@@ -1240,6 +1318,7 @@
   {
     "file": "/read/douban/book/the-millionaire-fastlane",
     "hasNote": true,
+    "desc": "",
     "title": "百万富翁快车道",
     "封面": "/read/douban/0_dimage/s29582069.jpg",
     "originalTitle": "",
@@ -1263,6 +1342,7 @@
   {
     "file": "/read/douban/book/poor-charlies-almanack",
     "hasNote": true,
+    "desc": "",
     "title": "穷查理宝典",
     "封面": "/read/douban/0_dimage/s28875892.jpg",
     "originalTitle": "",
@@ -1286,6 +1366,7 @@
   {
     "file": "/read/douban/book/thinking-strategically",
     "hasNote": false,
+    "desc": "迪克西特与奈尔伯夫写给普通读者的博弈论入门：不用数学公式，用大量生活与商业中的例子，讲先发与后动、承诺与威胁、合作与背叛等策略原理，帮你在竞争与谈判中预判对手、做出更好的决策。",
     "title": "策略思维",
     "封面": "/read/douban/0_dimage/s1304989.jpg",
     "originalTitle": "",
@@ -1310,6 +1391,7 @@
   {
     "file": "/read/douban/book/running-lean",
     "hasNote": true,
+    "desc": "",
     "title": "精益创业实战（第2版）",
     "封面": "/read/douban/0_dimage/s24610736.jpg",
     "originalTitle": "",
@@ -1333,6 +1415,7 @@
   {
     "file": "/read/douban/book/the-almanack-of-naval-ravikant",
     "hasNote": true,
+    "desc": "",
     "title": "纳瓦尔宝典",
     "封面": "/read/douban/0_dimage/s34241855.jpg",
     "originalTitle": "",
@@ -1356,6 +1439,7 @@
   {
     "file": "/read/douban/book/the-intelligent-investor",
     "hasNote": true,
+    "desc": "",
     "title": "聪明的投资者（第4版注疏点评版）",
     "封面": "/read/douban/0_dimage/s34918327.jpg",
     "originalTitle": "",
@@ -1379,6 +1463,7 @@
   {
     "file": "/read/douban/book/the-willpower-instinct",
     "hasNote": true,
+    "desc": "",
     "title": "自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）",
     "封面": "/read/douban/0_dimage/s34809926.jpg",
     "originalTitle": "THE WILLPOWER INSTINCT",
@@ -1402,6 +1487,7 @@
   {
     "file": "/read/douban/book/the-selfish-gene",
     "hasNote": false,
+    "desc": "道金斯的进化生物学经典（30 周年版）：从基因而不是个体或物种的角度看自然选择，生物只是基因为复制自己而打造的生存机器，并以此解释利他、亲缘与合作行为。书中还首次提出了「模因」的概念。",
     "title": "自私的基因",
     "封面": "/read/douban/0_dimage/s11214645.jpg",
     "originalTitle": "",
@@ -1425,6 +1511,7 @@
   {
     "file": "/read/douban/book/the-iliad",
     "hasNote": false,
+    "desc": "荷马史诗之一，王焕生译。以特洛亚战争为背景，聚焦战争第十年里约五十天的故事：希腊统帅阿伽门农的傲慢激怒了主将阿基琉斯，由此引发一连串战斗与杀戮，是西方文学的源头之作。",
     "title": "荷马史诗·伊利亚特",
     "封面": "/read/douban/0_dimage/s29827449.jpg",
     "originalTitle": "",
@@ -1448,6 +1535,7 @@
   {
     "file": "/read/douban/book/the-odyssey",
     "hasNote": false,
+    "desc": "荷马史诗之一，王焕生译。用木马计攻陷特洛亚的奥德修斯率军返乡，在海上漂泊十年、历经艰险，同伴全部遇难，最终在雅典娜的护佑下孤身回到故乡，是特洛亚系列史诗中唯一传世的返乡史诗。",
     "title": "荷马史诗·奥德赛",
     "封面": "/read/douban/0_dimage/s29827450.jpg",
     "originalTitle": "",
@@ -1471,6 +1559,7 @@
   {
     "file": "/read/douban/book/marketing-management",
     "hasNote": true,
+    "desc": "",
     "title": "营销管理(第16版)",
     "封面": "/read/douban/0_dimage/s34804580.jpg",
     "originalTitle": "",
@@ -1494,6 +1583,7 @@
   {
     "file": "/read/douban/book/xue-zhaofeng-economics-lectures",
     "hasNote": false,
+    "desc": "薛兆丰把北大经济学课整理成书：不讲公式图表，而是用大量真实案例讲稀缺、成本、价格、交易、信息不对称和收入等核心概念，教你用经济学的视角看懂日常现象背后的逻辑。",
     "title": "薛兆丰经济学讲义",
     "封面": "/read/douban/0_dimage/s29841565.jpg",
     "originalTitle": "",
@@ -1517,6 +1607,7 @@
   {
     "file": "/read/douban/book/cognitive-boundaries",
     "hasNote": false,
+    "desc": "凌发明认为，很多人看得到机会却抓不住、懂道理却做不成，根源在于认知停留在表层。书中讲如何打破固有的思维习惯、看清事物的内在逻辑与商业本质，从而把认知转化为财富。",
     "title": "认知边界：认知决定你的财富",
     "封面": "/read/douban/0_dimage/51ilGM8ZvdL._SY522_.jpg",
     "originalTitle": "",
@@ -1540,6 +1631,7 @@
   {
     "file": "/read/douban/book/the-road-to-financial-freedom",
     "hasNote": true,
+    "desc": "",
     "title": "财务自由之路",
     "封面": "/read/douban/0_dimage/s35028819.jpg",
     "originalTitle": "",
@@ -1563,6 +1655,7 @@
   {
     "file": "/read/douban/book/poor-economics",
     "hasNote": false,
+    "desc": "诺贝尔经济学奖得主班纳吉与迪弗洛深入五大洲穷人的日常生活，用随机对照实验研究贫困：穷人为何吃不饱还买电视、孩子为何上了学却学不好。他们主张不空谈宏大理论，而是从具体问题入手改进援助。",
     "title": "贫穷的本质（修订版）",
     "封面": "/read/douban/0_dimage/s29856376.jpg",
     "originalTitle": "",
@@ -1586,6 +1679,7 @@
   {
     "file": "/read/douban/book/feynman-learning-technique",
     "hasNote": true,
+    "desc": "",
     "title": "费曼学习法（用输出倒逼输入）",
     "封面": "/read/douban/0_dimage/s33891850.jpg",
     "originalTitle": "",
@@ -1609,6 +1703,7 @@
   {
     "file": "/read/douban/book/the-psychology-of-money",
     "hasNote": false,
+    "desc": "摩根·豪泽尔用一个个短小的故事讲人与金钱的关系：理财成败更多取决于行为而非智商，复利、运气与风险、知足与储蓄、保持「合理」而非绝对理性，决定了普通人能否长期积累财富。",
     "title": "金钱心理学",
     "封面": "/read/douban/0_dimage/s34540496.jpg",
     "originalTitle": "",
@@ -1632,6 +1727,7 @@
   {
     "file": "/read/douban/book/nonviolent-communication",
     "hasNote": true,
+    "desc": "",
     "title": "非暴力沟通",
     "封面": "/read/douban/0_dimage/s29710777.jpg",
     "originalTitle": "",

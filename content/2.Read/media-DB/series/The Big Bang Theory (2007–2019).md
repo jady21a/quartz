@@ -20,7 +20,7 @@ tags:
 结束时间:
 author: Chuck Lorre,Bill Prady
 actor: Johnny Galecki,Jim Parsons,Kaley Cuoco
-desc: The lives of four socially awkward scientists take a wild turn when a beautiful and free-spirited girl moves in next door.
+desc: "查克·洛尔与比尔·普拉蒂打造的情景喜剧，播出 12 季。四个不擅社交的天才科学家，生活因对门搬来一位漂亮随性的女孩而天翻地覆，书呆子与普通人的碰撞笑料不断。"
 id: tt0898266
 dataSource: OMDbAPI
 ---

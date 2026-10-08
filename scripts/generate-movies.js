@@ -16,7 +16,7 @@ const OUTPUT_FILE = path.join(__dirname, "../quartz/static/movie-index.json")
 // 与 Quartz 的 sluggify 保持一致(含中文段→英文映射),否则链接和真实 slug 不一致 → 404
 import { sluggify as sluggifyPath, slugifyAssetPath } from "./slug-map-util.js"
 // 空壳页口径与 Quartz 构建同一份:hasNote=false 的影视页不会生成,卡片要做成不可点
-import { isReadStub, measureSubstance } from "../quartz/util/readStub.js"
+import { excerptDesc, isReadStub, measureSubstance } from "../quartz/util/readStub.js"
 
 // ===== 处理图片路径 =====
 // http 外链原样交给 gallery.js 代理;本地路径(2.Read/...)必须在这里就
@@ -115,7 +115,8 @@ function parseMovieData(filePath) {
     结束时间: cleanDate(frontmatter.结束时间 || ""),
     createTime: cleanDate(frontmatter.createTime),
     status: frontmatter.state || frontmatter.status || "",
-    desc: normalizeField(frontmatter.desc),
+    // 只放摘要,不把整篇简介原文放进公开的索引文件
+    desc: excerptDesc(normalizeField(frontmatter.desc)),
   }
 }
 

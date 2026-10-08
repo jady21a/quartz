@@ -20,7 +20,7 @@ function getFileExtension(s) {
 // 保证卡片链接与站点 HTML 路径一致(两边都映射,或都不映射)。
 import { sluggify, slugifyAssetPath } from "./slug-map-util.js"
 // 空壳页口径与 Quartz 构建同一份:hasNote=false 的书页不会生成,卡片要做成不可点
-import { isReadStub, measureSubstance } from "../quartz/util/readStub.js"
+import { excerptDesc, isReadStub, measureSubstance } from "../quartz/util/readStub.js"
 
 function slugifyFilePathLikeQuartz(relativePathWithExt) {
   let fp = relativePathWithExt.replace(/^\/+|\/+$/g, "")
@@ -138,9 +138,12 @@ function extractBookData(filePath) {
       title = path.basename(filePath, ".md")
     }
 
+    const hasNote = !isReadStub(relFromContent, frontmatter, measureSubstance(content))
     return {
       file: relativePath,
-      hasNote: !isReadStub(relFromContent, frontmatter, measureSubstance(content)),
+      hasNote,
+      // 空壳卡片点开时在卡片上展示简介(gallery.js),有笔记的卡片用不上,不往索引里塞
+      desc: hasNote ? "" : excerptDesc(frontmatter.desc),
       title: title,
       封面: processImagePath(frontmatter.封面 || frontmatter.coverUrl, title),
       originalTitle: frontmatter.originalTitle || "",

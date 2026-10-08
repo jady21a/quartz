@@ -1,5 +1,6 @@
 import { QuartzComponent, QuartzComponentProps } from "./types"
 import { resolveCoverUrl } from "../util/coverImage"
+import { excerptDesc } from "../util/readStub"
 
 // Shared implementation for the book / movie detail-page info cards. The two
 // used to be near-identical components (BookInfo / MovieInfo); this keeps a
@@ -59,7 +60,7 @@ const configs: Record<MediaKind, MediaConfig> = {
       { label: "开始阅读", value: str(fm.开始阅读) },
       { label: "结束阅读", value: str(fm.结束阅读) },
     ],
-    descOpen: false,
+    descOpen: true,
   },
   movie: {
     displayName: "MovieInfo",
@@ -175,7 +176,9 @@ export default function mediaInfo(kind: MediaKind): () => QuartzComponent {
               <summary>
                 <strong>简介：</strong>
               </summary>
-              <div class="desc-content">{String(fm.desc)}</div>
+              {/* 只放摘要(vault 里已是自己写的总结,新书原文在这里截短),并注明来源 */}
+              <div class="desc-content">{excerptDesc(fm.desc)}</div>
+              <div class="desc-source">简介据公开资料整理</div>
             </details>
           )}
         </div>

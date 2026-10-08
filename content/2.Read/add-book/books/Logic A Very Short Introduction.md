@@ -19,7 +19,7 @@ isbn: "9780192893208"
 开始阅读:
 结束阅读:
 myRate:
-desc: Logic is often perceived as having little to do with the rest of philosophy, and even less to do with real life. Graham Priest explores the philosophical roots of the subject, explaining how modern formal logic addresses many issues.
+desc: "格雷厄姆·普里斯特写的「牛津通识」逻辑学入门：逻辑常被认为与哲学其他部分无关，更与生活无关，作者从哲学根源讲起，用一个个短章说明现代形式逻辑如何回应这些问题，并把它和日常推理联系起来。"
 ---
 
 

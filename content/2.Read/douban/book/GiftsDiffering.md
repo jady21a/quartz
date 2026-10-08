@@ -15,7 +15,7 @@ tags:
 书籍类别:
 阅读进度:
 scoreStar: ⭐⭐⭐⭐☆
-desc: Like a thumbprint, personality type provides an instant snapshot of a person's uniqueness. Drawing on concepts originated by Carl Jung, this book distinguishes four categories of personality styles and shows how these qualities determine the way you perceive the world and come to conclusions about what you've seen. It then explains what they mean for your success in school, at ...(展开全部)Like a thumbprint, personality type provides an instant snapshot of a person's uniqueness. Drawing on concepts originated by Carl Jung, this book distinguishes four categories of personality styles and shows how these qualities determine the way you perceive the world and come to conclusions about what you've seen. It then explains what they mean for your success in school, at a job, in a career and in your personal relationships.伊莎贝尔·迈尔斯（Isabel Briggs Myers）是美国心理学家，终其一生都在观察、研究和测试人格类型。她因发明了迈尔斯-布里格斯人格类型测试表(MBTI)而被认为是人格类型测试领域的巨人。彼得·迈尔斯（Peter B. Myers）是伊莎贝尔·迈尔斯的儿子，他进一步完善了MBTI。""
+desc: "MBTI 创始人伊莎贝尔·布里格斯·迈尔斯的代表作《天生不同》英文版：基于荣格的心理类型理论，讲人在感知世界和做判断上的不同偏好，以及这些差异如何影响学习、工作与人际相处。"
 totalPage: "248"
 currentPage:
 myRate:

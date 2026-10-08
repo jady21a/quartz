@@ -27,7 +27,7 @@ tags:
 开始阅读:
 结束阅读:
 myRate:
-desc: "In his New York Times bestseller Steal Like an Artist, Austin Kleon showed readers how to unlock their creativity by “stealing” from the community of other movers and shakers. Now, in an even more forward-thinking and necessary book, he shows how to take that critical next step on a creative journey—getting known. Show Your Work! is about why generosity trumps genius. It’s about getting findable, about using the network instead of wasting time “networking.” It’s not self-promotion, it’s self-discovery—let others into your process, then let them steal from you. Filled with illustrations, quotes, stories, and examples, Show Your Work! offers ten transformative rules for being open, generous, brave, productive. In chapters such as You Don’t Have to Be a Genius; Share Something Small Every Day; and Stick Around, Kleon creates a user’s manual for embracing the communal nature of creativity— what he calls the “ecology of talent.” From broader life lessons about work (you can’t find your voice if you don’t use it) to the etiquette of sharing—and the dangers of oversharing—to the practicalities of Internet life (build a good domain name; give credit when credit is due), it’s an inspiring manifesto for succeeding as any kind of artist or entrepreneur in the digital age."
+desc: "《偷师学艺》作者奥斯汀·克莱恩的续作：创作者被看见不靠自我推销，而是大方分享过程。书中用插图、名言和案例给出十条做法，教你持续公开自己的工作、借助网络找到同好，让别人发现你。"
 ---
 
 

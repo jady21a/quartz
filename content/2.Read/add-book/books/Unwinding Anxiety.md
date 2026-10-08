@@ -19,7 +19,7 @@ isbn: "9780593330456"
 开始阅读:
 结束阅读:
 myRate:
-desc: New York Times and Wall Street Journal bestseller A step-by-step plan clinically proven to break the cycle of worry and fear that drives anxiety and addictive habits We are living through one of the most anxious periods any of us can remember. Whether facing issues as public as a pandemic or as personal as having kids at home and fighting the urge to reach for the wine bottle every night, we are feeling overwhelmed and out of control. But in this timely book, Judson Brewer explains how to uproot anxiety at its source using brain-based techniques and small hacks accessible to anyone. We think of anxiety as everything from mild unease to full-blown panic. But it's also what drives the addictive behaviors and bad habits we use to cope (e.g. stress eating, procrastination, doom scrolling and social media). Plus, anxiety lives in a part of the brain that resists rational thought. So we get stuck in anxiety habit loops that we can't think our way out of or use willpower to overcome. Dr. Brewer teaches us to map our brains to discover our triggers, defuse them with the simple but powerful practice of curiosity, and to train our brains using mindfulness and other practices that his lab has proven can work. Distilling more than 20 years of research and hands-on work with thousands of patients, including Olympic athletes and coaches, and leaders in government and business, Dr. Brewer has created a clear, solution-oriented program that anyone can use to feel better - no matter how anxious they feel.
+desc: "成瘾精神科医生贾德森·布鲁尔把焦虑看成一种习惯回路：担忧带来暂时的掌控感，于是不断被强化。书中用基于大脑的正念方法和小练习，教你觉察这个回路、看清它的回报，逐步拆掉焦虑与上瘾的习惯。"
 ---
 
 

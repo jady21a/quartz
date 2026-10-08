@@ -7,3 +7,5 @@ export declare function isReadStub(
   frontmatter: Record<string, any> | undefined,
   substanceLength: number,
 ): boolean
+export declare const DESC_MAX_WIDTH: number
+export declare function excerptDesc(text: unknown): string

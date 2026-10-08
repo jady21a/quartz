@@ -19,7 +19,7 @@ isbn: "9780698148314"
 开始阅读:
 结束阅读:
 myRate:
-desc: The revised edition of the self-published hit, offering powerful strategies to end procrastination. Why do we sabotage our own best intentions? How can we eliminate procrastination from our lives for good? Based on current psychological research and supplemented with clear strategies for change, this concise guide will help readers finally break free from self-destructive ideas and habits, and move into freedom and accomplishment. With numerous practical tips for change, Solving the Procrastination Puzzle brings clarity and scientific studies—and a touch of humor!—to the quest for successfully achieving goals. This accessible guide is perfect for entrepreneurs, parents, students, and anyone who wants to get unstuck, stop delaying, and start living their most inspired life.
+desc: "心理学家蒂莫西·皮切尔基于拖延研究写的简明指南：解释我们为什么会辜负自己的好意图，拆穿拖延背后的自欺念头，并给出一系列具体可行的改变策略，帮助读者摆脱拖延、真正推进目标。"
 ---
 
 
