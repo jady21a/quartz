@@ -1,6 +1,7 @@
 import { Root } from "mdast"
 import { VFile } from "vfile"
 import { QuartzTransformerPlugin } from "../types"
+import { READ_STUB_MIN, measureSubstance } from "../../util/readStub"
 
 // 「实质字数」= 剔掉模板骨架之后,笔记里真正自己写下的字数。
 //
@@ -14,42 +15,7 @@ declare module "vfile" {
   }
 }
 
-// 骨架行:标题、分隔线、只有标签没填内容的行(「- 一句话主旨:」)、
-// 只加粗的小标题(「**读前疑问**」)、中文序号小节名(「一、主题」)。
-const skeletonPatterns = [
-  /^#{1,6}\s/,
-  /^-{3,}$/,
-  /^\*{0,2}[^:：]{0,30}[:：]\*{0,2}$/,
-  /^\*\*[^*]+\*\*$/,
-  /^[一二三四五六七八九十]+、\s*\S{0,12}$/,
-]
-
-function measureSubstance(src: string): number {
-  // frontmatter 不算正文:书籍页的 desc(豆瓣简介)动辄几百字,是抓来的不是写的
-  let body = src
-  if (body.startsWith("---")) {
-    const closing = body.indexOf("\n---", 3)
-    if (closing !== -1) {
-      const afterClosing = body.indexOf("\n", closing + 1)
-      body = afterClosing === -1 ? "" : body.slice(afterClosing + 1)
-    }
-  }
-
-  let count = 0
-  for (const rawLine of body.split("\n")) {
-    const line = rawLine.trim()
-    if (!line) continue
-    // 先剥掉列表符号和引用符号,再判断这行是不是骨架
-    const content = line
-      .replace(/^([-*+]|\d+[.)])\s*/, "")
-      .replace(/^>+\s*/, "")
-      .trim()
-    if (!content) continue
-    if (skeletonPatterns.some((re) => re.test(content))) continue
-    count += content.replace(/\s+/g, "").length
-  }
-  return count
-}
+// 计数规则与书影空壳页同一份(quartz/util/readStub.js),这里只是挂到 file.data 上。
 
 // 书籍笔记:add-book 是自建库、douban 是抓来的元数据页,两处都按书对待
 // (没打 tags 的老书页靠目录兜底)。
@@ -57,8 +23,9 @@ export const bookFolders = ["read/add-book/books", "read/douban/book"]
 
 // 「空壳书页」的统一口径:侧栏「最新」、index.xml、newsletter.xml 三处共用,
 // 免得同一本书在这边挡住、那边又漏出去。
-// 门槛 120 字:实测空壳书页只有 14~51 字,写了笔记的最少也有 890 字,落在中间很安全。
-export const bookMinSubstance = 120
+// 2.Read 下的空壳页现在整页不上线(filters/readStub.ts),这里只剩兜底:
+// 2.Read 以外打了 book 标签的页。门槛与 readStub 同一个数。
+export const bookMinSubstance = READ_STUB_MIN
 
 export function isBookStub(
   file: {

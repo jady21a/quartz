@@ -15,6 +15,8 @@ const OUTPUT_FILE = path.join(__dirname, "../quartz/static/movie-index.json")
 
 // 与 Quartz 的 sluggify 保持一致(含中文段→英文映射),否则链接和真实 slug 不一致 → 404
 import { sluggify as sluggifyPath, slugifyAssetPath } from "./slug-map-util.js"
+// 空壳页口径与 Quartz 构建同一份:hasNote=false 的影视页不会生成,卡片要做成不可点
+import { isReadStub, measureSubstance } from "../quartz/util/readStub.js"
 
 // ===== 处理图片路径 =====
 // http 外链原样交给 gallery.js 代理;本地路径(2.Read/...)必须在这里就
@@ -93,6 +95,7 @@ function parseMovieData(filePath) {
   return {
     title,
     file: "/" + sluggifyPath("2.Read/" + relativePath),
+    hasNote: !isReadStub("2.Read/" + relativePath + ".md", frontmatter, measureSubstance(content)),
     tags,
     type: normalizeField(frontmatter.type),
     score: normalizeField(frontmatter.score),

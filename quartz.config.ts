@@ -128,10 +128,12 @@ const config: QuartzConfig = {
       }),
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
+      // 链向书影空壳页(不上线)的链接拆成纯文字,必须在 CrawlLinks 之后
+      Plugin.ReadStubLinks(),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
     ],
-    filters: [Plugin.RemoveDrafts()],
+    filters: [Plugin.RemoveDrafts(), Plugin.RemoveReadStubs()],
     emitters: [
       Plugin.AliasRedirects(),
       // URL 英文化前的旧中文 URL → 新英文 URL 重定向(页面级 + 文件夹级)

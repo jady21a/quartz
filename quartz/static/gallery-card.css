@@ -39,6 +39,78 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
+/* ===== 有笔记 vs 空壳 =====
+   空壳卡片(只有元数据、没写笔记,详情页不上线)照常展示但不可点:不上浮、不变手型。
+   有笔记的封面角上挂「笔记」标记——不靠悬停区分,手机上也一眼看得出来。 */
+.book-card.is-stub:hover,
+.movie-card.is-stub:hover {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.book-cover-link,
+.movie-cover-link {
+  position: relative;
+  display: inline-block;
+}
+
+.note-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--secondary);
+  color: var(--light);
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1.5;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+/* 「只看有笔记的」开关:gallery.js 插在每种画廊的第一个容器前面 */
+.gallery-notes-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1rem 0 0;
+  font-size: 0.85rem;
+  color: var(--darkgray);
+}
+
+.gallery-notes-toggle button {
+  font: inherit;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--gray) 60%, transparent);
+  background: var(--light);
+  color: var(--darkgray);
+  cursor: pointer;
+}
+
+.gallery-notes-toggle button[aria-pressed="true"] {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: var(--light);
+}
+
+.notes-only .book-card.is-stub,
+.notes-only .movie-card.is-stub {
+  display: none;
+}
+
+/* 开关打开后某一栏一张都不剩,给句话,别只留一个光秃秃的小标题 */
+.notes-only .book-grid:not(:has(.has-note))::after,
+.notes-only .movie-grid:not(:has(.has-note))::after {
+  content: "这一栏还没有写了笔记的";
+  grid-column: 1 / -1;
+  padding: 0.5rem;
+  color: var(--gray);
+  font-size: 0.85rem;
+}
+
 .book-header,
 .movie-header {
   display: flex;

@@ -100,8 +100,11 @@
   // 书 / 影视通用卡片（封面 + 标题 + 评分 + 信息 + 状态/进度）
   function renderMediaCard(item, cfg) {
     const p = cfg.prefix
+    // hasNote=false:空壳页(只有元数据、没写笔记)不上线,卡片照常展示但不可点。
+    // 口径在 quartz/util/readStub.js,索引脚本写进 hasNote。缺这个字段的老索引按可点处理。
+    const hasNote = item.hasNote !== false
     const card = document.createElement("div")
-    card.className = p + "-card"
+    card.className = p + "-card " + (hasNote ? "has-note" : "is-stub")
 
     const header = document.createElement("div")
     header.className = p + "-header"
@@ -109,8 +112,8 @@
     const coverWrapper = document.createElement("div")
     coverWrapper.className = p + "-cover-wrapper"
 
-    const coverLink = document.createElement("a")
-    coverLink.href = fixFilePath(item.file, item.hasEn)
+    const coverLink = document.createElement(hasNote ? "a" : "span")
+    if (hasNote) coverLink.href = fixFilePath(item.file, item.hasEn)
     coverLink.className = p + "-cover-link"
     coverLink.title = item.title || "查看详情"
 
@@ -136,6 +139,13 @@
     } else {
       coverLink.appendChild(makePlaceholder())
     }
+    if (hasNote) {
+      // 不靠悬停区分:手机上没有悬停,得一眼就看得到哪些能点进去
+      const badge = document.createElement("span")
+      badge.className = "note-badge"
+      badge.textContent = notesText().badge
+      coverLink.appendChild(badge)
+    }
     coverWrapper.appendChild(coverLink)
     header.appendChild(coverWrapper)
 
@@ -143,8 +153,8 @@
     titleSection.className = p + "-title-section"
     const title = document.createElement("h3")
     title.className = p + "-title"
-    const titleLink = document.createElement("a")
-    titleLink.href = fixFilePath(item.file, item.hasEn)
+    const titleLink = document.createElement(hasNote ? "a" : "span")
+    if (hasNote) titleLink.href = fixFilePath(item.file, item.hasEn)
     titleLink.textContent = item.title || "未命名"
     titleLink.title = item.title || "未命名"
     title.appendChild(titleLink)
@@ -270,6 +280,92 @@
     return card
   }
 
+  // ==================== 「只看有笔记的」开关 ====================
+
+  const NOTES_ONLY_KEY = "gallery-notes-only"
+
+  function notesText() {
+    return window.QuartzLang.isEnPage()
+      ? {
+          badge: "Notes",
+          toggle: "Only with notes",
+          count: (n, t) => n + " of " + t + " have notes",
+        }
+      : {
+          badge: "笔记",
+          toggle: "只看有笔记的",
+          count: (n, t, unit) => t + " " + unit + "里 " + n + " " + unit + "写了笔记",
+        }
+  }
+
+  // 偏好只是个人便利,存不了(隐私窗口/禁用存储)就当没开
+  function readNotesOnly() {
+    try {
+      return localStorage.getItem(NOTES_ONLY_KEY) === "1"
+    } catch (e) {
+      return false
+    }
+  }
+  function writeNotesOnly(on) {
+    try {
+      localStorage.setItem(NOTES_ONLY_KEY, on ? "1" : "0")
+    } catch (e) {}
+  }
+
+  // 每页每种画廊一个开关,插在第一个画廊容器前面;作用于本页同类的所有容器
+  function ensureNotesToggle(cfg, containers, all) {
+    const first = containers[0]
+    if (!first || !first.parentNode) return
+    const existing = first.parentNode.querySelector(
+      '.gallery-notes-toggle[data-for="' + cfg.prefix + '"]',
+    )
+    const items = cfg.filter(all.slice(), document.createElement("div"))
+    const withNotes = items.filter(function (it) {
+      return it.hasNote !== false
+    }).length
+    // 全都有笔记(或索引还没 hasNote 字段)时开关没意义
+    if (withNotes === items.length) {
+      if (existing) existing.remove()
+      containers.forEach(function (c) {
+        c.classList.remove("notes-only")
+      })
+      return
+    }
+
+    const t = notesText()
+    const apply = function (on) {
+      containers.forEach(function (c) {
+        c.classList.toggle("notes-only", on)
+      })
+      if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false")
+    }
+
+    let btn = existing && existing.querySelector("button")
+    if (!existing) {
+      const bar = document.createElement("div")
+      bar.className = "gallery-notes-toggle"
+      bar.setAttribute("data-for", cfg.prefix)
+      btn = document.createElement("button")
+      btn.type = "button"
+      btn.textContent = t.toggle
+      btn.addEventListener("click", function () {
+        const on = btn.getAttribute("aria-pressed") !== "true"
+        writeNotesOnly(on)
+        apply(on)
+      })
+      const count = document.createElement("span")
+      count.className = "gallery-notes-count"
+      count.textContent = t.count(withNotes, items.length, cfg.unit)
+      bar.appendChild(btn)
+      bar.appendChild(count)
+      // 开关管整页所有分栏,放在第一个分栏标题上面,别让它看着像只属于「正在阅读」
+      const prev = first.previousElementSibling
+      const anchor = prev && /^H[1-6]$/.test(prev.tagName) ? prev : first
+      anchor.parentNode.insertBefore(bar, anchor)
+    }
+    apply(readNotesOnly())
+  }
+
   // ==================== generic loader ====================
 
   // 同一个 index.json 在一次会话里只抓一次（之前每次 SPA 导航都会重新下载）
@@ -292,6 +388,14 @@
   async function loadGallery(cfg) {
     const containers = document.querySelectorAll(cfg.selector)
     if (containers.length === 0) return
+
+    if (cfg.notesToggle) {
+      fetchIndex(cfg.indexUrl)
+        .then(function (all) {
+          ensureNotesToggle(cfg, Array.prototype.slice.call(containers), all)
+        })
+        .catch(function () {}) // 加载失败由下面各容器自己报错
+    }
 
     for (const container of containers) {
       const status = container.getAttribute("data-status")
@@ -371,6 +475,8 @@
     defaultSort: "添加时间",
     placeholder: "📚",
     coverAlt: "书籍封面",
+    notesToggle: true,
+    unit: "本",
     withProgress: true,
     infoItems: function (book) {
       // 没有结束时间（还没读完）不显示用时；起点缺开始时间时退回添加时间
@@ -437,6 +543,8 @@
     defaultSort: "添加时间",
     placeholder: "🎬",
     coverAlt: "影片海报",
+    notesToggle: true,
+    unit: "部",
     withProgress: false,
     infoItems: function (m) {
       return [

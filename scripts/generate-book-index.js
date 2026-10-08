@@ -19,6 +19,8 @@ function getFileExtension(s) {
 // 中文路径段 → 英文 slug,与 quartz/util/path.ts 共用同一份 slug-map.json,
 // 保证卡片链接与站点 HTML 路径一致(两边都映射,或都不映射)。
 import { sluggify, slugifyAssetPath } from "./slug-map-util.js"
+// 空壳页口径与 Quartz 构建同一份:hasNote=false 的书页不会生成,卡片要做成不可点
+import { isReadStub, measureSubstance } from "../quartz/util/readStub.js"
 
 function slugifyFilePathLikeQuartz(relativePathWithExt) {
   let fp = relativePathWithExt.replace(/^\/+|\/+$/g, "")
@@ -138,6 +140,7 @@ function extractBookData(filePath) {
 
     return {
       file: relativePath,
+      hasNote: !isReadStub(relFromContent, frontmatter, measureSubstance(content)),
       title: title,
       封面: processImagePath(frontmatter.封面 || frontmatter.coverUrl, title),
       originalTitle: frontmatter.originalTitle || "",

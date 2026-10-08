@@ -1,6 +1,7 @@
 [
   {
     "file": "/read/add-book/books/12-Months-to-$1-Million",
+    "hasNote": false,
     "title": "12 Months to $1 Million",
     "封面": "http://books.google.com/books/content?id=uwO5DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
     "originalTitle": "",
@@ -19,6 +20,7 @@
   },
   {
     "file": "/read/add-book/books/How-to-Read-a-Book",
+    "hasNote": true,
     "title": "如何阅读一本书",
     "封面": "/read/douban/0_dimage/gbooks_Z5PpkQadm5EC.jpg",
     "originalTitle": "How to Read a Book",
@@ -41,6 +43,7 @@
   },
   {
     "file": "/read/add-book/books/Logic-A-Very-Short-Introduction",
+    "hasNote": true,
     "title": "Logic A Very Short Introduction",
     "封面": "/read/douban/0_dimage/gbooks_1-4BLLgo0A8C.jpg",
     "originalTitle": "Logic: A Very Short Introduction",
@@ -63,6 +66,7 @@
   },
   {
     "file": "/read/add-book/books/Show-Your-Work!-10-Ways-to-Share-Your-Creativity-and-Get-Discovered",
+    "hasNote": false,
     "title": "Show Your Work!",
     "封面": "/read/add-book/covers/Show-Your-Work!-10-Ways-to-Share-Your-Creativity-and-Get-Discovered-—-Austin-Kleon.jpg",
     "originalTitle": "Show Your Work!: 10 Ways to Share Your Creativity and Get Discovered",
@@ -85,6 +89,7 @@
   },
   {
     "file": "/read/add-book/books/Solving-the-Procrastination-Puzzle",
+    "hasNote": true,
     "title": "Solving the Procrastination Puzzle",
     "封面": "/read/douban/0_dimage/gbooks_1AAsyQ1wgaEC.jpg",
     "originalTitle": "Solving the Procrastination Puzzle",
@@ -107,6 +112,7 @@
   },
   {
     "file": "/read/add-book/books/This-is-Marketing-You-Can't-Be-Seen-Until-You-Learn-To-See",
+    "hasNote": false,
     "title": "This is Marketing You Can't Be Seen Until You Learn To See",
     "封面": "/read/add-book/covers/This-is-Marketing-You-Can't-Be-Seen-Until-You-Learn-To-See-—-Seth-Godin.jpg",
     "originalTitle": "",
@@ -129,6 +135,7 @@
   },
   {
     "file": "/read/add-book/books/Unwinding-Anxiety",
+    "hasNote": true,
     "title": "Unwinding Anxiety",
     "封面": "/read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg",
     "originalTitle": "Unwinding Anxiety",
@@ -151,6 +158,7 @@
   },
   {
     "file": "/read/add-book/books/positioning",
+    "hasNote": true,
     "title": "定位",
     "封面": "/read/add-book/covers/定位-—-美-艾·里斯-杰克·特劳特.jpg",
     "originalTitle": "Positioning: The Battle for Your Mind",
@@ -173,6 +181,7 @@
   },
   {
     "file": "/read/douban/book/10xIsEasierThan2x",
+    "hasNote": true,
     "title": "10xIsEasierThan2x",
     "封面": "/read/douban/0_dimage/s34536381.jpg",
     "originalTitle": "",
@@ -195,6 +204,7 @@
   },
   {
     "file": "/read/douban/book/12Monthsto$1Million",
+    "hasNote": false,
     "title": "12Monthsto$1Million",
     "封面": "/read/douban/0_dimage/gbooks_uwO5DwAAQBAJ.jpg",
     "originalTitle": "",
@@ -217,6 +227,7 @@
   },
   {
     "file": "/read/douban/book/kim-ji-young-born-1982",
+    "hasNote": true,
     "title": "82年生的金智英",
     "封面": "/read/douban/0_dimage/s33463759.jpg",
     "originalTitle": "",
@@ -239,6 +250,7 @@
   },
   {
     "file": "/read/douban/book/ExactlyWhattoSay",
+    "hasNote": false,
     "title": "ExactlyWhattoSay",
     "封面": "/read/douban/0_dimage/71LzPlsDcEL._SY522_.jpg",
     "originalTitle": "",
@@ -261,6 +273,7 @@
   },
   {
     "file": "/read/douban/book/GiftsDiffering",
+    "hasNote": true,
     "title": "GiftsDiffering",
     "封面": "/read/douban/0_dimage/s3247795.jpg",
     "originalTitle": "",
@@ -283,6 +296,7 @@
   },
   {
     "file": "/read/douban/book/MakeMoneyEasy",
+    "hasNote": true,
     "title": "MakeMoneyEasy",
     "封面": "/read/douban/0_dimage/s35158296.jpg",
     "originalTitle": "",
@@ -305,6 +319,7 @@
   },
   {
     "file": "/read/douban/book/MillionDollarWeekend",
+    "hasNote": true,
     "title": "MillionDollarWeekend",
     "封面": "/read/douban/0_dimage/s34776686.jpg",
     "originalTitle": "",
@@ -327,6 +342,7 @@
   },
   {
     "file": "/read/douban/book/NonviolentCommunication",
+    "hasNote": false,
     "title": "NonviolentCommunication",
     "封面": "/read/douban/0_dimage/s4584066.jpg",
     "originalTitle": "",
@@ -349,6 +365,7 @@
   },
   {
     "file": "/read/douban/book/platform",
+    "hasNote": true,
     "title": "platform",
     "封面": "/read/douban/0_dimage/716ulwY6ycL._SY522_.jpg",
     "originalTitle": "",
@@ -371,6 +388,7 @@
   },
   {
     "file": "/read/douban/book/UnderstandingNutrition",
+    "hasNote": false,
     "title": "UnderstandingNutrition",
     "封面": "/read/douban/0_dimage/s27117541.jpg",
     "originalTitle": "",
@@ -393,6 +411,7 @@
   },
   {
     "file": "/read/douban/book/positive-thinking-of-a-pessimist",
+    "hasNote": true,
     "title": "一个悲观主义者的积极思考",
     "封面": "/read/douban/0_dimage/s26822759.jpg",
     "originalTitle": "",
@@ -415,6 +434,7 @@
   },
   {
     "file": "/read/douban/book/sapiens",
+    "hasNote": true,
     "title": "人类简史",
     "封面": "/read/douban/0_dimage/s27814883.jpg",
     "originalTitle": "Sapiens: A brief history of humankind",
@@ -437,6 +457,7 @@
   },
   {
     "file": "/read/douban/book/zero-to-one",
+    "hasNote": true,
     "title": "从0到1",
     "封面": "/read/douban/0_dimage/s28299265.jpg",
     "originalTitle": "",
@@ -459,6 +480,7 @@
   },
   {
     "file": "/read/douban/book/how-do-you-live",
+    "hasNote": false,
     "title": "你想活出怎样的人生",
     "封面": "/read/douban/0_dimage/s33439128.jpg",
     "originalTitle": "",
@@ -481,6 +503,7 @@
   },
   {
     "file": "/read/douban/book/decisive",
+    "hasNote": false,
     "title": "决断力",
     "封面": "/read/douban/0_dimage/s27210878.jpg",
     "originalTitle": "",
@@ -503,6 +526,7 @@
   },
   {
     "file": "/read/douban/book/carnegie-art-of-public-speaking",
+    "hasNote": true,
     "title": "卡耐基口才的艺术与人际关系",
     "封面": "/read/douban/0_dimage/amz_61g1WQHK8QL.jpg",
     "originalTitle": "",
@@ -525,6 +549,7 @@
   },
   {
     "file": "/read/douban/book/principles",
+    "hasNote": false,
     "title": "原则",
     "封面": "/read/douban/0_dimage/s29643861.jpg",
     "originalTitle": "",
@@ -547,6 +572,7 @@
   },
   {
     "file": "/read/douban/book/atomic-habits",
+    "hasNote": true,
     "title": "原子習慣",
     "封面": "/read/douban/0_dimage/s34937323.jpg",
     "originalTitle": "",
@@ -569,6 +595,7 @@
   },
   {
     "file": "/read/douban/book/work-without-a-job",
+    "hasNote": true,
     "title": "只工作、不上班的自主人生",
     "封面": "/read/douban/0_dimage/BWL094.png",
     "originalTitle": "",
@@ -591,6 +618,7 @@
   },
   {
     "file": "/read/douban/book/eat-that-frog",
+    "hasNote": true,
     "title": "吃掉那只青蛙",
     "封面": "/read/douban/0_dimage/s29841816.jpg",
     "originalTitle": "",
@@ -613,6 +641,7 @@
   },
   {
     "file": "/read/douban/book/telling-true-stories",
+    "hasNote": true,
     "title": "哈佛非虚构写作课",
     "封面": "/read/douban/0_dimage/s28364301.jpg",
     "originalTitle": "",
@@ -635,6 +664,7 @@
   },
   {
     "file": "/read/douban/book/grassroots-women",
+    "hasNote": true,
     "title": "基层女性",
     "封面": "/read/douban/0_dimage/s34001866.jpg",
     "originalTitle": "",
@@ -657,6 +687,7 @@
   },
   {
     "file": "/read/douban/book/gifts-differing-zh",
+    "hasNote": false,
     "title": "天生不同",
     "封面": "/read/douban/0_dimage/s29085860.jpg",
     "originalTitle": "",
@@ -679,6 +710,7 @@
   },
   {
     "file": "/read/douban/book/japans-lost-decades",
+    "hasNote": false,
     "title": "失去的三十年",
     "封面": "/read/douban/0_dimage/s34185604.jpg",
     "originalTitle": "",
@@ -701,6 +733,7 @@
   },
   {
     "file": "/read/douban/book/how-to-talk-so-kids-will-listen",
+    "hasNote": false,
     "title": "如何说孩子才会听怎么听孩子才肯说（全新修订版）",
     "封面": "/read/douban/0_dimage/s10478956.jpg",
     "originalTitle": "",
@@ -723,6 +756,7 @@
   },
   {
     "file": "/read/douban/book/build-mental-toughness",
+    "hasNote": true,
     "title": "如何迅速建立强大的心理素质",
     "封面": "/read/douban/0_dimage/s28425245.jpg",
     "originalTitle": "",
@@ -745,6 +779,7 @@
   },
   {
     "file": "/read/douban/book/children-the-challenge",
+    "hasNote": false,
     "title": "孩子：挑战",
     "封面": "/read/douban/0_dimage/s29049074.jpg",
     "originalTitle": "",
@@ -767,6 +802,7 @@
   },
   {
     "file": "/read/douban/book/positioning",
+    "hasNote": false,
     "title": "定位",
     "封面": "/read/douban/0_dimage/s1081174.jpg",
     "originalTitle": "",
@@ -789,6 +825,7 @@
   },
   {
     "file": "/read/douban/book/rich-dad-poor-dad",
+    "hasNote": true,
     "title": "富爸爸，穷爸爸",
     "封面": "/read/douban/0_dimage/s11229869.jpg",
     "originalTitle": "",
@@ -811,6 +848,7 @@
   },
   {
     "file": "/read/douban/book/a-dog-called-money",
+    "hasNote": true,
     "title": "小狗钱钱",
     "封面": "/read/douban/0_dimage/s33789389.jpg",
     "originalTitle": "",
@@ -833,6 +871,7 @@
   },
   {
     "file": "/read/douban/book/underlying-logic",
+    "hasNote": false,
     "title": "底层逻辑",
     "封面": "/read/douban/0_dimage/s34076681.jpg",
     "originalTitle": "",
@@ -855,6 +894,7 @@
   },
   {
     "file": "/read/douban/book/influence",
+    "hasNote": true,
     "title": "影响力",
     "封面": "/read/douban/0_dimage/s1657785.jpg",
     "originalTitle": "",
@@ -877,6 +917,7 @@
   },
   {
     "file": "/read/douban/book/demian",
+    "hasNote": false,
     "title": "德米安",
     "封面": "/read/douban/0_dimage/s5988251.jpg",
     "originalTitle": "",
@@ -899,6 +940,7 @@
   },
   {
     "file": "/read/douban/book/think-and-grow-rich",
+    "hasNote": false,
     "title": "思考致富",
     "封面": "/read/douban/0_dimage/s28289884.jpg",
     "originalTitle": "",
@@ -921,6 +963,7 @@
   },
   {
     "file": "/read/douban/book/thinking-fast-and-slow",
+    "hasNote": false,
     "title": "思考，快与慢",
     "封面": "/read/douban/0_dimage/s35129640.jpg",
     "originalTitle": "",
@@ -943,6 +986,7 @@
   },
   {
     "file": "/read/douban/book/getting-things-done",
+    "hasNote": true,
     "title": "搞定",
     "封面": "/read/douban/0_dimage/s33860665.jpg",
     "originalTitle": "",
@@ -965,6 +1009,7 @@
   },
   {
     "file": "/read/douban/book/life-changing-conversations",
+    "hasNote": true,
     "title": "改变人生的谈话",
     "封面": "/read/douban/0_dimage/s33838655.jpg",
     "originalTitle": "",
@@ -987,6 +1032,7 @@
   },
   {
     "file": "/read/douban/book/storytelling-class-1",
+    "hasNote": false,
     "title": "故事课1：说故事的人最有影响力",
     "封面": "/read/douban/0_dimage/s29824182.jpg",
     "originalTitle": "",
@@ -1009,6 +1055,7 @@
   },
   {
     "file": "/read/douban/book/the-beginning-of-infinity",
+    "hasNote": false,
     "title": "无穷的开始",
     "封面": "/read/douban/0_dimage/s28775083.jpg",
     "originalTitle": "The Beginning of Infinity: Explanations That Transform the World",
@@ -1031,6 +1078,7 @@
   },
   {
     "file": "/read/douban/book/financial-freedom-for-ordinary-people",
+    "hasNote": true,
     "title": "普通人的財富自由之道",
     "封面": "/read/douban/0_dimage/714FD0hNmfL._SY522_.jpg",
     "originalTitle": "",
@@ -1053,6 +1101,7 @@
   },
   {
     "file": "/read/douban/book/guns-germs-and-steel",
+    "hasNote": true,
     "title": "枪炮、病菌与钢铁",
     "封面": "/read/douban/0_dimage/s1738643.jpg",
     "originalTitle": "Guns, Germs and Steel: The Fates of Human Societies",
@@ -1075,6 +1124,7 @@
   },
   {
     "file": "/read/douban/book/empire-of-cotton",
+    "hasNote": false,
     "title": "棉花帝国",
     "封面": "/read/douban/0_dimage/s32271479.jpg",
     "originalTitle": "",
@@ -1097,6 +1147,7 @@
   },
   {
     "file": "/read/douban/book/jung-psychological-types",
+    "hasNote": false,
     "title": "榮格論心理類型",
     "封面": "/read/douban/0_dimage/s29703716.jpg",
     "originalTitle": "Psychologische Typen",
@@ -1119,6 +1170,7 @@
   },
   {
     "file": "/read/douban/book/a-random-walk-down-wall-street",
+    "hasNote": false,
     "title": "漫步华尔街(原书第12版)",
     "封面": "/read/douban/0_dimage/s34706866.jpg",
     "originalTitle": "",
@@ -1141,6 +1193,7 @@
   },
   {
     "file": "/read/douban/book/the-rational-optimist",
+    "hasNote": false,
     "title": "理性乐观派",
     "封面": "/read/douban/0_dimage/s6983402.jpg",
     "originalTitle": "The Rational Optimist:How Prosperity Evolves",
@@ -1163,6 +1216,7 @@
   },
   {
     "file": "/read/douban/book/what-is-life",
+    "hasNote": false,
     "title": "生命是什么",
     "封面": "/read/douban/0_dimage/s29967303.jpg",
     "originalTitle": "",
@@ -1185,6 +1239,7 @@
   },
   {
     "file": "/read/douban/book/the-millionaire-fastlane",
+    "hasNote": true,
     "title": "百万富翁快车道",
     "封面": "/read/douban/0_dimage/s29582069.jpg",
     "originalTitle": "",
@@ -1207,6 +1262,7 @@
   },
   {
     "file": "/read/douban/book/poor-charlies-almanack",
+    "hasNote": true,
     "title": "穷查理宝典",
     "封面": "/read/douban/0_dimage/s28875892.jpg",
     "originalTitle": "",
@@ -1229,6 +1285,7 @@
   },
   {
     "file": "/read/douban/book/thinking-strategically",
+    "hasNote": false,
     "title": "策略思维",
     "封面": "/read/douban/0_dimage/s1304989.jpg",
     "originalTitle": "",
@@ -1252,6 +1309,7 @@
   },
   {
     "file": "/read/douban/book/running-lean",
+    "hasNote": true,
     "title": "精益创业实战（第2版）",
     "封面": "/read/douban/0_dimage/s24610736.jpg",
     "originalTitle": "",
@@ -1274,6 +1332,7 @@
   },
   {
     "file": "/read/douban/book/the-almanack-of-naval-ravikant",
+    "hasNote": true,
     "title": "纳瓦尔宝典",
     "封面": "/read/douban/0_dimage/s34241855.jpg",
     "originalTitle": "",
@@ -1296,6 +1355,7 @@
   },
   {
     "file": "/read/douban/book/the-intelligent-investor",
+    "hasNote": true,
     "title": "聪明的投资者（第4版注疏点评版）",
     "封面": "/read/douban/0_dimage/s34918327.jpg",
     "originalTitle": "",
@@ -1318,6 +1378,7 @@
   },
   {
     "file": "/read/douban/book/the-willpower-instinct",
+    "hasNote": true,
     "title": "自控力：斯坦福大学广受欢迎的心理学课程（400万册纪念版）",
     "封面": "/read/douban/0_dimage/s34809926.jpg",
     "originalTitle": "THE WILLPOWER INSTINCT",
@@ -1340,6 +1401,7 @@
   },
   {
     "file": "/read/douban/book/the-selfish-gene",
+    "hasNote": false,
     "title": "自私的基因",
     "封面": "/read/douban/0_dimage/s11214645.jpg",
     "originalTitle": "",
@@ -1362,6 +1424,7 @@
   },
   {
     "file": "/read/douban/book/the-iliad",
+    "hasNote": false,
     "title": "荷马史诗·伊利亚特",
     "封面": "/read/douban/0_dimage/s29827449.jpg",
     "originalTitle": "",
@@ -1384,6 +1447,7 @@
   },
   {
     "file": "/read/douban/book/the-odyssey",
+    "hasNote": false,
     "title": "荷马史诗·奥德赛",
     "封面": "/read/douban/0_dimage/s29827450.jpg",
     "originalTitle": "",
@@ -1406,6 +1470,7 @@
   },
   {
     "file": "/read/douban/book/marketing-management",
+    "hasNote": true,
     "title": "营销管理(第16版)",
     "封面": "/read/douban/0_dimage/s34804580.jpg",
     "originalTitle": "",
@@ -1428,6 +1493,7 @@
   },
   {
     "file": "/read/douban/book/xue-zhaofeng-economics-lectures",
+    "hasNote": false,
     "title": "薛兆丰经济学讲义",
     "封面": "/read/douban/0_dimage/s29841565.jpg",
     "originalTitle": "",
@@ -1450,6 +1516,7 @@
   },
   {
     "file": "/read/douban/book/cognitive-boundaries",
+    "hasNote": false,
     "title": "认知边界：认知决定你的财富",
     "封面": "/read/douban/0_dimage/51ilGM8ZvdL._SY522_.jpg",
     "originalTitle": "",
@@ -1472,6 +1539,7 @@
   },
   {
     "file": "/read/douban/book/the-road-to-financial-freedom",
+    "hasNote": true,
     "title": "财务自由之路",
     "封面": "/read/douban/0_dimage/s35028819.jpg",
     "originalTitle": "",
@@ -1494,6 +1562,7 @@
   },
   {
     "file": "/read/douban/book/poor-economics",
+    "hasNote": false,
     "title": "贫穷的本质（修订版）",
     "封面": "/read/douban/0_dimage/s29856376.jpg",
     "originalTitle": "",
@@ -1516,6 +1585,7 @@
   },
   {
     "file": "/read/douban/book/feynman-learning-technique",
+    "hasNote": true,
     "title": "费曼学习法（用输出倒逼输入）",
     "封面": "/read/douban/0_dimage/s33891850.jpg",
     "originalTitle": "",
@@ -1538,6 +1608,7 @@
   },
   {
     "file": "/read/douban/book/the-psychology-of-money",
+    "hasNote": false,
     "title": "金钱心理学",
     "封面": "/read/douban/0_dimage/s34540496.jpg",
     "originalTitle": "",
@@ -1560,6 +1631,7 @@
   },
   {
     "file": "/read/douban/book/nonviolent-communication",
+    "hasNote": true,
     "title": "非暴力沟通",
     "封面": "/read/douban/0_dimage/s29710777.jpg",
     "originalTitle": "",

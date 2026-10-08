@@ -2,6 +2,7 @@
   {
     "title": "Thinking Fast and Slow",
     "file": "/read/add-book/books/Thinking-Fast-and-Slow",
+    "hasNote": true,
     "tags": [
       "book",
       "movies"
@@ -21,6 +22,7 @@
   {
     "title": "不可饶恕",
     "file": "/read/douban/movie/unforgiven",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -49,6 +51,7 @@
   {
     "title": "会计刺客",
     "file": "/read/douban/movie/the-accountant",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -77,6 +80,7 @@
   {
     "title": "你好，李焕英",
     "file": "/read/douban/movie/hi-mom",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -103,6 +107,7 @@
   {
     "title": "出走的决心",
     "file": "/read/douban/movie/like-a-rolling-stone",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -129,6 +134,7 @@
   {
     "title": "分裂",
     "file": "/read/douban/movie/split",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -156,6 +162,7 @@
   {
     "title": "周处除三害",
     "file": "/read/douban/movie/the-pig-the-snake-and-the-pigeon",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -183,6 +190,7 @@
   {
     "title": "哈利·波特与魔法石",
     "file": "/read/douban/movie/harry-potter-and-the-sorcerers-stone",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -209,6 +217,7 @@
   {
     "title": "哪吒之魔童闹海",
     "file": "/read/douban/movie/ne-zha-2",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -235,6 +244,7 @@
   {
     "title": "大人物拿破仑",
     "file": "/read/douban/movie/napoleon-dynamite",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -262,6 +272,7 @@
   {
     "title": "大话西游之大圣娶亲",
     "file": "/read/douban/movie/a-chinese-odyssey-part-two-cinderella",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -289,6 +300,7 @@
   {
     "title": "好人寥寥",
     "file": "/read/douban/movie/a-few-good-men",
+    "hasNote": true,
     "tags": [
       "movies"
     ],
@@ -317,6 +329,7 @@
   {
     "title": "好家伙",
     "file": "/read/douban/movie/goodfellas",
+    "hasNote": true,
     "tags": [
       "movies"
     ],
@@ -345,6 +358,7 @@
   {
     "title": "小偷家族",
     "file": "/read/douban/movie/shoplifters",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -372,6 +386,7 @@
   {
     "title": "小妇人",
     "file": "/read/douban/movie/little-women",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -399,6 +414,7 @@
   {
     "title": "小猪宝贝",
     "file": "/read/douban/movie/babe",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -427,6 +443,7 @@
   {
     "title": "怪物",
     "file": "/read/douban/movie/monster",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -453,6 +470,7 @@
   {
     "title": "怪物史瑞克",
     "file": "/read/douban/movie/shrek",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -480,6 +498,7 @@
   {
     "title": "我的表兄维尼",
     "file": "/read/douban/movie/my-cousin-vinny",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -507,6 +526,7 @@
   {
     "title": "抓娃娃",
     "file": "/read/douban/movie/successor",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -533,6 +553,7 @@
   {
     "title": "指环王1：护戒使者",
     "file": "/read/douban/movie/the-lord-of-the-rings-1-the-fellowship-of-the-ring",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -561,6 +582,7 @@
   {
     "title": "指环王2：双塔奇兵",
     "file": "/read/douban/movie/the-lord-of-the-rings-2-the-two-towers",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -589,6 +611,7 @@
   {
     "title": "机器人之梦",
     "file": "/read/douban/movie/robot-dreams",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -616,6 +639,7 @@
   {
     "title": "猫狗大战",
     "file": "/read/douban/movie/cats-and-dogs",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -642,6 +666,7 @@
   {
     "title": "神秘村",
     "file": "/read/douban/movie/the-village",
+    "hasNote": true,
     "tags": [
       "movies"
     ],
@@ -669,6 +694,7 @@
   {
     "title": "第六感",
     "file": "/read/douban/movie/the-sixth-sense",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -696,6 +722,7 @@
   {
     "title": "篮坛怪杰",
     "file": "/read/douban/movie/hoosiers",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -724,6 +751,7 @@
   {
     "title": "老狐狸",
     "file": "/read/douban/movie/old-fox",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -750,6 +778,7 @@
   {
     "title": "花样年华",
     "file": "/read/douban/movie/in-the-mood-for-love",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -777,6 +806,7 @@
   {
     "title": "调音师",
     "file": "/read/douban/movie/andhadhun",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -804,6 +834,7 @@
   {
     "title": "谍影重重",
     "file": "/read/douban/movie/the-bourne-identity",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -832,6 +863,7 @@
   {
     "title": "赌城风云",
     "file": "/read/douban/movie/casino",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -860,6 +892,7 @@
   {
     "title": "1923第一季",
     "file": "/read/douban/teleplay/1923-season-1",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -888,6 +921,7 @@
   {
     "title": "1923第二季",
     "file": "/read/douban/teleplay/1923-season-2",
+    "hasNote": true,
     "tags": [
       "movies"
     ],
@@ -916,6 +950,7 @@
   {
     "title": "摩登家庭第一季",
     "file": "/read/douban/teleplay/modern-family-season-1",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -942,6 +977,7 @@
   {
     "title": "进击的巨人",
     "file": "/read/douban/teleplay/attack-on-titan",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -968,6 +1004,7 @@
   {
     "title": "阿浅来了",
     "file": "/read/douban/teleplay/asa-ga-kita",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
@@ -995,6 +1032,7 @@
   {
     "title": "The Big Bang Theory",
     "file": "/read/media-db/series/The-Big-Bang-Theory-(2007–2019)",
+    "hasNote": false,
     "tags": [
       "movies"
     ],
