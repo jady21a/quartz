@@ -147,4 +147,4 @@ score:
 - 自媒体
 - 给别人讲
 
-相关:[[思考，快与慢]] · [[Logic A Very Short Introduction]] · [[穷查理宝典]]
+相关:[[Logic A Very Short Introduction]] · [[穷查理宝典]]

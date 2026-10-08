@@ -1,25 +1,5 @@
 [
   {
-    "file": "/read/add-book/books/12-Months-to-$1-Million",
-    "hasNote": false,
-    "desc": "",
-    "title": "12 Months to $1 Million",
-    "封面": "http://books.google.com/books/content?id=uwO5DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-    "originalTitle": "",
-    "author": "Ryan Daniel Moran",
-    "scoreStar": "",
-    "score": "",
-    "publishDate": "2020-05-05",
-    "myRate": "",
-    "阅读状态": "",
-    "totalPage": 206,
-    "currentPage": "",
-    "添加时间": "",
-    "开始时间": "",
-    "结束阅读": "",
-    "tags": []
-  },
-  {
     "file": "/read/add-book/books/How-to-Read-a-Book",
     "hasNote": true,
     "desc": "",
@@ -238,19 +218,19 @@
   {
     "file": "/read/douban/book/12Monthsto$1Million",
     "hasNote": false,
-    "desc": "",
-    "title": "12Monthsto$1Million",
+    "desc": "Capitalism.com 创始人瑞安·丹尼尔·莫兰的电商创业路线图：把创业压缩进一年，分三个阶段，先找到好产品、拿下第一笔订单，再用低成本广告做到日销 25 单，最后扩展产品线冲到日销 100 单，迈向年销百万美元。",
+    "title": "12 Months to $1 Million",
     "封面": "/read/douban/0_dimage/gbooks_uwO5DwAAQBAJ.jpg",
     "originalTitle": "",
     "author": "RyanDanielMoran",
     "scoreStar": "",
     "score": "",
-    "publishDate": "",
+    "publishDate": "2020-05-05",
     "myRate": "",
     "阅读状态": [
       "未读完"
     ],
-    "totalPage": "",
+    "totalPage": "206",
     "currentPage": "",
     "添加时间": "2025-10-28",
     "开始时间": "",
@@ -286,7 +266,7 @@
   {
     "file": "/read/douban/book/ExactlyWhattoSay",
     "hasNote": false,
-    "desc": "",
+    "desc": "销售培训师菲尔·M·琼斯总结的「魔法话术」：同一个请求，换种措辞就可能从被拒绝变成被接受。书中给出二十多个可直接套用的短句，帮你在销售、谈判和日常沟通中更有说服力。",
     "title": "ExactlyWhattoSay",
     "封面": "/read/douban/0_dimage/71LzPlsDcEL._SY522_.jpg",
     "originalTitle": "",
@@ -380,30 +360,6 @@
     ]
   },
   {
-    "file": "/read/douban/book/NonviolentCommunication",
-    "hasNote": false,
-    "desc": "马歇尔·卢森堡《非暴力沟通》英文版：通过观察、感受、需要、请求四个要素，学会不带评判地表达自己、同理倾听他人，用故事和对话示例化解家庭与职场中的冲突。",
-    "title": "NonviolentCommunication",
-    "封面": "/read/douban/0_dimage/s4584066.jpg",
-    "originalTitle": "",
-    "author": "MarshallB.Rosenberg",
-    "scoreStar": "⭐⭐⭐⭐☆",
-    "score": "9.3",
-    "publishDate": "2003-09-01",
-    "myRate": "",
-    "阅读状态": [
-      "已读完"
-    ],
-    "totalPage": "222",
-    "currentPage": "",
-    "添加时间": "2025-08-22",
-    "开始时间": "",
-    "结束阅读": "2025-08-27",
-    "tags": [
-      "book"
-    ]
-  },
-  {
     "file": "/read/douban/book/platform",
     "hasNote": true,
     "desc": "",
@@ -430,11 +386,14 @@
   {
     "file": "/read/douban/book/UnderstandingNutrition",
     "hasNote": false,
-    "desc": "",
+    "desc": "惠特尼与罗尔夫斯合著的经典营养学教材：从碳水化合物、脂肪、蛋白质、维生素和矿物质讲起，涵盖消化吸收、能量平衡与体重管理、膳食规划，以及从孕期到老年各个人生阶段的营养需求。",
     "title": "UnderstandingNutrition",
     "封面": "/read/douban/0_dimage/s27117541.jpg",
     "originalTitle": "",
-    "author": " - EleanorNossWhitney - SharonRadyRolfes",
+    "author": [
+      "EleanorNossWhitney",
+      "SharonRadyRolfes"
+    ],
     "scoreStar": "",
     "score": "",
     "publishDate": "2012-07-27",
@@ -554,7 +513,10 @@
     "title": "决断力",
     "封面": "/read/douban/0_dimage/s27210878.jpg",
     "originalTitle": "",
-    "author": " - 美/奇普·希思 - 美/丹·希思",
+    "author": [
+      "美/奇普·希思",
+      "美/丹·希思"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.1",
     "publishDate": "2014-01-01",
@@ -602,7 +564,9 @@
     "title": "原则",
     "封面": "/read/douban/0_dimage/s29643861.jpg",
     "originalTitle": "",
-    "author": " - 美/瑞·达利欧",
+    "author": [
+      "美/瑞·达利欧"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.3",
     "publishDate": "2018-01-01",
@@ -674,7 +638,9 @@
     "title": "吃掉那只青蛙",
     "封面": "/read/douban/0_dimage/s29841816.jpg",
     "originalTitle": "",
-    "author": " - 美/博恩·崔西（BrianTracy）",
+    "author": [
+      "美/博恩·崔西（BrianTracy）"
+    ],
     "scoreStar": "⭐⭐⭐",
     "score": "7.6",
     "publishDate": "2017-08-14",
@@ -740,30 +706,6 @@
     ]
   },
   {
-    "file": "/read/douban/book/gifts-differing-zh",
-    "hasNote": false,
-    "desc": "MBTI 创始人伊莎贝尔·迈尔斯与彼得·迈尔斯合著：基于荣格心理类型理论，解释外倾与内倾、感觉与直觉、思维与情感、判断与感知的偏好如何组合成十六种人格类型，以及它们在学习、工作和人际中的影响。",
-    "title": "天生不同",
-    "封面": "/read/douban/0_dimage/s29085860.jpg",
-    "originalTitle": "",
-    "author": "【美】伊莎贝尔•迈尔斯（IsabelBriggsMyers）、【美】彼得•迈尔斯（PeterB.Myers）",
-    "scoreStar": "⭐⭐⭐⭐☆",
-    "score": "8.1",
-    "publishDate": "2016-11-01",
-    "myRate": "",
-    "阅读状态": [
-      "已读完"
-    ],
-    "totalPage": "252",
-    "currentPage": "",
-    "添加时间": "2025-07-21",
-    "开始时间": "",
-    "结束阅读": "2025-07-28",
-    "tags": [
-      "book"
-    ]
-  },
-  {
     "file": "/read/douban/book/japans-lost-decades",
     "hasNote": false,
     "desc": "经济学家野口悠纪雄回顾日本平成时代（1989—2019）：从泡沫崩溃、制造业衰落到低欲望社会，历经次贷危机、东日本大地震与安倍经济学，分析日本经济为何长期停滞，以及未来该走向何方。",
@@ -794,7 +736,11 @@
     "title": "如何说孩子才会听怎么听孩子才肯说（全新修订版）",
     "封面": "/read/douban/0_dimage/s10478956.jpg",
     "originalTitle": "",
-    "author": " - 阿黛尔•法伯 - 伊莱恩•玛兹丽施 - 美国/伊莱恩·玛兹丽施",
+    "author": [
+      "阿黛尔•法伯",
+      "伊莱恩•玛兹丽施",
+      "美国/伊莱恩·玛兹丽施"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9",
     "publishDate": "2012-07-01",
@@ -866,7 +812,10 @@
     "title": "定位",
     "封面": "/read/douban/0_dimage/s1081174.jpg",
     "originalTitle": "",
-    "author": " - 美/艾·里斯 - 杰克·特劳特",
+    "author": [
+      "美/艾·里斯",
+      "杰克·特劳特"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.2",
     "publishDate": "2002-02-01",
@@ -938,7 +887,9 @@
     "title": "底层逻辑",
     "封面": "/read/douban/0_dimage/s34076681.jpg",
     "originalTitle": "",
-    "author": " - 刘润",
+    "author": [
+      "刘润"
+    ],
     "scoreStar": "⭐⭐⭐",
     "score": "6.7",
     "publishDate": "2021-10-09",
@@ -986,7 +937,9 @@
     "title": "德米安",
     "封面": "/read/douban/0_dimage/s5988251.jpg",
     "originalTitle": "",
-    "author": " - 德/赫尔曼·黑塞",
+    "author": [
+      "德/赫尔曼·黑塞"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.9",
     "publishDate": "2009-03-01",
@@ -1021,30 +974,6 @@
     "totalPage": "272",
     "currentPage": "",
     "添加时间": "2025-09-04",
-    "开始时间": "",
-    "结束阅读": "",
-    "tags": [
-      "book"
-    ]
-  },
-  {
-    "file": "/read/douban/book/thinking-fast-and-slow",
-    "hasNote": false,
-    "desc": "诺贝尔经济学奖得主卡尼曼一生研究的总结：人的思考由快速直觉的「系统 1」和缓慢审慎的「系统 2」驱动，书中通过大量实验揭示直觉的种种偏差，告诉我们什么时候可以相信直觉、什么时候不可以。",
-    "title": "思考，快与慢",
-    "封面": "/read/douban/0_dimage/s35129640.jpg",
-    "originalTitle": "",
-    "author": " - 美/丹尼尔·卡尼曼",
-    "scoreStar": "⭐⭐⭐⭐",
-    "score": "8.5",
-    "publishDate": "2025-04-01",
-    "myRate": "",
-    "阅读状态": [
-      "未开始"
-    ],
-    "totalPage": "",
-    "currentPage": "",
-    "添加时间": "2025-05-08",
     "开始时间": "",
     "结束阅读": "",
     "tags": [
@@ -1130,7 +1059,9 @@
     "title": "无穷的开始",
     "封面": "/read/douban/0_dimage/s28775083.jpg",
     "originalTitle": "The Beginning of Infinity: Explanations That Transform the World",
-    "author": " - 英/戴维·多伊奇（DavidDeutsch）",
+    "author": [
+      "英/戴维·多伊奇（DavidDeutsch）"
+    ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.3",
     "publishDate": "2014-11-01",
@@ -1202,7 +1133,9 @@
     "title": "棉花帝国",
     "封面": "/read/douban/0_dimage/s32271479.jpg",
     "originalTitle": "",
-    "author": " - 美/斯文·贝克特",
+    "author": [
+      "美/斯文·贝克特"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.3",
     "publishDate": "2019-03-01",
@@ -1250,7 +1183,9 @@
     "title": "漫步华尔街(原书第12版)",
     "封面": "/read/douban/0_dimage/s34706866.jpg",
     "originalTitle": "",
-    "author": " - 美/伯顿·G·马尔基尔",
+    "author": [
+      "美/伯顿·G·马尔基尔"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.6",
     "publishDate": "2022-08-01",
@@ -1274,7 +1209,9 @@
     "title": "理性乐观派",
     "封面": "/read/douban/0_dimage/s6983402.jpg",
     "originalTitle": "The Rational Optimist:How Prosperity Evolves",
-    "author": " - （美）马特·里德利（MattRidley）",
+    "author": [
+      "（美）马特·里德利（MattRidley）"
+    ],
     "scoreStar": "⭐⭐⭐⭐☆",
     "score": "8.2",
     "publishDate": "2011-11-01",
@@ -1298,7 +1235,9 @@
     "title": "生命是什么",
     "封面": "/read/douban/0_dimage/s29967303.jpg",
     "originalTitle": "",
-    "author": " - 奥/埃尔温·薛定谔",
+    "author": [
+      "奥/埃尔温·薛定谔"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9",
     "publishDate": "2018-10-01",
@@ -1370,7 +1309,10 @@
     "title": "策略思维",
     "封面": "/read/douban/0_dimage/s1304989.jpg",
     "originalTitle": "",
-    "author": " - 阿维纳什・K・迪克西特 - 巴里・J・奈尔伯夫",
+    "author": [
+      "阿维纳什・K・迪克西特",
+      "巴里・J・奈尔伯夫"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.4",
     "publishDate": "2003-07-01",
@@ -1443,7 +1385,9 @@
     "title": "聪明的投资者（第4版注疏点评版）",
     "封面": "/read/douban/0_dimage/s34918327.jpg",
     "originalTitle": "",
-    "author": " - 【美】本杰明•格雷厄姆",
+    "author": [
+      "【美】本杰明•格雷厄姆"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.1",
     "publishDate": "2016-03-01",
@@ -1491,7 +1435,9 @@
     "title": "自私的基因",
     "封面": "/read/douban/0_dimage/s11214645.jpg",
     "originalTitle": "",
-    "author": " - 英/理查德·道金斯",
+    "author": [
+      "英/理查德·道金斯"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "8.4",
     "publishDate": "2012-09-01",
@@ -1515,7 +1461,9 @@
     "title": "荷马史诗·伊利亚特",
     "封面": "/read/douban/0_dimage/s29827449.jpg",
     "originalTitle": "",
-    "author": " - 古希腊/荷马",
+    "author": [
+      "古希腊/荷马"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.4",
     "publishDate": "2015-03-01",
@@ -1539,7 +1487,9 @@
     "title": "荷马史诗·奥德赛",
     "封面": "/read/douban/0_dimage/s29827450.jpg",
     "originalTitle": "",
-    "author": " - 古希腊/荷马",
+    "author": [
+      "古希腊/荷马"
+    ],
     "scoreStar": "⭐⭐⭐⭐",
     "score": "9.2",
     "publishDate": "2015-06-01",
@@ -1611,7 +1561,9 @@
     "title": "认知边界：认知决定你的财富",
     "封面": "/read/douban/0_dimage/51ilGM8ZvdL._SY522_.jpg",
     "originalTitle": "",
-    "author": " - 凌发明",
+    "author": [
+      "凌发明"
+    ],
     "scoreStar": "",
     "score": "",
     "publishDate": "",
@@ -1659,7 +1611,10 @@
     "title": "贫穷的本质（修订版）",
     "封面": "/read/douban/0_dimage/s29856376.jpg",
     "originalTitle": "",
-    "author": " - 印度/阿比吉特·班纳吉 - 法/埃斯特·迪弗洛",
+    "author": [
+      "印度/阿比吉特·班纳吉",
+      "法/埃斯特·迪弗洛"
+    ],
     "scoreStar": "⭐⭐⭐",
     "score": "7.3",
     "publishDate": "2018-09-01",

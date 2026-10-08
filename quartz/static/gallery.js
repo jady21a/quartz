@@ -296,10 +296,15 @@
   }
 
   function setPeekOpen(card, open) {
-    // 浮层顶边对齐封面+书名区的底边。每次打开现量:标题折行数、窗口宽度都会变
+    // 浮层顶边对齐封面+书名区的底边;至少盖到卡片底部,简介放不下就继续往下长、
+    // 暂时盖住下一排(不撑高卡片,网格不跳)。每次打开现量:标题折行数、窗口宽度都会变
     const header = card.__peekHeader
     const peek = card.querySelector(".stub-peek")
-    if (open && header && peek) peek.style.top = header.offsetTop + header.offsetHeight + "px"
+    if (open && header && peek) {
+      const top = header.offsetTop + header.offsetHeight
+      peek.style.top = top + "px"
+      peek.style.minHeight = card.clientHeight - top + "px"
+    }
     card.classList.toggle("is-open", open)
     card.setAttribute("aria-expanded", open ? "true" : "false")
   }
@@ -318,16 +323,7 @@
     }
     const note = document.createElement("div")
     note.className = "stub-peek-note"
-    // 有简介时注明来源(摘要据公开资料整理,不是我写的笔记)。分两行:窄的影视卡片上一行放不下
-    if (desc) {
-      const source = document.createElement("div")
-      source.className = "stub-peek-source"
-      source.textContent = t.source
-      note.appendChild(source)
-    }
-    const noNotes = document.createElement("div")
-    noNotes.textContent = t.noNotes
-    note.appendChild(noNotes)
+    note.textContent = t.noNotes
     peek.appendChild(note)
     card.appendChild(peek)
 
@@ -365,14 +361,12 @@
       ? {
           badge: "Notes",
           noNotes: "No notes yet",
-          source: "Summary from public sources",
           toggle: "Only with notes",
           count: (n, t) => n + " of " + t + " have notes",
         }
       : {
           badge: "笔记",
           noNotes: "还没写笔记",
-          source: "简介据公开资料整理",
           toggle: "只看有笔记的",
           count: (n, t, unit) => t + " " + unit + "里 " + n + " " + unit + "写了笔记",
         }

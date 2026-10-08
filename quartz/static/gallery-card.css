@@ -68,17 +68,20 @@
 }
 
 /* top 由 gallery.js 打开时现量(封面+书名区的底边),只盖下半截的信息栏 */
+/* top / min-height 由 gallery.js 打开时现量:从封面+书名区底边开始,至少盖到卡片底部,
+   简介放不下就往下延伸,暂时盖住下一排——全文一次看完,不用再点、不用在小框里滑 */
 .stub-peek {
   position: absolute;
   top: 50%;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: -1px;
+  right: -1px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 0.4rem;
-  padding: 0.3rem 0.8rem 0.7rem;
+  padding: 0.3rem calc(0.8rem + 1px) 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--gray) 45%, transparent);
+  border-top: none;
   border-radius: 0 0 12px 12px;
   background: var(--light);
   text-align: left;
@@ -89,22 +92,23 @@
     visibility 0.2s ease;
 }
 
+/* 展开的卡片浮到同排和下一排卡片上面 */
+.book-card.is-stub.is-open,
+.movie-card.is-stub.is-open {
+  z-index: 5;
+}
+
 .is-stub.is-open .stub-peek {
   opacity: 1;
   visibility: visible;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* 剩下多高就显示多少,底部渐隐收尾(卡片高度随同排最高那张变,固定行数会溢出) */
 .stub-peek-desc {
-  flex: 1;
-  min-height: 0;
   margin: 0;
   font-size: 0.78rem;
   line-height: 1.55;
   color: var(--darkgray);
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, #000 80%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent);
 }
 
 .stub-peek-note {
@@ -114,11 +118,6 @@
   font-size: 0.72rem;
   color: var(--gray);
   text-align: center;
-}
-
-.stub-peek-source {
-  font-size: 0.65rem;
-  opacity: 0.85;
 }
 
 .note-badge {

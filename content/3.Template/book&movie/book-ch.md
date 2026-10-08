@@ -2,7 +2,7 @@
 ---
 originalTitle: "{{originalTitle}}"
 title: "{{title}}"
-author: "{{author}}"
+author: {{author}}
 publishDate: "{{datePublished}}"
 阅读状态:
   - 正在阅读

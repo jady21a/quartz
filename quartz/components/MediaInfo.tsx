@@ -176,9 +176,8 @@ export default function mediaInfo(kind: MediaKind): () => QuartzComponent {
               <summary>
                 <strong>简介：</strong>
               </summary>
-              {/* 只放摘要(vault 里已是自己写的总结,新书原文在这里截短),并注明来源 */}
+              {/* 只放摘要(vault 里已是自己写的总结,新书原文在这里截短) */}
               <div class="desc-content">{excerptDesc(fm.desc)}</div>
-              <div class="desc-source">简介据公开资料整理</div>
             </details>
           )}
         </div>
