@@ -404,6 +404,19 @@ async function main() {
   process.exit(1)
 }
 
+// 整体时限:单页的 goto/waitForFunction 有超时,但 newPage / evaluate / page.close /
+// browser.close 都没有——页面主线程卡住或浏览器失联时会永远等下去。2026-10-06 线上巡检、
+// 10-08 06:27 发布前冒烟各挂死一次(浏览器进程都在,node 停在某个 await 上),而 launchd
+// 见上一个实例没退出就静默跳过后续排期,两条任务就此停摆,所以必须由脚本自己兜底退出。
+// 计时不含睡眠(libuv 的单调时钟在 macOS 休眠时不走),DarkWake 里跑得慢不会被误杀。
+// 时限按最坏情况给:线上 35 页 × 90s 导航 / 2 并发 ≈ 26 分钟,本地 20s / 4 并发远低于此。
+// 退出前 Playwright 的 exit 钩子会顺手杀掉它拉起的浏览器。
+const OVERALL_TIMEOUT_MIN = ONLINE ? 40 : 15
+setTimeout(() => {
+  console.error(`❌ 冒烟检查整体超时(${OVERALL_TIMEOUT_MIN} 分钟未结束,疑似浏览器或页面卡死),强制退出`)
+  process.exit(1)
+}, OVERALL_TIMEOUT_MIN * 60 * 1000).unref()
+
 main().catch((err) => {
   console.error("❌ 冒烟检查自身出错:", err)
   process.exit(1)
