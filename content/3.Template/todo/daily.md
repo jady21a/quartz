@@ -31,7 +31,8 @@ function getSection(content, heading) {
 function getUncheckedTasks(block) {
     return block
         .split('\n')
-        .map(line => line.trimEnd())
+        // 行首最多 1 个空格仍算同级任务(子任务至少缩进 2 格),手滑多敲的空格顺手剥掉
+        .map(line => line.trimEnd().replace(/^ (?=- )/, ""))
         .filter(line => /^- \[ \] .+/.test(line))
         .join('\n');
 }
