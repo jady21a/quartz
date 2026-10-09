@@ -53,7 +53,10 @@ views:
       - file.name
       - formula.媒介
       - formula.题材
+      - formula.导演
       - formula.豆瓣
+      - formula.地区
+      - formula.年份
       - state
     sort:
       - property: 开始时间
@@ -76,6 +79,7 @@ views:
       - formula.导演
       - formula.豆瓣
       - formula.地区
+      - formula.年份
     sort:
       - property: formula.豆瓣
         direction: DESC
@@ -90,10 +94,13 @@ views:
         - formula.状态 == "已看"
     order:
       - file.name
-      - myRating
+      - formula.媒介
+      - formula.题材
+      - formula.导演
       - formula.豆瓣
-      - formula.口味差
+      - formula.地区
       - formula.年份
+      - myRating
     sort:
       - property: formula.记录日
         direction: DESC
@@ -109,9 +116,11 @@ views:
     order:
       - file.name
       - formula.媒介
+      - formula.题材
       - formula.导演
       - formula.豆瓣
-      - 添加时间
+      - formula.地区
+      - formula.年份
     sort:
       - property: 添加时间
         direction: DESC
