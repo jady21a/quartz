@@ -4,9 +4,7 @@ originalTitle: "{{originalTitle}}"
 title: "{{title}}"
 author: {{author}}
 publishDate: "{{datePublished}}"
-阅读状态:
-  - 正在阅读
-  - 已读完
+阅读状态: [未开始]
 score: "{{score}}"
 scoreStar: "{{scoreStar}}"
 封面: "{{imageData.url}}"
