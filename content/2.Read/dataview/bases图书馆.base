@@ -3,7 +3,6 @@ filters:
     - file.hasTag("book")
     - '!file.inFolder("10.Template")'
 formulas:
-  cover: link(封面)
   状态: if(阅读状态.contains("已读完"), "已读完", if(阅读状态.contains("正在阅读"), "在读", if(阅读状态.contains("未读完"), "未读完", "未开始")))
   用时: if(开始阅读 && 结束阅读, (date(结束阅读) - date(开始阅读)).days.toString() + " 天", "")
   距今: if(开始阅读, (now() - date(开始阅读)).days.round(0).toString() + " 天", "")
