@@ -53,7 +53,7 @@ views:
     order:
       - file.name
       - author
-      - currentPage
+      - formula.进度
       - totalPage
       - 开始阅读
       - formula.距今
@@ -110,7 +110,6 @@ views:
     order:
       - file.name
       - author
-      - currentPage
       - totalPage
       - formula.进度
       - 开始阅读
