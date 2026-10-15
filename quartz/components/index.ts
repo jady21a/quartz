@@ -25,6 +25,7 @@ import ConditionalRender from "./ConditionalRender"
 import LanguageSwitch from "./LanguageSwitch"
 import SocialLinks from "./SocialLinks"
 import ScrollButtons from "./ScrollButtons"
+import NextVideoPoll from "./NextVideoPoll"
 
 import mediaInfo from "./MediaInfo"
 
@@ -62,6 +63,7 @@ export {
   LanguageSwitch, // 中英语言切换
   SocialLinks, // “Why Z” 下方的社交平台图标
   ScrollButtons, // 移动端浮动「回到顶部 / 回到底部」按钮
+  NextVideoPoll, // 视频页底部「下一期想看哪个」投票框
   BookInfo, // 添加这一行,书籍元数据显示
   MovieInfo,
 }

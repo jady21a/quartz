@@ -1,0 +1,84 @@
+// 视频页底部的「下一期想看哪个」投票框
+.next-video-poll {
+  margin: 2rem 0 1rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  background: var(--light);
+
+  .poll-question {
+    margin: 0 0 0.8rem;
+    font-size: 1.1rem;
+  }
+
+  .poll-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .poll-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    overflow: hidden;
+    border: 1px solid var(--lightgray);
+    border-radius: 6px;
+    background: none;
+    color: var(--darkgray);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s;
+
+    &:hover:not(:disabled):not(.is-mine) {
+      border-color: var(--secondary);
+    }
+
+    &:disabled {
+      cursor: default;
+    }
+
+    &.is-mine {
+      border-color: var(--secondary);
+      color: var(--dark);
+      font-weight: 600;
+      cursor: default;
+    }
+  }
+
+  // 票数条垫在文字底下,按百分比铺宽
+  .poll-bar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--highlight);
+    transition: width 0.4s ease;
+  }
+
+  .poll-label,
+  .poll-count {
+    position: relative;
+  }
+
+  .poll-count {
+    flex-shrink: 0;
+    color: var(--gray);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .poll-meta {
+    margin: 0.7rem 0 0;
+    color: var(--gray);
+    font-size: 0.85rem;
+  }
+
+  .poll-error {
+    margin-top: 0.3rem;
+    color: var(--secondary);
+  }
+}

@@ -93,7 +93,17 @@ const graphOptions = {
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [Component.ScrollButtons()],
+  afterBody: [
+    Component.ScrollButtons(),
+    // 只挂在中文视频页(videos/video-notes/*);题目选项由 busuanzi Worker 下发
+    Component.ConditionalRender({
+      component: Component.NextVideoPoll(),
+      condition: (page) => {
+        const slug = page.fileData.slug ?? ""
+        return slug.startsWith("videos/video-notes/") && !slug.endsWith("/index")
+      },
+    }),
+  ],
   footer: Component.Footer({
     links: {
       GitHub: "https://github.com/jady21a",

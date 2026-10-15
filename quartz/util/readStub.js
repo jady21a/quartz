@@ -41,6 +41,11 @@ export function measureSubstance(src) {
       body = afterClosing === -1 ? "" : body.slice(afterClosing + 1)
     }
   }
+  // Obsidian 注释 %%…%% 不上站,也不是自己写的(reader 同步段的起止标记一条就 ~90 字)。
+  // 必须在这里剥:Quartz 构建时 ofm 的 textTransform 已先剥掉注释,而画廊索引脚本读的是
+  // 原文——两边口径一差,索引说「有笔记、卡片可点」、构建说「空壳、不生成」,点进去就 404。
+  // (2026-10-15《自我关怀的力量》:原文算 134、构建算 38。)
+  body = body.replace(/%%[\s\S]*?%%/g, "")
 
   let count = 0
   for (const rawLine of body.split("\n")) {

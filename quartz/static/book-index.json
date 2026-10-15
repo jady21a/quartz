@@ -169,8 +169,8 @@
   },
   {
     "file": "/read/add-book/books/positioning",
-    "hasNote": true,
-    "desc": "",
+    "hasNote": false,
+    "desc": "里斯与特劳特的营销经典：在信息过载的时代，品牌要赢，关键不在产品本身，而在顾客心智中占据一个独特的位置。「定位」思想最早发表于《广告时代》的系列文章，轰动业界，此为 20 周年纪念版译本。",
     "title": "定位",
     "封面": "/read/add-book/covers/定位-—-美-艾·里斯-杰克·特劳特.jpg",
     "originalTitle": "Positioning: The Battle for Your Mind",
@@ -192,9 +192,9 @@
     ]
   },
   {
-    "file": "/read/add-book/books/自我关怀的力量",
-    "hasNote": true,
-    "desc": "",
+    "file": "/read/add-book/books/self-compassion",
+    "hasNote": false,
+    "desc": "本书通过自我关怀,静观,共通人性的讲解与练习,帮大家找到与自己和解的办法.学会自我关怀,也就掌握了反转生活的力量.",
     "title": "自我关怀的力量",
     "封面": "/read/add-book/covers/自我关怀的力量-—-美-克里斯廷·内夫.jpg",
     "originalTitle": "Self-Compassion: The Proven Power of Being Kind to Yourself",

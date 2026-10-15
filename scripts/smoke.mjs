@@ -290,6 +290,28 @@ async function launchBrowser() {
 }
 
 // ===== 主流程 =====
+// 画廊卡片 ↔ 构建产物:索引里每张「可点」的卡片,public/ 里都必须真有那一页。
+// 浏览器断言只看画廊渲染出来没有,不点卡片;verify-index 对的是 git 里的 md,不是构建结果。
+// 两边都漏掉的是「md 在、页面被构建过滤掉了」——2026-10-15《自我关怀的力量》:索引按原文
+// 算有笔记、构建剥掉 %% 注释后判成空壳不生成,卡片可点、点进去 404。只在本地模式跑。
+const INDEXES = ["video-index.json", "book-index.json", "movie-index.json"]
+
+function deadGalleryLinks() {
+  const dead = []
+  for (const name of INDEXES) {
+    const fp = path.join(PUBLIC, name)
+    if (!fs.existsSync(fp)) continue
+    for (const item of JSON.parse(fs.readFileSync(fp, "utf-8"))) {
+      const file = item.file || ""
+      if (item.hasNote === false || !file || /^https?:\/\//.test(file)) continue
+      const page = path.join(PUBLIC, decodeURI(file))
+      if (fs.existsSync(page + ".html") || fs.existsSync(path.join(page, "index.html"))) continue
+      dead.push(`${name}: 「${item.title || file}」卡片可点,但没生成 ${file}.html`)
+    }
+  }
+  return dead
+}
+
 async function main() {
   // 待检页面清单永远来自本地 public/(线上没法枚举页面)。巡检线上时它只当"页面名单"用,
   // 名单略旧也无妨:线上真删了某页会以 404 报出来,正是想抓的。
@@ -384,6 +406,8 @@ async function main() {
   served?.server.close()
 
   const failures = []
+  const dead = externalBase ? [] : deadGalleryLinks()
+  if (dead.length) failures.push({ url: "画廊卡片 → 页面", problems: dead })
   for (const url of suspects) {
     const problems = problemsOf(url)
     if (problems.length) failures.push({ url, problems })
