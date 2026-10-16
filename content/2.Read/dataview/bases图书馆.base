@@ -4,12 +4,12 @@ filters:
     - '!file.inFolder("10.Template")'
 formulas:
   状态: if(阅读状态.contains("已读完"), "已读完", if(阅读状态.contains("正在阅读"), "在读", if(阅读状态.contains("未读完"), "未读完", "未开始")))
-  用时: if(开始阅读 && 结束阅读, (date(结束阅读) - date(开始阅读)).days.toString() + " 天", "")
+  用时: if(结束阅读 && (开始阅读 || 添加时间), (date(结束阅读) - date(if(开始阅读, 开始阅读, 添加时间))).days.toString() + " 天", "")
   距今: if(开始阅读, (now() - date(开始阅读)).days.round(0).toString() + " 天", "")
   进度: if(note.进度, if(note.进度.toString().contains("%"), note.进度.toString(), note.进度.toString() + "%"), if(currentPage && totalPage, (number(currentPage) / number(totalPage) * 100).round(0).toString() + "%", ""))
   读完年份: if(结束阅读, date(结束阅读).year, "")
   有结束: if(结束阅读, 1, 0)
-  深度: if(阅读方式.contains("概览"), "概览", "精读")
+  深度: if(阅读方式.contains("概览"), "概览", if(阅读状态.contains("已读完") || 阅读状态.contains("正在阅读") || 阅读状态.contains("未读完"), "精读", ""))
 properties:
   file.name:
     displayName: 书名
@@ -75,7 +75,7 @@ views:
       - formula.用时
     sort:
       - property: formula.有结束
-        direction: ASC
+        direction: DESC
       - property: 结束阅读
         direction: DESC
     image: note.封面
