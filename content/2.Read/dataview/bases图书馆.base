@@ -9,7 +9,7 @@ formulas:
   进度: if(note.进度, if(note.进度.toString().contains("%"), note.进度.toString(), note.进度.toString() + "%"), if(currentPage && totalPage, (number(currentPage) / number(totalPage) * 100).round(0).toString() + "%", ""))
   读完年份: if(结束阅读, date(结束阅读).year, "")
   有结束: if(结束阅读, 1, 0)
-  深度: if(阅读方式.contains("概览"), "概览", if(阅读状态.contains("已读完") || 阅读状态.contains("正在阅读") || 阅读状态.contains("未读完"), "精读", ""))
+  深度: if(阅读方式, list(阅读方式).join(" · "), "")
 properties:
   file.name:
     displayName: 书名
@@ -22,7 +22,7 @@ properties:
   scoreStar:
     displayName: 评分
   myRate:
-    displayName: 我的评分
+    displayName: 推荐指数
   totalPage:
     displayName: 页数
   publishDate:

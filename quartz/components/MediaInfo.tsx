@@ -157,7 +157,7 @@ export default function mediaInfo(kind: MediaKind): () => QuartzComponent {
 
                 {fm.myRate && (
                   <p>
-                    <strong>我的评分：</strong>
+                    <strong>推荐指数：</strong>
                     {String(fm.myRate)}
                   </p>
                 )}

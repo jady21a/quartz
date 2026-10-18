@@ -179,7 +179,7 @@
     if (item.myRate) {
       const myRating = document.createElement("div")
       myRating.className = "my-rating"
-      myRating.textContent = "我的评分: " + item.myRate + "/5"
+      myRating.textContent = "推荐指数: " + item.myRate + "/10"
       card.appendChild(myRating)
     }
 
