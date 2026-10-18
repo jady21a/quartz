@@ -10,7 +10,7 @@ publishDate: 2014-03-06
 yearPublished: "2014"
 isbn: "9780761178972"
 totalPage: "215"
-进度: 28%
+进度: 27%
 章节:
 score:
 scoreStar:
