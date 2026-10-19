@@ -10,6 +10,7 @@ formulas:
   读完年份: if(结束阅读, date(结束阅读).year, "")
   有结束: if(结束阅读, 1, 0)
   深度: if(阅读方式, list(阅读方式).join(" · "), "")
+  分组: if(阅读状态.contains("正在阅读") && !阅读状态.contains("已读完"), "1|在读", if(if(阅读方式, list(阅读方式).contains("概览"), false), "5|概览", if(阅读状态.contains("已读完"), "2|已读", if(阅读状态.contains("未读完"), "4|未读完", "3|待读"))))
 properties:
   file.name:
     displayName: 书名
@@ -43,6 +44,8 @@ properties:
     displayName: 进度
   formula.读完年份:
     displayName: 年份
+  formula.分组:
+    displayName: 分组
 views:
   - type: editable-cards
     name: 在读
@@ -169,6 +172,25 @@ views:
       - 添加时间
       - formula.进度
       - formula.用时
+    sort:
+      - property: 添加时间
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 160
+    imageFit: contain
+  - type: editable-cards
+    name: 书架总览
+    groupBy:
+      property: formula.分组
+      direction: ASC
+    order:
+      - file.name
+      - author
+      - formula.进度
+      - score
+      - myRate
+      - 添加时间
     sort:
       - property: 添加时间
         direction: DESC
