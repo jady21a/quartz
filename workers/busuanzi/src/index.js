@@ -107,6 +107,7 @@ export default {
       if (url.pathname === "/stats/snapshot") return handleSnapshot(request, env)
       if (url.pathname === "/stats/platforms") return handlePlatforms(request, env)
       if (url.pathname.startsWith("/dl/")) return await handleDownload(request, env)
+      if (url.pathname === "/poll") return await handlePoll(request, env)
       return await handleCount(request, env)
     } catch (e) {
       console.error("busuanzi error:", e && e.stack ? e.stack : String(e))
@@ -215,6 +216,105 @@ async function handleDownload(request, env) {
     status: 302,
     headers: { Location: target, "Cache-Control": "no-store" },
   })
+}
+
+// ───────────────────────── 下期视频投票(公开) ─────────────────────────
+// 视频页底部的「下一期想看哪个」投票框(前端见 quartz/components/NextVideoPoll.tsx)。
+//   GET  /poll        → 当前这一轮:题目、选项、截止日、我投了哪个;投过或已截止才带票数
+//   POST /poll  o=<id> → 投票 / 改投,返回同样的形状(带票数)
+//
+// 和下载跳转一样,选项写死在下面这张表里,**不接受客户端传来的选项文案**:否则谁都能往
+// 博客上种任意文字。换一轮 = 改 POLL 的 id 和 options 再 deploy,博客本身不用重建;
+// 设成 null 则投票框整个不出现。
+//
+// 一人一票:按加盐 IP 哈希认,重复投就是改投。POST 用表单编码(简单请求,不触发 CORS
+// 预检)。和计数一样只认白名单 Origin —— 挡不住伪造,个人站量级够用。
+// 「投过才看结果」:没投的人看不到票数,省得新访客一进来先看见「0 票」。
+//
+// 2026-10-20 暂停:前端被定时推送提前带上线,而 /poll 还没部署,请求掉进计数分支,
+// 每次打开视频页都给首页 "/" 多记一次 PV。先 POLL = null 让 /poll 回 404(不计数、
+// 投票框保持隐藏)。要开投时:线上 D1 跑一遍 schema.sql 建 poll_votes 表,
+// 再把 POLL 指回 POLL_DRAFT(或新的一轮)后 deploy。
+const POLL = null
+const POLL_DRAFT = {
+  id: "next-2026-10",
+  question: "下一期视频想看哪个?",
+  closes: "2026-11-01", // UTC 日期,这天起只读、公开结果
+  options: [
+    { id: "terminal", label: "我的终端配置:AI 写代码的工作台" },
+    { id: "bases-library", label: "用 Obsidian Bases 搭个人图书馆" },
+    { id: "video-cut", label: "AI 剪视频:自动去口误 + 双语字幕" },
+  ],
+}
+
+// 本地联调用:`wrangler dev --port 8788 --var DEV_ORIGIN:http://localhost:8080` 时放行本地
+// 预览页(端口和 nextVideoPoll.inline.ts 里的本地 ENDPOINT 对应)。
+function pollOrigins(env) {
+  return env.DEV_ORIGIN ? [...ALLOWED_ORIGINS, env.DEV_ORIGIN] : ALLOWED_ORIGINS
+}
+
+async function handlePoll(request, env) {
+  const origin = request.headers.get("Origin") || ""
+  const allowed = pollOrigins(env)
+  const headers = {
+    "Access-Control-Allow-Origin": allowed.includes(origin) ? origin : ALLOWED_ORIGINS[0],
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    Vary: "Origin",
+    "Cache-Control": "no-store",
+    "Content-Type": "application/json",
+  }
+  const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers })
+
+  if (request.method === "OPTIONS") return new Response(null, { headers })
+  if (!POLL) return json({ error: "no poll" }, 404)
+
+  const db = env.DB
+  const open = todayUTC() < POLL.closes
+  const ip = request.headers.get("CF-Connecting-IP") || ""
+  const hash = ip ? await sha256(ip + "|" + (env.SALT || "bsz")) : ""
+
+  if (request.method === "POST") {
+    if (!allowed.includes(origin)) return json({ error: "forbidden" }, 403)
+    if (!open) return json({ error: "closed" }, 409)
+    if (!hash) return json({ error: "no ip" }, 400)
+    const form = await request.formData()
+    const option = String(form.get("o") || "")
+    if (!POLL.options.some((o) => o.id === option)) return json({ error: "bad option" }, 400)
+    await db
+      .prepare(
+        "INSERT INTO poll_votes(poll, hash, option, ts) VALUES(?1, ?2, ?3, ?4) " +
+          "ON CONFLICT(poll, hash) DO UPDATE SET option = ?3, ts = ?4",
+      )
+      .bind(POLL.id, hash, option, Date.now())
+      .run()
+  } else if (request.method !== "GET") {
+    return json({ error: "method" }, 405)
+  }
+
+  const mine = hash
+    ? await db
+        .prepare("SELECT option FROM poll_votes WHERE poll = ?1 AND hash = ?2")
+        .bind(POLL.id, hash)
+        .first()
+    : null
+  const body = {
+    id: POLL.id,
+    question: POLL.question,
+    closes: POLL.closes,
+    open,
+    options: POLL.options,
+    voted: mine ? mine.option : null,
+  }
+  if (body.voted || !open) {
+    const { results } = await db
+      .prepare("SELECT option, COUNT(*) AS n FROM poll_votes WHERE poll = ? GROUP BY option")
+      .bind(POLL.id)
+      .all()
+    body.counts = Object.fromEntries(POLL.options.map((o) => [o.id, 0]))
+    // 下线的选项(改过 options 后)残留的票不展示
+    for (const r of results) if (r.option in body.counts) body.counts[r.option] = r.n
+  }
+  return json(body)
 }
 
 // ───────────────────────── 计数(公开) ─────────────────────────

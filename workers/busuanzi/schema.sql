@@ -77,3 +77,14 @@ CREATE TABLE IF NOT EXISTS meta (
   key   TEXT PRIMARY KEY,
   value TEXT NOT NULL
 );
+
+-- ── 下期视频投票(/poll,见 worker 里 handlePoll 的注释) ──────────────────
+-- 一人一票按「加盐 IP 哈希」认,主键冲突即改投(覆盖 option),不会一人多票。
+-- 票数不另存计数器,读的时候 GROUP BY 现算:一轮也就几十行,省掉计数器和明细对不上的可能。
+CREATE TABLE IF NOT EXISTS poll_votes (
+  poll   TEXT NOT NULL,
+  hash   TEXT NOT NULL,
+  option TEXT NOT NULL,
+  ts     INTEGER NOT NULL,          -- 最后一次投/改投的时间(ms)
+  PRIMARY KEY (poll, hash)
+);
