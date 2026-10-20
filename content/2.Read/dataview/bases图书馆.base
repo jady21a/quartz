@@ -8,8 +8,8 @@ formulas:
   距今: if(开始阅读, (now() - date(开始阅读)).days.round(0).toString() + " 天", "")
   进度: if(note.进度, if(note.进度.toString().contains("%"), note.进度.toString(), note.进度.toString() + "%"), if(currentPage && totalPage, (number(currentPage) / number(totalPage) * 100).round(0).toString() + "%", ""))
   读完年份: if(结束阅读, date(结束阅读).year, "")
-  有结束: if(结束阅读, 1, 0)
   深度: if(阅读方式, list(阅读方式).join(" · "), "")
+  最近动静: if(结束阅读, date(结束阅读), if(开始阅读, date(开始阅读), if(添加时间, date(添加时间), file.ctime)))
   分组: if(阅读状态.contains("正在阅读") && !阅读状态.contains("已读完"), "1|在读", if(if(阅读方式, list(阅读方式).contains("概览"), false), "5|概览", if(阅读状态.contains("已读完"), "2|已读", if(阅读状态.contains("未读完"), "4|未读完", "3|待读"))))
 properties:
   file.name:
@@ -48,96 +48,69 @@ properties:
     displayName: 分组
 views:
   - type: editable-cards
-    name: 在读
-    filters:
-      and:
-        - 阅读状态.contains("正在阅读")
-        - '!阅读状态.contains("已读完")'
+    name: 书架总览
+    groupBy:
+      property: formula.分组
+      direction: ASC
     order:
       - file.name
       - author
       - formula.进度
-      - totalPage
-      - 开始阅读
-      - formula.距今
-    sort:
-      - property: 添加时间
-        direction: DESC
-    image: note.封面
-  - type: editable-cards
-    name: 已读
-    filters:
-      and:
-        - 阅读状态.contains("已读完")
-    order:
-      - file.name
-      - author
-      - formula.深度
-      - myRate
-      - 结束阅读
-      - formula.用时
-    sort:
-      - property: formula.有结束
-        direction: DESC
-      - property: 结束阅读
-        direction: DESC
-    image: note.封面
-  - type: editable-cards
-    name: 待读
-    filters:
-      and:
-        - '!阅读状态.contains("已读完")'
-        - '!阅读状态.contains("正在阅读")'
-        - '!阅读状态.contains("未读完")'
-    order:
-      - file.name
-      - author
       - score
-      - totalPage
+      - myRate
       - 添加时间
-      - formula.进度
     sort:
-      - property: 添加时间
+      - property: formula.最近动静
         direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.7
-    cardSize: 180
-    imageFit: contain
-  - type: editable-cards
-    name: 未读完
-    filters:
-      and:
-        - 阅读状态.contains("未读完")
-        - '!阅读状态.contains("已读完")'
-        - '!阅读状态.contains("正在阅读")'
-    order:
-      - file.name
-      - author
-      - totalPage
-      - formula.进度
-      - 开始阅读
-    sort:
-      - property: 开始阅读
-        direction: DESC
-    image: note.封面
-  - type: editable-cards
-    name: 概览
-    filters:
-      and:
-        - 阅读方式.contains("概览")
-    order:
+    groupOrders:
+      在读:
+        - file.name
+        - author
+        - formula.进度
+        - totalPage
+        - 开始阅读
+        - formula.距今
+      已读:
+        - file.name
+        - author
+        - formula.深度
+        - myRate
+        - 结束阅读
+        - formula.用时
+      待读:
+        - file.name
+        - author
+        - score
+        - totalPage
+        - 添加时间
+        - formula.进度
+      未读完:
+        - file.name
+        - author
+        - totalPage
+        - formula.进度
+        - 开始阅读
+      概览:
+        - file.name
+        - author
+        - formula.状态
+        - score
+        - myRate
+        - 添加时间
+    allOrder:
       - file.name
       - author
       - formula.状态
+      - formula.深度
       - score
       - myRate
       - 添加时间
-    sort:
-      - property: 添加时间
-        direction: DESC
+      - formula.进度
+      - formula.用时
+    allSort: 添加时间
     image: note.封面
     imageAspectRatio: 0.7
-    cardSize: 180
+    cardSize: 160
     imageFit: contain
   - type: table
     name: 年度书单
@@ -160,41 +133,3 @@ views:
         direction: DESC
     summaries:
       file.name: Filled
-  - type: editable-cards
-    name: 全部藏书
-    order:
-      - file.name
-      - author
-      - formula.状态
-      - formula.深度
-      - score
-      - myRate
-      - 添加时间
-      - formula.进度
-      - formula.用时
-    sort:
-      - property: 添加时间
-        direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.7
-    cardSize: 160
-    imageFit: contain
-  - type: editable-cards
-    name: 书架总览
-    groupBy:
-      property: formula.分组
-      direction: ASC
-    order:
-      - file.name
-      - author
-      - formula.进度
-      - score
-      - myRate
-      - 添加时间
-    sort:
-      - property: 添加时间
-        direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.7
-    cardSize: 160
-    imageFit: contain

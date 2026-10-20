@@ -14,6 +14,10 @@ formulas:
   导演: if(director, list(director).slice(0, 2).join(" / "), "")
   地区: if(country, list(country).slice(0, 2).join(" / "), "")
   记录日: if(结束时间, 结束时间, 添加时间)
+  # 影视总览用:组名前的数字只控制组的先后,editable-cards 插件显示时会去掉
+  分组: if(formula.状态 == "在看", "1|在看", if(formula.状态 == "已看", "2|已看", if(formula.状态 == "待看", "3|待看", "4|弃剧")))
+  # 影视总览排序用:待看组按豆瓣分,其余组按最近一次动静(结束→开始→添加)的日期,都是大的在前
+  排序键: if(formula.状态 == "待看", if(score, number(score), 0), number(date(if(结束时间, 结束时间, if(开始时间, 开始时间, if(添加时间, 添加时间, file.ctime)))).format("YYYYMMDD")))
 properties:
   file.name:
     displayName: 片名
@@ -44,6 +48,36 @@ properties:
   formula.地区:
     displayName: 地区
 views:
+  - type: editable-cards
+    name: 影视总览
+    # 以下三个是插件 editable-cards 的自定义键,只能在 YAML 里改,「属性」菜单改不到
+    # 各组卡片字段,照搬原「在看/已看/待看/弃剧」视图
+    groupOrders:
+      在看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份, state]
+      已看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份, myRating]
+      待看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
+      弃剧: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
+    # 顶部目录「全部」:平铺所有片子,字段和排序沿用「全部片库」视图
+    allOrder: [file.name, formula.媒介, formula.状态, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
+    allSort: formula.豆瓣
+    groupBy:
+      property: formula.分组
+      direction: ASC
+    order:
+      - file.name
+      - formula.媒介
+      - formula.题材
+      - formula.导演
+      - formula.豆瓣
+      - formula.地区
+      - formula.年份
+    sort:
+      - property: formula.排序键
+        direction: DESC
+    image: note.封面
+    imageAspectRatio: 0.7
+    cardSize: 160
+    imageFit: contain
   - type: editable-cards
     name: 在看
     filters:
