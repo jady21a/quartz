@@ -11,6 +11,7 @@ currentPage:
 tags:
   - book
 isbn: "9780698148314"
+score: "7.3"
 封面: 2.Read/douban/0_dimage/gbooks_1AAsyQ1wgaEC.jpg
 阅读状态:
   - 正在阅读

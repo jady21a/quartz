@@ -11,6 +11,7 @@ currentPage:
 tags:
   - book
 isbn: "9780593330456"
+score: "7.8"
 封面: 2.Read/douban/0_dimage/gbooks_GxACEAAAQBAJ.jpg
 阅读状态:
   - 已读完

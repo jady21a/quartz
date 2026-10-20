@@ -10,7 +10,7 @@ isbn: ""
 totalPage: "271"
 进度: ""
 章节: ""
-score: ""
+score: "7.6"
 scoreStar: ""
 封面: 2.Read/add-book/covers/This is Marketing You Can't Be Seen Until You Learn To See — Seth Godin.jpg
 链接: https://www.goodreads.com/book/show/40549476

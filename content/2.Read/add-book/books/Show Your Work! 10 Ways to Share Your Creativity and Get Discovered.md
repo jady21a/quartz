@@ -10,9 +10,9 @@ publishDate: 2014-03-06
 yearPublished: "2014"
 isbn: "9780761178972"
 totalPage: "215"
-进度: 47%
+进度: 70%
 章节:
-score:
+score: "7.8"
 scoreStar:
 封面: "2.Read/add-book/covers/Show Your Work! 10 Ways to Share Your Creativity and Get Discovered — Austin Kleon.jpg"
 链接: https://www.goodreads.com/book/show/18290401

@@ -8,7 +8,6 @@ formulas:
   距今: if(开始阅读, (now() - date(开始阅读)).days.round(0).toString() + " 天", "")
   进度: if(note.进度, if(note.进度.toString().contains("%"), note.进度.toString(), note.进度.toString() + "%"), if(currentPage && totalPage, (number(currentPage) / number(totalPage) * 100).round(0).toString() + "%", ""))
   读完年份: if(结束阅读, date(结束阅读).year, "")
-  深度: if(阅读方式, list(阅读方式).join(" · "), "")
   最近动静: if(结束阅读, date(结束阅读), if(开始阅读, date(开始阅读), if(添加时间, date(添加时间), file.ctime)))
   分组: if(阅读状态.contains("正在阅读") && !阅读状态.contains("已读完"), "1|在读", if(if(阅读方式, list(阅读方式).contains("概览"), false), "5|概览", if(阅读状态.contains("已读完"), "2|已读", if(阅读状态.contains("未读完"), "4|未读完", "3|待读"))))
 properties:
@@ -19,7 +18,7 @@ properties:
   author:
     displayName: 作者
   score:
-    displayName: 豆瓣分
+    displayName: 评分(10)
   scoreStar:
     displayName: 评分
   myRate:
@@ -34,8 +33,6 @@ properties:
     displayName: 方式
   formula.状态:
     displayName: 状态
-  formula.深度:
-    displayName: 深度
   formula.用时:
     displayName: 用时
   formula.距今:
@@ -73,7 +70,8 @@ views:
       已读:
         - file.name
         - author
-        - formula.深度
+        - 阅读方式
+        - score
         - myRate
         - 结束阅读
         - formula.用时
@@ -83,13 +81,13 @@ views:
         - score
         - totalPage
         - 添加时间
-        - formula.进度
       未读完:
         - file.name
         - author
         - totalPage
         - formula.进度
         - 开始阅读
+        - formula.距今
       概览:
         - file.name
         - author
@@ -101,7 +99,6 @@ views:
       - file.name
       - author
       - formula.状态
-      - formula.深度
       - score
       - myRate
       - 添加时间

@@ -5,7 +5,7 @@ author: "NoahKagan、TahlRaz"
 publishDate: 2024-01-30
 阅读状态:
   - 已读完
-score: ""
+score: "8.2"
 封面: 2.Read/douban/0_dimage/s34776686.jpg
 tags:
   - book

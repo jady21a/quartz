@@ -11,6 +11,7 @@ currentPage:
 tags:
   - book
 isbn: "9780192893208"
+score: "8.7"
 封面: 2.Read/douban/0_dimage/gbooks_1-4BLLgo0A8C.jpg
 阅读状态:
   - 正在阅读

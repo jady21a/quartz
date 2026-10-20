@@ -11,6 +11,7 @@ currentPage:
 tags:
   - book
 isbn: "9781439144831"
+score: "8.3"
 封面: 2.Read/douban/0_dimage/gbooks_Z5PpkQadm5EC.jpg
 阅读状态:
   - 正在阅读

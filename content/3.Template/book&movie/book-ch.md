@@ -1,20 +1,19 @@
 ````
 ---
 originalTitle: "{{originalTitle}}"
-title: "{{title}}"
+CNTitle: "{{title}}"
 author: {{author}}
+publisher: "{{publisher}}"
 publishDate: "{{datePublished}}"
 阅读状态: [未开始]
 score: "{{score}}"
 scoreStar: "{{scoreStar}}"
 封面: "{{imageData.url}}"
-yearPublished: "{{yearPublished}}"
-genre:
-isbn: "{{isbn13}}"
+genre: "{{genre}}"
+isbn: "{{isbn}}"
 tags:
   - book
 totalPage: "{{totalPage}}"
-currentPage:
 阅读方式:
 添加时间: <% tp.date.now("YYYY-MM-DD") %>
 开始阅读:
