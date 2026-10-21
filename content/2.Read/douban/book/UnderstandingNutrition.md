@@ -7,8 +7,7 @@ author:
 publishDate: 2012-07-27
 开始阅读: 2025-05-08
 结束阅读:
-阅读状态:
-  - 未读完
+阅读状态: [正在阅读]
 score: ""
 封面: 2.Read/douban/0_dimage/s27117541.jpg
 tags:
@@ -19,8 +18,10 @@ totalPage: "928"
 currentPage:
 myRate:
 添加时间: 2025-05-08
+进度: 6%
 ---
 
 
 ## 我的阅读笔记
 
+# 阅读笔记
