@@ -21,11 +21,11 @@ formulas:
 properties:
   file.name:
     displayName: 片名
-  myRating:
+  note.myRating:
     displayName: 我的评分
-  state:
+  note.state:
     displayName: 状态标记
-  添加时间:
+  note.添加时间:
     displayName: 添加
   formula.状态:
     displayName: 状态

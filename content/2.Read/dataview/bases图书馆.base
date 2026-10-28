@@ -13,23 +13,23 @@ formulas:
 properties:
   file.name:
     displayName: 书名
-  originalTitle:
+  note.originalTitle:
     displayName: 原标题
-  author:
+  note.author:
     displayName: 作者
-  score:
+  note.score:
     displayName: 评分(10)
-  scoreStar:
+  note.scoreStar:
     displayName: 评分
-  myRate:
+  note.myRate:
     displayName: 推荐指数
-  totalPage:
+  note.totalPage:
     displayName: 页数
-  publishDate:
+  note.publishDate:
     displayName: 出版
-  添加时间:
+  note.添加时间:
     displayName: 添加
-  阅读方式:
+  note.阅读方式:
     displayName: 方式
   formula.状态:
     displayName: 状态
