@@ -51,13 +51,13 @@ views:
   - type: editable-cards
     name: 影视总览
     # 以下三个是插件 editable-cards 的自定义键,只能在 YAML 里改,「属性」菜单改不到
-    # 各组卡片字段,照搬原「在看/已看/待看/弃剧」视图
+    # 各组卡片字段,照搬原「在看/已看/待看/弃剧」视图(已删,并入本视图)
     groupOrders:
       在看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份, state]
       已看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份, myRating]
       待看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
       弃剧: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
-    # 顶部目录「全部」:平铺所有片子,字段和排序沿用「全部片库」视图
+    # 顶部目录「全部」:平铺所有片子,字段和排序沿用原「全部片库」视图(已删)
     allOrder: [file.name, formula.媒介, formula.状态, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
     allSort: formula.豆瓣
     groupBy:
@@ -77,90 +77,6 @@ views:
     image: note.封面
     imageAspectRatio: 0.7
     cardSize: 160
-    imageFit: contain
-  - type: editable-cards
-    name: 在看
-    filters:
-      and:
-        - formula.状态 == "在看"
-    order:
-      - file.name
-      - formula.媒介
-      - formula.题材
-      - formula.导演
-      - formula.豆瓣
-      - formula.地区
-      - formula.年份
-      - state
-    sort:
-      - property: 开始时间
-        direction: DESC
-      - property: 添加时间
-        direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.7
-    cardSize: 200
-    imageFit: contain
-  - type: editable-cards
-    name: 待看
-    filters:
-      and:
-        - formula.状态 == "待看"
-    order:
-      - file.name
-      - formula.媒介
-      - formula.题材
-      - formula.导演
-      - formula.豆瓣
-      - formula.地区
-      - formula.年份
-    sort:
-      - property: formula.豆瓣
-        direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.7
-    cardSize: 180
-    imageFit: contain
-  - type: editable-cards
-    name: 已看
-    filters:
-      and:
-        - formula.状态 == "已看"
-    order:
-      - file.name
-      - formula.媒介
-      - formula.题材
-      - formula.导演
-      - formula.豆瓣
-      - formula.地区
-      - formula.年份
-      - myRating
-    sort:
-      - property: formula.记录日
-        direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.7
-    cardSize: 180
-    imageFit: contain
-  - type: editable-cards
-    name: 弃剧
-    filters:
-      and:
-        - formula.状态 == "弃剧"
-    order:
-      - file.name
-      - formula.媒介
-      - formula.题材
-      - formula.导演
-      - formula.豆瓣
-      - formula.地区
-      - formula.年份
-    sort:
-      - property: 添加时间
-        direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.7
-    cardSize: 180
     imageFit: contain
   - type: table
     name: 片单
@@ -216,24 +132,6 @@ views:
       - formula.地区
     sort:
       - property: datePublished
-        direction: DESC
-    image: note.封面
-    imageAspectRatio: 0.7
-    cardSize: 160
-    imageFit: contain
-  - type: editable-cards
-    name: 全部片库
-    order:
-      - file.name
-      - formula.媒介
-      - formula.状态
-      - formula.题材
-      - formula.导演
-      - formula.豆瓣
-      - formula.地区
-      - formula.年份
-    sort:
-      - property: formula.豆瓣
         direction: DESC
     image: note.封面
     imageAspectRatio: 0.7
