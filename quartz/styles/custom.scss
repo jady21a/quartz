@@ -778,3 +778,51 @@ article.service-page {
     transition: none;
   }
 }
+
+// 暗色模式专属覆盖:配色见 quartz.config.ts darkMode
+[saved-theme="dark"] {
+  // 内链在暗底上不要底色块(表格里一密集就成碎补丁);正文里改成主色文字 + 细下划线
+  a.internal:not(.tag-link):not(.home-nav-item) {
+    background-color: transparent;
+  }
+
+  article a.internal:not(.home-nav-item):not(.tag-link) {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--secondary) 40%, transparent);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+
+    &:hover {
+      text-decoration-color: var(--tertiary);
+    }
+  }
+
+  // 首页卡片:比底色亮两档的实色 + 提亮描边,低对比底色下也能看出卡片;hover 时边框变辅色
+  a.home-nav-item {
+    background-color: #3a3a3e;
+    border-color: #48484d;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: #3a3a3e;
+        border-color: var(--tertiary);
+      }
+    }
+  }
+
+  // callout、代码高亮自带的鲜艳色在低饱和底上太跳,统一降饱和
+  .callout {
+    filter: saturate(0.35);
+  }
+
+  pre,
+  code {
+    filter: saturate(0.6);
+  }
+
+  // 黑色圆形 logo 在暗底上没轮廓,加一圈浅色描边
+  .page-title-icon {
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--lightgray);
+  }
+}
