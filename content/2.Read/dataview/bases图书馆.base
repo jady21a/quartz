@@ -31,6 +31,10 @@ properties:
     displayName: 添加
   note.阅读方式:
     displayName: 方式
+  note.听读:
+    displayName: 听读
+  note.实际听读:
+    displayName: 实际听读
   formula.状态:
     displayName: 状态
   formula.用时:
@@ -63,6 +67,8 @@ views:
       在读:
         - file.name
         - author
+        - 听读
+        - 实际听读
         - formula.进度
         - totalPage
         - 开始阅读
@@ -71,6 +77,8 @@ views:
         - file.name
         - author
         - 阅读方式
+        - 听读
+        - 实际听读
         - score
         - myRate
         - 结束阅读
@@ -78,12 +86,14 @@ views:
       待读:
         - file.name
         - author
+        - 听读
         - score
         - totalPage
         - 添加时间
       未读完:
         - file.name
         - author
+        - 听读
         - totalPage
         - formula.进度
         - 开始阅读

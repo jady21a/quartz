@@ -15,6 +15,7 @@ tags:
   - book
 totalPage: "{{totalPage}}"
 阅读方式:
+听读:
 添加时间: <% tp.date.now("YYYY-MM-DD") %>
 开始阅读:
 结束阅读:

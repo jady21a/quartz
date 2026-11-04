@@ -8,6 +8,7 @@ publishDate: 2020-05-05
   - 未读完
 阅读方式:
   - 概览
+听读: 只听
 score: ""
 封面: 2.Read/douban/0_dimage/gbooks_uwO5DwAAQBAJ.jpg
 yearPublished: ""
