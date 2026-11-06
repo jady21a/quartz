@@ -362,13 +362,11 @@
           badge: "Notes",
           noNotes: "No notes yet",
           toggle: "Only with notes",
-          count: (n, t) => n + " of " + t + " have notes",
         }
       : {
           badge: "笔记",
           noNotes: "还没写笔记",
           toggle: "只看有笔记的",
-          count: (n, t, unit) => t + " " + unit + "里 " + n + " " + unit + "写了笔记",
         }
   }
 
@@ -427,11 +425,7 @@
         writeNotesOnly(on)
         apply(on)
       })
-      const count = document.createElement("span")
-      count.className = "gallery-notes-count"
-      count.textContent = t.count(withNotes, items.length, cfg.unit)
       bar.appendChild(btn)
-      bar.appendChild(count)
       // 开关管整页所有分栏,放在第一个分栏标题上面,别让它看着像只属于「正在阅读」
       const prev = first.previousElementSibling
       const anchor = prev && /^H[1-6]$/.test(prev.tagName) ? prev : first
@@ -550,7 +544,6 @@
     placeholder: "📚",
     coverAlt: "书籍封面",
     notesToggle: true,
-    unit: "本",
     withProgress: true,
     infoItems: function (book) {
       // 没有结束时间（还没读完）不显示用时；起点缺开始时间时退回添加时间
@@ -618,7 +611,6 @@
     placeholder: "🎬",
     coverAlt: "影片海报",
     notesToggle: true,
-    unit: "部",
     withProgress: false,
     infoItems: function (m) {
       return [
