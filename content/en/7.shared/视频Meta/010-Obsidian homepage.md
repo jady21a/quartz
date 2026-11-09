@@ -50,6 +50,9 @@ I tried piling all my frequent links onto one page, but the list got too long an
 | **Contribution Graph** | The activity heatmap |
 | **Obsidian ECharts** | The word-count heatmap |
 
+> [!note] Update (2026-06-23)
+> Obsidian ECharts has been removed from the community store. See [[#The obsidian-echarts plugin being delisted|the supplement]] for how to install it manually or switch to Contribution Graph.
+
 ### CSS snippet
 
 - **[MCL Multi Column](https://github.com/efemkay/obsidian-modular-css-layout)**: provides the multi-column card layout. It's not a plugin — download `MCL Multi Column.css` from GitHub, put it in the `.obsidian/snippets` folder, then enable it under `Settings → Appearance → CSS snippets`.
@@ -136,8 +139,3 @@ The new homepage [[002-1homepage template]] keeps all three heatmaps; a side-by-
 
 
 ![[Pasted image 20260612182850.png]]
-
-
-## Folder structure
-Some folks asked to see the folder structure, so here it is:
-![[Pasted image 20260612110005.png]]

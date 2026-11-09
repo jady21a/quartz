@@ -1,0 +1,59 @@
+// 视频页底部「后续优化」
+.video-updates {
+  margin: 2rem 0 1rem;
+  padding: 0.6rem 1.2rem 0.8rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  background: var(--light);
+
+  h2 {
+    margin: 0.4rem 0 0.6rem;
+    font-size: 1.15rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  li {
+    margin: 0.3rem 0;
+    scroll-margin-top: 2rem;
+  }
+
+  // 从专题 001「相关」点进来时,把跳到的那一条标出来
+  li:target {
+    background: var(--highlight);
+    border-radius: 4px;
+  }
+
+  .video-updates-all {
+    margin: 0.6rem 0 0;
+    font-size: 0.9rem;
+  }
+}
+
+// 改进条目的「展开详情」:专题页和视频页共用
+.update-details {
+  margin: 0.3rem 0 0.6rem;
+
+  & > summary {
+    cursor: pointer;
+    color: var(--secondary);
+    font-size: 0.9rem;
+  }
+}
+
+// 专题页「更早的改进」:最近几条之外的旧条目
+.update-older {
+  margin: 0.4rem 0 1rem;
+
+  & > summary {
+    cursor: pointer;
+    color: var(--secondary);
+  }
+
+  & > ul {
+    margin-top: 0.4rem;
+  }
+}

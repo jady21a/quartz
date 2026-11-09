@@ -95,6 +95,8 @@ export const sharedPageComponents: SharedLayout = {
   header: [],
   afterBody: [
     Component.ScrollButtons(),
+    // 视频页「后续优化」:只在带 video 标签、且专题 001 有条目链到本页时出现
+    Component.VideoUpdates(),
     // 只挂在中文视频页(videos/video-notes/*);题目选项由 busuanzi Worker 下发
     Component.ConditionalRender({
       component: Component.NextVideoPoll(),

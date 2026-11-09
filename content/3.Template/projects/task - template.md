@@ -3,8 +3,20 @@
 // 分流入口:分类 = a2 → 视频任务模板(task-video - template);其余分类走下方通用流程。
 // 注意:本文件不能出现静态文本——a2 分支 include 后 return,但静态文本不受 return
 // 控制、会照样拼进输出,所以通用内容也全部经 tR 拼接。
-// 1. 输入类型
-const type = await tp.system.prompt("task 分类", "");
+// 1. 确定类型:新建前正在看的是主项目页(4.Projects/I.projects/ 下 type: main-project),
+//    就直接用它的编号前缀(如 a3.obsidian探索 → a3),不再弹窗;否则照旧问。
+//    新建笔记时它自己已成为活动文件,所以从「最近打开」里取第一个不是它的文件。
+const target = tp.config.target_file;
+const prevPath = [tp.config.active_file?.path, ...app.workspace.getLastOpenFiles()]
+  .find(p => p && p !== target.path);
+const prevFile = prevPath ? app.vault.getAbstractFileByPath(prevPath) : null;
+const prevMeta = prevFile ? app.metadataCache.getFileCache(prevFile)?.frontmatter : null;
+let type = null;
+if (prevFile && prevFile.path.startsWith("4.Projects/I.projects/") && prevMeta?.type === "main-project") {
+  type = prevFile.basename.split(".")[0];
+} else {
+  type = await tp.system.prompt("task 分类", "");
+}
 // 取消则删除刚创建的文档
 if (type === null) {
   await app.vault.trash(tp.config.target_file, true);

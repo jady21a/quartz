@@ -50,6 +50,9 @@ category: obsidian
 | **Contribution Graph** | 活跃度热力图                              |
 | **Obsidian ECharts**   | 字数热力图                               |
 
+> [!note] 更新(2026-06-23)
+> Obsidian ECharts 已从社区商店下架,搜不到了。手动装回原插件或改用 Contribution Graph 的办法见 [[#obsidian-echarts插件下架问题|文末补充]]。
+
 ### CSS snippet
 
 - **[MCL Multi Column](https://github.com/efemkay/obsidian-modular-css-layout)**：实现多栏卡片布局。它不是插件，从 GitHub 下载 `MCL Multi Column.css`，放到 `.obsidian/snippets` 文件夹，再到 `设置 → 外观 → CSS 代码片段` 里打开。
@@ -134,8 +137,3 @@ category: obsidian
 
 
 ![[Pasted image 20260612182850.png]]
-
-
-## 目录结构
-有小伙伴说想看看目录结构,放这里了
-![[Pasted image 20260612110005.png]]

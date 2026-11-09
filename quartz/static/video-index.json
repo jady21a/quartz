@@ -123,6 +123,10 @@
         "label": "002-2homepage-dashboard"
       },
       {
+        "target": "#obsidian-echarts插件下架问题",
+        "label": "文末补充"
+      },
+      {
         "target": "002-2homepage-dashboard",
         "label": "homepage-columns.css"
       },
@@ -149,10 +153,6 @@
       {
         "target": "Pasted image 20260612182850.png",
         "label": "Pasted image 20260612182850.png"
-      },
-      {
-        "target": "Pasted image 20260612110005.png",
-        "label": "Pasted image 20260612110005.png"
       }
     ],
     "createTime": ""

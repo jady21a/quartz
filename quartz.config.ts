@@ -131,6 +131,10 @@ const config: QuartzConfig = {
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       // 链向书影空壳页(不上线)的链接拆成纯文字,必须在 CrawlLinks 之后
       Plugin.ReadStubLinks(),
+      // 专题 001「后续优化」列表拆成条目,供视频页底部 VideoUpdates 组件按本期筛选;要用 data-slug
+      Plugin.VideoUpdates(),
+      // 视频页「相关视频」双向显示:A 写了 B,B 也自动列出 A
+      Plugin.RelatedVideos(),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
     ],
