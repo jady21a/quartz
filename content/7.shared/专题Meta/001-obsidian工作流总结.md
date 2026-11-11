@@ -21,9 +21,23 @@ draft:
 
 视频发布后陆续加上的改进,新的在前。每条末尾的「相关」是它涉及的视频,那几期的视频页底部会自动列出这条。
 
-- **2026-11-09 · 首页**:点字数热力图的格子,能看到当天改了哪些文件、每个文件改了多少字,自己写的和 AI 写的分开列。 相关:[[7.shared/视频Meta/010-Obsidian homepage|010 期]]、[[7.shared/视频Meta/011-obsidian开箱即用模板库|011 期]]
+- **2026-11-11 · 项目推进**:主项目页的 task 执行表从 Dataview 换成 Bases,完成度、心情、check 能直接在表格里改,不用点进 task 页。所有项目共用一个视图,改列只改一处。 相关:[[7.shared/视频Meta/008-项目管理|008 期]]
 
-  自己写的字数来自 Better Word Count,早期没有记录的日子用 git 推算,可能混进模板自动生成的内容。AI 写的字数来自 Claude Code 和 Codex 的会话记录。
+  前提是 task 的属性里写了 `project`,和主项目页的 `project` 一致。做法:
+
+  1. 在项目的 .base 文件里加一个表格视图,筛选 `file.inFolder("4.Projects/II.tasks")` 和 `project == this.project`,命名为「本项目task」
+  2. 项目页原来的 dataview 表换成 `![[项目.base#本项目task]]`,嵌入时 `this` 指当前项目页
+
+- **2026-11-11 · 首页**:「快速导航」的项目卡改用 Bases 自动列出所有主项目,新建项目会自己出现,不用再手动加链接。「最近笔记」也换成了 Bases。 相关:[[7.shared/视频Meta/010-Obsidian homepage|010 期]]
+
+  前提是主项目笔记的属性里写了 `type: main-project`。做法:
+
+  1. 在项目的 .base 文件里加一个列表视图,筛选条件 `type == "main-project"`,命名为「首页项目」
+  2. 首页卡片里写 `![[项目.base#首页项目]]` 嵌进去
+
+- **2026-11-09 · 首页**:点字数热力图的格子,图下方会列出当天改过的文件和各自的字数增删,分成「自己改的」和「AI 改的」两组,每组标出新增字数和占当天的比例。 相关:[[7.shared/视频Meta/010-Obsidian homepage|010 期]]、[[7.shared/视频Meta/011-obsidian开箱即用模板库|011 期]]
+
+  自己改的字数来自 Better Word Count,AI 改的来自 Claude Code 和 Codex 的会话记录。
 
   模板库 [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault) 的首页已经带上这个功能。想搬到自己的库里,需要:
 
