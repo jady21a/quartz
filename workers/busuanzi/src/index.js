@@ -1045,6 +1045,9 @@ const STATS_HTML = `<!DOCTYPE html>
   button.refresh{background:var(--card);color:var(--fg);border:1px solid var(--line);
     border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer}
   button.refresh:hover{border-color:var(--acc)}
+  /* 回到顶部:页面最底下一颗,和顶部「刷新」同款。放在流里而不是浮在角上 ——
+     浮钮会一路压着表格最后一列的数字,读到底才需要它,那就只在底部出现。 */
+  .totop{display:block;margin:28px auto 0}
   .err{color:#f7768e}
   /* 平台账号区 */
   .sect{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
@@ -1114,6 +1117,7 @@ const STATS_HTML = `<!DOCTYPE html>
     <button class="refresh" onclick="load()">刷新</button>
   </header>
   <div id="app"><div class="card muted">加载中…</div></div>
+  <button class="refresh totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到顶部</button>
 </div>
 <script>
 // token 放 URL fragment(#token=):不会随请求发给服务器、不进任何访问日志。
