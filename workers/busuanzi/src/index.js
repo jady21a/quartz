@@ -1064,6 +1064,7 @@ const STATS_HTML = `<!DOCTYPE html>
      平台名本身 —— 别再往这儿加颜色。 */
   .badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);
     color:var(--mut);white-space:nowrap}
+  .why-stale{font-size:12.5px;color:var(--warn);margin:-4px 0 10px}
   .badge.stale{color:var(--warn);border-color:rgba(224,175,104,.45);background:rgba(224,175,104,.1)}
   /* 固定 4 列 = MAX_MAJOR,主区正好占满整行。不用 auto-fit:各平台主指标数不同
      (小红书只有 2 个),自适应会让每张卡的列宽都不一样,数字左边缘跨卡对不齐、
@@ -1408,6 +1409,14 @@ function platCard(p, fetchedAt, now, downloads){
 
   let h='<div class="card'+(stale?' stale':'')+'">';
   h+='<div class="plat-head"><span class="plat-name">'+esc(p.name||'')+'</span>'+badge+'</div>';
+  // 角标只说「旧了」,不说为什么。取数侧已经把原因写进 why(如「掉登录了,去扫码」),
+  // 旧数字的卡就把它摆出来 —— 不然人得回本机翻 run.log 才知道该干什么。
+  // 新鲜的卡不显示:那时 why 里只剩附带的小毛病,不值得占一行。
+  // 「本次没取到,沿用 xx 的数字」那条去掉:角标已经说了,这里只留「为什么、怎么办」。
+  const why=(p.why||'').split('; ').filter(function(x){ return x && x.indexOf('本次没取到')!==0 }).join(';');
+  if((stale||p.carried) && why){
+    h+='<div class="why-stale">'+esc(why)+'</div>';
+  }
   h+='<div class="metrics">'+major.map(function(m){
       const d=m.delta;
       // 平台区是死胡同 —— 唯一的例外是队列型指标,而且只在它不为 0 时:看到 1 之后该做的事
