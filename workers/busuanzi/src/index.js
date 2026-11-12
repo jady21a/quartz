@@ -1045,9 +1045,15 @@ const STATS_HTML = `<!DOCTYPE html>
   button.refresh{background:var(--card);color:var(--fg);border:1px solid var(--line);
     border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer}
   button.refresh:hover{border-color:var(--acc)}
-  /* 回到顶部:页面最底下一颗,和顶部「刷新」同款。放在流里而不是浮在角上 ——
-     浮钮会一路压着表格最后一列的数字,读到底才需要它,那就只在底部出现。 */
-  .totop{display:block;margin:28px auto 0}
+  /* 回到顶部:手机上这页要滑很久,只放页底等于要先滑到底才用得上。所以做成浮钮,
+     但滑过一屏才出现 —— 在顶部那一屏它毫无用处,只会白白压住内容。
+     做小、靠右下角、留出 iPhone 底部安全区;body 底部本来有 64px 留白,滑到底时
+     它落在留白里,不压最后一行数字。 */
+  .totop{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));
+    width:40px;height:40px;border-radius:50%;padding:0;display:flex;align-items:center;
+    justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.25);
+    opacity:0;pointer-events:none;transition:opacity .2s}
+  .totop.show{opacity:.92;pointer-events:auto}
   .err{color:#f7768e}
   /* 平台账号区 */
   .sect{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
@@ -1117,7 +1123,10 @@ const STATS_HTML = `<!DOCTYPE html>
     <button class="refresh" onclick="load()">刷新</button>
   </header>
   <div id="app"><div class="card muted">加载中…</div></div>
-  <button class="refresh totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到顶部</button>
+  <button class="refresh totop" id="totop" aria-label="回到顶部" title="回到顶部"
+    onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg width="18" height="18" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 </div>
 <script>
 // token 放 URL fragment(#token=):不会随请求发给服务器、不进任何访问日志。
@@ -1964,6 +1973,12 @@ function toggleRank(btn){
   // 的空白里。收起后把这张卡拉回视野,点完还站在原地。
   if(!open) card.scrollIntoView({block:'nearest'});
 }
+// 浮钮滑过一屏才出现(理由见 .totop 的 CSS 注释)
+(function(){
+  const b=document.getElementById('totop');
+  const on=function(){ b.classList.toggle('show', window.scrollY>window.innerHeight) };
+  window.addEventListener('scroll', on, {passive:true}); on();
+})();
 load();
 </script>
 </body></html>`
