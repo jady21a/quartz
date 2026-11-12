@@ -1049,11 +1049,15 @@ const STATS_HTML = `<!DOCTYPE html>
      但滑过一屏才出现 —— 在顶部那一屏它毫无用处,只会白白压住内容。
      做小、靠右下角、留出 iPhone 底部安全区;body 底部本来有 64px 留白,滑到底时
      它落在留白里,不压最后一行数字。 */
-  .totop{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));
+  /* 宽屏上贴着内容栏(.wrap 1000px)右缘外侧 16px,而不是钉在屏幕角落 —— 大屏上
+     屏幕角离内容半个屏宽,眼睛得横穿过去找。两侧留白放不下时退回角落(手机就是这样)。
+     选择器带上 button,否则会被 button.refresh 的 8px 圆角压掉,变成圆角方块。 */
+  button.totop{position:fixed;right:max(16px, calc((100vw - 1000px) / 2 - 56px));
+    bottom:calc(16px + env(safe-area-inset-bottom));
     width:40px;height:40px;border-radius:50%;padding:0;display:flex;align-items:center;
     justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.25);
     opacity:0;pointer-events:none;transition:opacity .2s}
-  .totop.show{opacity:.92;pointer-events:auto}
+  button.totop.show{opacity:.92;pointer-events:auto}
   .err{color:#f7768e}
   /* 平台账号区 */
   .sect{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
