@@ -20,41 +20,46 @@ Each episode in the video collection covered one piece of the system. This page 
 
 Improvements added after the videos came out, newest first. "Related" lists the episodes each one touches; those episode pages show it automatically at the bottom.
 
-- **2026-11-11 · Project progress**: the task table on each main-project page moved from Dataview to Bases. Completion, mood and check can now be edited right in the table without opening the task note, and all projects share one view, so columns change in one place. Related: [[en/7.shared/视频Meta/008-项目管理|episode 008]]
+- **2026-11-12 · Homepage · New**: click a heatmap cell to see which files changed that day and whether each was edited by me, by AI, or by a plugin. Related: [[en/7.shared/视频Meta/010-Obsidian homepage|episode 010]], [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]]
+
+  The word-count heatmap also lists each file's words added and removed, and each group's share of the day. "Edited by me" word counts come from Better Word Count; "edited by AI" ones come from Claude Code and Codex session logs.
+
+  The homepage in the [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault) template vault is already updated. To bring it into your own vault you need:
+
+  1. both heatmap code blocks from the homepage
+  2. the script `.obsidian/scripts/wordheat_index.py`, which runs automatically when the homepage opens
+  3. python3 installed on your computer; on mobile, or without it, the activity heatmap falls back to counting by last-modified time
+
+  To see exactly which files changed on a given day, the vault needs to be under git.
+
+- **2026-11-11 · Project progress · Improved**: the task table on each main-project page moved to Bases, so completion, mood and check can be edited right in the table. Related: [[en/7.shared/视频Meta/008-项目管理|episode 008]]
 
   This assumes each task has a `project` property matching the main-project page's `project`. Steps:
 
   1. in your project .base file, add a table view filtered by `file.inFolder("4.Projects/II.tasks")` and `project == this.project`, and name it "本项目task"
   2. replace the old dataview table on the project page with `![[项目.base#本项目task]]`; when embedded, `this` means the current project page
 
-- **2026-11-11 · Homepage**: the Projects card under "Quick navigation" now uses Bases to list every main project automatically, so new projects show up on their own instead of being linked by hand. "Recent notes" switched to Bases too. Related: [[en/7.shared/视频Meta/010-Obsidian homepage|episode 010]]
+  All projects share this one view, so columns change in one place.
+
+- **2026-11-11 · Homepage · Improved**: the Projects card and "Recent notes" on the homepage moved to Bases, so new projects show up on their own instead of being linked by hand. Related: [[en/7.shared/视频Meta/010-Obsidian homepage|episode 010]]
 
   This assumes main-project notes have `type: main-project` in their properties. Steps:
 
   1. in your project .base file, add a list view filtered by `type == "main-project"` and name it "首页项目"
   2. embed it in the homepage card with `![[项目.base#首页项目]]`
 
-- **2026-11-09 · Homepage**: click a cell in the word-count heatmap and the files changed that day are listed under the chart, each with its words added and removed, in two groups: "edited by me" and "edited by AI", each showing its words added and its share of the day. Related: [[en/7.shared/视频Meta/010-Obsidian homepage|episode 010]], [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]]
+- **2026-11-09 · Project progress · Improved**: creating a task while a main project page is open now uses that project's category automatically — no prompt, you only fill in the title. Code at the top of [[task - template|task-template]]. Related: [[en/7.shared/视频Meta/002-模版自动归档、命名与编号|episode 002]], [[en/7.shared/视频Meta/008-项目管理|episode 008]]
+- **2026-10-19 · Content input · Improved**: the library and media library moved to Bases, showing cards grouped by reading and watching status, with fields editable right on the card. Related: [[en/7.shared/视频Meta/007-自建个人专属图书馆,douban图片链接失效怎么办|episode 007]], [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]]
 
-  "Edited by me" word counts come from Better Word Count; "edited by AI" ones come from Claude Code and Codex session logs.
+  Genre, director and country imported from Douban stay as lists.
 
-  The homepage in the [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault) template vault already includes this. To bring it into your own vault you need:
-
-  1. the "word-count heatmap" code block from the homepage
-  2. the script `.obsidian/scripts/wordheat_index.py`, which runs automatically when the homepage opens
-  3. python3 installed on your computer
-
-  To see exactly which files changed on a given day, the vault needs to be under git.
-
-- **2026-11-09 · Project progress**: creating a task while a main project page is open now uses that project's category automatically — no prompt, you only fill in the title. Code at the top of [[task - template|task-template]]. Related: [[en/7.shared/视频Meta/002-模版自动归档、命名与编号|episode 002]], [[en/7.shared/视频Meta/008-项目管理|episode 008]]
-- **2026-10-19 · Content input**: the library and media library moved to Bases. Books are shown as cards grouped by reading, finished, to-read and so on; films by watching, to-watch and watched; fields can be edited right on the card. Genre, director and country imported from Douban stay as lists. Related: [[en/7.shared/视频Meta/007-自建个人专属图书馆,douban图片链接失效怎么办|episode 007]], [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]]
-- **2026-09-03 · Project progress**: a newly inserted try entry shows up in the task table right away, instead of only after every blank is filled. Related: [[en/7.shared/视频Meta/008-项目管理|episode 008]]
-- **2026-08-07 · Project progress**: the "high-priority projects" table in the project overview now hides finished projects correctly. Picking "已完成" in the properties panel used to have no effect — thanks to a Bilibili viewer for the bug report. Related: [[en/7.shared/视频Meta/008-项目管理|episode 008]]
-- **2026-07-06 · Homepage**: after downloading the template vault, the word-count heatmap shows data right away, with no more missing vault-stats.json error. Related: [[en/7.shared/视频Meta/010-Obsidian homepage|episode 010]], [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]]
-- **2026-07-06 · Project progress**: when the task category is a2, a separate video-task template is used instead; every other category still uses the general template. Handy when one kind of task needs its own fields. Related: [[en/7.shared/视频Meta/002-模版自动归档、命名与编号|episode 002]], [[en/7.shared/视频Meta/008-项目管理|episode 008]]
-- **2026-06-23 · Homepage**: the ECharts plugin was delisted from the community store, so the word-count heatmap now uses Contribution Graph, and the new homepage keeps 3 heatmaps. How to install the original plugin by hand, plus a side-by-side comparison, is in episode 010. Related: [[en/7.shared/视频Meta/010-Obsidian homepage#The obsidian-echarts plugin being delisted|episode 010]]
-- **2026-06-05 · Project progress**: if you hit Cancel in the prompt while creating a task, the blank note that was just created is deleted automatically, so no junk files are left behind. Code in [[task - template|task-template]]. Related: [[en/7.shared/视频Meta/002-模版自动归档、命名与编号|episode 002]], [[en/7.shared/视频Meta/008-项目管理|episode 008]]
-- **2026-05-05 · Daily execution**: the daily note template gained a Scheduled module — recurring tasks that are due or overdue show up in that day's note automatically. Related: [[en/7.shared/视频Meta/001-自动继承昨日任务|episode 001]], [[en/7.shared/视频Meta/008-项目管理|episode 008]]
+- **2026-09-03 · Project progress · Improved**: a newly inserted try entry shows up in the task table right away, instead of only after every blank is filled. Related: [[en/7.shared/视频Meta/008-项目管理|episode 008]]
+- **2026-08-07 · Project progress · Fixed**: the "high-priority projects" table in the project overview now hides finished projects correctly — thanks to a Bilibili viewer for the bug report. Related: [[en/7.shared/视频Meta/008-项目管理|episode 008]]
+- **2026-07-06 · Homepage · Fixed**: after downloading the template vault, the word-count heatmap shows data right away, with no more missing vault-stats.json error. Related: [[en/7.shared/视频Meta/010-Obsidian homepage|episode 010]], [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]]
+- **2026-07-06 · Project progress · New**: when the task category is a2, a separate video-task template is used instead; every other category still uses the general template. Handy when one kind of task needs its own fields. Related: [[en/7.shared/视频Meta/002-模版自动归档、命名与编号|episode 002]], [[en/7.shared/视频Meta/008-项目管理|episode 008]]
+- **2026-06-23 · Homepage · Fixed**: after the ECharts plugin was delisted, the word-count heatmap switched to Contribution Graph; to install the original plugin by hand, see episode 010. Related: [[en/7.shared/视频Meta/010-Obsidian homepage#The obsidian-echarts plugin being delisted|episode 010]]
+- **2026-06-05 · Project progress · Improved**: if you hit Cancel in the prompt while creating a task, the blank note that was just created is deleted automatically, so no junk files are left behind. Code in [[task - template|task-template]]. Related: [[en/7.shared/视频Meta/002-模版自动归档、命名与编号|episode 002]], [[en/7.shared/视频Meta/008-项目管理|episode 008]]
+- **2026-05-05 · Daily execution · New**: the daily note template gained a Scheduled module — recurring tasks that are due or overdue show up in that day's note automatically. Related: [[en/7.shared/视频Meta/001-自动继承昨日任务|episode 001]], [[en/7.shared/视频Meta/008-项目管理|episode 008]]
 
   The code is the `## scheduled` block in the [[daily|daily template]]; copy the whole block into your own daily template.
 
