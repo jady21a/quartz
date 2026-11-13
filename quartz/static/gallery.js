@@ -98,7 +98,8 @@
   // ==================== card renderers ====================
 
   // 书 / 影视通用卡片（封面 + 标题 + 评分 + 信息 + 状态/进度）
-  function renderMediaCard(item, cfg) {
+  // status=所在分栏的状态;「全部」分栏没有 status
+  function renderMediaCard(item, cfg, status) {
     const p = cfg.prefix
     // hasNote=false:空壳页(只有元数据、没写笔记)不上线,卡片照常展示但不可点。
     // 口径在 quartz/util/readStub.js,索引脚本写进 hasNote。缺这个字段的老索引按可点处理。
@@ -176,16 +177,9 @@
       card.appendChild(rating)
     }
 
-    if (item.myRate) {
-      const myRating = document.createElement("div")
-      myRating.className = "my-rating"
-      myRating.textContent = "推荐指数: " + item.myRate + "/10"
-      card.appendChild(myRating)
-    }
-
     const info = document.createElement("div")
     info.className = p + "-info"
-    addInfoRows(info, cfg.infoItems(item))
+    addInfoRows(info, cfg.infoItems(item, status))
     if (info.children.length > 0) card.appendChild(info)
 
     if (!hasNote) addStubPeek(card, item, header)
@@ -216,11 +210,14 @@
       }
     }
 
-    const status = document.createElement("span")
-    status.className = p + "-status status-" + statusClassFor(statusText)
-    status.textContent = statusText || "Unknown"
-    footer.appendChild(status)
-    card.appendChild(footer)
+    // 状态标签只在「全部」分栏有信息量;按状态分好的分栏里每张都一样,不重复显示
+    if (!status) {
+      const chip = document.createElement("span")
+      chip.className = p + "-status status-" + statusClassFor(statusText)
+      chip.textContent = statusText || "Unknown"
+      footer.appendChild(chip)
+    }
+    if (footer.children.length > 0) card.appendChild(footer)
 
     return card
   }
@@ -434,6 +431,146 @@
     apply(readNotesOnly())
   }
 
+  // ==================== 分栏 → 顶部标签切换 ====================
+
+  // 页面源文件仍是「小标题 + 查询容器」一栏接一栏(不用改 md,中英两页通用);
+  // 这里把每栏的小标题收成顶部一排标签,一次只显示一栏,免得「正在阅读」十几本要滚很久。
+  // 没有 JS 时退回原来的长页,内容不丢。
+  function headingBefore(container, selector) {
+    let el = container.previousElementSibling
+    while (el && !/^H[1-6]$/.test(el.tagName)) {
+      if (el.matches(selector)) return null
+      el = el.previousElementSibling
+    }
+    return el
+  }
+
+  // 标签用短名(和主库 Bases 书架的分组叫法一致),按容器的 data-status 取;
+  // 表里没有的状态退回页面小标题原文
+  const TAB_LABELS = {
+    zh: {
+      正在阅读: "在读",
+      已读完: "已读",
+      未开始: "待读",
+      未读完: "未读完",
+      概览: "概览",
+      正在观看: "在看",
+      待看: "待看",
+      已看: "已看",
+      "": "全部",
+    },
+    en: {
+      正在阅读: "Reading",
+      已读完: "Finished",
+      未开始: "To read",
+      未读完: "Unfinished",
+      概览: "Skimmed",
+      正在观看: "Watching",
+      待看: "To watch",
+      已看: "Watched",
+      "": "All",
+    },
+  }
+  function tabLabel(container, heading) {
+    const table = window.QuartzLang.isEnPage() ? TAB_LABELS.en : TAB_LABELS.zh
+    const status = container.getAttribute("data-status") || ""
+    return table[status] || heading.textContent.trim()
+  }
+
+  function setupTabs(cfg, containers) {
+    const p = cfg.prefix
+    const sections = containers.map(function (c) {
+      return { c: c, h: headingBefore(c, cfg.selector) }
+    })
+    if (
+      sections.length < 2 ||
+      sections.some(function (s) {
+        return !s.h
+      })
+    )
+      return
+
+    document.querySelectorAll('.gallery-tabs[data-for="' + p + '"]').forEach(function (el) {
+      el.remove()
+    })
+
+    const bar = document.createElement("div")
+    bar.className = "gallery-tabs"
+    bar.setAttribute("data-for", p)
+    bar.setAttribute("role", "tablist")
+
+    const buttons = []
+    const activate = function (idx) {
+      sections.forEach(function (s, i) {
+        s.c.hidden = i !== idx
+        if (buttons[i]) buttons[i].setAttribute("aria-selected", i === idx ? "true" : "false")
+      })
+    }
+
+    let firstNonEmpty = -1
+    let fromHash = -1
+    let hash = ""
+    try {
+      hash = decodeURIComponent(location.hash.slice(1))
+    } catch (e) {}
+
+    sections.forEach(function (s, i) {
+      s.h.classList.add("gallery-tab-heading")
+      const count = s.c.querySelectorAll("." + p + "-card").length
+      if (count === 0) {
+        // 空分栏不占一个标签
+        s.c.hidden = true
+        return
+      }
+      if (firstNonEmpty === -1) firstNonEmpty = i
+      if (hash && s.h.id === hash) fromHash = i
+
+      const btn = document.createElement("button")
+      btn.type = "button"
+      btn.setAttribute("role", "tab")
+      if (s.h.id) btn.setAttribute("data-target", s.h.id)
+      btn.textContent = tabLabel(s.c, s.h)
+      btn.addEventListener("click", function () {
+        activate(i)
+      })
+      buttons[i] = btn
+      bar.appendChild(btn)
+    })
+    if (firstNonEmpty === -1) return
+
+    // 放在第一栏标题前;「只看有笔记的」开关若已在那儿,标签排在它上面
+    const firstHeading = sections[0].h
+    const prev = firstHeading.previousElementSibling
+    const anchor = prev && prev.classList.contains("gallery-notes-toggle") ? prev : firstHeading
+    anchor.parentNode.insertBefore(bar, anchor)
+
+    activate(fromHash !== -1 ? fromHash : firstNonEmpty)
+  }
+
+  // 右侧目录还链着各栏小标题(已收进标签里看不见),点目录时改为切到对应标签
+  if (!window.__galleryTabTocBound) {
+    window.__galleryTabTocBound = true
+    document.addEventListener("click", function (e) {
+      const a = e.target && e.target.closest ? e.target.closest('a[href*="#"]') : null
+      if (!a) return
+      let id = ""
+      try {
+        id = decodeURIComponent(a.getAttribute("href").split("#")[1] || "")
+      } catch (err) {}
+      if (!id) return
+      const tab = Array.prototype.find.call(
+        document.querySelectorAll(".gallery-tabs button[data-target]"),
+        function (b) {
+          return b.getAttribute("data-target") === id
+        },
+      )
+      if (!tab) return
+      e.preventDefault()
+      tab.click()
+      tab.parentNode.scrollIntoView({ behavior: "smooth", block: "start" })
+    })
+  }
+
   // ==================== generic loader ====================
 
   // 同一个 index.json 在一次会话里只抓一次（之前每次 SPA 导航都会重新下载）
@@ -507,16 +644,18 @@
         const grid = document.createElement("div")
         grid.className = cfg.gridClass
         items.forEach(function (item) {
-          grid.appendChild(cfg.render(item))
+          grid.appendChild(cfg.render(item, status))
         })
         container.innerHTML = ""
         container.appendChild(grid)
       } catch (error) {
         console.error("Error loading " + cfg.prefix + ":", error)
         container.innerHTML =
-          '<div class="' + cfg.errorClass + '">❌ 加载失败: ' + error.message + "</div>"
+          '<div class="' + cfg.errorClass + '">加载失败: ' + error.message + "</div>"
       }
     }
+
+    if (cfg.tabs) setupTabs(cfg, Array.prototype.slice.call(containers))
   }
 
   // ==================== per-type config ====================
@@ -535,42 +674,29 @@
     indexUrl: "/book-index.json",
     gridClass: "book-grid",
     loadingClass: "book-query-loading",
-    loadingText: "📚 加载书籍中...",
+    loadingText: "加载书籍中...",
     errorClass: "book-query-error",
     // 没有 emptyClass 时「查不到条目」会退回 errorClass:合法的空分组被渲染成红底红字的
     // 报错样式(藏书馆的空分组一直是这副样子)。空不是错,给它一份中性样式。
     emptyClass: "book-query-empty",
     defaultSort: "添加时间",
-    placeholder: "📚",
+    placeholder: "暂无封面",
     coverAlt: "书籍封面",
     notesToggle: true,
     withProgress: true,
-    infoItems: function (book) {
-      // 没有结束时间（还没读完）不显示用时；起点缺开始时间时退回添加时间
-      const days = book.结束阅读 ? calculateDays(book.开始时间, book.结束阅读, book.添加时间) : 0
-      return [
-        { label: "原名", value: book.originalTitle },
-        { label: "作者", value: book.author },
-        { label: "出版", value: book.publishDate },
-        { label: "添加", value: book.添加时间 },
-        { label: "开始", value: book.开始时间 },
-        { label: "完成", value: book.结束阅读 },
-        { label: "用时", value: days > 0 ? days + " 天" : null },
-        {
-          label: "进度",
-          // currentPage 没数据就整行不显示，避免出现 "0/300 页" 这种假进度
-          value:
-            parseInt(book.currentPage) > 0 && book.totalPage
-              ? book.currentPage + "/" + book.totalPage + " 页"
-              : null,
-        },
-      ]
+    // 卡片只留读者关心的:作者,读完的加一个年份。原名/出版/添加日期在详情页看
+    infoItems: function (book, status) {
+      const items = [{ label: "作者", value: book.author }]
+      if (book.结束阅读 && status !== "正在阅读") {
+        items.push({ label: "读完", value: String(book.结束阅读).slice(0, 4) })
+      }
+      return items
     },
     statusText: function (book) {
       return String(book.阅读状态 || "").trim()
     },
     emptyText: function (status) {
-      return '😔 没有找到状态为"' + (status || "任何") + '"的书籍'
+      return '没有找到状态为"' + (status || "任何") + '"的书籍'
     },
     filter: function (books, container) {
       const excludeMovies = container.getAttribute("data-exclude-movies") !== "false"
@@ -593,8 +719,9 @@
       }
       return result
     },
-    render: function (item) {
-      return renderMediaCard(item, bookConfig)
+    tabs: true,
+    render: function (item, status) {
+      return renderMediaCard(item, bookConfig, status)
     },
   }
 
@@ -604,27 +731,23 @@
     indexUrl: "/movie-index.json",
     gridClass: "movie-grid",
     loadingClass: "movie-query-loading",
-    loadingText: "🎬 加载影片中...",
+    loadingText: "加载影片中...",
     errorClass: "movie-query-error",
     emptyClass: "movie-query-empty", // 同 book:空分组不该套错误样式
     defaultSort: "添加时间",
-    placeholder: "🎬",
+    placeholder: "暂无封面",
     coverAlt: "影片海报",
     notesToggle: true,
     withProgress: false,
     infoItems: function (m) {
       return [
-        { label: "原名", value: m.originalTitle },
-        { label: "地区", value: m.country },
         { label: "导演", value: m.director },
         { label: "类型", value: m.genre },
-        { label: "上映时间", value: m.releaseDate || m.datePublished },
-        { label: "添加时间", value: m.添加时间 },
       ]
     },
     statusText: movieStatusOf,
     emptyText: function (status) {
-      return status ? '😔 没有找到状态为"' + status + '"的影片' : "😔 没有找到符合条件的影片"
+      return status ? '没有找到状态为"' + status + '"的影片' : "没有找到符合条件的影片"
     },
     filter: function (movies, container) {
       const type = container.getAttribute("data-type")
@@ -659,8 +782,9 @@
       }
       return result
     },
-    render: function (item) {
-      return renderMediaCard(item, movieConfig)
+    tabs: true,
+    render: function (item, status) {
+      return renderMediaCard(item, movieConfig, status)
     },
   }
 
@@ -670,7 +794,7 @@
     indexUrl: "/video-index.json",
     gridClass: "video-grid",
     loadingClass: "video-query-loading",
-    loadingText: "🎬 加载视频中...",
+    loadingText: "加载视频中...",
     errorClass: "video-query-error",
     emptyClass: "video-query-empty",
     defaultSort: "date",
@@ -739,7 +863,7 @@
     indexUrl: "/image-index.json",
     gridClass: "topic-list",
     loadingClass: "video-query-loading",
-    loadingText: "🖼️ 加载图文中...",
+    loadingText: "加载图文中...",
     errorClass: "video-query-error",
     emptyClass: "video-query-empty",
     defaultSort: "date",

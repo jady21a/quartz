@@ -48,7 +48,8 @@ export const NotFoundPage: QuartzEmitterPlugin = () => {
         cfg,
         children: [],
         tree,
-        allFiles: [],
+        // 给 404 页列「最近的视频笔记」用
+        allFiles: _content.map((c) => c[1].data),
       }
 
       yield write({

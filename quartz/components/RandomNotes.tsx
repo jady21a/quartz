@@ -42,7 +42,8 @@ const defaultOptions: Options = {
     "templates",
     "topic-reading",
   ],
-  excludeSlugs: ["library", "watch-list"],
+  // 卡片墙和合集这类索引页不是文章,不进「最新」;按剥掉 en/ 前缀后的 slug 比
+  excludeSlugs: ["library", "watch-list", "videos/video-collection", "videos/topic-collection"],
   // 「最新」里书籍笔记的门槛:剔掉模板骨架后至少要有这么多字,才算真读过写过
   bookMinSubstance,
 }
@@ -91,7 +92,7 @@ export default ((userOpts?: Partial<Options>) => {
         if (!sameLang(file.slug)) return false
         if ((file.frontmatter?.tags || []).includes("movies")) return false
         const slug = file.slug
-        if (opts.excludeSlugs.includes(slug)) return false
+        if (opts.excludeSlugs.includes(slug.replace(/^en\//, ""))) return false
         // 刚加进来、Overview 还空着也没写读书笔记的书:只有一副模板骨架,不进「最新」
         if (isBookStub(file, opts.bookMinSubstance)) return false
         return !opts.excludeFolders.some((prefix) => slug.startsWith(prefix))

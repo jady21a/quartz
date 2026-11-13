@@ -66,7 +66,8 @@ export default ((opts?: Partial<BreadcrumbOptions>) => {
     const crumbs: CrumbData[] = pathNodes.map((node, idx) => {
       const crumb = formatCrumb(node.displayName, fileData.slug!, simplifySlug(node.slug))
       if (idx === 0) {
-        crumb.displayName = options.rootName
+        // 中文站的根叫「首页」;英文站保持 rootName
+        crumb.displayName = slugParts[0] === "en" ? options.rootName : "首页"
       }
 
       // For last node (current page), set empty path

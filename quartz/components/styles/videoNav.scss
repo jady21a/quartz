@@ -1,0 +1,60 @@
+// 视频页底部:上一期 / 下一期 + 订阅
+.video-nav {
+  margin: 2rem 0 1rem;
+
+  .video-nav-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+
+  .video-nav-links a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
+    background: var(--light);
+    text-decoration: none;
+
+    &:hover {
+      border-color: var(--secondary);
+    }
+  }
+
+  .video-nav-next {
+    text-align: right;
+  }
+
+  .video-nav-label {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--gray);
+  }
+
+  .video-nav-title {
+    font-size: 0.95rem;
+    color: var(--dark);
+  }
+
+  .video-nav-subscribe-label {
+    margin: 1.6rem 0 0;
+    font-size: 0.9rem;
+    color: var(--darkgray);
+  }
+
+  .home-subscribe {
+    margin: 0.6rem 0 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .video-nav-links {
+      grid-template-columns: 1fr;
+    }
+
+    .video-nav-next {
+      text-align: left;
+    }
+  }
+}

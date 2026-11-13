@@ -441,3 +441,45 @@
     font-size: 0.9rem;
   }
 }
+
+/* 顶部标签切换:各分栏的小标题收成一排标签(gallery.js setupTabs) */
+.gallery-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin: 1rem 0 0;
+  border-bottom: 1px solid var(--lightgray);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.gallery-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-tabs button {
+  flex: none;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.45rem 0.8rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  color: var(--gray);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.gallery-tabs button:hover {
+  color: var(--darkgray);
+}
+
+.gallery-tabs button[aria-selected="true"] {
+  color: var(--dark);
+  font-weight: 600;
+  border-bottom-color: var(--secondary);
+}
+
+.gallery-tab-heading {
+  display: none;
+}

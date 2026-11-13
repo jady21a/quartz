@@ -15,12 +15,16 @@ const explorerMapFn = (node: FileTrieNode) => {
         templates: "Template Library",
         "tech-notes": "Tech Notes",
         videos: "Videos & Topics",
+        "video-notes": "Video Notes",
+        "topic-notes": "Topic Notes",
       }
     : {
         "why-z": "关于本站",
         templates: "模板库",
         "tech-notes": "折腾记录",
         videos: "视频与专题",
+        "video-notes": "视频笔记",
+        "topic-notes": "专题长文",
       }
   const label = labels[node.slugSegment]
   if (label) {
@@ -97,6 +101,8 @@ export const sharedPageComponents: SharedLayout = {
     Component.ScrollButtons(),
     // 视频页「后续优化」:只在带 video 标签、且专题 001 有条目链到本页时出现
     Component.VideoUpdates(),
+    // 视频页读完的下一步:上一期/下一期 + 邮件订阅
+    Component.VideoNav(),
     // 只挂在中文视频页(videos/video-notes/*);题目选项由 busuanzi Worker 下发
     Component.ConditionalRender({
       component: Component.NextVideoPoll(),
@@ -125,6 +131,8 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ContentMeta(),
     Component.TagList(),
     // Component.ContentMeta(), // 显示元数据
+    // 模板页顶部说明:这是什么模板、哪期视频讲的(模板正文每次从主库覆盖,说明只能挂在组件上)
+    Component.TemplateIntro(),
     Component.BookInfo(), // 添加这一行,显示书籍元数据
     Component.MovieInfo(), // 添加这一行,显示电影元数据
   ],
