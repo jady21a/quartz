@@ -1,0 +1,14 @@
+{
+  "name": "本周更新",
+  "short_name": "本周更新",
+  "start_url": "daily.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf9f7",
+  "theme_color": "#faf9f7",
+  "icons": [
+    { "src": "icons/daily-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/daily-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/daily-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
