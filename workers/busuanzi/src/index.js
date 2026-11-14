@@ -1118,6 +1118,15 @@ const STATS_HTML = `<!DOCTYPE html>
   .today b{font-variant-numeric:tabular-nums}
   @media(max-width:720px){.today{gap:6px 12px}.minor{gap:6px 12px}}
   .stale .metrics,.stale .minor,.stale .today{opacity:.45}
+  /* 排障区折叠条:长得像一张卡的标题行,点开才摊出三张表。 */
+  details.ops{margin-top:4px}
+  details.ops>summary{cursor:pointer;list-style:none;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:12px 18px;font-size:14px;font-weight:600;color:var(--mut)}
+  details.ops>summary::-webkit-details-marker{display:none}
+  details.ops>summary::after{content:' ▾';font-weight:400}
+  details.ops[open]>summary{margin-bottom:14px}
+  details.ops[open]>summary::after{content:' ▴'}
+  details.ops>summary .muted{font-weight:400;font-size:12.5px;margin-left:6px}
   .offcard{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .offcard .why{font-size:12.5px;color:var(--mut);max-width:70ch}
 </style></head>
@@ -1924,9 +1933,15 @@ async function load(){
       return '<div class="card"><h2>'+t+' <span class="muted" style="font-weight:400;'+
         'text-transform:none;letter-spacing:0">'+dspan+'</span></h2>'+barTable(rows)+'</div>';
     };
-    h+='<div class="grid two">'+dcard('访客国家 / 地区',dim.countries)+
-       dcard('浏览器',dim.browsers)+'</div>';
-    h+='<div style="margin-top:14px">'+dcard('响应状态码',dim.status)+'</div>';
+    // 标题写明口径:国家/状态码数的是边缘请求(含爬虫和每页的静态资源,新加坡一家就 50 多万),
+    // 浏览器数的是边缘页面浏览 —— 叫「访客国家」会和上面「真人 PV 1 万」当面对不上。
+    // 三张表是排障用的(查爬虫、查 404),不是每天要看的,默认收起;和长表折叠一样不记忆状态。
+    h+='<details class="ops"><summary>排障 · 边缘分布 <span class="muted">国家 / 浏览器 / 状态码 · '+
+       dspan+'</span></summary>';
+    h+='<div class="grid two">'+dcard('国家 / 地区 · 边缘请求',dim.countries)+
+       dcard('浏览器 · 边缘页面浏览',dim.browsers)+'</div>';
+    h+='<div style="margin-top:14px">'+dcard('响应状态码 · 边缘请求',dim.status)+'</div>';
+    h+='</details>';
   }
 
   app.innerHTML=h;
