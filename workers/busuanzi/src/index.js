@@ -103,6 +103,7 @@ export default {
     try {
       const url = new URL(request.url)
       if (url.pathname === "/stats") return handleStatsPage()
+      if (url.pathname === "/stats.webmanifest") return handleStatsManifest()
       if (url.pathname === "/stats.json") return handleStatsData(request, env)
       if (url.pathname === "/stats/snapshot") return handleSnapshot(request, env)
       if (url.pathname === "/stats/platforms") return handlePlatforms(request, env)
@@ -940,6 +941,28 @@ async function readCfDaily(db) {
   })
 }
 
+// 面板的应用清单(添加到主屏幕 / 程序坞时用)。图标是博客静态目录里的大图,不含任何数据,公开返回。
+function handleStatsManifest() {
+  const icon = (f, sizes, purpose) => ({ src: "https://jz21.eu.org/icons/" + f, sizes, type: "image/png", purpose })
+  return new Response(
+    JSON.stringify({
+      name: "Why Z · 数据面板",
+      short_name: "数据面板",
+      start_url: "/stats",
+      scope: "/stats",
+      display: "standalone",
+      background_color: "#0f1115",
+      theme_color: "#0f1115",
+      icons: [
+        icon("panel-192.png", "192x192", "any"),
+        icon("panel-512.png", "512x512", "any"),
+        icon("panel-512-maskable.png", "512x512", "maskable"),
+      ],
+    }),
+    { headers: { "Content-Type": "application/manifest+json; charset=utf-8", "Cache-Control": "public, max-age=3600" } },
+  )
+}
+
 // ───────────────────────── 面板 HTML(公开壳页,数据靠 token) ─────────────────────────
 function handleStatsPage() {
   // 壳页本身不含任何数据,公开返回;鉴权在 /stats.json 上。
@@ -959,9 +982,14 @@ const STATS_HTML = `<!DOCTYPE html>
 <meta name="robots" content="noindex, nofollow"/>
 <title>Why Z · 数据面板</title>
 <!-- 内联 SVG favicon:这一页由 Worker 直接吐 HTML,没有静态资源目录可放 .ico。
-     深底 + 浅柱是刻意的:标签栏里一排都是白底站点图标,深色块在 16px 下一眼能认出来,
-     也和面板自己的深色主题(--bg #0f1115)对得上。换图标改这一行即可。 -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%2316181d'/><g fill='%23e8eaed'><rect x='13' y='36' width='10' height='16' rx='2'/><rect x='27' y='26' width='10' height='26' rx='2'/><rect x='41' y='14' width='10' height='38' rx='2'/></g></svg>"/>
+     深底 + 浅柱是刻意的:标签栏里一排都是白底站点图标,深色块在 16px 下一眼能认出来。
+     和 reader / Days / Todo 一套:#1C1C1C 底、白柱、最高那根灰。换图标改这一行即可。 -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%231C1C1C'/><g fill='none' stroke='%23FFF' stroke-linecap='round'><path d='M120 392H392' stroke-width='28'/><path d='M168 320V268M256 320V196' stroke-width='52'/><path d='M344 320V124' stroke='%238A8A8E' stroke-width='52'/></g></svg>"/>
+<!-- 添加到主屏幕用:大图(带 Jz)放在博客静态目录(quartz/static/icons/panel-*.png,scripts/page-icons/gen.mjs 生成),
+     清单由本 Worker 的 /stats.webmanifest 吐(start_url 必须和页面同源)。 -->
+<link rel="apple-touch-icon" href="https://jz21.eu.org/icons/panel-180.png"/>
+<link rel="manifest" href="/stats.webmanifest"/>
+<meta name="apple-mobile-web-app-title" content="数据面板"/>
 <style>
   :root{
     --bg:#0f1115; --card:#191c23; --line:#272b34; --fg:#e8eaed; --mut:#9aa3b2;
