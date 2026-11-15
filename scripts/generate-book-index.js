@@ -153,6 +153,8 @@ function extractBookData(filePath) {
       publishDate: cleanDate(frontmatter.publishDate || ""),
       myRate: frontmatter.myRate || "",
       阅读状态: frontmatter.阅读状态 || "",
+      // 「概览」(只粗读过)在 vault 里是阅读方式,不是阅读状态;藏书馆的「概览」分栏靠它
+      阅读方式: frontmatter.阅读方式 || "",
       totalPage: frontmatter.totalPage || "",
       currentPage: frontmatter.currentPage || "",
       添加时间: cleanDate(frontmatter.添加时间 || ""),

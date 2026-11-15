@@ -227,6 +227,9 @@
   margin: 0.2rem 0;
   color: var(--dark);
   line-height: 1.3;
+  /* 标题最多两行:固定占两行高度,一行的标题也留出第二行空位,
+     这样同一排卡片的评分、作者行起点一致(em 跟随各断点的标题字号) */
+  min-height: calc(1.3em * 2);
   word-wrap: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -450,6 +453,29 @@
   border-bottom: 1px solid var(--lightgray);
   overflow-x: auto;
   scrollbar-width: none;
+  /* 书多时往下翻也能直接切栏:钉在屏幕顶端,卡片从它底下滚过 */
+  position: sticky;
+  top: 0;
+  z-index: 50; /* 低于移动端 ☰(101) */
+  background: var(--light);
+}
+
+.gallery-tabs-sentinel {
+  height: 1px;
+  margin-bottom: -1px;
+}
+
+/* 移动端左上角常驻 ☰ 圆钮(fixed,约 25–63px 高、16–54px 宽)。
+   标签栏钉住后给它让位:往下垫到和 ☰ 同一行,左边空出 ☰ 的宽度 */
+@media (max-width: 800px) {
+  .gallery-tabs.is-stuck {
+    padding: 1.2rem 0 0 3.6rem;
+  }
+  /* ☰ 的 z-index 只在左侧栏(z-index:1 的网格项)里面算,整体还是压不过标签栏;
+     钉住期间把左侧栏整层抬到标签栏上面(它本身已滚出屏幕,只剩 ☰ 露着) */
+  body:has(.gallery-tabs.is-stuck) .page > #quartz-body .sidebar.left {
+    z-index: 51;
+  }
 }
 
 .gallery-tabs::-webkit-scrollbar {

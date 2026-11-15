@@ -67,7 +67,7 @@ export {
   SocialLinks, // “Why Z” 下方的社交平台图标
   ScrollButtons, // 移动端浮动「回到顶部 / 回到底部」按钮
   NextVideoPoll, // 视频页底部「下一期想看哪个」投票框
-  VideoNav, // 视频页底部:上一期/下一期 + 订阅
+  VideoNav, // 视频页底部:上一期/下一期
   TemplateIntro, // 模板页顶部说明
   VideoUpdates, // 视频页底部「后续优化」,数据来自专题 001 的后续优化列表
   BookInfo, // 添加这一行,书籍元数据显示

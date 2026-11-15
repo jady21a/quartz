@@ -1,4 +1,4 @@
-// 视频页底部:上一期 / 下一期 + 订阅
+// 视频页底部:上一期 / 下一期
 .video-nav {
   margin: 2rem 0 1rem;
 
@@ -36,16 +36,6 @@
   .video-nav-title {
     font-size: 0.95rem;
     color: var(--dark);
-  }
-
-  .video-nav-subscribe-label {
-    margin: 1.6rem 0 0;
-    font-size: 0.9rem;
-    color: var(--darkgray);
-  }
-
-  .home-subscribe {
-    margin: 0.6rem 0 1rem;
   }
 
   @media (max-width: 600px) {

@@ -427,6 +427,8 @@
       const prev = first.previousElementSibling
       const anchor = prev && /^H[1-6]$/.test(prev.tagName) ? prev : first
       anchor.parentNode.insertBefore(bar, anchor)
+      bar.parentNode.insertBefore(sentinel, bar)
+      if (window.__galleryTabsObserver) window.__galleryTabsObserver.observe(sentinel)
     }
     apply(readNotesOnly())
   }
@@ -499,12 +501,37 @@
     bar.setAttribute("data-for", p)
     bar.setAttribute("role", "tablist")
 
+    // 书多时往下翻就够不着标签:标签栏用 CSS sticky 钉在屏幕顶端(gallery-card.css)。
+    // 哨兵是标签栏原位置前的一个空元素,它滚出屏幕 = 标签栏已钉住,
+    // 这时加 is-stuck 让移动端给左上角常驻的 ☰ 按钮让位。
+    const sentinel = document.createElement("div")
+    sentinel.className = "gallery-tabs-sentinel"
+    if (window.__galleryTabsObserver) window.__galleryTabsObserver.disconnect()
+    if ("IntersectionObserver" in window) {
+      window.__galleryTabsObserver = new IntersectionObserver(function (entries) {
+        const e = entries[0]
+        bar.classList.toggle("is-stuck", !e.isIntersecting && e.boundingClientRect.top < 0)
+      })
+    }
+
     const buttons = []
     const activate = function (idx) {
       sections.forEach(function (s, i) {
         s.c.hidden = i !== idx
         if (buttons[i]) buttons[i].setAttribute("aria-selected", i === idx ? "true" : "false")
       })
+    }
+    // 钉住状态下切标签:新的一栏从头看,而不是停在上一栏翻到的深度
+    const activateFromClick = function (idx) {
+      const stuck = sentinel.getBoundingClientRect().top < 0
+      activate(idx)
+      if (!stuck) return
+      // 落点 = 标签栏刚好贴顶;瞬间跳过去,别让全站的平滑滚动拖着划过几千像素
+      const top =
+        sentinel.getBoundingClientRect().top +
+        window.scrollY +
+        parseFloat(getComputedStyle(bar).marginTop)
+      window.scrollTo({ top: top, behavior: "instant" })
     }
 
     let firstNonEmpty = -1
@@ -531,7 +558,7 @@
       if (s.h.id) btn.setAttribute("data-target", s.h.id)
       btn.textContent = tabLabel(s.c, s.h)
       btn.addEventListener("click", function () {
-        activate(i)
+        activateFromClick(i)
       })
       buttons[i] = btn
       bar.appendChild(btn)
@@ -543,6 +570,8 @@
     const prev = firstHeading.previousElementSibling
     const anchor = prev && prev.classList.contains("gallery-notes-toggle") ? prev : firstHeading
     anchor.parentNode.insertBefore(bar, anchor)
+    bar.parentNode.insertBefore(sentinel, bar)
+    if (window.__galleryTabsObserver) window.__galleryTabsObserver.observe(sentinel)
 
     activate(fromHash !== -1 ? fromHash : firstNonEmpty)
   }
@@ -709,7 +738,9 @@
       }
       if (status) {
         result = result.filter(function (b) {
-          return String(b.阅读状态 || "")
+          // 「概览」看阅读方式(和 all-in 的 bases 图书馆同一口径),其余看阅读状态
+          const field = status === "概览" ? b.阅读方式 : b.阅读状态
+          return String(field || "")
             .split(",")
             .map(function (s) {
               return s.trim()

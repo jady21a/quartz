@@ -6,8 +6,10 @@ import { classNames } from "../util/lang"
 // 模板页顶部说明:这是什么模板、哪期视频讲过、怎么拿走。
 // 模板正文每次发布都从主库 10.Template 整份覆盖,说明写不进 md,只能由组件补。
 // - 一句话简介:取自模板库首页(templates/index)卡片上的 item-desc,只维护那一处
-// - 配套讲解:自动找出链到本页的视频页
+// - 相关视频:自动找出链到本页的视频页
 const TEMPLATE = /^(en\/)?templates\/(?!.*(^|\/)index$).+/
+// 只拿模板当例子、没讲模板本身的视频,不算「相关视频」(003 讲的是复制代码不生效的排查)
+const NOT_RELATED = /^(en\/)?videos\/video-notes\/003-/
 const CARD =
   /<a[^>]*href="([^"]+)"[^>]*>\s*<span class="item-title">[^<]*<\/span>\s*<span class="item-desc">([^<]*)<\/span>/g
 
@@ -28,7 +30,11 @@ function descriptions(indexPath: string): Map<string, string> {
   return table
 }
 
-const TemplateIntro: QuartzComponent = ({ fileData, allFiles, displayClass }: QuartzComponentProps) => {
+const TemplateIntro: QuartzComponent = ({
+  fileData,
+  allFiles,
+  displayClass,
+}: QuartzComponentProps) => {
   const slug = fileData.slug!
   if (!TEMPLATE.test(slug)) return null
   const isEn = slug.startsWith("en/")
@@ -43,6 +49,7 @@ const TemplateIntro: QuartzComponent = ({ fileData, allFiles, displayClass }: Qu
         f.slug &&
         /^(en\/)?videos\/video-notes\/(?!index$)/.test(f.slug) &&
         f.slug.startsWith("en/") === isEn &&
+        !NOT_RELATED.test(f.slug) &&
         (f.links ?? []).includes(self),
     )
     .sort((a, b) => a.slug!.localeCompare(b.slug!, undefined, { numeric: true }))
@@ -54,7 +61,7 @@ const TemplateIntro: QuartzComponent = ({ fileData, allFiles, displayClass }: Qu
       {desc && <p>{desc}</p>}
       {videos.length > 0 && (
         <p>
-          {isEn ? "Explained in: " : "配套讲解:"}
+          {isEn ? "Related videos: " : "相关视频:"}
           {videos.map((v, k) => (
             <>
               {k > 0 && (isEn ? ", " : "、")}
