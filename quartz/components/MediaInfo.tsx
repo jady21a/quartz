@@ -34,9 +34,6 @@ const str = (v: any): string | null => {
 }
 const list = (v: any): string | null => (Array.isArray(v) && v.length > 0 ? v.join(", ") : null)
 
-// 卡片只放读者关心的:是什么、值不值得看、我看完没。vault 里管进度用的字段
-// (当前页码、阅读进度、添加/开始时间)和与标题重复的书名/片名不上博客。
-// 阅读状态和阅读方式保留:「概览」(只粗读过)记在阅读方式里,要让读者看得到。
 const configs: Record<MediaKind, MediaConfig> = {
   book: {
     displayName: "BookInfo",
@@ -44,12 +41,26 @@ const configs: Record<MediaKind, MediaConfig> = {
     prefix: "book",
     coverAlt: "书籍封面",
     matches: (tags) => tags.includes("book"),
-    before: () => [],
-    after: (fm) => [{ label: "作者", value: str(fm.author) }],
+    before: (fm) => [
+      { label: "书名", value: str(fm.title) },
+      { label: "原书名", value: str(fm.originalTitle) },
+      { label: "中文书名", value: str(fm.CNTitle) },
+    ],
+    after: (fm) => [
+      { label: "作者", value: str(fm.author) },
+      { label: "出版", value: str(fm.publishDate) },
+      { label: "出版年份", value: str(fm.yearPublished) },
+      { label: "总页数", value: str(fm.totalPage) },
+    ],
     section2: (fm) => [
       { label: "阅读状态", value: list(fm.阅读状态) },
+      // 「概览」(只粗读过)记在阅读方式里,不在阅读状态里
       { label: "阅读方式", value: list(fm.阅读方式) },
-      { label: "读完", value: str(fm.结束阅读) },
+      { label: "当前页码", value: str(fm.currentPage) },
+      { label: "阅读进度", value: str(fm.阅读进度) },
+      { label: "添加时间", value: str(fm.添加时间) },
+      { label: "开始阅读", value: str(fm.开始阅读) },
+      { label: "结束阅读", value: str(fm.结束阅读) },
     ],
     descOpen: true,
   },
@@ -59,15 +70,24 @@ const configs: Record<MediaKind, MediaConfig> = {
     prefix: "movie",
     coverAlt: "电影海报",
     matches: (tags) => tags.some((t) => movieTags.has(String(t).toLowerCase())),
-    before: () => [],
+    before: (fm) => [
+      { label: "片名", value: str(fm.title) },
+      { label: "原标题", value: str(fm.originalTitle) },
+    ],
     after: (fm) => [
       { label: "导演", value: str(fm.director) },
+      { label: "别名", value: str(fm.aliases) },
       { label: "类型", value: str(fm.genre) },
-      { label: "年份", value: str(fm.yearPublished) ?? str(fm.releaseDate)?.slice(0, 4) ?? null },
+      { label: "上映日期", value: str(fm.releaseDate) },
+      { label: "年份", value: str(fm.yearPublished) },
+      { label: "片长", value: str(fm.duration) },
+      { label: "制片国家/地区", value: str(fm.country) },
+      { label: "语言", value: str(fm.language) },
     ],
     section2: (fm) => [
       { label: "观看状态", value: list(fm.state) },
-      { label: "看完", value: str(fm.结束时间) },
+      { label: "添加时间", value: str(fm.添加时间) },
+      { label: "结束时间", value: str(fm.结束时间) },
     ],
     descOpen: true,
   },
