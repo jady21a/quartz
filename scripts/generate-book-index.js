@@ -159,6 +159,11 @@ function extractBookData(filePath) {
       currentPage: frontmatter.currentPage || "",
       添加时间: cleanDate(frontmatter.添加时间 || ""),
       开始时间: cleanDate(frontmatter.开始时间 || ""),
+      // vault 实际用的是「开始阅读」;开始时间是老字段,两个都留着
+      开始阅读: cleanDate(frontmatter.开始阅读 || ""),
+      听读: [].concat(frontmatter.听读 || []).join(", "),
+      实际听读: [].concat(frontmatter.实际听读 || []).join(", "),
+      进度: frontmatter.进度 != null ? String(frontmatter.进度) : "",
       结束阅读: cleanDate(frontmatter.结束阅读 || ""),
       tags: tagsArray.filter((tag) => tag),
     }

@@ -55,6 +55,30 @@
     return days > 0 ? days : 0
   }
 
+  function daysText(days) {
+    return days > 0 ? days + " 天" : null
+  }
+
+  // 同 bases图书馆的「进度」公式:有手填进度用它(补 %),否则按 当前页/总页数 算
+  function bookProgress(book) {
+    const manual = String(book.进度 || "").trim()
+    if (manual) return manual.indexOf("%") !== -1 ? manual : manual + "%"
+    if (parseInt(book.currentPage) > 0 && parseInt(book.totalPage) > 0) {
+      return calculateProgress(book.currentPage, book.totalPage) + "%"
+    }
+    return null
+  }
+
+  // 索引里多值字段是 "a / b / c",取前 n 个重新拼
+  function firstParts(value, n, sep) {
+    if (!value) return null
+    return String(value)
+      .split(/\s*\/\s*|,\s*/)
+      .filter(Boolean)
+      .slice(0, n)
+      .join(sep)
+  }
+
   function addInfoRows(info, items) {
     items.forEach(function (item) {
       if (!item.value) return
@@ -163,7 +187,8 @@
     header.appendChild(titleSection)
     card.appendChild(header)
 
-    if (item.score) {
+    // 评分在哪些分栏显示由各类型配置决定(书:在读/未读完不显示),默认都显示
+    if (item.score && (!cfg.showRating || cfg.showRating(status))) {
       const rating = document.createElement("div")
       rating.className = p + "-rating"
       const stars = document.createElement("span")
@@ -210,8 +235,8 @@
       }
     }
 
-    // 状态标签只在「全部」分栏有信息量;按状态分好的分栏里每张都一样,不重复显示
-    if (!status) {
+    // 状态标签只在「全部」(和书的「概览」)分栏有信息量;按状态分好的分栏里每张都一样,不重复显示
+    if (!status || (cfg.showStatus && cfg.showStatus(status))) {
       const chip = document.createElement("span")
       chip.className = p + "-status status-" + statusClassFor(statusText)
       chip.textContent = statusText || "Unknown"
@@ -712,14 +737,49 @@
     placeholder: "暂无封面",
     coverAlt: "书籍封面",
     notesToggle: true,
-    withProgress: true,
-    // 卡片只留读者关心的:作者,读完的加一个年份。原名/出版/添加日期在详情页看
+    // 进度改成信息行(按分栏显示),不再画进度条
+    withProgress: false,
+    // 各分栏字段对照 all-in 的 bases图书馆「书架总览」,作者之外:
+    //   在读   听读、页数、开始阅读、进度
+    //   已读   听读、评分、结束阅读、用时
+    //   待读   听读、评分、页数、添加
+    //   未读完 听读、页数、进度、开始阅读、距今
+    //   概览   状态、评分、添加
+    //   全部   状态、听读、评分、添加、进度、用时
+    // 评分是卡片上的评分行(showRating),状态是底部状态标签(showStatus),其余是信息行。
+    showRating: function (status) {
+      return status !== "正在阅读" && status !== "未读完"
+    },
+    showStatus: function (status) {
+      return status === "概览"
+    },
     infoItems: function (book, status) {
-      const items = [{ label: "作者", value: book.author }]
-      if (book.结束阅读 && status !== "正在阅读") {
-        items.push({ label: "读完", value: String(book.结束阅读).slice(0, 4) })
+      const start = book.开始阅读 || book.开始时间
+      const fields = {
+        // 实际怎么读的优先,没记就显示原计划的听读方式
+        听读: book.实际听读 || book.听读,
+        页数: book.totalPage,
+        开始阅读: start,
+        结束阅读: book.结束阅读,
+        添加: book.添加时间,
+        进度: bookProgress(book),
+        用时: book.结束阅读 ? daysText(calculateDays(start, book.结束阅读, book.添加时间)) : null,
+        距今: start ? daysText(calculateDays(start, null, null)) : null,
       }
-      return items
+      const layout = {
+        正在阅读: ["听读", "页数", "开始阅读", "进度"],
+        已读完: ["听读", "结束阅读", "用时"],
+        未开始: ["听读", "页数", "添加"],
+        未读完: ["听读", "页数", "进度", "开始阅读", "距今"],
+        概览: ["添加"],
+        "": ["听读", "添加", "进度", "用时"],
+      }
+      const keys = layout[status || ""] || layout[""]
+      return [{ label: "作者", value: book.author }].concat(
+        keys.map(function (k) {
+          return { label: k, value: fields[k] }
+        }),
+      )
     },
     statusText: function (book) {
       return String(book.阅读状态 || "").trim()
@@ -770,10 +830,12 @@
     coverAlt: "影片海报",
     notesToggle: true,
     withProgress: false,
+    // 对照 bases影视库:评分(评分行)之外显示题材、地区、年份;「全部」另有状态标签
     infoItems: function (m) {
       return [
-        { label: "导演", value: m.director },
-        { label: "类型", value: m.genre },
+        { label: "题材", value: firstParts(m.genre, 3, " · ") },
+        { label: "地区", value: firstParts(m.country, 2, " / ") },
+        { label: "年份", value: m.datePublished ? String(m.datePublished).slice(0, 4) : null },
       ]
     },
     statusText: movieStatusOf,

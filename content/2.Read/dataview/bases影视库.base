@@ -53,7 +53,7 @@ views:
     # 以下三个是插件 editable-cards 的自定义键,只能在 YAML 里改,「属性」菜单改不到
     # 各组卡片字段,照搬原「在看/已看/待看/弃剧」视图(已删,并入本视图)
     groupOrders:
-      在看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份, state]
+      在看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
       已看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份, myRating]
       待看: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
       弃剧: [file.name, formula.媒介, formula.题材, formula.导演, formula.豆瓣, formula.地区, formula.年份]
