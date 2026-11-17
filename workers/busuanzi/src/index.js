@@ -107,6 +107,7 @@ export default {
       if (url.pathname === "/stats.json") return handleStatsData(request, env)
       if (url.pathname === "/stats/snapshot") return handleSnapshot(request, env)
       if (url.pathname === "/stats/platforms") return handlePlatforms(request, env)
+      if (url.pathname === "/stats/refresh") return handleRefresh(request, env)
       if (url.pathname.startsWith("/dl/")) return await handleDownload(request, env)
       if (url.pathname === "/poll") return await handlePoll(request, env)
       return await handleCount(request, env)
@@ -698,6 +699,49 @@ async function handlePlatforms(request, env) {
   })
 }
 
+// 「点刷新让本机重取」的信箱。本机在家用网络后面,Worker 够不着它,所以反过来:
+// 面板 POST 留一张「请重取」的条子,本机每分钟 GET 来看一眼(info-digest 的
+// scripts/check_refresh.py),有条子就跑一趟取数。
+//   POST → 记下请求时间。
+//   GET  → {pending, requestedAt}。pending = 条子比最近一次推送新,即还没被满足。
+// 两个时间都是服务端盖的章,本机时钟不准也不会误判。
+async function handleRefresh(request, env) {
+  const json = (obj, status) =>
+    new Response(JSON.stringify(obj), {
+      status: status || 200,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  if (!checkToken(request, env)) return json({ error: "unauthorized" }, 401)
+  if (request.method === "POST") {
+    const at = new Date().toISOString()
+    await env.DB.prepare(
+      "INSERT INTO meta(key, value) VALUES('plat:refreshReq', ?1) " +
+        "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+    )
+      .bind(at)
+      .run()
+    return json({ ok: true, requestedAt: at })
+  }
+  if (request.method !== "GET") return json({ error: "method not allowed" }, 405)
+  const rows = await env.DB.prepare(
+    "SELECT key, value FROM meta WHERE key IN ('plat:refreshReq', 'plat:latest')",
+  ).all()
+  let requestedAt = null
+  let receivedAt = null
+  for (const r of rows.results || []) {
+    if (r.key === "plat:refreshReq") requestedAt = r.value
+    else {
+      try {
+        receivedAt = JSON.parse(r.value).receivedAt || null
+      } catch {
+        receivedAt = null
+      }
+    }
+  }
+  const pending = !!requestedAt && (!receivedAt || requestedAt > receivedAt)
+  return json({ pending, requestedAt, receivedAt })
+}
+
 // ───────────────────────── Cloudflare zone GraphQL ─────────────────────────
 async function resolveZoneTag(env) {
   if (env.CF_ZONE_TAG) return env.CF_ZONE_TAG
@@ -1161,7 +1205,7 @@ const STATS_HTML = `<!DOCTYPE html>
 <body><div class="wrap">
   <header>
     <div><h1>Why Z · 数据面板</h1><div class="sub" id="sub">加载中…</div></div>
-    <button class="refresh" onclick="load()">刷新</button>
+    <button class="refresh" onclick="refresh()">刷新</button>
   </header>
   <div id="app"><div class="card muted">加载中…</div></div>
   <button class="refresh totop" id="totop" aria-label="回到顶部" title="回到顶部"
@@ -1522,6 +1566,8 @@ function platformSection(pd, now, downloads){
        '下面是旧数字,别当今天的看 —— 多半是 <b>com.jz.info-digest</b> 没跑成:'+
        '机器休眠挂起、或 SESSDATA 过期。</div>';
   }
+  // 「已通知本机重取」的进度条位。内容由 askRefresh 填,load() 重绘后靠 paintWait 补回。
+  h+='<div class="note" id="rwait" hidden></div>';
   h+='<div class="grid" style="grid-template-columns:1fr;margin-bottom:14px">'+
      (pd.platforms||[]).map(function(p){return platCard(p,stamp,now,downloads)}).join('')+'</div>';
 
@@ -1681,9 +1727,61 @@ function platformSection(pd, now, downloads){
   return h;
 }
 
-async function load(){
+// ───────── 点刷新 → 通知本机重取 ─────────
+// 平台数字是本机推上来的,光重新拉一遍 /stats.json 拿到的还是那份旧的。所以「刷新」分两步:
+// 先照常重拉(站点流量是实时的),再给本机留条子(POST /stats/refresh);本机每分钟来看一次,
+// 看到就取数重推,通常一两分钟。这期间每 15 秒重拉,推送时间一变就算到了。
+// 刚推过(FRESH_MIN 分钟内)的不留条子:连点刷新不该让本机连着去敲各平台的接口。
+const FRESH_MIN=10, WAIT_MAX=5*60e3, WAIT_STEP=15e3;
+let platStamp='', waiting=null, asking=false, autoAsked=false, waitMsg='';
+function platAge(pd){
+  const s=pd&&(pd.receivedAt||pd.fetchedAt);
+  return s? Date.now()-new Date(s).getTime() : Infinity;
+}
+function paintWait(){
+  const el=document.getElementById('rwait');
+  if(!el) return;
+  el.hidden=!waitMsg; el.textContent=waitMsg;
+}
+function stopWait(msg){
+  if(waiting){ clearInterval(waiting.timer); waiting=null; }
+  waitMsg=msg||''; paintWait();
+}
+async function askRefresh(){
+  if(waiting||asking||!token) return;
+  asking=true;   // 自动留条子和手点刷新可能前后脚进来,别留两张、起两个轮询
+  try{
+    const r=await fetch('/stats/refresh',{method:'POST',headers:{Authorization:'Bearer '+token}});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+  }catch(e){ asking=false; waitMsg='没能通知本机重取:'+(e.message||e); paintWait(); return; }
+  asking=false;
+  const before=platStamp, t0=Date.now();
+  waitMsg='已通知本机重取,通常一两分钟,到了会自动换成新数字。'; paintWait();
+  waiting={timer:setInterval(async function(){
+    await load(true);
+    if(platStamp && platStamp!==before){ stopWait(''); return; }
+    if(Date.now()-t0>WAIT_MAX){
+      stopWait('本机 5 分钟没应答,多半是关机或合盖休眠。条子留着,它醒来会自动补跑。');
+    }
+  },WAIT_STEP)};
+}
+async function refresh(){
+  await load();
+  const el=document.getElementById('rwait');
+  if(!el) return;                       // 没渲染出平台区(缺口令/加载失败/从没推过),没什么可通知的
+  if(waiting||asking){ paintWait(); return; }
+  if(platAge({receivedAt:platStamp})<FRESH_MIN*60e3){
+    waitMsg='平台数字是 '+FRESH_MIN+' 分钟内刚取的,没再让本机重取。'; paintWait();
+    setTimeout(function(){ if(!waiting){ waitMsg=''; paintWait(); } },4000);
+    return;
+  }
+  askRefresh();
+}
+
+// quiet=true:等本机重取期间的后台重拉,不闪「加载中」、不动滚动位置。
+async function load(quiet){
   const app=document.getElementById('app');
-  app.innerHTML='<div class="card muted">加载中…</div>';
+  if(!quiet) app.innerHTML='<div class="card muted">加载中…</div>';
   let d;
   if(!token){
     app.innerHTML='<div class="card err">缺少口令 —— 在地址后面加 <b>#token=你的口令</b> 再打开。</div>';
@@ -1700,6 +1798,12 @@ async function load(){
 
   // ① 平台账号:放最前。10 秒瞄一眼要看的是粉丝和评论,不是博客 PV。
   h+=platformSection(d.platforms, Date.now(), d.downloads);
+  platStamp=(d.platforms&&d.platforms.receivedAt)||'';
+  // 打开就是旧数字时不等人点:自动留条子让本机补跑。同一次打开只自动留一次,
+  // 本机关着的时候不至于每 15 秒一张。
+  if(!autoAsked && !waiting && d.platforms && platAge(d.platforms)>STALE_HOURS*3600e3){
+    autoAsked=true; setTimeout(askRefresh,0);
+  }
 
   // ② 站点流量:两类口径必须分区,不然平台播放量和站点 PV 会看串。
   h+='<div class="sect"><h3>站点流量</h3><span class="hint">jz21.eu.org</span>'+
@@ -1973,6 +2077,7 @@ async function load(){
   }
 
   app.innerHTML=h;
+  paintWait();  // 重绘会把「已通知本机重取」那条冲掉,补回来
   initTips();   // 图是刚写进 DOM 的,事件只能在这之后挂
 }
 // 悬停读数。SVG 是 preserveAspectRatio="none" 横向拉满的,所以像素 → viewBox 是线性的:
