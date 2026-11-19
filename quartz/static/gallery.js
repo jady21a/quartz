@@ -10,14 +10,17 @@
   // 封面统一处理：本地图直接用；外链一律走 weserv 代理
   // —— 既能把 http:// 升级为 https（修复 https 站点上的 mixed-content 拦截，
   //    例如 Google Books 的 http 封面），又顺带压缩为 200×280 webp。
-  function proxyImage(imageUrl) {
+  // w=显示宽度的两倍左右(视网膜屏不糊);高度按 5:7 封面比例跟着算
+  function proxyImage(imageUrl, w) {
     if (!imageUrl) return ""
     const url = String(imageUrl).trim()
     if (!url || url === "N/A") return ""
     if (url.startsWith("/")) return url
     if (url.startsWith("./")) return url.slice(1) // ./imgs/... → /imgs/...
     if (/^https?:\/\//.test(url)) {
-      return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=200&h=280&fit=cover&output=webp&q=85`
+      const width = w || 200
+      const height = Math.round((width * 7) / 5)
+      return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=${width}&h=${height}&fit=cover&output=webp&q=85`
     }
     // content 相对路径（如 "2.Read/douban/..."）→ 根绝对路径，否则相对当前页解析 404
     return "/" + url
@@ -95,6 +98,13 @@
     })
   }
 
+  // 中文书名常写成「主标题 副标题」或「主标题：副标题」,卡片上两行放不下,只留主标题。
+  // 副标题不足 4 个字的不切(如「孩子：挑战」本身就是完整书名);英文书名没有可靠的分隔符,不动。
+  function mainTitle(text) {
+    const m = /^([\u4e00-\u9fff][^\s:：]*)[\s:：]+(\S.*)$/.exec(String(text))
+    return m && m[2].length >= 4 ? m[1] : text
+  }
+
   function statusClassFor(text) {
     return text.split(",")[0].replace(/\s/g, "-") || "Unknown"
   }
@@ -149,7 +159,7 @@
       return ph
     }
 
-    const coverSrc = proxyImage(item.封面)
+    const coverSrc = proxyImage(item.封面, cfg.coverWidth)
     if (coverSrc) {
       const img = document.createElement("img")
       img.src = coverSrc
@@ -180,14 +190,24 @@
     title.className = p + "-title"
     const titleLink = document.createElement(hasNote ? "a" : "span")
     if (hasNote) titleLink.href = fixFilePath(item.file, item.hasEn)
-    titleLink.textContent = item.title || "未命名"
+    // 书:卡片上只留主标题,完整书名留在悬停提示里
+    titleLink.textContent = cfg.shortTitle ? mainTitle(item.title || "未命名") : item.title || "未命名"
     titleLink.title = item.title || "未命名"
     title.appendChild(titleLink)
     titleSection.appendChild(title)
+    // 副标题(书:作者)紧跟书名,一行放不下就省略,和豆瓣/Goodreads 书墙一样
+    const subtitleText = cfg.subtitle ? cfg.subtitle(item) : ""
+    if (subtitleText) {
+      const subtitle = document.createElement("div")
+      subtitle.className = p + "-subtitle"
+      subtitle.textContent = subtitleText
+      subtitle.title = subtitleText
+      titleSection.appendChild(subtitle)
+    }
     header.appendChild(titleSection)
     card.appendChild(header)
 
-    // 评分在哪些分栏显示由各类型配置决定(书:在读/未读完不显示),默认都显示
+    // 评分在哪些分栏显示可由各类型配置 showRating 决定,不配就都显示
     if (item.score && (!cfg.showRating || cfg.showRating(status))) {
       const rating = document.createElement("div")
       rating.className = p + "-rating"
@@ -213,23 +233,31 @@
     footer.className = p + "-footer"
     const statusText = cfg.statusText(item)
 
-    if (cfg.withProgress) {
-      const isFinished = /已读完|读完|完成|finished/i.test(statusText)
-      if (!isFinished && item.totalPage) {
-        const total = parseInt(item.totalPage) || 0
-        const current = parseInt(item.currentPage) || 0
-        if (total > 0 && current > 0 && current < total) {
-          const progress = calculateProgress(current, total)
-          const pc = document.createElement("div")
-          pc.className = p + "-progress"
-          const bar = document.createElement("div")
-          bar.className = "progress-bar"
-          bar.style.width = progress + "%"
-          pc.appendChild(bar)
+    // 进度条(原样式),只在列了「进度」的分栏画;读完的不画
+    if (cfg.withProgress && cfg.withProgress(status)) {
+      // 「未读完」也含「读完」二字,只认已读完/完成,否则未读完分栏永远没有进度条
+      const isFinished = /已读完|完成|finished/i.test(statusText)
+      const progress = parseInt(bookProgress(item))
+      if (!isFinished && progress > 0 && progress < 100) {
+        const pc = document.createElement("div")
+        pc.className = p + "-progress"
+        const bar = document.createElement("div")
+        bar.className = "progress-bar"
+        bar.style.width = progress + "%"
+        pc.appendChild(bar)
+        const pt = document.createElement("div")
+        pt.className = "progress-text"
+        pt.textContent = progress + "%"
+        if (cfg.progressOnCover) {
+          // 书:进度条压在封面底部(一条暗色渐变上放白条 + 百分比),不占卡片高度,
+          // 有没有进度的书排在一起书名照样对齐
+          const row = document.createElement("div")
+          row.className = "cover-progress"
+          row.appendChild(pc)
+          row.appendChild(pt)
+          coverLink.appendChild(row)
+        } else {
           footer.appendChild(pc)
-          const pt = document.createElement("div")
-          pt.className = "progress-text"
-          pt.textContent = progress + "%"
           footer.appendChild(pt)
         }
       }
@@ -384,12 +412,57 @@
           badge: "Notes",
           noNotes: "No notes yet",
           toggle: "Only with notes",
+          emptyMsg: function () {
+            return "Nothing in this tab has notes yet"
+          },
+          showAll: function () {
+            return "Show all"
+          },
         }
       : {
           badge: "笔记",
           noNotes: "还没写笔记",
           toggle: "只看有笔记的",
+          // noun:书籍 / 影视;tab:所在分栏的短名(待读、在看…),「全部」「概览」不带
+          emptyMsg: function (noun) {
+            return "本栏" + noun + "都还没有笔记"
+          },
+          showAll: function (noun, tab) {
+            return "查看全部" + (tab && !/^(全部|概览)$/.test(tab) ? tab : "") + noun
+          },
         }
+  }
+
+  // 开关开着、这一栏又一条有笔记的都没有时,页面是空的,读者容易忘了自己开过筛选。
+  // 空态里说一句本栏没有笔记,并给一个就地关掉筛选、看全部的按钮。
+  // 开关切换和分栏渲染完成后各调一次(两者先后不一定)。
+  function refreshNotesEmpty(container, cfg) {
+    const prefix = cfg.prefix
+    const old = container.querySelector(".notes-empty")
+    if (old) old.remove()
+    if (!container.classList.contains("notes-only")) return
+    const count = container.querySelectorAll("." + prefix + "-card").length
+    if (count === 0 || container.querySelector(".has-note")) return
+    const t = notesText()
+    const box = document.createElement("div")
+    box.className = "notes-empty"
+    const msg = document.createElement("span")
+    const noun = prefix === "movie" ? "影视" : "书籍"
+    const heading = headingBefore(container, cfg.selector)
+    const tab = heading ? tabLabel(container, heading) : ""
+    msg.textContent = t.emptyMsg(noun)
+    const btn = document.createElement("button")
+    btn.type = "button"
+    btn.textContent = t.showAll(noun, tab)
+    btn.addEventListener("click", function () {
+      const toggle = document.querySelector(
+        '.gallery-notes-toggle[data-for="' + prefix + '"] button',
+      )
+      if (toggle && toggle.getAttribute("aria-pressed") === "true") toggle.click()
+    })
+    box.appendChild(msg)
+    box.appendChild(btn)
+    container.appendChild(box)
   }
 
   // 偏好只是个人便利,存不了(隐私窗口/禁用存储)就当没开
@@ -430,6 +503,7 @@
     const apply = function (on) {
       containers.forEach(function (c) {
         c.classList.toggle("notes-only", on)
+        refreshNotesEmpty(c, cfg)
       })
       if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false")
     }
@@ -452,10 +526,17 @@
       const prev = first.previousElementSibling
       const anchor = prev && /^H[1-6]$/.test(prev.tagName) ? prev : first
       anchor.parentNode.insertBefore(bar, anchor)
-      bar.parentNode.insertBefore(sentinel, bar)
-      if (window.__galleryTabsObserver) window.__galleryTabsObserver.observe(sentinel)
+      dockNotesToggle(cfg.prefix)
     }
     apply(readNotesOnly())
+  }
+
+  // 有标签栏时,开关收进标签栏右端(同一行),不再单占一行;没有标签栏的页面留在原位。
+  // 开关和标签栏谁先建好不一定(开关等索引,标签栏等各分栏渲染完),两边建好后都调一次。
+  function dockNotesToggle(prefix) {
+    const tabs = document.querySelector('.gallery-tabs[data-for="' + prefix + '"]')
+    const toggle = document.querySelector('.gallery-notes-toggle[data-for="' + prefix + '"]')
+    if (tabs && toggle && toggle.parentNode !== tabs) tabs.appendChild(toggle)
   }
 
   // ==================== 分栏 → 顶部标签切换 ====================
@@ -518,6 +599,9 @@
       return
 
     document.querySelectorAll('.gallery-tabs[data-for="' + p + '"]').forEach(function (el) {
+      // 开关停靠在旧标签栏里(dockNotesToggle),先挪出来,别跟着旧标签栏一起删掉
+      const docked = el.querySelector(".gallery-notes-toggle")
+      if (docked) el.parentNode.insertBefore(docked, el)
       el.remove()
     })
 
@@ -597,6 +681,7 @@
     anchor.parentNode.insertBefore(bar, anchor)
     bar.parentNode.insertBefore(sentinel, bar)
     if (window.__galleryTabsObserver) window.__galleryTabsObserver.observe(sentinel)
+    dockNotesToggle(p)
 
     activate(fromHash !== -1 ? fromHash : firstNonEmpty)
   }
@@ -702,6 +787,7 @@
         })
         container.innerHTML = ""
         container.appendChild(grid)
+        if (cfg.notesToggle) refreshNotesEmpty(container, cfg)
       } catch (error) {
         console.error("Error loading " + cfg.prefix + ":", error)
         container.innerHTML =
@@ -737,19 +823,28 @@
     placeholder: "暂无封面",
     coverAlt: "书籍封面",
     notesToggle: true,
-    // 进度改成信息行(按分栏显示),不再画进度条
-    withProgress: false,
-    // 各分栏字段对照 all-in 的 bases图书馆「书架总览」,作者之外:
-    //   在读   听读、页数、开始阅读、进度
+    // 书的封面铺满卡片宽度(约 140–170px),按两倍宽取图
+    coverWidth: 340,
+    // 作者放在书名下面当副标题,不再占一行信息行
+    subtitle: function (book) {
+      return String(book.author || "").trim()
+    },
+    // 进度条压在封面底部显示(在读、未读完、全部)
+    progressOnCover: true,
+    // 卡片上只显示主标题(见 mainTitle)
+    shortTitle: true,
+    withProgress: function (status) {
+      return status === "正在阅读" || status === "未读完" || !status
+    },
+    // 各分栏字段对照 all-in 的 bases图书馆「书架总览」,作者(副标题)之外:
+    //   在读   听读、评分、页数、开始阅读、进度
     //   已读   听读、评分、结束阅读、用时
     //   待读   听读、评分、页数、添加
-    //   未读完 听读、页数、进度、开始阅读、距今
+    //   未读完 听读、评分、页数、进度、开始阅读、距今
     //   概览   状态、评分、添加
     //   全部   状态、听读、评分、添加、进度、用时
-    // 评分是卡片上的评分行(showRating),状态是底部状态标签(showStatus),其余是信息行。
-    showRating: function (status) {
-      return status !== "正在阅读" && status !== "未读完"
-    },
+    // 评分是卡片上的评分行(所有分栏都显示,11-17 用户要求),状态是底部状态标签(showStatus),
+    // 进度是底部进度条(withProgress),其余是信息行。
     showStatus: function (status) {
       return status === "概览"
     },
@@ -762,24 +857,21 @@
         开始阅读: start,
         结束阅读: book.结束阅读,
         添加: book.添加时间,
-        进度: bookProgress(book),
         用时: book.结束阅读 ? daysText(calculateDays(start, book.结束阅读, book.添加时间)) : null,
         距今: start ? daysText(calculateDays(start, null, null)) : null,
       }
       const layout = {
-        正在阅读: ["听读", "页数", "开始阅读", "进度"],
+        正在阅读: ["听读", "页数", "开始阅读"],
         已读完: ["听读", "结束阅读", "用时"],
         未开始: ["听读", "页数", "添加"],
-        未读完: ["听读", "页数", "进度", "开始阅读", "距今"],
+        未读完: ["听读", "页数", "开始阅读", "距今"],
         概览: ["添加"],
-        "": ["听读", "添加", "进度", "用时"],
+        "": ["听读", "添加", "用时"],
       }
       const keys = layout[status || ""] || layout[""]
-      return [{ label: "作者", value: book.author }].concat(
-        keys.map(function (k) {
-          return { label: k, value: fields[k] }
-        }),
-      )
+      return keys.map(function (k) {
+        return { label: k, value: fields[k] }
+      })
     },
     statusText: function (book) {
       return String(book.阅读状态 || "").trim()
@@ -829,7 +921,7 @@
     placeholder: "暂无封面",
     coverAlt: "影片海报",
     notesToggle: true,
-    withProgress: false,
+    withProgress: null,
     // 对照 bases影视库:评分(评分行)之外显示题材、地区、年份;「全部」另有状态标签
     infoItems: function (m) {
       return [
