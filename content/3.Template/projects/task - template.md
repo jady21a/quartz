@@ -26,7 +26,9 @@ if (type === null) {
 // a2 默认视频任务,整体交给视频模板渲染(独立文件,单独维护)
 if (type === "a2") {
   tR += await tp.file.include("[[task-video - template]]");
-  return;
+  // 必须 return tR:裸 return 会让模板输出变成 undefined,
+  // Templater 2.16 把它当解析失败，直接删掉刚建的文件(2026-11-20 踩过)。
+  return tR;
 }
 
 // 2. 自动匹配同名 project
