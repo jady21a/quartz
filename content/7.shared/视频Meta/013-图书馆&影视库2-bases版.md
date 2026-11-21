@@ -109,13 +109,93 @@ XX:XX 结语
 
 ## 搭建
 
-### 所需插件
+> [!tip] 搭建方法
+> - bases的更新会放到[[7.shared/视频Meta/011-obsidian开箱即用模板库|011期]]的模板库中
+> 	- 第一次下载:下载 [obsidian-workflow-vault](https://github.com/jady21a/obsidian-workflow-vault),书架和插件都装好了,打开就能用。
+> 	- 已经下载过:先到 [Releases](https://github.com/jady21a/obsidian-workflow-vault/releases) 下载插件 `vault-updater.zip`,解压到库里的 `.obsidian/plugins/`,启用插件。命令面板运行「检查模板库更新」,一键即可更新到最新版。你改过的文件不会被覆盖,新版会另存一份给你对照。
+> - 只想在自己的库里单独搭 Bases 图书馆,两种方法:
+> 	- [[#让 AI 搭建]]:Claude Code / Codex 能一次做完;网页版 AI 帮你改字段
+> 	- [[#自己手动搭建]]:装插件、放文件、改字段,共 7 步
 
-| 插件                 | 类型   | 作用                           | 必需  |
-| ------------------ | ---- | ---------------------------- | --- |
-| Bases(数据库)         | 核心插件 | `.base` 视图本体,Obsidian 1.10 起 | 是   |
-| Editable Cards     | 自制   | 可编辑卡片视图:分组、吸顶目录、原地改字段        | 是   |
-| Base Source Editor | 社区插件 | 用源码模式改 `.base` 的 YAML        | 可选  |
+### 让 AI 搭建
+
+插件不用改,要动的只有两件事:把插件和两份 `.base` 放进库里,再把 `.base` 里的字段名、标签、组名改成你笔记的写法。哪种 AI 能做多少,取决于它能不能读写你电脑上的文件:
+
+- **Claude Code / Codex**:放文件和改字段一次做完,用下面第一段提示词
+- **ChatGPT、Claude 网页版**:只帮你改 `.base`,放文件和开插件按[[#自己手动搭建]]的步骤 1–3 自己来,用下面第二段提示词
+
+> [!warning] 交给 Claude Code / Codex 之前
+> 先关掉 Obsidian,或者在库的副本里做。Obsidian 开着时会覆盖它对配置的改动;库在 iCloud 上的话,改动还会同步到所有设备。
+
+> [!example]- 提示词 1:让 Claude Code / Codex 整套搭好
+> ```text
+> 帮我在 Obsidian 库里搭一个 Bases 版书架和影视库,做法见这个页面的「搭建」和「配置文件」两节:
+> (粘贴本页链接)
+> 我的库在:(填库的路径)
+>
+> 1. 从 https://github.com/jady21a/obsidian-editable-cards/releases 下载最新版的
+>    main.js、manifest.json、styles.css,放进库里的 .obsidian/plugins/editable-cards/
+> 2. 把页面「配置文件」一节的两份 .base 存成 bases图书馆.base 和 bases影视库.base,
+>    放进:(填文件夹,不填就放库根目录)
+> 3. 读我几篇书籍笔记和影视笔记的 frontmatter,把两份 .base 改成我的写法:
+>    - filters 里的标签和要排除的模板文件夹
+>    - formulas 里的属性名和取值(如「正在阅读」「已读完」)
+>    - 「分组」公式结果保持「数字|组名」格式,groupOrders 下的组名和去掉数字前缀后的组名一致
+>    - order、groupOrders、allOrder、allSort、sort 里的属性名同步替换
+>    - 我没有的字段,对应的公式和显示列直接删掉,不要编造字段
+>    - 不要改 views 的结构和 type: editable-cards;groupOrders / allOrder / allSort 是插件自定义键,保留
+> 4. 最后列一张「原字段 → 我的字段」对照表,标出删掉了哪些
+>
+> 约束:
+> - 只新增文件,不修改任何已有笔记
+> - 不要改 .obsidian 下的 core-plugins.json / community-plugins.json,启用插件和重载我自己在界面里点
+> ```
+
+文件 AI 已经放好,剩下三个开关在 Obsidian 里自己点:
+
+1. `设置 → 核心插件` 里打开「数据库」(Bases),Obsidian 要 1.10 以上;
+2. `设置 → 第三方插件` 点刷新,启用 Editable Cards(Bases);
+3. 整窗重载(Cmd+R,或命令面板执行「重新加载应用」),然后打开 `.base` 看效果。
+
+想自己改 YAML 的话,再装个 Base Source Editor,见[[#所需插件]]。
+
+> [!example]- 提示词 2:让网页版 AI 按我的字段改 .base
+> 连同两样东西一起发:你的**一篇书籍笔记的 frontmatter**,和下文[[#配置文件]]里的 **`bases图书馆.base` 全文**。影视库同理,换成影视笔记和 `bases影视库.base`。
+>
+> ```text
+> 我在用 Obsidian Bases 和 Editable Cards 插件做书架。下面是一份别人写好的 .base 文件,
+> 以及我自己一篇书籍笔记的 frontmatter。请把 .base 改成能直接用在我库里的版本:
+>
+> 1. filters:筛选标签改成我笔记里实际用的标签;排除的模板文件夹改成:(填你的模板文件夹,没有就删掉这一行)
+> 2. formulas:把公式里引用的属性名换成我 frontmatter 里对应的字段名;
+>    属性的取值(如「正在阅读」「已读完」)也按我的实际写法改。
+> 3. 「分组」公式的结果格式保持「数字|组名」,groupOrders 下的组名要和去掉数字前缀后的组名一致。
+> 4. order、groupOrders、allOrder、allSort、sort 里的属性名同步替换。
+> 5. 我没有的字段:对应的公式和显示列直接删掉,不要编造字段。
+> 6. 不要改动 views 的结构和 type: editable-cards,groupOrders / allOrder / allSort 是插件自定义键,保留。
+>
+> 最后输出完整的 .base 文件,并列一张「原字段 → 我的字段」对照表,标出你删掉了哪些。
+>
+> 【.base 文件】
+> (粘贴 bases图书馆.base 全文)
+>
+> 【我的笔记 frontmatter】
+> (粘贴一篇书籍笔记最上面 --- 之间的内容)
+> ```
+>
+> 拿到结果后,用 Base Source Editor 打开你的 `.base`,整段替换保存,再对照 AI 给的对照表检查一遍。
+
+不管哪种 AI,如果某组显示为空,通常是「分组」公式里的取值和你笔记里的写法对不上(比如你写的是「在读」而不是「正在阅读」)。
+
+### 自己手动搭建
+
+#### 所需插件
+
+| 插件               | 类型     | 作用                                      | 必需 |
+| ------------------ | -------- | ----------------------------------------- | ---- |
+| Bases(数据库)      | 核心插件 | `.base` 视图本体,Obsidian 1.10 起         | 是   |
+| Editable Cards     | 自制     | 可编辑卡片视图:分组、吸顶目录、原地改字段 | 是   |
+| Base Source Editor | 社区插件 | 用源码模式改 `.base` 的 YAML              | 可选 |
 
 推荐装 Base Source Editor,是因为 `groupOrders`、`allOrder`、`allSort` 这几个键是 Editable Cards 自己读的,Bases 的「属性」菜单里改不到,只能改 YAML。它要求 Obsidian 1.13.7 以上。
 
@@ -123,7 +203,7 @@ XX:XX 结语
 > - **Editable Cards**:从 [GitHub Releases](https://github.com/jady21a/obsidian-editable-cards/releases) 下载 `main.js`、`manifest.json`、`styles.css` 三个文件。还没上架社区市场,也可以用 BRAT 安装 `jady21a/obsidian-editable-cards`。
 > - **两份 `.base`**:见下文[[#配置文件]],复制成同名文件放进库里。
 
-### 文件放哪
+#### 文件放哪
 
 | 文件                                   | 放在                                | 作用                                  |
 | -------------------------------------- | ----------------------------------- | ------------------------------------- |
@@ -134,22 +214,22 @@ XX:XX 结语
 
 我自己的两份 `.base` 放在 `2.Read/dataview/`,位置不影响使用。
 
-### 步骤
+#### 步骤
 
 1. **准备 Obsidian**:升级到 1.10 以上(要用 Base Source Editor 则 1.13.7 以上),`设置 → 核心插件` 里打开「数据库」(Bases)。
 2. **装 Base Source Editor**:`设置 → 第三方插件 → 浏览`,搜索安装并启用。
 3. **装 Editable Cards**:在库里新建 `.obsidian/plugins/editable-cards/` 文件夹,放入那三个文件,然后 `设置 → 第三方插件` 点刷新,启用 Editable Cards(Bases)。装完或更新后要**整窗重载**(Cmd+R,或命令面板执行「重新加载应用」),只开关插件不生效。
 4. **放 `.base`**:把两份 `.base` 放进库里,按自己的笔记改三处:
    - `filters` 里的标签(`book` / `movies`)和要排除的模板文件夹(我的是 `10.Template`);
-   - `formulas` 里引用的属性名,要和你笔记 frontmatter 的字段名一致(字段表见下一节);
+   - `formulas` 里引用的属性名,要和你笔记 frontmatter 的字段名一致(字段表见[[#字段约定]]);
    - `groupOrders` 下的组名,要和「分组」公式的结果去掉数字前缀后一致:公式写 `1|在读`,这里就写 `在读`。竖线前的数字只决定组的先后,显示时会去掉。
 
-   字段名和我的差得多,可以把这一步交给 AI,见[[#用 AI 适配]]。
+   字段名和我的差得多,可以把这一步交给 AI,用[[#让 AI 搭建]]里的提示词 2。
 5. **按组配字段**:在 `groupOrders` 下给每组列出要显示的字段,写法同 `order`;没配的组沿用视图的 `order`。想在卡片上改页码,就把 `currentPage` 放进在读组。
 6. **配「全部」**:`allOrder` 是平铺时显示的字段,`allSort: 属性名` 是平铺时的排序(倒序,空值垫底)。
 7. **可选美化**:把 `bases-cards-tweak.css` 放进 `.obsidian/snippets/`,在 `设置 → 外观 → CSS 代码片段` 里启用。它让原生卡片的标签和值并排一行,并修掉视图切换下拉里「看起来总是高亮第一个视图」的问题。
 
-### 字段约定
+#### 字段约定
 
 两份 `.base` 的公式依赖下面这些 frontmatter 字段。字段名不同就改公式里的名字,没有某个字段也不会报错,对应的列空着而已。
 
@@ -175,46 +255,6 @@ XX:XX 结语
 | `genre` `director` `country`     | 题材、导演、地区(各取前几项)           |
 | `开始时间` `结束时间` `添加时间` | 排序                                   |
 
-
-
-### 用 AI 适配
-
-插件不用改,要改的只是 `.base` 里的字段名、标签和组名,这类 YAML 修改正适合交给 AI。把下面这段提示词连同两样东西一起发给 ChatGPT、Claude 等任意 AI:你的**一篇书籍笔记的 frontmatter**,和下文[[#配置文件]]里的 **`bases图书馆.base` 全文**。影视库同理,换成影视笔记和 `bases影视库.base`。
-
-> [!example]- 提示词:让 AI 按我的字段改 .base
-> ```text
-> 我在用 Obsidian Bases 和 Editable Cards 插件做书架。下面是一份别人写好的 .base 文件,
-> 以及我自己一篇书籍笔记的 frontmatter。请把 .base 改成能直接用在我库里的版本:
->
-> 1. filters:筛选标签改成我笔记里实际用的标签;排除的模板文件夹改成:(填你的模板文件夹,没有就删掉这一行)
-> 2. formulas:把公式里引用的属性名换成我 frontmatter 里对应的字段名;
->    属性的取值(如「正在阅读」「已读完」)也按我的实际写法改。
-> 3. 「分组」公式的结果格式保持「数字|组名」,groupOrders 下的组名要和去掉数字前缀后的组名一致。
-> 4. order、groupOrders、allOrder、allSort、sort 里的属性名同步替换。
-> 5. 我没有的字段:对应的公式和显示列直接删掉,不要编造字段。
-> 6. 不要改动 views 的结构和 type: editable-cards,groupOrders / allOrder / allSort 是插件自定义键,保留。
->
-> 最后输出完整的 .base 文件,并列一张「原字段 → 我的字段」对照表,标出你删掉了哪些。
->
-> 【.base 文件】
-> (粘贴 bases图书馆.base 全文)
->
-> 【我的笔记 frontmatter】
-> (粘贴一篇书籍笔记最上面 --- 之间的内容)
-> ```
-
-拿到结果后,用 Base Source Editor 打开你的 `.base`,整段替换保存,再对照 AI 给的对照表检查一遍。如果某组显示为空,通常是「分组」公式里的取值和你笔记里的写法对不上(比如你写的是「在读」而不是「正在阅读」)。
-
-> [!tip]- 用 Claude Code / Codex 的话
-> 这类能读写本地文件的 AI 工具,可以把放文件和改字段一起做掉:把本页链接和你的库路径交给它,让它按「搭建」一节放好插件和 `.base`,再按上面的提示词把 `.base` 改成你的字段。交代任务时加上三条约束:
-> 1. **只新增文件,不修改任何已有笔记**;
-> 2. **先关掉 Obsidian,或者在库的副本里做**(Obsidian 开着时会覆盖它对配置的改动;库在 iCloud 上的话改动还会同步到所有设备);
-> 3. **启用插件、整窗重载留给自己在界面里点**,不要让它改 `.obsidian` 下的 `core-plugins.json` / `community-plugins.json`。
->
-> 做完后自己打开 Obsidian,按步骤 1–3 打开开关、重载,再打开 `.base` 看效果。
-
-> [!note] 想加功能
-> 想要日期选择器、下拉框这类插件现在没有的功能,建议在插件源码上改,不要让 AI 从零写:Bases 的视图 API 是 Obsidian 1.10 才加的,AI 很少见过,从头写容易调不通。clone [插件仓库](https://github.com/jady21a/obsidian-editable-cards)后让 AI 改 `main.ts`,README 里写了构建方法。
 
 ---
 
