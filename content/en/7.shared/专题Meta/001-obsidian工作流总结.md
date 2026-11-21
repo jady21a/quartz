@@ -20,6 +20,15 @@ Each episode in the video collection covered one piece of the system. This page 
 
 Improvements added after the videos came out, newest first. "Related" lists the episodes each one touches; those episode pages show it automatically at the bottom.
 
+- **2026-11-21 · The whole bundle · New**: when the template vault gets a new version, update it from inside the vault instead of downloading again. Files you changed and notes you wrote are never overwritten. Related: [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]]
+
+  Prerequisite: from v1.1.0 the template vault ships with the Vault Updater plugin. On v1.0.0, first download `vault-updater.zip` from [Releases](https://github.com/jady21a/obsidian-workflow-vault/releases), unzip it into the vault's `.obsidian/plugins/`, and enable it under Community plugins.
+
+  1. Run "检查模板库更新" (check for template updates) from the command palette; a dialog lists what will happen to each file
+  2. Click "开始更新" (start update), then restart Obsidian once
+
+  Files you never changed are replaced with the new version (the old ones are backed up). Files you changed are kept, and the new version is saved next to them in the `_模板库更新/` folder. Settings only get the newly added options.
+
 - **2026-11-12 · Homepage · New**: click a heatmap cell to see which files changed that day and whether each was edited by me, by AI, or by a plugin. Related: [[en/7.shared/视频Meta/010-Obsidian homepage|episode 010]], [[en/7.shared/视频Meta/011-obsidian开箱即用模板库|episode 011]]
 
   The word-count heatmap also lists each file's words added and removed, and each group's share of the day. "Edited by me" word counts come from Better Word Count; "edited by AI" ones come from Claude Code and Codex session logs.
