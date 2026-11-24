@@ -1027,8 +1027,8 @@ const STATS_HTML = `<!DOCTYPE html>
 <title>Why Z · 数据面板</title>
 <!-- 内联 SVG favicon:这一页由 Worker 直接吐 HTML,没有静态资源目录可放 .ico。
      深底 + 浅柱是刻意的:标签栏里一排都是白底站点图标,深色块在 16px 下一眼能认出来。
-     和 reader / Days / Todo 一套:#1C1C1C 底、白柱、最高那根灰。换图标改这一行即可。 -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%231C1C1C'/><g fill='none' stroke='%23FFF' stroke-linecap='round'><path d='M120 392H392' stroke-width='28'/><path d='M168 320V268M256 320V196' stroke-width='52'/><path d='M344 320V124' stroke='%238A8A8E' stroke-width='52'/></g></svg>"/>
+     和 reader / Days / Todo 一套:#1C1C1C 底、白柱(2026-11-24 起最高那根也改白)。换图标改这一行即可。 -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%231C1C1C'/><g fill='none' stroke='%23FFF' stroke-linecap='round'><path d='M120 392H392' stroke-width='28'/><path d='M168 320V268M256 320V196' stroke-width='52'/><path d='M344 320V124' stroke-width='52'/></g></svg>"/>
 <!-- 添加到主屏幕用:大图(带 Jz)放在博客静态目录(quartz/static/icons/panel-*.png,scripts/page-icons/gen.mjs 生成),
      清单由本 Worker 的 /stats.webmanifest 吐(start_url 必须和页面同源)。 -->
 <link rel="apple-touch-icon" href="https://jz21.eu.org/icons/panel-180.png"/>
@@ -1547,6 +1547,48 @@ function platCard(p, fetchedAt, now, downloads){
   return h;
 }
 
+// 自己做的 App(取数侧 key 以 app_ 开头,见 ~/info-digest/scripts/fetch_stats.py 的 app_*):
+// 三张各四格的卡并成一张表,一个 App 一行 —— 它们问的是同一件事「除了我还有谁在用」,
+// 竖着扫一列就能比,拆成三张卡反而要来回对。数字全部排除我自己。
+// Days 是单口令单人 App,没有用户数,两列「近 N 天」换成按日期数的记录天数,行名上注明。
+function isApp(p){ return (p.key||'').indexOf('app_')===0 }
+function appsCard(apps, fetchedAt, now){
+  const val=function(p,labels){
+    const m=(p.totals||[]).filter(function(x){ return labels.indexOf(x.label)>=0 })[0];
+    return m? m.value : null;
+  };
+  const cell=function(v){ return '<td class="num">'+(v==null? '<span class="muted">—</span>' : fmt(v))+'</td>' };
+  const last=function(d){
+    if(d==null) return '<td class="num"><span class="muted">没人用过</span></td>';
+    return '<td class="num">'+(d===0? '今天' : d+' 天前')+'</td>';
+  };
+  let worst=0, carried=false;
+  const rows=apps.map(function(p){
+    const single=(p.totals||[]).some(function(x){ return x.label==='近 7 天记录' });
+    const name=esc(p.name||'')+(single? ' <span class="muted" style="font-size:11.5px">记录天数</span>' : '');
+    if(!p.enabled || !p.ok){
+      return '<tr><td>'+name+'</td><td colspan="4" class="muted">'+esc(p.why||'未接入')+'</td></tr>';
+    }
+    const age=now-new Date(p.fetchedAt||fetchedAt).getTime();
+    if(age>worst) worst=age;
+    if(p.carried) carried=true;
+    return '<tr><td>'+name+'</td>'+
+      cell(val(p,['用户']))+
+      cell(val(p,['近 7 天在用','近 7 天记录']))+
+      cell(val(p,['近 30 天在用','近 30 天记录']))+
+      last(val(p,['距上次使用(天)','距上次记录(天)']))+'</tr>';
+  });
+  const stale=worst>STALE_HOURS*3600e3;
+  const badge=stale? '<span class="badge stale">数据可能已停更 · '+ago(worst)+'</span>'
+    : carried? '<span class="badge stale">有一行这次没取到 · 沿用旧数字</span>' : '';
+  return '<div class="card'+(stale?' stale':'')+'">'+
+    '<div class="plat-head"><span class="plat-name">自己做的 App</span>'+badge+'</div>'+
+    '<table><thead><tr><th></th><th class="num">用户</th><th class="num">近 7 天</th>'+
+    '<th class="num">近 30 天</th><th class="num">上次有人用</th></tr></thead><tbody>'+
+    rows.join('')+'</tbody></table>'+
+    '<div class="minor"><span class="t">reader、Todo 不含我自己;Days 只有一个口令,分不出是谁记的</span></div></div>';
+}
+
 function platformSection(pd, now, downloads){
   const stamp=pd&&(pd.fetchedAt||pd.receivedAt);
   const age=stamp? now-new Date(stamp).getTime() : NaN;
@@ -1569,7 +1611,10 @@ function platformSection(pd, now, downloads){
   // 「已通知本机重取」的进度条位。内容由 askRefresh 填,load() 重绘后靠 paintWait 补回。
   h+='<div class="note" id="rwait" hidden></div>';
   h+='<div class="grid" style="grid-template-columns:1fr;margin-bottom:14px">'+
-     (pd.platforms||[]).map(function(p){return platCard(p,stamp,now,downloads)}).join('')+'</div>';
+     (pd.platforms||[]).filter(function(p){return !isApp(p)})
+       .map(function(p){return platCard(p,stamp,now,downloads)}).join('')+
+     (function(){ const a=(pd.platforms||[]).filter(isApp); return a.length? appsCard(a,stamp,now) : '' })()+
+     '</div>';
 
   // 平台趋势:每个平台各画一张,序列不够长就不画(两个点的折线只会误导)
   const cards=[];

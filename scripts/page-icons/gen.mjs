@@ -9,10 +9,10 @@ const HERE = new URL('.', import.meta.url).pathname;
 const OUT = HERE + '../../quartz/static/icons/', BAK = HERE + 'with-jz/';
 mkdirSync(BAK, { recursive: true });
 const SIG = 'data:image/png;base64,' + readFileSync(HERE + 'jz-sig.png').toString('base64');
-const BG = '#1C1C1C', FG = '#FFFFFF', GOLD = '#C9A56A', GREY = '#8A8A8E';
+const BG = '#1C1C1C', FG = '#FFFFFF'; // 图形全白(2026-11-24 用户定,原来的金点、灰柱都改白)
 const glyphs = {
-  daily: `<circle cx="156" cy="356" r="40" fill="${GOLD}"/><g fill="none" stroke="${FG}" stroke-width="46" stroke-linecap="round"><path d="M128 226a158 158 0 0 1 158 158"/><path d="M128 120a264 264 0 0 1 264 264"/></g>`,
-  panel: `<g fill="none" stroke="${FG}" stroke-linecap="round"><path d="M120 392H392" stroke-width="28"/><path d="M168 320V268M256 320V196" stroke-width="52"/><path d="M344 320V124" stroke="${GREY}" stroke-width="52"/></g>`,
+  daily: `<circle cx="156" cy="356" r="40" fill="${FG}"/><g fill="none" stroke="${FG}" stroke-width="46" stroke-linecap="round"><path d="M128 226a158 158 0 0 1 158 158"/><path d="M128 120a264 264 0 0 1 264 264"/></g>`,
+  panel: `<g fill="none" stroke="${FG}" stroke-linecap="round"><path d="M120 392H392" stroke-width="28"/><path d="M168 320V268M256 320V196" stroke-width="52"/><path d="M344 320V124" stroke-width="52"/></g>`,
 };
 const sig = `<mask id="m" style="mask-type:luminance"><image href="${SIG}" x="361.8" y="327.1" width="114.4" height="111.8"/></mask><rect width="512" height="512" fill="${FG}" mask="url(#m)"/>`;
 // 带签名时图形缩到 82% 往左上挪,给右下的 Jz 让位;不带时原大居中。k < 1 是「可裁切」版:整体再缩到中间,系统裁圆时切不到。
